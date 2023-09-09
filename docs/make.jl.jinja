@@ -1,0 +1,31 @@
+using {{ PackageName }}
+using Documenter
+
+DocMeta.setdocmeta!({{ PackageName }}, :DocTestSetup, :(using {{ PackageName }}); recursive = true)
+
+makedocs(;
+  modules = [{{ PackageName }}],
+  doctest = true,
+  linkcheck = false,
+  strict = false,
+  authors = "{{ AuthorName }} <{{ AuthorEmail }}> and contributors",
+  repo = "https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/{commit}{path}#{line}",
+  sitename = "{{ PackageName }}.jl",
+  format = Documenter.HTML(;
+    prettyurls = get(ENV, "CI", "false") == "true",
+    canonical = "https://{{ PackageOwner }}.github.io/{{ PackageName }}.jl",
+    assets = ["assets/style.css"],
+  ),
+  pages = [
+    "Home" => "index.md",
+    "Contributing" => "contributing.md",
+    "Dev setup" => "developer.md",
+    "Reference" => "reference.md",
+  ],
+)
+
+deploydocs(;
+  repo = "github.com/{{ PackageOwner }}/{{ PackageName }}.jl",
+  push_preview = true,
+  devbranch = "main",
+)

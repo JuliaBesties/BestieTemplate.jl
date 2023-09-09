@@ -1,0 +1,64 @@
+PackageName:
+  type: str
+  help: Package name without '.jl'
+  validator: "{% if PackageName | length == 0 %}Can't be empty{% endif %}"
+
+PackageUUID:
+  type: str
+  help: UUID v4 (Generate this with uuidgen or in Julia with `using UUIDs; uuid4()`)
+  validator: "{% if PackageUUID | length == 0 %}Can't be empty{% endif %}"
+
+PackageOwner:
+  type: str
+  help: GitHub organization or user that owns the package
+  validator: "{% if PackageOwner | length == 0 %}Can't be empty{% endif %}"
+
+AuthorName:
+  type: str
+  validator: "{% if AuthorName | length == 0 %}Can't be empty{% endif %}"
+
+AuthorEmail:
+  type: str
+  validator: "{% if AuthorEmail | length == 0 %}Can't be empty{% endif %}"
+
+JuliaMinVersion:
+  type: str
+  help: Minimum Julia version to be used in Project.toml and CI (Normally the LTS version)
+  default: 1.6
+
+License:
+  type: str
+  choices:
+    - Apache Licence 2.0: Apache-2.0
+    - GNU General Public License v3.0 only: GPL-3.0
+    - MIT License: MIT
+    - Mozilla Public License 2.0: MPL-2.0
+
+AddMacToCI:
+  type: bool
+  help: Add macos on CI?
+
+AddWinToCI:
+  type: bool
+  help: Add windows on CI?
+
+RunJuliaNightlyOnCI:
+  type: bool
+  help: Run the nightly version of Julia on CI?
+
+UseCirrusCI:
+  type: bool
+  help: Create a .cirrusci.yml file?
+
+_exclude:
+  - .git
+  - copier.yml
+  - LICENSE
+  - README
+
+_skip_if_exists:
+  - "**/*.jl"
+  - "**/*.md"
+  - "**/*.toml"
+  - CITATION.cff
+  - LICENSE

@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "test/**"
+      - "*.toml"
+    tags: ["*"]
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "test/**"
+      - "*.toml"
+    types: [opened, synchronize, reopened]
+
+{% raw %}concurrency:
+  # Skip intermediate builds: always.
+  # Cancel intermediate builds: only if it is a pull request build.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+{% endraw %}
+jobs:
+  test:
+    {% raw %}name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
+    runs-on: ${{ matrix.os }}{% endraw %}
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - '{{ JuliaMinVersion }}'
+          - '1'
+          - 'nightly'
+        os:
+          - ubuntu-latest
+          {% if not AddMacToCI %}#{% endif %}- macOS-latest
+          {% if not AddWinToCI %}#{% endif %}- windows-latest
+        arch:
+          - x64
+        allow_failure: [false]
+        {% if RunJuliaNightlyOnCI %}include:
+          - version: 'nightly'
+            os: ubuntu-latest
+            arch: x64
+          {% if not AddMacToCI %}#{% endif %}- version: 'nightly'
+          {% if not AddMacToCI %}#{% endif %}  os: macOS-latest
+          {% if not AddMacToCI %}#{% endif %}  arch: x64
+          {% if not AddWinToCI %}#{% endif %}- version: 'nightly'
+          {% if not AddWinToCI %}#{% endif %}  os: windows-latest
+          {% if not AddWinToCI %}#{% endif %}  arch: x64{% endif %}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: julia-actions/setup-julia@v1
+        {% raw %}with:
+          version: ${{ matrix.version }}
+          arch: ${{ matrix.arch }}
+      - uses: actions/cache@v1
+        env:
+          cache-name: cache-artifacts
+        with:
+          path: ~/.julia/artifacts
+          key: ${{ runner.os }}-test-${{ env.cache-name }}-${{ hashFiles('**/Project.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-test-${{ env.cache-name }}-
+            ${{ runner.os }}-test-
+            ${{ runner.os }}-{% endraw %}
+      - uses: julia-actions/julia-buildpkg@v1
+      - uses: julia-actions/julia-runtest@v1
+      - uses: julia-actions/julia-processcoverage@v1
+      - uses: codecov/codecov-action@v1
+        with:
+          file: lcov.info

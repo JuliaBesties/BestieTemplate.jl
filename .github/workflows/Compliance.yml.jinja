@@ -1,0 +1,38 @@
+{% raw %}name: Template Compliance
+
+on:
+  schedule:
+    - cron: 0 7 1/7 * *
+  workflow_dispatch:
+
+jobs:
+  Compliance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: "1"
+      - name: Setup Python
+        uses: actions/setup-python@v4
+      - name: Check for update in the template
+        run: |
+          pip install copier
+          copier update
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: ":robot: COPIERTemplate.jl update"
+          title: "[AUTO] COPIERTemplate.jl update"
+          branch: auto-copier-template-update
+          delete-branch: true
+          labels: configuration, automated pr, no changelog
+      - name: Check outputs
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+{% endraw %}

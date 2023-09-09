@@ -1,0 +1,36 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - main
+    tags: ["*"]
+  pull_request:
+
+concurrency:
+  # Skip intermediate builds: always.
+  # Cancel intermediate builds: only if it is a pull request build.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
+jobs:
+  lint:
+    name: Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone
+        uses: actions/checkout@v3
+      - name: Setup Julia
+        uses: julia-actions/setup-julia@v1
+        with:
+          version: "1"
+      - name: Use Julia cache
+        uses: julia-actions/cache@v1
+      - name: Install JuliaFormatter.jl
+        run: julia -e 'using Pkg; pkg"add JuliaFormatter"'
+      - name: Setup Python
+        uses: actions/setup-python@v4
+      - name: Install pre-commit
+        run: pip install pre-commit
+      - name: Run pre-commit
+        run: SKIP=no-commit-to-branch pre-commit run -a
