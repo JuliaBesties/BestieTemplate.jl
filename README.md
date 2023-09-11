@@ -53,6 +53,26 @@ I have done that in the past, but now I want even less manual intervention.
 
     ```bash
     git remote add origin https://github.com/UserName/PackageName.jl
+    ```
+
+6. Create a `DOCUMENTER_KEY`, which will be used by for documentation purposes.
+
+    ```bash
+    pkg> activate --temp
+    pkg> add DocumenterTools
+    julia> using DocumenterTools
+    julia> DocumenterTools.genkeys(user="UserName", repo="PackageName.jl")
+    ```
+
+    Follow the instruction in the terminal.
+
+7. Create a Personal Access Token to be used by the Compliance workflow.
+
+    1. Go to <https://github.com/settings/tokens>.
+    2. Create a token with "Content", "Pull-request", and "Workflows" permissions.
+    3. Copy the Token.
+    4. Go to your YOUR_PACKAGE_URL/settings/secrets/actions.
+    5. Create a "New repository secret" named `COMPLIANCE_PAT`.
 
 ## What are all these files?
 
