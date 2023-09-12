@@ -40,7 +40,7 @@ I have done that in the past, but now I want even less manual intervention.
     uuid4()
     ```
 
-4. The resulting folder will not be a `git` package yet (to avoid trust issues), so you need to handle that yourself:
+4. The resulting folder will not be a `git` package yet (to avoid trust issues), so you need to handle that yourself.
 
     ```bash
     cd YourPackage.jl
@@ -125,7 +125,15 @@ Also slightly related, is the `.editorconfig` file, which tells your editor, if 
 The select a few workflows, with a strong possibility of expanding in the future:
 
 - CompatHelper.yml: Should be well known by now. It checks that your Project.toml compat entries are up-to-date.
+- Compliance.yml: This will periodically check the template for updates. If there are updates, this action creates a pull request updating your repo.
 - Docs.yml: Build the docs. Only runs when relevant files change.
 - Lint.yml: Run the linter and formatter through the command `pre-commit run -a`.
 - TagBot.yml: Create GitHub releases automatically after your new release is merged on the Registry.
 - Test.yml: Run the tests.
+
+## Users and Examples
+
+The following are users and examples of repos using this template.
+Feel free to create a pull request to add your repo.
+
+_Empty_.

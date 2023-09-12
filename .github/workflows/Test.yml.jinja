@@ -43,13 +43,13 @@ jobs:
           - x64
         allow_failure: [false]
         {% if RunJuliaNightlyOnCI %}include:
-          - version: 'nightly'
+          - version: "nightly"
             os: ubuntu-latest
             arch: x64
-          {% if not AddMacToCI %}#{% endif %}- version: 'nightly'
+          {% if not AddMacToCI %}#{% endif %}- version: "nightly"
           {% if not AddMacToCI %}#{% endif %}  os: macOS-latest
           {% if not AddMacToCI %}#{% endif %}  arch: x64
-          {% if not AddWinToCI %}#{% endif %}- version: 'nightly'
+          {% if not AddWinToCI %}#{% endif %}- version: "nightly"
           {% if not AddWinToCI %}#{% endif %}  os: windows-latest
           {% if not AddWinToCI %}#{% endif %}  arch: x64{% endif %}
     steps:
