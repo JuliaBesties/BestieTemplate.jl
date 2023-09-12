@@ -52,6 +52,7 @@ UseCirrusCI:
 
 _exclude:
   - .git
+  - CHANGELOG.md
   - copier.yml
   - LICENSE
   - README
