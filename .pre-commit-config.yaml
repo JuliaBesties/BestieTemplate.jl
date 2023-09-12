@@ -24,6 +24,7 @@ repos:
     hooks:
       - id: prettier
         types_or: [yaml, json]
+        exclude: ".copier-answers.yml"
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.32.0
     hooks:
