@@ -60,6 +60,7 @@ _exclude:
 
 _skip_if_exists:
   - "**/*.jl"
+  - "!docs/src/make.jl"
   - "**/*.md"
   - "**/*.toml"
   - CITATION.cff
