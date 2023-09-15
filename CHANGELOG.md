@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.1.1] - 2023-09-15
+
+### Added
+
+- Add CITATION.cff
+
+### Fixed
+
+- Exclude docs/assets/logo.png
+
 ## [0.1.0] - 2023-09-12
 
 - Initial release
@@ -17,5 +27,6 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 <!-- markdown-link-check-disable -->
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.0
+[unreleased]: https://github.com/JuliaSmoothOptimizers/COPIERTemplate.jl/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/JuliaSmoothOptimizers/COPIERTemplate.jl/releases/tag/v0.1.1
+[0.1.0]: https://github.com/JuliaSmoothOptimizers/COPIERTemplate.jl/releases/tag/v0.1.0
