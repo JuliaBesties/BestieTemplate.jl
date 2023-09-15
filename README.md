@@ -133,7 +133,8 @@ The select a few workflows, with a strong possibility of expanding in the future
 
 ## Users and Examples
 
-The following are users and examples of repos using this template.
+The following are users and examples of repos using this template, or other templates based on it.
 Feel free to create a pull request to add your repo.
 
-_Empty_.
+- [COPIERTemplateExample.jl](https://github.com/abelsiqueira/COPIERTemplateExample.jl)
+- [JSOTemplate.jl](https://github.com/JuliaSmoothOptimizers/JSOTemplate.jl)
