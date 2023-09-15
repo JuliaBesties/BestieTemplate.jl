@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 <!-- markdown-link-check-disable -->
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.1.1...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.2
 [0.1.1]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.1
 [0.1.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.0
