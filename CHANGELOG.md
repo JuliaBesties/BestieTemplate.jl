@@ -11,11 +11,11 @@ and this project adheres to [Semantic Versioning].
 
 ### Added
 
-- Add CITATION.cff
+- Add CITATION.cff [#3](https://github.com/abelsiqueira/COPIERTemplate.jl/issues/3)
 
 ### Fixed
 
-- Exclude docs/assets/logo.png
+- Exclude docs/assets/logo.png [#4](https://github.com/abelsiqueira/COPIERTemplate.jl/issues/4)
 
 ## [0.1.0] - 2023-09-12
 
@@ -27,6 +27,6 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 <!-- markdown-link-check-disable -->
-[unreleased]: https://github.com/JuliaSmoothOptimizers/COPIERTemplate.jl/compare/v0.1.1...HEAD
-[0.1.1]: https://github.com/JuliaSmoothOptimizers/COPIERTemplate.jl/releases/tag/v0.1.1
-[0.1.0]: https://github.com/JuliaSmoothOptimizers/COPIERTemplate.jl/releases/tag/v0.1.0
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.1
+[0.1.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.0

@@ -4,6 +4,9 @@
 
 # COPIERTemplate.jl - Copier OPInionated Evolving Reusable Template
 
+[![Lint workflow Status](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Lint.yml/badge.svg?branch=main)](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Lint.yml?query=branch%3Amain)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8350577.svg)](https://doi.org/10.5281/zenodo.8350577)
+
 This is a [copier](https://copier.readthedocs.io) template/skeleton for Julia packages.
 
 - It is opinionated but allows options
@@ -27,35 +30,40 @@ I have done that in the past, but now I want even less manual intervention.
 
 1. Install [copier](https://copier.readthedocs.io).
 
-2. Run copier with this template
+1. Run copier with this template
 
     ```bash
     copier copy https://github.com/abelsiqueira/COPIERTemplate.jl YourPackage.jl
     ```
 
-3. Follow the instructions. In particular you will need a UUID. Your Linux might have `uuidgen` installed, but you can also use Julia:
+1. Follow the instructions. In particular you will need a UUID. Your Linux might have `uuidgen` installed, but you can also use Julia:
 
     ```bash
     using UUIDs
     uuid4()
     ```
 
-4. The resulting folder will not be a `git` package yet (to avoid trust issues), so you need to handle that yourself.
+1. The resulting folder will not be a `git` package yet (to avoid trust issues), so you need to handle that yourself. First, install [`pre-commit`](https://pre-commit.com), and then issue:
 
     ```bash
     cd YourPackage.jl
     git init
     git add .
+    pre-commit run -a # Fix possible pre-commit issues
+    git add .
     git commit -m "First commit"
+    pre-commit install # Future commits can't be directly to main unless you use -n
     ```
 
-5. Create a repo on GitHub and push it
+    It is common to have some pre-commit issues due to your package's name length triggering JuliaFormatter.
+
+1. Create a repo on GitHub and push it
 
     ```bash
     git remote add origin https://github.com/UserName/PackageName.jl
     ```
 
-6. Create a `DOCUMENTER_KEY`, which will be used by for documentation purposes.
+1. Create a `DOCUMENTER_KEY`, which will be used by for documentation purposes.
 
     ```bash
     pkg> activate --temp
@@ -66,13 +74,15 @@ I have done that in the past, but now I want even less manual intervention.
 
     Follow the instruction in the terminal.
 
-7. Create a Personal Access Token to be used by the Compliance workflow.
+1. Create a Personal Access Token to be used by the Compliance workflow.
 
     1. Go to <https://github.com/settings/tokens>.
     2. Create a token with "Content", "Pull-request", and "Workflows" permissions.
     3. Copy the Token.
     4. Go to your YOUR_PACKAGE_URL/settings/secrets/actions.
     5. Create a "New repository secret" named `COMPLIANCE_PAT`.
+
+1. Before releasing, enable Zenodo integration at <https://zenodo.org/account/settings/github/>.
 
 ## What are all these files?
 

@@ -13,5 +13,9 @@ authors:
     email: abel.s.siqueira@gmail.com
     affiliation: Netherlands eScience Center
     orcid: "https://orcid.org/0000-0003-4451-281X"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.8350577
+    description: Zenodo Concept DOI
 repository-code: "https://github.com/abelsiqueira/COPIERTemplate.jl"
 license: MPL-2.0
