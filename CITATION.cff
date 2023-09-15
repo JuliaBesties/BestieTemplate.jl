@@ -1,1 +1,17 @@
-# Go to https://citation-file-format.github.io/cff-initializer-javascript/#/
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: COPIERTemplate.jl
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Abel
+    family-names: Soares Siqueira
+    email: abel.s.siqueira@gmail.com
+    affiliation: Netherlands eScience Center
+    orcid: "https://orcid.org/0000-0003-4451-281X"
+repository-code: "https://github.com/abelsiqueira/COPIERTemplate.jl"
+license: MPL-2.0
