@@ -6,8 +6,7 @@ DocMeta.setdocmeta!({{ PackageName }}, :DocTestSetup, :(using {{ PackageName }})
 makedocs(;
   modules = [{{ PackageName }}],
   doctest = true,
-  linkcheck = false,
-  strict = false,
+  linkcheck = true,
   authors = "{{ AuthorName }} <{{ AuthorEmail }}> and contributors",
   repo = "https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/{commit}{path}#{line}",
   sitename = "{{ PackageName }}.jl",
