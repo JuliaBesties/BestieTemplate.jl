@@ -56,6 +56,7 @@ _exclude:
   - copier.yml
   - LICENSE
   - README
+  - docs/src/assets/logo.png
 
 _skip_if_exists:
   - "**/*.jl"
