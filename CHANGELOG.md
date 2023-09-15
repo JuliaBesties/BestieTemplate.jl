@@ -5,17 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog],
 and this project adheres to [Semantic Versioning].
 
+<!-- markdownlint-disable MD024 -->
+
 ## [Unreleased]
+
+## [0.1.2] - 2023-09-16
+
+### Added
+
+- Zenodo DOI
+- Instruction to add a Zenodo DOI
+- Badge on README
+
+### Changed
+
+- Documenter compat is 1
+- Remove keywords strict and linkcheck from docs/make.jl
+
+### Fixed
+
+- File docs/make.jl should not be skipped
 
 ## [0.1.1] - 2023-09-15
 
 ### Added
 
-- Add CITATION.cff [#3](https://github.com/abelsiqueira/COPIERTemplate.jl/issues/3)
+- Add CITATION.cff
 
 ### Fixed
 
-- Exclude docs/assets/logo.png [#4](https://github.com/abelsiqueira/COPIERTemplate.jl/issues/4)
+- Exclude docs/assets/logo.png
 
 ## [0.1.0] - 2023-09-12
 

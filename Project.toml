@@ -1,7 +1,7 @@
 name = "COPIERTemplate"
 uuid = "5022dd56-1d41-4538-9f4c-b20739ff8283"
 authors = ["Abel Soares Siqueira <abel.s.siqueira@gmail.com> and contributors"]
-version = "0.1.1"
+version = "0.1.2"
 
 [compat]
 julia = "1.6"
