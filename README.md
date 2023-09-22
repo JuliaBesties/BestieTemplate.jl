@@ -74,13 +74,13 @@ I have done that in the past, but now I want even less manual intervention.
 
     Follow the instruction in the terminal.
 
-1. Create a Personal Access Token to be used by the Compliance workflow.
+1. Create a Personal Access Token to be used by the Copier workflow.
 
     1. Go to <https://github.com/settings/tokens>.
     2. Create a token with "Content", "Pull-request", and "Workflows" permissions.
     3. Copy the Token.
     4. Go to your YOUR_PACKAGE_URL/settings/secrets/actions.
-    5. Create a "New repository secret" named `COMPLIANCE_PAT`.
+    5. Create a "New repository secret" named `COPIER_PAT`.
 
 1. Before releasing, enable Zenodo integration at <https://zenodo.org/account/settings/github/>.
 
@@ -135,7 +135,7 @@ Also slightly related, is the `.editorconfig` file, which tells your editor, if 
 The select a few workflows, with a strong possibility of expanding in the future:
 
 - CompatHelper.yml: Should be well known by now. It checks that your Project.toml compat entries are up-to-date.
-- Compliance.yml: This will periodically check the template for updates. If there are updates, this action creates a pull request updating your repo.
+- Copier.yml: This will periodically check the template for updates. If there are updates, this action creates a pull request updating your repo.
 - Docs.yml: Build the docs. Only runs when relevant files change.
 - Lint.yml: Run the linter and formatter through the command `pre-commit run -a`.
 - TagBot.yml: Create GitHub releases automatically after your new release is merged on the Registry.

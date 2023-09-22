@@ -1,4 +1,4 @@
-{% raw %}name: Template Compliance
+{% raw %}name: Copier Update
 
 on:
   schedule:
@@ -6,12 +6,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  Compliance:
+  Copier:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.COMPLIANCE_PAT }}
+          token: ${{ secrets.COPIER_PAT }}
       - uses: julia-actions/setup-julia@v1
         with:
           version: "1"
@@ -25,7 +25,7 @@ jobs:
         run: |
           pip install copier
           copier update -A -o rej
-          echo -e "Automated changed by Compliance.yml workflow\n" > /tmp/body.md
+          echo -e "Automated changed by Copier.yml workflow\n" > /tmp/body.md
           echo -e 'Rejected changes (if any):\n```diff\n' >> /tmp/body.md
           find . -name "*.rej" | xargs cat >> /tmp/body.md
           find . -name "*.rej" | xargs rm -f
@@ -39,7 +39,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.COMPLIANCE_PAT }}
+          token: ${{ secrets.COPIER_PAT }}
           commit-message: ":robot: COPIERTemplate.jl update"
           title: "[AUTO] COPIERTemplate.jl update"
           body-path: /tmp/body.md
