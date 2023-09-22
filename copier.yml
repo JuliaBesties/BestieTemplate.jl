@@ -52,6 +52,8 @@ UseCirrusCI:
 
 _exclude:
   - .git
+  - .github/workflows/Docs.yml
+  - .github/workflows/Test.yml
   - CHANGELOG.md
   - copier.yml
   - LICENSE

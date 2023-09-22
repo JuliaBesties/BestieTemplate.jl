@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- Should be installable as a Julia package now
+- Use PythonCall to run copier directly from the Julia package
+
 ### Changed
 
 - Move template to subdirectory

@@ -3,5 +3,12 @@ uuid = "5022dd56-1d41-4538-9f4c-b20739ff8283"
 authors = ["Abel Soares Siqueira <abel.s.siqueira@gmail.com> and contributors"]
 version = "0.1.7"
 
+[deps]
+CondaPkg = "992eb4ea-22a4-4c89-a5bb-47a3300528ab"
+PythonCall = "6099a3de-0909-46bc-b1f4-468b9a2dfc0d"
+UUIDs = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
+
 [compat]
 julia = "1.6"
+CondaPkg = "0.2"
+PythonCall = "0.9"
