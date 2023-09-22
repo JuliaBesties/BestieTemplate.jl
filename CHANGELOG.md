@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- Use pre-commit to prevent adding .rej files and ongoing merge conflicts
+
 ## [0.1.5] - 2023-09-22
 
 ### Fixed
