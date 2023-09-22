@@ -4,19 +4,32 @@
 
 # COPIERTemplate.jl - Copier OPInionated Evolving Reusable Template
 
+<!-- markdown-link-check-disable -->
+[![Stable Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://abelsiqueira.github.io/COPIERTemplate.jl/stable)
+[![In development documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://abelsiqueira.github.io/COPIERTemplate.jl/dev)
+<!-- markdown-link-check-enable -->
 [![Lint workflow Status](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Lint.yml/badge.svg?branch=main)](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Lint.yml?query=branch%3Amain)
+[![Build Status](https://github.com/abelsiqueira/COPIERTemplate.jl/workflows/Test/badge.svg)](https://github.com/abelsiqueira/COPIERTemplate.jl/actions)
+[![Test workflow status](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Test.yml/badge.svg?branch=main)](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Test.yml?query=branch%3Amain)
+[![Lint workflow Status](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Lint.yml/badge.svg?branch=main)](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Lint.yml?query=branch%3Amain)
+[![Docs workflow Status](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Docs.yml/badge.svg?branch=main)](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Docs.yml?query=branch%3Amain)
+[![Coverage](https://codecov.io/gh/abelsiqueira/COPIERTemplate.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/abelsiqueira/COPIERTemplate.jl)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8350577.svg)](https://doi.org/10.5281/zenodo.8350577)
 
-This is a [copier](https://copier.readthedocs.io) template/skeleton for Julia packages (see folder [template](template)).
+This is
 
-- It is opinionated but allows options
-- Can be used in existing package (thanks for copier)
-- Automatically keeps track of changes in the template through Pull Requests
+- a [copier](https://copier.readthedocs.io) template/skeleton for Julia packages (see folder [template](template)); and
+- a package created with the template that wraps `copier` in Julia using `PythonCall`.
+
+The template
+
+- is opinionated but allows options;
+- can be applied to existing packages (thanks to copier);
+- is automatically reapplied through Pull Requests made by the Copier.yml workflow.
 
 Additional wishlist
 
-- Use as template for other templates
-- Allow using the template directly from Julia instead of installing copier (through PythonCall, possibly)
+- Use as template for other templates (Maybe just use forks?)
 
 **But why?**
 
@@ -25,23 +38,30 @@ Because I have around 50 packages that follow similar configuration (but not equ
 **What about mass updates using the GitHub API?**
 
 I have done that in the past, but now I want even less manual intervention.
+This will still require manual installation for the first time, and will still allow verifying the pull requests.
 
 ## How to install
 
-1. Install [copier](https://copier.readthedocs.io).
+> **Warning**
+>
+> It is unknown if the package works on Windows due to an issue with unsupported paths.
+> See [Issue #21](https://github.com/abelsiqueira/COPIERTemplate.jl/pull/21).
+> If it doesn't work, let us know, and use the alternative installation.
 
-1. Run copier with this template
+1. Install this package, use the module and run `COPIERTemplate.generate(path)`.
 
-    ```bash
-    copier copy https://github.com/abelsiqueira/COPIERTemplate.jl YourPackage.jl
-    ```
+   Alternatively, this can also be installed directly via [copier](https://copier.readthedocs.io), with the command
 
-1. Follow the instructions. In particular you will need a UUID. Your Linux might have `uuidgen` installed, but you can also use Julia:
+   ```bash
+   copier copy https://github.com/abelsiqueira/COPIERTemplate.jl YourPackage.jl
+   ```
 
-    ```bash
-    using UUIDs
-    uuid4()
-    ```
+   Follow the instructions. In particular you will need a UUID. Your Linux might have `uuidgen` installed, but you can also use Julia:
+
+   ```bash
+   using UUIDs
+   uuid4()
+   ```
 
 1. The resulting folder will not be a `git` package yet (to avoid trust issues), so you need to handle that yourself. First, install [`pre-commit`](https://pre-commit.com), and then issue:
 
@@ -77,10 +97,10 @@ I have done that in the past, but now I want even less manual intervention.
 1. Create a Personal Access Token to be used by the Copier workflow.
 
     1. Go to <https://github.com/settings/tokens>.
-    2. Create a token with "Content", "Pull-request", and "Workflows" permissions.
-    3. Copy the Token.
-    4. Go to your YOUR_PACKAGE_URL/settings/secrets/actions.
-    5. Create a "New repository secret" named `COPIER_PAT`.
+    1. Create a token with "Content", "Pull-request", and "Workflows" permissions.
+    1. Copy the Token.
+    1. Go to your YOUR_PACKAGE_URL/settings/secrets/actions.
+    1. Create a "New repository secret" named `COPIER_PAT`.
 
 1. Before releasing, enable Zenodo integration at <https://zenodo.org/account/settings/github/>.
 
@@ -126,7 +146,7 @@ Installing pre-commit (`pre-commit install`) will make sure that it runs right t
 Additionally, if you run `pre-commit run -a`, it runs all hooks, which can be used for Linting.
 
 Some hooks in the `.pre-commit-config.yaml` file have configuration files of their own:
-`.JuliaFormatter.toml`, `.markdownlint.json`, and `.yamllint.yml`.
+`.JuliaFormatter.toml`, `.markdownlint.json`, `.markdown-link-config.json`, and `.yamllint.yml`.
 
 Also slightly related, is the `.editorconfig` file, which tells your editor, if you install the coorect plugin, how to format some things.
 
