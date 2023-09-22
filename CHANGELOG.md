@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.1.7]
+
+### Changed
+
+- Rename Compliance to Copier in various places (including this CHANGELOG)
+
 ## [0.1.6]
 
 ### Added
@@ -80,7 +86,8 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 <!-- markdown-link-check-disable -->
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.1.6...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.1.7...HEAD
+[0.1.7]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.7
 [0.1.6]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.6
 [0.1.5]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.5
 [0.1.4]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.4
