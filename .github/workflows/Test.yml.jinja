@@ -46,12 +46,15 @@ jobs:
           - version: "nightly"
             os: ubuntu-latest
             arch: x64
+            allow_failure: true
           {% if not AddMacToCI %}#{% endif %}- version: "nightly"
           {% if not AddMacToCI %}#{% endif %}  os: macOS-latest
           {% if not AddMacToCI %}#{% endif %}  arch: x64
+          {% if not AddMacToCI %}#{% endif %}  allow_failure: true
           {% if not AddWinToCI %}#{% endif %}- version: "nightly"
           {% if not AddWinToCI %}#{% endif %}  os: windows-latest
-          {% if not AddWinToCI %}#{% endif %}  arch: x64{% endif %}
+          {% if not AddWinToCI %}#{% endif %}  arch: x64
+          {% if not AddWinToCI %}#{% endif %}  allow_failure: true{% endif %}
     steps:
       - uses: actions/checkout@v3
       - uses: julia-actions/setup-julia@v1
