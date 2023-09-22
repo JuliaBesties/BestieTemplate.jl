@@ -25,19 +25,19 @@ and this project adheres to [Semantic Versioning].
 
 ### Fixed
 
-- Properly fix compliance when there are conflicts
+- Properly fix copier update when there are conflicts
 
 ## [0.1.4] - 2023-09-22
 
 ### Fixed
 
-- Fix compliance when there are conflicts
+- Fix copier update when there are conflicts
 
 ## [0.1.3] - 2023-09-21
 
 ### Added
 
-- Run pre-commit in the compliance workflow to commit the formatters change as well
+- Run pre-commit in the Copier workflow to commit the formatters change as well
 
 ### Changed
 
