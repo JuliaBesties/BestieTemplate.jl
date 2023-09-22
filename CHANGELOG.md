@@ -9,9 +9,17 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.1.6]
+
 ### Added
 
 - Use pre-commit to prevent adding .rej files and ongoing merge conflicts
+- Add configuration file for markdown link checker and ignore @ref
+
+### Changed
+
+- Only ignore Project.toml, not all toml
+- Change markdown-lint to fix version
 
 ## [0.1.5] - 2023-09-22
 
@@ -72,7 +80,8 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 <!-- markdown-link-check-disable -->
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.1.5...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.1.6...HEAD
+[0.1.6]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.6
 [0.1.5]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.5
 [0.1.4]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.4
 [0.1.3]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.3
