@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.1.5] - 2023-09-22
+
+### Fixed
+
+- Properly fix compliance when there are conflicts
+
 ## [0.1.4] - 2023-09-22
 
 ### Fixed
@@ -62,7 +68,8 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 <!-- markdown-link-check-disable -->
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.1.4...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.1.5...HEAD
+[0.1.5]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.5
 [0.1.4]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.4
 [0.1.3]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.3
 [0.1.2]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.2

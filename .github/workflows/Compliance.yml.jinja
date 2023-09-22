@@ -28,6 +28,7 @@ jobs:
           echo -e "Automated changed by Compliance.yml workflow\n" > /tmp/body.md
           echo -e 'Rejected changes (if any):\n```diff\n' >> /tmp/body.md
           find . -name "*.rej" | xargs cat >> /tmp/body.md
+          find . -name "*.rej" | xargs rm -f
           echo -e '```' >> /tmp/body.md
           git diff
       - name: Run pre-commit to run the formatters
