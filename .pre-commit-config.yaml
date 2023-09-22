@@ -51,3 +51,5 @@ repos:
     rev: v3.11.2
     hooks:
       - id: markdown-link-check
+        args:
+          - --config=.markdown-link-config.json
