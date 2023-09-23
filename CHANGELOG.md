@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Changed
+
+- Move template to subdirectory
+
 ### Fixed
 
 - Allow failure in nightly Julia Test.yml workflow
