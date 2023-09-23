@@ -1,0 +1,14 @@
+# Changes here will be overwritten by Copier
+AddMacToCI: true
+AddWinToCI: false
+AuthorEmail: abel.s.siqueira@gmail.com
+AuthorName: Abel Soares Siqueira
+JuliaMinVersion: '1.6'
+License: MPL-2.0
+PackageName: COPIERTemplate
+PackageOwner: abelsiqueira
+PackageUUID: 5022dd56-1d41-4538-9f4c-b20739ff8283
+RunJuliaNightlyOnCI: false
+UseCirrusCI: false
+_commit: v0.1.7
+_src_path: https://github.com/abelsiqueira/COPIERTemplate.jl

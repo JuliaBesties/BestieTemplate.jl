@@ -7,7 +7,7 @@
 [![Lint workflow Status](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Lint.yml/badge.svg?branch=main)](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Lint.yml?query=branch%3Amain)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8350577.svg)](https://doi.org/10.5281/zenodo.8350577)
 
-This is a [copier](https://copier.readthedocs.io) template/skeleton for Julia packages.
+This is a [copier](https://copier.readthedocs.io) template/skeleton for Julia packages (see folder [template](template)).
 
 - It is opinionated but allows options
 - Can be used in existing package (thanks for copier)
@@ -146,5 +146,6 @@ The select a few workflows, with a strong possibility of expanding in the future
 The following are users and examples of repos using this template, or other templates based on it.
 Feel free to create a pull request to add your repo.
 
+- This package itself uses the template.
 - [COPIERTemplateExample.jl](https://github.com/abelsiqueira/COPIERTemplateExample.jl)
 - [JSOTemplate.jl](https://github.com/JuliaSmoothOptimizers/JSOTemplate.jl)
