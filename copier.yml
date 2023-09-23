@@ -65,3 +65,5 @@ _skip_if_exists:
   - "**/Project.toml"
   - CITATION.cff
   - LICENSE
+
+_subdirectory: template
