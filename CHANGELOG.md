@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.2.0] - 2023-09-24
+
+### Changed
+
+- First Julia release
+
 ## [0.1.9] - 2023-09-24
 
 ### Fixed
@@ -107,7 +113,8 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 <!-- markdown-link-check-disable -->
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.1.9...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.2.0
 [0.1.9]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.9
 [0.1.8]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.8
 [0.1.7]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.7
