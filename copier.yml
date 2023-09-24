@@ -50,16 +50,6 @@ UseCirrusCI:
   type: bool
   help: Create a .cirrusci.yml file?
 
-_exclude:
-  - .git
-  - .github/workflows/Docs.yml
-  - .github/workflows/Test.yml
-  - CHANGELOG.md
-  - copier.yml
-  - LICENSE
-  - README
-  - docs/src/assets/logo.png
-
 _skip_if_exists:
   - "**/*.jl"
   - "!docs/make.jl"
