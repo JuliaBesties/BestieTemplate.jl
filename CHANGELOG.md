@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.1.8] - 2023-09-24
+
 ### Added
 
 - Should be installable as a Julia package now
@@ -22,13 +24,13 @@ and this project adheres to [Semantic Versioning].
 
 - Allow failure in nightly Julia Test.yml workflow
 
-## [0.1.7]
+## [0.1.7] - 2023-09-22
 
 ### Changed
 
 - Rename Compliance to Copier in various places (including this CHANGELOG)
 
-## [0.1.6]
+## [0.1.6] - 2023-09-22
 
 ### Added
 
@@ -99,7 +101,8 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 <!-- markdown-link-check-disable -->
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.1.7...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.1.8...HEAD
+[0.1.8]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.8
 [0.1.7]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.7
 [0.1.6]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.6
 [0.1.5]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.1.5
