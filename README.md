@@ -27,6 +27,8 @@ The template
 - can be applied to existing packages (thanks to copier);
 - is automatically reapplied through Pull Requests made by the Copier.yml workflow.
 
+[![asciicast](https://asciinema.org/a/611189.svg)](https://asciinema.org/a/611189)
+
 Additional wishlist
 
 - Use as template for other templates (Maybe just use forks?)
