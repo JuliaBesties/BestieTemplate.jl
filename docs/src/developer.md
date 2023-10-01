@@ -38,9 +38,9 @@ If this is the first time you work with this repository, follow the instructions
 1. Fork this repo.
 2. Clone your repo (this will create a `git remote` called `origin`).
 3. Add this repo as a remote:
-```bash
-git remote add orgremote https://github.com/abelsiqueira/COPIERTemplate.jl
-```
+
+   ```bash
+   git remote add orgremote https://github.com/abelsiqueira/COPIERTemplate.jl
 
 ## Working on a new issue
 
@@ -86,9 +86,8 @@ git remote add orgremote https://github.com/abelsiqueira/COPIERTemplate.jl
 - Make sure the pre-commit tests pass.
 - Fetch any `main` updates from upstream and rebase your branch, if necessary:
 
-```bash
+   ```bash
    git fetch orgremote
    git rebase orgremote/main BRANCH_NAME
-```
 
 - Then you can open a pull request and work with the reviewer to address any issues.
