@@ -33,9 +33,14 @@ pre-commit run -a
 
 ## First time clone
 
-1. Fork this repo
-2. Clone your repo (this will create a `git remote` called `origin`)
-3. Add this repo as a remote `git remote add orgremote https://github.com/abelsiqueira/COPIERTemplate.jl`
+If this is the first time you work with this repository, follow the instructions below to clone the repository.
+
+1. Fork this repo.
+2. Clone your repo (this will create a `git remote` called `origin`).
+3. Add this repo as a remote.
+```bash
+git remote add orgremote https://github.com/abelsiqueira/COPIERTemplate.jl
+```
 
 ## Working on a new issue
 
