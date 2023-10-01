@@ -10,7 +10,7 @@ This will ensure that your editor is configured with important formatting settin
 We use [https://pre-commit.com](https://pre-commit.com) to run the linters and formatters.
 In particular, the Julia code is formatted using [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl), so please install it globally first.
 
-Install `pre-commit` (we recommend using [pipx](https://pypa.github.io/pipx/)):
+To install `pre-commit`, we recommend using [pipx](https://pypa.github.io/pipx/) as follows:
 
 ```bash
 # Install pipx following the link
