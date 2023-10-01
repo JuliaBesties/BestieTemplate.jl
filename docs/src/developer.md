@@ -86,9 +86,9 @@ git remote add orgremote https://github.com/abelsiqueira/COPIERTemplate.jl
 - Make sure the pre-commit tests pass.
 - Fetch any `main` updates from upstream and rebase your branch, if necessary:
 
-   ```bash
+```bash
    git fetch orgremote
    git rebase orgremote/main BRANCH_NAME
-   ```
+```
 
-- Then you can open a pull request and work with the reviewer to address any issues
+- Then you can open a pull request and work with the reviewer to address any issues.
