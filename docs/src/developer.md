@@ -75,9 +75,9 @@ git remote add orgremote https://github.com/abelsiqueira/COPIERTemplate.jl
 
 ### Commit message
 
-- Use imperative, present tense (Add feature, Fix bug)
-- Have informative titles
-- If necessary, add a body with details
+- Use imperative or present tense, for instance: *Add feature* or *Fix bug*.
+- Have informative titles.
+- If necessary, add a body with details.
 
 ### Before creating a pull request
 
