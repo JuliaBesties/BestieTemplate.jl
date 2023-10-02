@@ -54,6 +54,8 @@ _skip_if_exists:
   - "**/*.jl"
   - "!docs/make.jl"
   - "**/*.md"
+  - "!docs/src/contributing.md"
+  - "!docs/src/developer.md"
   - "**/Project.toml"
   - CITATION.cff
   - LICENSE
