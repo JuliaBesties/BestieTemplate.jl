@@ -18,7 +18,7 @@ If you found an issue that interests you, comment on that issue what your plans 
 If the solution to the issue is clear, you can immediately create a pull request (see below).
 Otherwise, say what your proposed solution is and wait for a discussion around it.
 
-> **tip**
+> **Tip**
 >
 > Feel free to ping us after a few days if there are no responses.
 
