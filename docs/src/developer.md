@@ -1,6 +1,6 @@
 # Developer documentation
 
-If you haven't, please read the [Contributing guidelindes](contributing.md) first.
+If you haven't, please read the [Contributing guidelines](contributing.md) first.
 
 ## Linting and formatting
 
@@ -10,7 +10,7 @@ This will ensure that your editor is configured with important formatting settin
 We use [https://pre-commit.com](https://pre-commit.com) to run the linters and formatters.
 In particular, the Julia code is formatted using [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl), so please install it globally first.
 
-Install `pre-commit` (we recommend using [pipx](https://pypa.github.io/pipx/)):
+To install `pre-commit`, we recommend using [pipx](https://pypa.github.io/pipx/) as follows:
 
 ```bash
 # Install pipx following the link
@@ -33,9 +33,15 @@ pre-commit run -a
 
 ## First time clone
 
+If this is the first time you work with this repository, follow the instructions below to clone the repository.
+
 1. Fork this repo
 2. Clone your repo (this will create a `git remote` called `origin`)
-3. Add this repo as a remote `git remote add orgremote https://github.com/abelsiqueira/COPIERTemplate.jl`
+3. Add this repo as a remote:
+
+   ```bash
+   git remote add orgremote https://github.com/abelsiqueira/COPIERTemplate.jl
+   ```
 
 ## Working on a new issue
 
@@ -70,9 +76,9 @@ pre-commit run -a
 
 ### Commit message
 
-- Use imperative, present tense (Add feature, Fix bug)
-- Have informative titles
-- If necessary, add a body with details
+- Use imperative or present tense, for instance: *Add feature* or *Fix bug*.
+- Have informative titles.
+- If necessary, add a body with details.
 
 ### Before creating a pull request
 
@@ -86,4 +92,4 @@ pre-commit run -a
    git rebase orgremote/main BRANCH_NAME
    ```
 
-- Then you can open a pull request and work with the reviewer to address any issues
+- Then you can open a pull request and work with the reviewer to address any issues.
