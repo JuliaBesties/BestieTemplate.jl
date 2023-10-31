@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.2.3] - 2023-10-31
+
+### Changed
+
+- Add `workflow_dispatch` to Test.yml
+
+### Fixed
+
+- Windows support
+
 ## [0.2.2] - 2023-10-02
 
 ### Fixed
@@ -129,7 +139,8 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 <!-- markdown-link-check-disable -->
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.2.2...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.2.3...HEAD
+[0.2.3]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.2.3
 [0.2.2]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.2.2
 [0.2.1]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.2.1
 [0.2.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.2.0
