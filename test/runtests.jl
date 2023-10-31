@@ -19,9 +19,11 @@ template_options = Dict(
   tmpdir1 = mktempdir()
   tmpdir2 = mktempdir()
 
-  COPIERTemplate.generate(tmpdir1; data = template_options)
+  COPIERTemplate.generate(tmpdir1; data = template_options, vcs_ref = "main")
   bash_args = vcat([["-d"; "$k=$v"] for (k, v) in template_options]...)
-  run(`copier copy $bash_args https://github.com/abelsiqueira/COPIERTemplate.jl $tmpdir2`)
+  run(
+    `copier copy --vcs-ref main $bash_args https://github.com/abelsiqueira/COPIERTemplate.jl $tmpdir2`,
+  )
   for (root, dirs, files) in walkdir(tmpdir1)
     for file in files
       file1 = joinpath(root, file)
