@@ -1,6 +1,6 @@
 # Changes here will be overwritten by Copier
 AddMacToCI: true
-AddWinToCI: false
+AddWinToCI: true
 AuthorEmail: abel.s.siqueira@gmail.com
 AuthorName: Abel Soares Siqueira
 JuliaMinVersion: '1.6'
