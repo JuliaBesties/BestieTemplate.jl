@@ -17,6 +17,7 @@ on:
       - "test/**"
       - "*.toml"
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
 
 concurrency:
   # Skip intermediate builds: always.
