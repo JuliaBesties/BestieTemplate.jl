@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Fixed
+
+- pipx link changed
+
 ## [0.2.3] - 2023-10-31
 
 ### Changed
