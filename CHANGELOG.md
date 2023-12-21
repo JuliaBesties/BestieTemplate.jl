@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.2.4] - 2023-12-21
+
 ### Fixed
 
 - pipx link changed
@@ -143,7 +145,8 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 <!-- markdown-link-check-disable -->
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.2.3...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.2.4...HEAD
+[0.2.4]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.2.4...HEAD
 [0.2.3]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.2.3
 [0.2.2]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.2.2
 [0.2.1]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.2.1
