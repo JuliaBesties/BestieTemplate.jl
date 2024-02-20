@@ -42,7 +42,6 @@ jobs:
           - windows-latest
         arch:
           - x64
-        allow_failure: [false]
     steps:
       - uses: actions/checkout@v3
       - uses: julia-actions/setup-julia@v1
