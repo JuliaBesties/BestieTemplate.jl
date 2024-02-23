@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning].
 ### Fixed
 
 - pipx link changed
+- nightly key was duplicated (#49)
 
 ## [0.2.3] - 2023-10-31
 

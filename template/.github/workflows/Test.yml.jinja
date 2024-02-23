@@ -34,7 +34,6 @@ jobs:
         version:
           - "{{ JuliaMinVersion }}"
           - "1"
-          - "nightly"
         os:
           - ubuntu-latest
           {% if not AddMacToCI %}#{% endif %}- macOS-latest
