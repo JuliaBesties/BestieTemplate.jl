@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Fixed
+
+- Coverage now checks main branch (#65)
+
 ## [0.2.5] - 2024-02-23
 
 ### Fixed
