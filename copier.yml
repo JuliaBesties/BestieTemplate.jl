@@ -34,6 +34,11 @@ License:
     - MIT
     - MPL-2.0
 
+AddCodeOfConduct:
+  type: bool
+  default: true
+  help: Add a CODE_OF_CONDUCT.md file from Contributor Covenant? {{ AuthorEmail }} will be listed as contact point.
+
 Indentation:
   type: int
   help: Indentation for JuliaForm

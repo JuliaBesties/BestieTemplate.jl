@@ -15,6 +15,7 @@
 [![Docs workflow Status](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Docs.yml/badge.svg?branch=main)](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Docs.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/abelsiqueira/COPIERTemplate.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/abelsiqueira/COPIERTemplate.jl)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8350577.svg)](https://doi.org/10.5281/zenodo.8350577)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
 This is
 
