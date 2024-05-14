@@ -1,0 +1,37 @@
+name: "Feature Request"
+description: Suggest a new feature for the package
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the requested feature
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Explain why this feature is relevant
+  - type: textarea
+    id: target
+    attributes:
+      label: Target audience
+      description: Tell more about the users of this feature, or where it could be useful
+  - type: textarea
+    id: can-help
+    attributes:
+      label: Can you help
+      description: Can you help developing this feature?
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      description: Confirm the following, please
+      options:
+        - label: There is not an [existing issue](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/issues) with the same question
+          required: true
+        - label: I have read the [contributing guide](../docs/src/contributing.md)
+          required: true
+        - label: I agree with the [code of conduct](../CODE_OF_CONDUCT.md)
+          required: true
