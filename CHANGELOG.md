@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- Add Indentation option (#44)
+
 ### Fixed
 
 - Coverage now checks main branch (#65)
