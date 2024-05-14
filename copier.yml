@@ -41,8 +41,9 @@ AddCodeOfConduct:
 
 Indentation:
   type: int
-  help: Indentation for JuliaForm
+  help: Indentation length for many formatters and linters
   validator: "{% if Indentation <= 0 %}Indentation must be positive{% endif %}"
+  default: 2
 
 AddMacToCI:
   type: bool
