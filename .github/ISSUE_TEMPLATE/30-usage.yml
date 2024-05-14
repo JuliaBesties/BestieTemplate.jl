@@ -1,0 +1,25 @@
+name: "Usage question"
+description: Questions related to the usage
+labels: ["documentation"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Write your question
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      description: Confirm the following, please
+      options:
+        - label: I have checked the [documentation](https://abelsiqueira.github.io/COPIERTemplate.jl) and haven't found enough information
+          required: true
+        - label: There is not an [existing issue](https://github.com/abelsiqueira/COPIERTemplate.jl/issues) with the same question
+          required: true
+        - label: I have read the [contributing guide](../docs/src/contributing.md)
+          required: true
+        - label: I agree with the [code of conduct](../CODE_OF_CONDUCT.md)
+          required: true

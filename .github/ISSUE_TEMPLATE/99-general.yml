@@ -1,0 +1,22 @@
+name: "General issue"
+description: In case none of the others templates apply
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the issue
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      description: Confirm the following, please
+      options:
+        - label: There is not an [existing issue](https://github.com/abelsiqueira/COPIERTemplate.jl/issues) with the same question
+          required: true
+        - label: I have read the [contributing guide](../docs/src/contributing.md)
+          required: true
+        - label: I agree with the [code of conduct](../CODE_OF_CONDUCT.md)
+          required: true
