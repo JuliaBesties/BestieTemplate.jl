@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning].
 
 ### Added
 
-- Add Indentation option (#44)
+- Indentation option (#44)
+- CODE_OF_CONDUCT (#25)
 
 ### Fixed
 

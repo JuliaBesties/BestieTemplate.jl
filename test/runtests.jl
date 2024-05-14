@@ -9,6 +9,7 @@ template_options = Dict(
   "AuthorEmail" => "test@me.now",
   "JuliaMinVersion" => "1.6",
   "License" => "MIT",
+  "AddCodeOfConduct" => true,
   "Indentation" => "3",
   "AddMacToCI" => true,
   "AddWinToCI" => true,
