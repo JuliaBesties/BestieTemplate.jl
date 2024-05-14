@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning].
 
 - Indentation option (#44)
 - CODE_OF_CONDUCT (#25)
+- Issue and Pull Request templates (#33)
 
 ### Fixed
 
