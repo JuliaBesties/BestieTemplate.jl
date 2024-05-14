@@ -34,6 +34,11 @@ License:
     - MIT
     - MPL-2.0
 
+Indentation:
+  type: int
+  help: Indentation for JuliaForm
+  validator: "{% if Indentation <= 0 %}Indentation must be positive{% endif %}"
+
 AddMacToCI:
   type: bool
   help: Add macos on CI?
