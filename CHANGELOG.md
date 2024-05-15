@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning].
 ### Changed
 
 - Update Cirrus CI image_family (#31)
+- Prefix some doc files with a number and generate the pages programatically (#32)
 
 ### Fixed
 

@@ -3,6 +3,16 @@ using Documenter
 
 DocMeta.setdocmeta!(COPIERTemplate, :DocTestSetup, :(using COPIERTemplate); recursive = true)
 
+const page_rename = Dict("developer.md" => "Dev setup")
+
+function nice_name(file)
+  file = replace(file, r"^[0-9]*-" => "")
+  if haskey(page_rename, file)
+    return page_rename[file]
+  end
+  return splitext(file)[1] |> x -> replace(x, "-" => " ") |> titlecase
+end
+
 makedocs(;
   modules = [COPIERTemplate],
   doctest = true,
@@ -16,10 +26,11 @@ makedocs(;
     assets = ["assets/style.css"],
   ),
   pages = [
-    "Home" => "index.md",
-    "Contributing" => "contributing.md",
-    "Dev setup" => "developer.md",
-    "Reference" => "reference.md",
+    "Home" => "index.md"
+    [
+      nice_name(file) => file for
+      file in readdir(joinpath(@__DIR__, "src")) if file != "index.md" && splitext(file)[2] == ".md"
+    ]
   ],
 )
 

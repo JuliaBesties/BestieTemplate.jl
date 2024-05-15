@@ -1,10 +1,7 @@
-# Don't forget to run
-#
-#     pkg> dev ..
-#
 [deps]
-Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 COPIERTemplate = "5022dd56-1d41-4538-9f4c-b20739ff8283"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+LiveServer = "16fef848-5104-11e9-1b77-fb7a48bbb589"
 
 [compat]
 Documenter = "1"

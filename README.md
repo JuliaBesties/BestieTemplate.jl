@@ -118,10 +118,10 @@ This structure should be self-informative, as it is part of what most people use
 - PackageName.jl/
   - docs/
     - src/
-      - contributing.md
-      - developer.md
+      - 90-contributing.md
+      - 90-developer.md
       - index.md
-      - reference.md
+      - 90-reference.md
     - make.jl
     - Project.toml
   - src/
@@ -136,8 +136,8 @@ This structure should be self-informative, as it is part of what most people use
 The exceptions are:
 
 - `test/Project.toml`: This is supported for a while, and it looks better. Time will tell if it was a bad idea.
-- `docs/src/contributing.md`: Also known as CONTRIBUTING.md, it explains how contributors can get involved in the project.
-- `docs/src/developer.md`: Also known as README.dev.md, it explains how to setup your local environment.
+- `docs/src/90-contributing.md`: Also known as CONTRIBUTING.md, it explains how contributors can get involved in the project.
+- `docs/src/90-developer.md`: Also known as README.dev.md, it explains how to setup your local environment.
 
 ### Linting and Formatting
 

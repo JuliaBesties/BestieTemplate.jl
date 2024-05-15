@@ -1,6 +1,6 @@
 # Developer documentation
 
-If you haven't, please read the [Contributing guidelines](contributing.md) first.
+If you haven't, please read the [Contributing guidelines](90-contributing.md) first.
 
 ## Linting and formatting
 
