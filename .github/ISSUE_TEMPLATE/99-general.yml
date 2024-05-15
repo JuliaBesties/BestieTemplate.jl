@@ -16,7 +16,7 @@ body:
       options:
         - label: There is not an [existing issue](https://github.com/abelsiqueira/COPIERTemplate.jl/issues) with the same question
           required: true
-        - label: I have read the [contributing guide](../docs/src/contributing.md)
+        - label: I have read the [contributing guide](https://github.com/abelsiqueira/COPIERTemplate.jl/blob/main/docs/src/contributing.md)
           required: true
-        - label: I agree with the [code of conduct](../CODE_OF_CONDUCT.md)
+        - label: I agree with the [code of conduct](https://github.com/abelsiqueira/COPIERTemplates.jl/blob/main/CODE_OF_CONDUCT.md)
           required: true
