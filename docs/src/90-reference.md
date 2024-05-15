@@ -3,15 +3,15 @@
 ## Contents
 
 ```@contents
-Pages = ["reference.md"]
+Pages = ["90-reference.md"]
 ```
 
 ## Index
 
 ```@index
-Pages = ["reference.md"]
+Pages = ["90-reference.md"]
 ```
 
 ```@autodocs
-Modules = [{{ PackageName }}]
+Modules = [COPIERTemplate]
 ```
