@@ -33,31 +33,43 @@ License:
     - GPL-3.0
     - MIT
     - MPL-2.0
+  default: MIT
+
+AskAdvancedQuestions:
+  type: bool
+  help: Ask further questions? You can stop now with the minimum and use default values.
+  default: false
 
 AddCodeOfConduct:
+  when: "{{ AskAdvancedQuestions }}"
   type: bool
   default: true
   help: Add a CODE_OF_CONDUCT.md file from Contributor Covenant? {{ AuthorEmail }} will be listed as contact point.
 
 Indentation:
+  when: "{{ AskAdvancedQuestions }}"
   type: int
   help: Indentation length for many formatters and linters
   validator: "{% if Indentation <= 0 %}Indentation must be positive{% endif %}"
   default: 2
 
 AddMacToCI:
+  when: "{{ AskAdvancedQuestions }}"
   type: bool
   help: Add macos on CI?
 
 AddWinToCI:
+  when: "{{ AskAdvancedQuestions }}"
   type: bool
   help: Add windows on CI?
 
 RunJuliaNightlyOnCI:
+  when: "{{ AskAdvancedQuestions }}"
   type: bool
   help: Run the nightly version of Julia on CI?
 
 UseCirrusCI:
+  when: "{{ AskAdvancedQuestions }}"
   type: bool
   help: Create a .cirrusci.yml file?
 

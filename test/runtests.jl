@@ -7,6 +7,7 @@ template_options = Dict(
   "PackageOwner" => "test",
   "AuthorName" => "Test",
   "AuthorEmail" => "test@me.now",
+  "AskAdvancedQuestions" => true,
   "JuliaMinVersion" => "1.6",
   "License" => "MIT",
   "AddCodeOfConduct" => true,
