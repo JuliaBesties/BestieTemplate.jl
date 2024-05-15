@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning].
 - Issue and Pull Request templates (#33)
 - AskAdvancedQuestions question to allow stopping early (#67)
 
+### Changed
+
+- Update Cirrus CI image_family (#31)
+
 ### Fixed
 
 - Coverage now checks main branch (#65)
