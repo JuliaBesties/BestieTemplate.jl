@@ -93,15 +93,3 @@ If this is the first time you work with this repository, follow the instructions
    ```
 
 - Then you can open a pull request and work with the reviewer to address any issues.
-
-## Tips
-
-### Testing local changes
-
-To test you local modifications, you can run copier with the `--vcs-ref HEAD` flag and point to your local clone. This will use the latest changes, including uncommitted modifications (i.e., the dirty state).
-What I normally do is this:
-
-```bash
-cd $(mktemp -d) # Go to a tmp folder
-copier copy --vcs-ref HEAD /path/to/clone/ pkg # Clone dirty clone into pkg
-```
