@@ -1,4 +1,4 @@
-# Developer documentation
+# [Developer documentation](@id dev_docs)
 
 If you haven't, please read the [Contributing guidelines](90-contributing.md) first.
 
