@@ -3,7 +3,7 @@ using Documenter
 
 DocMeta.setdocmeta!(COPIERTemplate, :DocTestSetup, :(using COPIERTemplate); recursive = true)
 
-const page_rename = Dict("developer.md" => "Dev setup")
+const page_rename = Dict("developer.md" => "Developer docs")
 
 function nice_name(file)
   file = replace(file, r"^[0-9]*-" => "")

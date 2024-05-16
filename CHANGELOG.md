@@ -19,7 +19,8 @@ and this project adheres to [Semantic Versioning].
 ### Changed
 
 - Update Cirrus CI image_family (#31)
-- Prefix some doc files with a number and generate the pages programatically (#32)
+- Prefix some doc files with a number and generate the pages programmatically (#32)
+- Reestructure and improve the documentation (#77)
 
 ### Fixed
 
@@ -162,11 +163,13 @@ and this project adheres to [Semantic Versioning].
 - Initial release
 
 <!-- Links -->
+
 [keep a changelog]: https://keepachangelog.com/en/1.0.0/
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
 
 <!-- Versions -->
 <!-- markdown-link-check-disable -->
+
 [unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.2.5...HEAD
 [0.2.5]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.2.5...HEAD
 [0.2.4]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.2.4
