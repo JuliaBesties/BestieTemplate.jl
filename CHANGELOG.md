@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- Dependabot (#52)
+
 ## [0.3.0] - 2024-05-17
 
 ### Added
