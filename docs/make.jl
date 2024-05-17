@@ -21,7 +21,7 @@ makedocs(;
   repo = "https://github.com/abelsiqueira/COPIERTemplate.jl/blob/{commit}{path}#{line}",
   sitename = "COPIERTemplate.jl",
   format = Documenter.HTML(;
-    prettyurls = get(ENV, "CI", "false") == "true",
+    prettyurls = true,
     canonical = "https://abelsiqueira.github.io/COPIERTemplate.jl",
     assets = ["assets/style.css"],
   ),

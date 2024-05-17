@@ -21,7 +21,7 @@ makedocs(;
   repo = "https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/{commit}{path}#{line}",
   sitename = "{{ PackageName }}.jl",
   format = Documenter.HTML(;
-    prettyurls = get(ENV, "CI", "false") == "true",
+    prettyurls = true,
     canonical = "https://{{ PackageOwner }}.github.io/{{ PackageName }}.jl",
     assets = ["assets/style.css"],
   ),

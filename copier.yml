@@ -7,6 +7,7 @@ PackageUUID:
   type: str
   help: UUID v4 (Generate this with uuidgen or in Julia with `using UUIDs; uuid4()`)
   validator: "{% if PackageUUID | length == 0 %}Can't be empty{% endif %}"
+  default: "{{ 999999999999999999999999999999999 | ans_random | to_uuid }}"
 
 PackageOwner:
   type: str
