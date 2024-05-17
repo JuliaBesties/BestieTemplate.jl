@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.3.0] - 2024-05-17
+
 ### Added
 
 - Indentation option (#44)
@@ -170,8 +172,9 @@ and this project adheres to [Semantic Versioning].
 <!-- Versions -->
 <!-- markdown-link-check-disable -->
 
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.2.5...HEAD
-[0.2.5]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.2.5...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.3.0
+[0.2.5]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.2.5
 [0.2.4]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.2.4
 [0.2.3]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.2.3
 [0.2.2]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.2.2
