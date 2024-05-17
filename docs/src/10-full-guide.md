@@ -34,7 +34,7 @@ Here is a short example:
 cd YourPackage.jl
 git init
 git add .
-pre-commit run -a # Try to fix possible pre-commit issues
+pre-commit run -a # Try to fix possible pre-commit issues (failures are expected)
 git add .
 git commit -m "First commit"
 pre-commit install # Future commits can't be directly to main unless you use -n
@@ -44,17 +44,28 @@ It is common to have some pre-commit issues due to your package's name length tr
 
 Create a repo on GitHub and push your code to it.
 
-```bash
-git remote add origin https://github.com/UserName/PackageName.jl
-git push -u origin main
-```
+!!! info
+    The actions will run and you will see errors in the documentation and linting. Do not despair.
 
 ### Documentation
 
-Go to your package setting on GitHub and find the "Pages" link.
+Go to your package setting on Github and find the "Actions" tab, the "General" link.
+On that page, find the "Workflow permissions" and change the selection to "Read and write permissions", and enable "Allow GitHub Actions can create and approve pull requests".
+This will allow the documentation workflow to work for development.
+
+Go to the Actions page, click the failing Docs workflow and click on "re-run all jobs". It should pass now.
+
+Now, go to your package setting on GitHub and find the "Pages" link.
 You should see an option to set the **Source** to "Deploy from a branch", and select the branch to be "gh-pages" and to deploy from the "/ (root)".
 
 After circa 1 minute, you can check that the documentation was built properly.
+
+!!! info
+    At this point, you should have passing workflows.
+    1. Tests should have been passing from the start.
+    2. Lint was fixed when we pushed the code to GitHub.
+    3. Docs was fixed with the permissions change.
+
 You will still need to set a `DOCUMENTER_KEY` to build the documentation from the tags automatically when using TagBot (which we do by default).
 Do the following:
 
