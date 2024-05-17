@@ -93,3 +93,16 @@ If this is the first time you work with this repository, follow the instructions
    ```
 
 - Then you can open a pull request and work with the reviewer to address any issues.
+
+## Building and viewing the documentation locally
+
+Following the latest suggestions, we recommend using `LiveServer` to build the documentation.
+Here is how you do it:
+
+1. Run `julia --project=docs` to open Julia in the environment of the docs.
+1. If this is the first time building the docs
+   1. Press `]` to enter `pkg` mode
+   1. Run `pkg> dev .` to use the development version of your package
+   1. Press backspace to leave `pkg` mode
+1. Run `julia> using LiveServer`
+1. Run `julia> servedocs()`
