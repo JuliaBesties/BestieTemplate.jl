@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "src/**"
-      - "test/**"
-      - "*.toml"
     tags: ["*"]
   pull_request:
     branches:
@@ -15,6 +11,7 @@ on:
     paths:
       - "src/**"
       - "test/**"
+      - "templates/**"
       - "*.toml"
     types: [opened, synchronize, reopened]
   workflow_dispatch:
