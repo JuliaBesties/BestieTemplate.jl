@@ -11,7 +11,7 @@ on:
     paths:
       - "src/**"
       - "test/**"
-      - "templates/**"
+      - "template/**"
       - "*.toml"
     types: [opened, synchronize, reopened]
   workflow_dispatch:
