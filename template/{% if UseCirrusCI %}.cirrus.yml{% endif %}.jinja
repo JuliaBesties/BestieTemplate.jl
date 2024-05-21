@@ -7,11 +7,6 @@ task:
         matrix:
           - JULIA_VERSION: {{ JuliaMinVersion }}
           - JULIA_VERSION: 1
-    - name: musl Linux
-      container:
-        image: alpine:3.14
-      env:
-        - JULIA_VERSION: 1
     - name: MacOS M1
       macos_instance:
         image: ghcr.io/cirruslabs/macos-monterey-base:latest
