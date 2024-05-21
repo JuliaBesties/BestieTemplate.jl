@@ -21,7 +21,7 @@ function generate(path, generate_missing_uuid = true; kwargs...)
   if generate_missing_uuid && !("PackageUUID" in keys(data))
     data["PackageUUID"] = string(uuid4())
   end
-  copier.run_copy("https://github.com/abelsiqueira/COPIERTemplate.jl", path; kwargs..., data = data)
+  copier.run_copy(joinpath(@__DIR__, ".."), path; kwargs..., data = data, vcs_ref = "HEAD")
 end
 
 end
