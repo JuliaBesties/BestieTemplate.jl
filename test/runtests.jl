@@ -24,16 +24,19 @@ template_options = Dict(
 
   COPIERTemplate.generate(tmpdir1; data = template_options, vcs_ref = "main")
   bash_args = vcat([["-d"; "$k=$v"] for (k, v) in template_options]...)
-  run(
-    `copier copy --vcs-ref main $bash_args https://github.com/abelsiqueira/COPIERTemplate.jl $tmpdir2`,
-  )
+  ignore(line) = startswith("_commit")(line) || startswith("_src_path")(line)
+  template_path = joinpath(@__DIR__, "..")
+  run(`copier copy --vcs-ref HEAD $bash_args $template_path $tmpdir2`)
   for (root, dirs, files) in walkdir(tmpdir1)
     for file in files
       file1 = joinpath(root, file)
       file2 = replace(file1, tmpdir1 => tmpdir2)
       lines1 = readlines(file1)
       lines2 = readlines(file2)
-      diff = ["$line1 vs $line2" for (line1, line2) in zip(lines1, lines2) if line1 != line2]
+      diff = [
+        "$line1 vs $line2" for
+        (line1, line2) in zip(lines1, lines2) if !ignore(line1) && line1 != line2
+      ]
       @test diff == []
     end
   end
