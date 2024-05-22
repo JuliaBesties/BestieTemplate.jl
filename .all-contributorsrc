@@ -1,5 +1,25 @@
 {
   "projectName": "COPIERTemplate.jl",
-  "projectOwner": "Abel Soares Siqueira",
-  "files": ["README.md", "docs/src/index.md"]
+  "projectOwner": "abelsiqueira",
+  "files": [
+    "README.md",
+    "docs/src/index.md"
+  ],
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "contributors": [
+    {
+      "login": "abelsiqueira",
+      "name": "Abel Soares Siqueira",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1068752?v=4",
+      "profile": "https://abelsiqueira.com",
+      "contributions": [
+        "code",
+        "projectManagement",
+        "doc",
+        "maintenance"
+      ]
+    }
+  ]
 }
