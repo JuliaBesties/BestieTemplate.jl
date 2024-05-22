@@ -16,6 +16,7 @@
 [![Coverage](https://codecov.io/gh/abelsiqueira/COPIERTemplate.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/abelsiqueira/COPIERTemplate.jl)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8350577.svg)](https://doi.org/10.5281/zenodo.8350577)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
+[![All Contributors](https://img.shields.io/github/all-contributors/abelsiqueira/COPIERTemplate.jl?labelColor=5e1ec7&color=c0ffee&style=flat-square)](#contributors)
 
 </div>
 
@@ -50,12 +51,6 @@ copier copy https://github.com/abelsiqueira/COPIERTemplate.jl YourPackage.jl
 
 If you like what you see, check the [full usage guide](@ref full_guide).
 
-## Contributing
-
-If you would like to get involved in the COPIERTemplate growth, please check our [contributing guide](docs/src/90-contributing.md). We welcome contributions of many types, including coding, reviewing, creating issues, creating tutorials, interacting with users, etc. Make sure to follow our [code of conduct](CODE_OF_CONDUCT.md).
-
-If your interest is in developing the package, check the [development guide](docs/src/90-developer.md) as well.
-
 ## Users and Examples
 
 The following are users and examples of repos using this template, or other templates based on it.
@@ -63,3 +58,20 @@ Feel free to create a pull request to add your repo.
 
 - This package itself uses the template.
 - [COPIERTemplateExample.jl](https://github.com/abelsiqueira/COPIERTemplateExample.jl)
+
+## Contributing
+
+If you would like to get involved in the COPIERTemplate growth, please check our [contributing guide](docs/src/90-contributing.md). We welcome contributions of many types, including coding, reviewing, creating issues, creating tutorials, interacting with users, etc. Make sure to follow our [code of conduct](CODE_OF_CONDUCT.md).
+
+If your interest is in developing the package, check the [development guide](docs/src/90-developer.md) as well.
+
+### Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
