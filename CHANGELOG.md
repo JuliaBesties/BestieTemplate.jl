@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.3.1] - 2024-05-23
+
 ### Added
 
 - Dependabot (#52)
@@ -176,7 +178,8 @@ and this project adheres to [Semantic Versioning].
 <!-- Versions -->
 <!-- markdown-link-check-disable -->
 
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.3.0...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.3.1
 [0.3.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.3.0
 [0.2.5]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.2.5
 [0.2.4]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.2.4
