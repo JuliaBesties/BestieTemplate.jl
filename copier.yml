@@ -77,9 +77,6 @@ UseCirrusCI:
 _skip_if_exists:
   - "**/*.jl"
   - "!docs/make.jl"
-  - "**/*.md"
-  - "!docs/src/90-contributing.md"
-  - "!docs/src/90-developer.md"
   - "**/Project.toml"
   - CITATION.cff
   - LICENSE
