@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning].
 
 - New question: SimplifiedPRTest to simplify the testing on Pull Requests (#105)
 - New question: AddAllcontributors to add a section and config for <https://allcontributors.org> (#26)
+- `copy`, `recopy` and `update` from the copier API (#142)
+
+### Changed
+
+- Adds `data` positional argument to `generate` (#142)
 
 ### Removed
 

@@ -1,13 +1,29 @@
-# This is only useful for testing offline. It creates a local env to avoid redownloading things.
+# Can't use mktempdir on GitHub actions willy nilly (at least on Mac)
+TMPDIR = get(ENV, "TMPDIR", mktempdir())
+
 if get(ENV, "CI", "nothing") == "nothing"
+  # This is only useful for testing offline. It creates a local env to avoid redownloading things.
   ENV["JULIA_CONDAPKG_ENV"] = joinpath(@__DIR__, "conda-env")
   if isdir(ENV["JULIA_CONDAPKG_ENV"])
     ENV["JULIA_CONDAPKG_OFFLINE"] = true
+  end
+
+  # Mac is a complicated beast
+  if Sys.isapple()
+    TMPDIR = "/private$TMPDIR"
   end
 end
 
 using COPIERTemplate
 using Test
+
+template_minimum_options = Dict(
+  "PackageName" => "Tmp",
+  "PackageUUID" => "1234",
+  "PackageOwner" => "test",
+  "AuthorName" => "Test",
+  "AuthorEmail" => "test@me.now",
+)
 
 template_options = Dict(
   "PackageName" => "Tmp",
@@ -51,39 +67,76 @@ function test_diff_dir(dir1, dir2)
   end
 end
 
+min_bash_args = vcat([["-d"; "$k=$v"] for (k, v) in template_minimum_options]...)
 bash_args = vcat([["-d"; "$k=$v"] for (k, v) in template_options]...)
 template_path = joinpath(@__DIR__, "..")
 template_url = "https://github.com/abelsiqueira/COPIERTemplate.jl"
 
+# This is a hack because Windows managed to dirty the repo.
+if get(ENV, "CI", "nothing") == "true" && Sys.iswindows()
+  run(`git reset --hard HEAD`)
+end
+
 @testset "Compare COPIERTemplate.generate vs copier CLI on URL/main" begin
-  mktempdir(; prefix = "cli_") do dir_copier_cli
+  mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
     run(`copier copy --vcs-ref main --quiet $bash_args $template_url $dir_copier_cli`)
 
-    mktempdir(; prefix = "copy_") do tmpdir
-      COPIERTemplate.generate(tmpdir; data = template_options, quiet = true, vcs_ref = "main")
+    mktempdir(TMPDIR; prefix = "copy_") do tmpdir
+      COPIERTemplate.generate(tmpdir, template_options; quiet = true, vcs_ref = "main")
       test_diff_dir(tmpdir, dir_copier_cli)
     end
   end
 end
 
 @testset "Compare COPIERTemplate.generate vs copier CLI on HEAD" begin
-  # This is a hack because Windows managed to dirty the repo.
-  if get(ENV, "CI", "nothing") == "true" && Sys.iswindows()
-    run(`git reset --hard HEAD`)
-  end
-
-  mktempdir(; prefix = "cli_") do dir_copier_cli
+  mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
     run(`copier copy --vcs-ref HEAD --quiet $bash_args $template_path $dir_copier_cli`)
 
-    mktempdir(; prefix = "copy_") do tmpdir
+    mktempdir(TMPDIR; prefix = "copy_") do tmpdir
       COPIERTemplate.generate(
         template_path,
-        tmpdir;
-        data = template_options,
+        tmpdir,
+        template_options;
         quiet = true,
         vcs_ref = "HEAD",
       )
       test_diff_dir(tmpdir, dir_copier_cli)
+    end
+  end
+end
+
+@testset "Testing copy, recopy and rebase" begin
+  mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
+    run(`copier copy --quiet $bash_args $template_path $dir_copier_cli`)
+
+    @testset "Compare copied project vs copier CLI baseline" begin
+      mktempdir(TMPDIR; prefix = "copy_") do tmpdir
+        COPIERTemplate.copy(tmpdir, template_options; quiet = true)
+        test_diff_dir(tmpdir, dir_copier_cli)
+      end
+    end
+
+    @testset "Compare recopied project vs copier CLI baseline" begin
+      mktempdir(TMPDIR; prefix = "recopy_") do tmpdir
+        run(`copier copy --defaults --quiet $min_bash_args $template_path $tmpdir`)
+        COPIERTemplate.recopy(tmpdir, template_options; quiet = true, overwrite = true)
+        test_diff_dir(tmpdir, dir_copier_cli)
+      end
+    end
+
+    @testset "Compare updated project vs copier CLI baseline" begin
+      mktempdir(TMPDIR; prefix = "update_") do tmpdir
+        run(`copier copy --defaults --quiet $min_bash_args $template_path $tmpdir`)
+        cd(tmpdir) do
+          run(`git init`)
+          run(`git add .`)
+          run(`git config user.name "Test"`)
+          run(`git config user.email "test@test.com"`)
+          run(`git commit -q -m "First commit"`)
+        end
+        COPIERTemplate.update(tmpdir, template_options; overwrite = true, quiet = true)
+        test_diff_dir(tmpdir, dir_copier_cli)
+      end
     end
   end
 end
