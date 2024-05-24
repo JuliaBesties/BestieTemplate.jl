@@ -5,3 +5,6 @@
 *.rej
 docs/build/
 Manifest.toml
+docs/CondaPkg.toml
+test/CondaPkg.toml
+test/conda-env

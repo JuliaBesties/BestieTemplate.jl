@@ -1,3 +1,11 @@
+# This is only useful for testing offline. It creates a local env to avoid redownloading things.
+if get(ENV, "CI", "nothing") == "nothing"
+  ENV["JULIA_CONDAPKG_ENV"] = joinpath(@__DIR__, "conda-env")
+  if isdir(ENV["JULIA_CONDAPKG_ENV"])
+    ENV["JULIA_CONDAPKG_OFFLINE"] = true
+  end
+end
+
 using COPIERTemplate
 using Test
 
