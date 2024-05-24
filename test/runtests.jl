@@ -30,7 +30,12 @@ template_options = Dict(
   tmpdir1 = mktempdir()
   tmpdir2 = mktempdir()
 
-  COPIERTemplate.generate(tmpdir1; data = template_options, vcs_ref = "main")
+  # This is a hack because Windows managed to dirty the repo.
+  if get(ENV, "CI", "nothing") == "true" && Sys.iswindows()
+    run(`git reset --hard HEAD`)
+  end
+
+  COPIERTemplate.generate(tmpdir1; data = template_options, vcs_ref = "HEAD")
   bash_args = vcat([["-d"; "$k=$v"] for (k, v) in template_options]...)
   ignore(line) = startswith("_commit")(line) || startswith("_src_path")(line)
   template_path = joinpath(@__DIR__, "..")
