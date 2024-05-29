@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning].
 
 - More reader-friendly README (#144)
 - Add author names to licenses (#145)
+- Consistent caching in GitHub workflows (#53)
 
 ## [0.3.1] - 2024-05-23
 
