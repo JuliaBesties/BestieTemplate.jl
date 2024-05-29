@@ -20,36 +20,56 @@
 
 </div>
 
-This is
+## What does `COPIERTemplate` do?
+
+Creating `Julia` packages involve the creation and edition of many tiny files.
+Wouldn't it be great to automate this?
+
+This is exactly what `COPIERTemplate` does.
+
+### FAQ
+
+- How is `COPIERTemplate` different from `PkgTemplates`?
+  - it can be applied to existing packages
+  - it invites to follow some (opinionated) best practices
+  - it can be reapplied to acquire updates made to the template
+  - it is automatically reapplied through Pull Requests made by the `Copier.yml` workflow (Work in progress)
+
+### Architecture
+
+Under the hood, `COPIERTemplate` is no more and no less than:
 
 - a [copier](https://copier.readthedocs.io) template/skeleton for Julia packages (see folder [template](template)); and
 - a package that wraps `copier` in Julia using `PythonCall`.
 
-The template
-
-- is opinionated but allows options;
-- can be applied to existing packages (thanks to copier);
-- is automatically reapplied through Pull Requests made by the Copier.yml workflow.
-
-<!-- agg https://asciinema.org/a/611189 docs/src/assets/demo.gif --speed 2.5 --cols 80 --rows 20 --font-family "JuliaMono" -->
-[![asciicast](docs/src/assets/demo.gif)](https://asciinema.org/a/611189)
-
 ## Quickstart
 
-Install this package, then:
+Install `COPIERTemplate` in your chosen environment (we recommend globally) by entering `pkg` mode by pressing `]` and then:
+
+```julia-repl
+pkg> add COPIERTemplate
+
+then:
 
 ```julia-repl
 julia> using COPIERTemplate
 julia> COPIERTemplate.generate("YourPackage.jl")
 ```
 
-Or, you can use [copier](https://copier.readthedocs.io) directly:
+please note that `"YourPackage.jl"` can either be a fresh new package or an existing one.
+
+### Using `copier` (optional and advanced)
+
+If you prefer to use Python's [copier](https://copier.readthedocs.io), you can create your new package directly:
 
 ```bash
 copier copy https://github.com/abelsiqueira/COPIERTemplate.jl YourPackage.jl
 ```
 
-If you like what you see, check the [full usage guide](@ref full_guide).
+<!-- agg https://asciinema.org/a/611189 docs/src/assets/demo.gif --speed 2.5 --cols 80 --rows 20 --font-family "JuliaMono" -->
+[![asciicast](docs/src/assets/demo.gif)](https://asciinema.org/a/611189)
+
+If you like what you see, check the [full usage guide](https://abelsiqueira.com/COPIERTemplate.jl/stable/10-full-guide/).
 
 ## Users and Examples
 
