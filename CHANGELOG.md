@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- More reader-friendly README (#144)
+
 ## [0.3.1] - 2024-05-23
 
 ### Added
