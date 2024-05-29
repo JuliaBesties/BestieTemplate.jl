@@ -21,6 +21,7 @@
 </div>
 
 ## What does `COPIERTemplate` do?
+
 Creating `Julia` packages involve the creation and edition of many tiny files.
 Wouldn't it be great to automate this?
 
@@ -29,11 +30,12 @@ This is exactly what `COPIERTemplate` does.
 ### FAQ
 
 - How is `COPIERTemplate` different from `PkgTemplates`?
-   - it can be applied to existing packages
-   - it invites to follow some (opinionated) best practices
-   - it is automatically reapplied through Pull Requests made by the `Copier.yml` workflow
+  - it can be applied to existing packages
+  - it invites to follow some (opinionated) best practices
+  - it is automatically reapplied through Pull Requests made by the `Copier.yml` workflow
 
 ### Architecture
+
 Under the hood, `COPIERTemplate` is no more and no less than:
 
 - a [copier](https://copier.readthedocs.io) template/skeleton for Julia packages (see folder [template](template)); and
