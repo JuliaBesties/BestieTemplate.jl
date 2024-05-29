@@ -61,6 +61,7 @@ jobs:
         {% raw %}with:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
+        {% endraw %}
       - name: Use Julia cache
         uses: julia-actions/cache@v2
       - uses: julia-actions/julia-buildpkg@v1
