@@ -11,17 +11,50 @@ Welcome to **full usage guide** of COPIERTemplate.
    - On Julia, you can run `using UUIDs; uuid4()`
    - Online, you can try [uuidgenerator.net](https://www.uuidgenerator.net/version4)
 
-## Installation
+## Usage
 
-To install with COPIERTemplate.jl, install the package, use it, and run `COPIERTemplate.generate(path)`.
+`COPIERTemplate` can be used in two ways:
 
-Alternatively, this can also be installed directly via [copier](https://copier.readthedocs.io), with the command
+### From `Julia` (recommended)
+
+Install it:
+
+```julia-shell
+> julia> using Pkg
+> julia> Pkg.add("COPIERTemplate")
+```
+
+Load it:
+
+```julia-shell
+> julia> using COPIERTemplate
+```
+
+Use it:
+
+```julia-shell
+> julia> COPIERTemplate.generate("<path>")
+```
+
+If `<path>` contains a `Julia` package, `COPIERTemplate` will add functionality ot it. If `<path>` is empty, `COPIERTemplate` will create a fresh new `Julia` package.
+
+In order to customize your `Julia` package, `COPIERTemplate` will ask you a number of questions. If some of them are unclear, please [let us know](https://github.com/abelsiqueira/COPIERTemplate.jl/issues).
+
+### From shell (advanced)
+
+Alternatively, `COPIERTemplate` can also be used directly via Python's [copier](https://copier.readthedocs.io). See below:
+
+Install `copier`:
+
+```bash
+pip install copier
+```
+
+Use it:
 
 ```bash
 copier copy https://github.com/abelsiqueira/COPIERTemplate.jl YourPackage.jl
 ```
-
-Many questions will be asked. The explanation on them should be sufficient (if they aren't, please let us know).
 
 ## Post-installation
 
