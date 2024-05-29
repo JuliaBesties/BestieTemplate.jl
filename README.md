@@ -32,7 +32,8 @@ This is exactly what `COPIERTemplate` does.
 - How is `COPIERTemplate` different from `PkgTemplates`?
   - it can be applied to existing packages
   - it invites to follow some (opinionated) best practices
-  - it is automatically reapplied through Pull Requests made by the `Copier.yml` workflow
+  - it can be reapplied to acquire updates made to the template
+  - it is automatically reapplied through Pull Requests made by the `Copier.yml` workflow (Work in progress)
 
 ### Architecture
 
@@ -46,7 +47,8 @@ Under the hood, `COPIERTemplate` is no more and no less than:
 Install `COPIERTemplate` in your chosen environment (we recommend base):
 
 ```julia-repl
-julia> add COPIERTemplate
+julia> using Pkg
+julia> Pkg.add("COPIERTemplate")
 ```
 
 then:
