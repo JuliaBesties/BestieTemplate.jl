@@ -41,6 +41,12 @@ AskAdvancedQuestions:
   help: Ask further questions? You can stop now with the minimum and use the default values for code of conduct, indentation, and package tests.
   default: false
 
+AddAllcontributors:
+  when: "{{ AskAdvancedQuestions }}"
+  type: bool
+  default: true
+  help: Add allcontributors to the package?
+
 AddCodeOfConduct:
   when: "{{ AskAdvancedQuestions }}"
   type: bool
