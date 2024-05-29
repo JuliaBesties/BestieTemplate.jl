@@ -44,12 +44,10 @@ Under the hood, `COPIERTemplate` is no more and no less than:
 
 ## Quickstart
 
-Install `COPIERTemplate` in your chosen environment (we recommend base):
+Install `COPIERTemplate` in your chosen environment (we recommend globally) by entering `pkg` mode by pressing `]` and then:
 
 ```julia-repl
-julia> using Pkg
-julia> Pkg.add("COPIERTemplate")
-```
+pkg> add COPIERTemplate
 
 then:
 
