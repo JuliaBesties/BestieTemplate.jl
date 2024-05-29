@@ -48,6 +48,7 @@ Install `COPIERTemplate` in your chosen environment (we recommend globally) by e
 
 ```julia-repl
 pkg> add COPIERTemplate
+```
 
 then:
 
