@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning].
 ### Added
 
 - More reader-friendly README (#144)
+- Add author names to licenses (#145)
 
 ## [0.3.1] - 2024-05-23
 
