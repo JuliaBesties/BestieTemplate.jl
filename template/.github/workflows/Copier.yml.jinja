@@ -2,7 +2,7 @@
 
 on:
   schedule:
-    - cron: 0 7 1/7 * *
+    - cron: 0 7 1/7 * *  # Every 7 days at 7:00 UTC
   workflow_dispatch:
 
 jobs:
@@ -21,6 +21,8 @@ jobs:
         run: julia -e 'using Pkg; pkg"add JuliaFormatter"'
       - name: Setup Python
         uses: actions/setup-python@v5
+        with:
+          cache: 'pip'
       - name: Check for update in the template
         run: |
           pip install copier

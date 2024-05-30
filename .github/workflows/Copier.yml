@@ -21,6 +21,8 @@ jobs:
         run: julia -e 'using Pkg; pkg"add JuliaFormatter"'
       - name: Setup Python
         uses: actions/setup-python@v5
+        with:
+          cache: pip
       - name: Check for update in the template
         run: |
           pip install copier

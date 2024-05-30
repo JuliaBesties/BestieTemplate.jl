@@ -3,7 +3,7 @@ name: CompatHelper
 
 on:
   schedule:
-    - cron: 0 0 * * *
+    - cron: 0 0 * * * # Every day at 00:00 UTC
   workflow_dispatch:
 
 permissions:
@@ -24,6 +24,8 @@ jobs:
           version: "1"
           arch: ${{ runner.arch }}
         if: steps.julia_in_path.outcome != 'success'
+      - name: Use Julia cache
+        uses: julia-actions/cache@v2
       - name: "Add the General registry via Git"
         run: |
           import Pkg

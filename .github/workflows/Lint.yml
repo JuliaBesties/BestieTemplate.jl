@@ -30,6 +30,13 @@ jobs:
         run: julia -e 'using Pkg; pkg"add JuliaFormatter"'
       - name: Setup Python
         uses: actions/setup-python@v5
+        with:
+          cache: pip
+      - name: Cache pre-commit
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pre-commit
+          key: ${{ runner.os }}-pre-commit-${{ hashFiles('**/.pre-commit-config.yaml') }}
       - name: Install pre-commit
         run: pip install pre-commit
       - name: Run pre-commit
