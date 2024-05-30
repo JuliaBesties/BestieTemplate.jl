@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- Pre-commit update workflow (#91)
+
 ## [0.3.2] - 2024-05-30
 
 ### Added
