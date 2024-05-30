@@ -49,6 +49,15 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "nlesc",
+      "name": "Netherlands eScience Center",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1705862?v=4",
+      "profile": "https://esciencecenter.nl",
+      "contributions": [
+        "financial"
+      ]
     }
   ]
 }
