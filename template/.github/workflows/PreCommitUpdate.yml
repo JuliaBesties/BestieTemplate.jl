@@ -18,8 +18,8 @@ jobs:
         run: pip install pre-commit
       - name: Run pre-commit's autoupdate
         run: |
-          # autoupdate returns 1 if any changes were made
-          pre-commit autoupdate && "No updates"
+          # ignore exit code
+          pre-commit autoupdate || true
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v6
