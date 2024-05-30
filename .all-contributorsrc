@@ -68,6 +68,15 @@
       "contributions": [
         "financial"
       ]
+    },
+    {
+      "login": "sverhoeven",
+      "name": "Stefan Verhoeven",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1713488?v=4",
+      "profile": "https://github.com/sverhoeven",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }
