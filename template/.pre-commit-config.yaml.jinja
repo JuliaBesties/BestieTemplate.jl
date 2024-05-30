@@ -8,7 +8,7 @@ repos:
         language: fail
         files: "\\.rej$"
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.6.0
     hooks:
       - id: check-json
       - id: check-toml
@@ -26,7 +26,7 @@ repos:
       - id: check-merge-conflict
         args: [--assume-in-merge]
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.37.0
+    rev: v0.41.0
     hooks:
       - id: markdownlint-fix
   - repo: https://github.com/citation-file-format/cffconvert
@@ -34,21 +34,21 @@ repos:
     hooks:
       - id: validate-cff
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "v3.0.3" # Use the sha or tag you want to point at
+    rev: "v4.0.0-alpha.8" # Use the sha or tag you want to point at
     hooks:
       - id: prettier
         types_or: [yaml, json]
         exclude: ".copier-answers.yml"
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.32.0
+    rev: v1.35.1
     hooks:
       - id: yamllint
   - repo: https://github.com/domluna/JuliaFormatter.jl
-    rev: v1.0.36
+    rev: v1.0.56
     hooks:
       - id: julia-formatter
   - repo: https://github.com/tcort/markdown-link-check
-    rev: v3.11.2
+    rev: v3.12.2
     hooks:
       - id: markdown-link-check
         args:
