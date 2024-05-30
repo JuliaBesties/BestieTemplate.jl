@@ -105,3 +105,28 @@ What I normally do is this:
 cd $(mktemp -d) # Go to a tmp folder
 copier copy --vcs-ref HEAD /path/to/clone/ pkg # Clone dirty clone into pkg
 ```
+
+### Making a new release
+
+Simple steps:
+
+- Create a branch `release-x.y.z`
+- Update `version` in `Project.toml`
+- Update the `CHANGELOG.md`:
+  - Rename the section "Unreleased" to "[x.y.z] - yyyy-mm-dd" (i.e., version under brackets, dash, and date in ISO format)
+  - Add a new section on top of it named "Unreleased"
+  - Add a new link in the bottom for version "x.y.z"
+  - Change the "[unreleased]" link to use the latest version - end of line, `vx.y.z ... HEAD`.
+- Create a commit, push, create a PR, wait for it to pass, merge the PR.
+- Go back to main screen and click on the latest commit (link: <https://github.com/abelsiqueira/COPIERTemplate.jl/commit/main>)
+- At the bottom, write `@JuliaRegistrator register`
+
+After that, you only need to wait and verify:
+
+- Wait for the bot to comment (should take < 1m) with a link to a RP to the registry
+- Follow the link and wait for a comment on the auto-merge
+- The comment should said all is well and auto-merge should occur shortly
+- After the merge happens, TagBot will trigger and create a new GitHub tag. Check on <https://github.com/abelsiqueira/COPIERTemplate.jl/releases>
+- After the release is create, a "docs" GitHub action will start for the tag.
+- After it passes, a deploy action will run.
+- After that runs, the [stable docs](https://abelsiqueira.github.io/COPIERTemplate.jl/stable) should be updated. Check them and look for the version number.
