@@ -100,6 +100,7 @@ If your interest is in developing the package, check the [development guide](doc
       <td align="center" valign="top" width="14.28%"><a href="https://pabrod.github.io/"><img src="https://avatars.githubusercontent.com/u/7677614?v=4?s=100" width="100px;" alt="Pablo Rodríguez-Sánchez"/><br /><sub><b>Pablo Rodríguez-Sánchez</b></sub></a><br /><a href="#doc-PabRod" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://www.esciencecenter.nl/"><img src="https://avatars.githubusercontent.com/u/15750539?v=4?s=100" width="100px;" alt="Olga Lyashevska"/><br /><sub><b>Olga Lyashevska</b></sub></a><br /><a href="#code-lyashevska" title="Code">💻</a> <a href="#doc-lyashevska" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://luisaforozco.github.io/"><img src="https://avatars.githubusercontent.com/u/99738896?v=4?s=100" width="100px;" alt="Luisa Orozco"/><br /><sub><b>Luisa Orozco</b></sub></a><br /><a href="#code-luisaforozco" title="Code">💻</a> <a href="#doc-luisaforozco" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://esciencecenter.nl"><img src="https://avatars.githubusercontent.com/u/1705862?v=4?s=100" width="100px;" alt="Netherlands eScience Center"/><br /><sub><b>Netherlands eScience Center</b></sub></a><br /><a href="#financial-nlesc" title="Financial">💵</a></td>
     </tr>
   </tbody>
 </table>
