@@ -32,4 +32,6 @@ function generate(dst_path, args...; kwargs...)
   generate("https://github.com/abelsiqueira/COPIERTemplate.jl", dst_path, args...; kwargs...)
 end
 
+const DEBUGGING = 1
+
 end
