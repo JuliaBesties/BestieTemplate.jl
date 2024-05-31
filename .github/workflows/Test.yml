@@ -41,6 +41,15 @@ jobs:
         arch:
           - x64
         allow_failure: [false]
+        is-pr:
+          - ${{ github.event_name == 'pull_request' }}
+        exclude:
+          - is-pr: true
+        include:
+          - version: "1"
+            os: ubuntu-latest
+            arch: x64
+            allow_failure: false
     steps:
       - uses: actions/checkout@v4
         with:
