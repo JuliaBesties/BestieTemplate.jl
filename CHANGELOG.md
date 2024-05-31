@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning].
 - Add author names to licenses (#145)
 - Consistent caching in GitHub workflows (#53)
 
+### Changed
+
+- Signature of generate now accepts source path, which defaults to the URL (#174)
+
 ## [0.3.1] - 2024-05-23
 
 ### Added

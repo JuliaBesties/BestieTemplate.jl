@@ -51,6 +51,18 @@ end
 
 bash_args = vcat([["-d"; "$k=$v"] for (k, v) in template_options]...)
 template_path = joinpath(@__DIR__, "..")
+template_url = "https://github.com/abelsiqueira/COPIERTemplate.jl"
+
+@testset "Compare COPIERTemplate.generate vs copier CLI on URL/main" begin
+  mktempdir(; prefix = "cli_") do dir_copier_cli
+    run(`copier copy --vcs-ref main --quiet $bash_args $template_url $dir_copier_cli`)
+
+    mktempdir(; prefix = "copy_") do tmpdir
+      COPIERTemplate.generate(tmpdir; data = template_options, quiet = true, vcs_ref = "main")
+      test_diff_dir(tmpdir, dir_copier_cli)
+    end
+  end
+end
 
 @testset "Compare COPIERTemplate.generate vs copier CLI on HEAD" begin
   # This is a hack because Windows managed to dirty the repo.
@@ -62,7 +74,13 @@ template_path = joinpath(@__DIR__, "..")
     run(`copier copy --vcs-ref HEAD --quiet $bash_args $template_path $dir_copier_cli`)
 
     mktempdir(; prefix = "copy_") do tmpdir
-      COPIERTemplate.generate(tmpdir; data = template_options, quiet = true, vcs_ref = "HEAD")
+      COPIERTemplate.generate(
+        template_path,
+        tmpdir;
+        data = template_options,
+        quiet = true,
+        vcs_ref = "HEAD",
+      )
       test_diff_dir(tmpdir, dir_copier_cli)
     end
   end
