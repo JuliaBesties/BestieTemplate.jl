@@ -9,9 +9,15 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.4.0] - 2024-05-31
+
 ### Added
 
 - Pre-commit update workflow (#91)
+
+### Changed
+
+- Signature of generate now accepts source path, which defaults to the URL (#174)
 
 ## [0.3.2] - 2024-05-30
 
@@ -20,10 +26,6 @@ and this project adheres to [Semantic Versioning].
 - More reader-friendly README (#144)
 - Add author names to licenses (#145)
 - Consistent caching in GitHub workflows (#53)
-
-### Changed
-
-- Signature of generate now accepts source path, which defaults to the URL (#174)
 
 ## [0.3.1] - 2024-05-23
 
@@ -194,7 +196,8 @@ and this project adheres to [Semantic Versioning].
 <!-- Versions -->
 <!-- markdown-link-check-disable -->
 
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.3.2...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.4.0
 [0.3.2]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.3.2
 [0.3.1]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.3.1
 [0.3.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.3.0
