@@ -16,6 +16,7 @@ template_options = Dict(
   "AuthorName" => "Test",
   "AuthorEmail" => "test@me.now",
   "AskAdvancedQuestions" => true,
+  "AddAllContributors" => true,
   "JuliaMinVersion" => "1.6",
   "License" => "MIT",
   "AddCodeOfConduct" => true,
