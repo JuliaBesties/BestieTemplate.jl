@@ -6,7 +6,10 @@ CurrentModule = {{ PackageName }}
 
 Documentation for [{{ PackageName }}](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl).
 
+{% if AddAllcontributors %}
 ### Contributors
+
+<!-- markdown-link-check-disable -->
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -16,3 +19,4 @@ Documentation for [{{ PackageName }}](https://github.com/{{ PackageOwner }}/{{ P
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+{% endif %}
