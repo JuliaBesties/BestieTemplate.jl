@@ -69,6 +69,12 @@ RunJuliaNightlyOnCI:
   type: bool
   help: Package tests run on Julia version {{ JuliaMinVersion }} and on the latest stable release. Do you also want to run them on the nightly version?
 
+TestPRsOnlyOneMachine:
+  when: "{{ AskAdvancedQuestions }}"
+  type: bool
+  help: Do you want to limit the PR test to a single machine (ubuntu + latest stable Julia)? This will make the PR tests run faster, but might introduce OS-specific or LTS specific errors.
+  default: true
+
 UseCirrusCI:
   when: "{{ AskAdvancedQuestions }}"
   type: bool
