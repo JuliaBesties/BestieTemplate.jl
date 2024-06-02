@@ -4,31 +4,25 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "src/**"
-      - "test/**"
-      - "*.toml"
     tags: ["*"]
-  pull_request:
+  {% if not SimplifiedPRTest %}pull_request:
     branches:
       - main
     paths:
       - "src/**"
       - "test/**"
       - "*.toml"
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened]{% endif %}
+  workflow_dispatch:
 
-{% raw %}concurrency:
-  # Skip intermediate builds: always.
-  # Cancel intermediate builds: only if it is a pull request build.
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
-{% endraw %}
 jobs:
   test:
-    {% raw %}name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
-    runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.allow_failure }}{% endraw %}
+    uses: ./.github/workflows/ReusableTest.yml
+    with:
+      os: {% raw %}${{ matrix.os }}{% endraw %}
+      version: {% raw %}${{ matrix.version }}{% endraw %}
+      arch: {% raw %}${{ matrix.arch }}{% endraw %}
+      allow_failure: {% raw %}${{ matrix.allow_failure }}{% endraw %}
     strategy:
       fail-fast: false
       matrix:
@@ -42,46 +36,17 @@ jobs:
         arch:
           - x64
         allow_failure: [false]
-        is-pr:
-          - {% raw %}${{ github.event_name == 'pull_request' }}{% endraw %}
-        {% if RunJuliaNightlyOnCI or TestPRsOnlyOneMachine %}include:{% endif %}
         {% if RunJuliaNightlyOnCI %}
+        include:
           - version: "nightly"
             os: ubuntu-latest
             arch: x64
             allow_failure: true
-            is-pr: {% raw %}${{ github.event_name == 'pull_request' }}{% endraw %}
-          {% if not AddMacToCI %}#{% endif %}- version: "nightly"
-          {% if not AddMacToCI %}#{% endif %}  os: macOS-latest
-          {% if not AddMacToCI %}#{% endif %}  arch: x64
-          {% if not AddMacToCI %}#{% endif %}  allow_failure: true
-          {% if not AddMacToCI %}#{% endif %}  is-pr: {% raw %}${{ github.event_name == 'pull_request' }}{% endraw %}
-          {% if not AddWinToCI %}#{% endif %}- version: "nightly"
-          {% if not AddWinToCI %}#{% endif %}  os: windows-latest
-          {% if not AddWinToCI %}#{% endif %}  arch: x64
-          {% if not AddWinToCI %}#{% endif %}  allow_failure: true
-          {% if not AddWinToCI %}#{% endif %}  is-pr: {% raw %}${{ github.event_name == 'pull_request' }}{% endraw %}
-        {% endif %}{% if TestPRsOnlyOneMachine %}
-          - version: "1"
-            os: ubuntu-latest
+          {% if AddMacToCI %}- version: "nightly"
+            os: macOS-latest
             arch: x64
-            allow_failure: false
-            is-pr: false
-        exclude:
-          - is-pr: true
-        {% endif %}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: julia-actions/setup-julia@v2
-        {% raw %}with:
-          version: ${{ matrix.version }}
-          arch: ${{ matrix.arch }}
-        {% endraw %}
-      - name: Use Julia cache
-        uses: julia-actions/cache@v2
-      - uses: julia-actions/julia-buildpkg@v1
-      - uses: julia-actions/julia-runtest@v1
-      - uses: julia-actions/julia-processcoverage@v1
-      - uses: codecov/codecov-action@v4
-        with:
-          file: lcov.info
+            allow_failure: true{% endif %}
+          {% if AddWinToCI %}- version: "nightly"
+            os: windows-latest
+            arch: x64
+            allow_failure: true{% endif %}{% endif %}

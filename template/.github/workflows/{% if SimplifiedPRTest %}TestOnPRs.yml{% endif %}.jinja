@@ -1,0 +1,26 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "test/**"
+      - "*.toml"
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  # Skip intermediate builds: always.
+  # Cancel intermediate builds: only if it is a pull request build.
+  group: {% raw %}${{ github.workflow }}-${{ github.ref }}{% endraw %}
+  cancel-in-progress: {% raw %}${{ startsWith(github.ref, 'refs/pull/') }}{% endraw %}
+
+jobs:
+  test:
+    uses: ./.github/workflows/ReusableTest.yml
+    with:
+      os: ubuntu-latest
+      version: "1"
+      arch: x64
+      allow_failure: false

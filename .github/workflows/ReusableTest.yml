@@ -1,0 +1,47 @@
+name: Reusable test
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: false
+        type: string
+        default: "1"
+      os:
+        required: false
+        type: string
+        default: ubuntu-latest
+      arch:
+        required: false
+        type: string
+        default: x64
+      allow_failure:
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  test:
+    name: Julia ${{ inputs.version }} - ${{ inputs.os }} - ${{ inputs.arch }} - ${{ github.event_name }}
+    runs-on: ${{ inputs.os }}
+    continue-on-error: ${{ inputs.allow_failure }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: ${{ inputs.version }}
+          arch: ${{ inputs.arch }}
+      - name: Use Julia cache
+        uses: julia-actions/cache@v2
+      - uses: julia-actions/julia-buildpkg@v1
+      - uses: julia-actions/julia-runtest@v1
+      - uses: julia-actions/julia-processcoverage@v1
+      - uses: codecov/codecov-action@v4
+        with:
+          file: lcov.info

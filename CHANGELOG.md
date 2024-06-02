@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning].
 
 ### Added
 
-- New question: TestPRsOnlyOneMachine to simplify the testing on Pull Requests (#105)
+- New question: SimplifiedPRTest to simplify the testing on Pull Requests (#105)
 
 ## [0.4.0] - 2024-05-31
 
