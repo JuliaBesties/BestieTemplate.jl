@@ -72,7 +72,7 @@ RunJuliaNightlyOnCI:
 SimplifiedPRTest:
   when: "{{ AskAdvancedQuestions }}"
   type: bool
-  help: (Simplified PR Test) Do you want to limit the Pull Request test to a single configuration (ubuntu + latest stable Julia)? This will make the PR tests run faster, but might introduce OS-specific or LTS specific errors.
+  help: (Simplified PR Test) Do you want to limit the Pull Request test to a single configuration (ubuntu + latest stable Julia)? This will make the PR tests run faster, but might miss OS-specific or LTS specific errors.
   default: true
 
 UseCirrusCI:
