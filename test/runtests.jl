@@ -50,7 +50,7 @@ function test_diff_dir(dir1, dir2)
     for (root, _, files) in walkdir(dir1)
       nice_dir(file) =
         replace(root, dir1 => "") |> out -> replace(out, r"^/" => "") |> out -> joinpath(out, file)
-      if nice_dir("") |> startswith(".git")
+      if nice_dir("") |> x -> occursin(r"[\\/]?git[\\/]+", x)
         continue
       end
       @testset "File $(nice_dir(file))" for file in files
