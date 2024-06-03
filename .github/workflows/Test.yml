@@ -5,29 +5,16 @@ on:
     branches:
       - main
     tags: ["*"]
-  pull_request:
-    branches:
-      - main
-    paths:
-      - "src/**"
-      - "test/**"
-      - "template/**"
-      - "*.toml"
-      - "copier.yml"
-    types: [opened, synchronize, reopened]
   workflow_dispatch:
-
-concurrency:
-  # Skip intermediate builds: always.
-  # Cancel intermediate builds: only if it is a pull request build.
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 
 jobs:
   test:
-    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
-    runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.allow_failure }}
+    uses: ./.github/workflows/ReusableTest.yml
+    with:
+      os: ${{ matrix.os }}
+      version: ${{ matrix.version }}
+      arch: ${{ matrix.arch }}
+      allow_failure: ${{ matrix.allow_failure }}
     strategy:
       fail-fast: false
       matrix:
@@ -41,22 +28,3 @@ jobs:
         arch:
           - x64
         allow_failure: [false]
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-      - uses: julia-actions/setup-julia@v2
-        with:
-          version: ${{ matrix.version }}
-          arch: ${{ matrix.arch }}
-      - name: Use Julia cache
-        uses: julia-actions/cache@v2
-      - uses: julia-actions/julia-buildpkg@v1
-      - uses: julia-actions/julia-runtest@v1
-      - uses: julia-actions/julia-processcoverage@v1
-      - uses: codecov/codecov-action@v4
-        with:
-          file: lcov.info

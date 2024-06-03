@@ -23,6 +23,7 @@ template_options = Dict(
   "AddMacToCI" => true,
   "AddWinToCI" => true,
   "RunJuliaNightlyOnCI" => true,
+  "SimplifiedPRTest" => true,
   "UseCirrusCI" => true,
 )
 

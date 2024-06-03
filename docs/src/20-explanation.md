@@ -120,7 +120,10 @@ We have a few workflows, with plans to expand in the future:
 - Docs.yml: Build the docs. Only runs when relevant files change.
 - Lint.yml: Run the linter and formatter through the command `pre-commit run -a`.
 - TagBot.yml: Create GitHub releases automatically after your new release is merged on the Registry.
-- Test.yml: Run the tests.
+- For testing, we have
+  - ReusableTest.yml: Defines a reusable workflow with the testing.
+  - Test.yml: Defines a matrix of tests to be run whenever `main` is updated or a tag is created. Uses the ReusableTest workflow. If "Simplified PR Test" was not chosen, then this also runs when there are pull requests.
+  - TestOnPRs.yml: Defines a test to be run when pull requests are created. Only the latest stable Julia version is tested on a ubuntu-latest image. Uses the ReusableTest workflow. If "Simplified PR Test" was not chosen, then this file does not exist.
 
 ### Issues and PR templates
 

@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- New question: SimplifiedPRTest to simplify the testing on Pull Requests (#105)
+
 ## [0.4.0] - 2024-05-31
 
 ### Added
