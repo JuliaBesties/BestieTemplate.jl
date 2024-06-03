@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning].
 ### Added
 
 - New question: SimplifiedPRTest to simplify the testing on Pull Requests (#105)
+- New question: AddAllcontributors to add a section and config for <https://allcontributors.org> (#26)
 
 ## [0.4.0] - 2024-05-31
 
