@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning].
 - New question: SimplifiedPRTest to simplify the testing on Pull Requests (#105)
 - New question: AddAllcontributors to add a section and config for <https://allcontributors.org> (#26)
 
+### Removed
+
+- The `generate_missing_uuid` argument was removed, since it can be generated via Jinja (#189)
+
 ## [0.4.0] - 2024-05-31
 
 ### Added
