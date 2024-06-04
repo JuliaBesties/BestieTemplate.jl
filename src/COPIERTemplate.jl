@@ -37,6 +37,14 @@ function generate(src_path, dst_path, data::Dict = Dict(); kwargs...)
     end
     data = merge(existing_data, data)
   end
+  # If the PackageName was not given or guessed from the Project.toml, use the sanitized path
+  if !haskey(data, "PackageName")
+    package_name = _sanitize_package_name(dst_path)
+    if package_name != ""
+      @info "Using sanitized path $package_name as package name"
+      data["PackageName"] = package_name
+    end
+  end
   Copier.copy(src_path, dst_path, data; kwargs...)
 end
 
@@ -70,6 +78,18 @@ function _read_data_from_existing_path(dst_path)
   end
 
   return data
+end
+
+"""
+    package_name = _sanitize_package_name(path)
+
+Sanitize the `path` to guess the package_name by looking at the
+base name and removing an extension. If the result is not a valid
+identifier, returns "".
+"""
+function _sanitize_package_name(dst_path)
+  package_name = dst_path |> basename |> splitext |> first
+  return Base.isidentifier(package_name) ? package_name : ""
 end
 
 end

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning].
 - New question: AddAllcontributors to add a section and config for <https://allcontributors.org> (#26)
 - `copy`, `recopy` and `update` from the copier API (#142)
 - When applying to existing projects, read Project.toml to infer a few values (#116)
+- Automatically determines the `PackageName` from the destination folder (#151)
 
 ### Changed
 

@@ -147,7 +147,6 @@ end
   mktempdir(TMPDIR; prefix = "existing_") do dir_existing
     cd(dir_existing) do
       Pkg.generate("NewPkg")
-      @info walkdir(".") |> collect
       COPIERTemplate.generate(
         template_path,
         "NewPkg/",
@@ -161,6 +160,33 @@ end
       @test answers["PackageName"] == "NewPkg"
       @test answers["AuthorName"] == "T. Esther"
       @test answers["PackageOwner"] == "test"
+    end
+  end
+
+  @testset "Test automatic guessing the package name from the path" begin
+    mktempdir(TMPDIR; prefix = "path_is_dir_") do dir_path_is_dir
+      cd(dir_path_is_dir) do
+        data = Dict(key => value for (key, value) in template_options if key != "PackageName")
+        mkdir("some_folder")
+        COPIERTemplate.generate(
+          template_path,
+          "some_folder/SomePackage1.jl",
+          data;
+          quiet = true,
+          vcs_ref = "HEAD",
+        )
+        answers = YAML.load_file("some_folder/SomePackage1.jl/.copier-answers.yml")
+        @test answers["PackageName"] == "SomePackage1"
+        COPIERTemplate.generate(
+          template_path,
+          "some_folder/SomePackage2.jl",
+          merge(data, Dict("PackageName" => "OtherName"));
+          quiet = true,
+          vcs_ref = "HEAD",
+        )
+        answers = YAML.load_file("some_folder/SomePackage2.jl/.copier-answers.yml")
+        @test answers["PackageName"] == "OtherName"
+      end
     end
   end
 end
