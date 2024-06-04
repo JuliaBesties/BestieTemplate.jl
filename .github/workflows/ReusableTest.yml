@@ -19,6 +19,13 @@ on:
         required: false
         type: boolean
         default: false
+      run_codecov:
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      codecov_token:
+        required: true
 
 jobs:
   test:
@@ -44,6 +51,9 @@ jobs:
         env:
           TMPDIR: "${{ runner.temp }}"
       - uses: julia-actions/julia-processcoverage@v1
+        if: ${{ inputs.run_codecov }}
       - uses: codecov/codecov-action@v4
+        if: ${{ inputs.run_codecov }}
         with:
           file: lcov.info
+          token: ${{ secrets.codecov_token }}
