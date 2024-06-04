@@ -24,3 +24,6 @@ jobs:
       version: "1"
       arch: x64
       allow_failure: false
+      run_codecov: true
+    secrets:
+      codecov_token: ${{ secrets.CODECOV_TOKEN }}

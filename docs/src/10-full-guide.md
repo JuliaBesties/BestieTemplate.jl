@@ -78,6 +78,22 @@ julia> DocumenterTools.genkeys(user="UserName", repo="PackageName.jl")
 
 Follow the instruction in the terminal.
 
+### Enable Codecov for code coverage
+
+If you don't have a Codecov account, go to <https://codecov.io> and create one now.
+After creating an account and logging in, you will see your main page with a list of your packages.
+Select the one that you are creating, it will open a configuration page.
+
+On the configuration page, select "Using GitHub Actions" as your CI.
+The first step in the list given you the `CODECOV_TOKEN`. Click on the "repository secret" link on that page.
+It should lead you to the GitHub settings > secrets and variables > actions, under a "New secret" screen.
+Write `CODECOV_TOKEN` on the "Name" field and paste the token that you see on codecov on the "Secret" field.
+Click "Add secret".
+
+Step 2 is not necessary because it is already present in the template.
+
+The next time that the tests are run, the coverage page will be updated, and the badge will be fixed.
+
 ### Add key for Copier.yml workflow (or delete it)
 
 You can reapply the template in the future. This is normally a manual job, specially because normally there are conflicts.
