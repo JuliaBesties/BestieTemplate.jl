@@ -15,7 +15,9 @@ if get(ENV, "CI", "nothing") == "nothing"
 end
 
 using COPIERTemplate
+using Pkg
 using Test
+using YAML
 
 template_minimum_options = Dict(
   "PackageName" => "Tmp",
@@ -137,6 +139,28 @@ end
         COPIERTemplate.Copier.update(tmpdir, template_options; overwrite = true, quiet = true)
         test_diff_dir(tmpdir, dir_copier_cli)
       end
+    end
+  end
+end
+
+@testset "Test generating the template on an existing project" begin
+  mktempdir(TMPDIR; prefix = "existing_") do dir_existing
+    cd(dir_existing) do
+      Pkg.generate("NewPkg")
+      @info walkdir(".") |> collect
+      COPIERTemplate.generate(
+        template_path,
+        "NewPkg/",
+        Dict("AuthorName" => "T. Esther", "PackageOwner" => "test");
+        defaults = true,
+        overwrite = true,
+        quiet = true,
+        vcs_ref = "HEAD",
+      )
+      answers = YAML.load_file("NewPkg/.copier-answers.yml")
+      @test answers["PackageName"] == "NewPkg"
+      @test answers["AuthorName"] == "T. Esther"
+      @test answers["PackageOwner"] == "test"
     end
   end
 end
