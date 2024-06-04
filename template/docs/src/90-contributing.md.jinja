@@ -18,9 +18,8 @@ If you found an issue that interests you, comment on that issue what your plans 
 If the solution to the issue is clear, you can immediately create a pull request (see below).
 Otherwise, say what your proposed solution is and wait for a discussion around it.
 
-> **Tip**
->
-> Feel free to ping us after a few days if there are no responses.
+!!! tip
+    Feel free to ping us after a few days if there are no responses.
 
 If your solution involves code (or something that requires running the package locally), check the [developer documentation](90-developer.md).
 Otherwise, you can use the GitHub interface directly to create your pull request.

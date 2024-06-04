@@ -1,6 +1,27 @@
 # [Developer documentation](@id dev_docs)
 
-If you haven't, please read the [Contributing guidelines](90-contributing.md) first.
+!!! note "Contributing guidelines"
+    If you haven't, please read the [Contributing guidelines](90-contributing.md) first.
+
+If you want to make contributions to this package that involves code, then this guide is for you.
+
+## First time clone
+
+!!! tip "If you have writing rights"
+    If you have writing rights, you don't have to fork. Instead, simply clone and skip ahead. Whenever **upstream** is mentioned, use **origin** instead.
+
+If this is the first time you work with this repository, follow the instructions below to clone the repository.
+
+1. Fork this repo
+2. Clone your repo (this will create a `git remote` called `origin`)
+3. Add this repo as a remote:
+
+   ```bash
+   git remote add upstream https://github.com/abelsiqueira/COPIERTemplate.jl
+   ```
+
+This will ensure that you have two remotes in your git: `origin` and `upstream`.
+You will create branches and push to `origin`, and you will fetch and update your local `main` branch from `upstream`.
 
 ## Linting and formatting
 
@@ -8,7 +29,13 @@ Install a plugin on your editor to use [EditorConfig](https://editorconfig.org).
 This will ensure that your editor is configured with important formatting settings.
 
 We use [https://pre-commit.com](https://pre-commit.com) to run the linters and formatters.
-In particular, the Julia code is formatted using [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl), so please install it globally first.
+In particular, the Julia code is formatted using [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl), so please install it globally first:
+
+```julia-repl
+julia> # Press ]
+pkg> activate
+pkg> add JuliaFormatter
+```
 
 To install `pre-commit`, we recommend using [pipx](https://pipx.pypa.io) as follows:
 
@@ -31,25 +58,35 @@ pre-commit run -a
 
 **Now, you can only commit if all the pre-commit tests pass**.
 
-## First time clone
+## Testing
 
-!!! note "If you have writing rights"
-    If you have writing rights, you don't have to fork. Instead, simply clone and skip ahead. Whenever **upstream** is mentioned, use **origin** instead.
+As with most Julia packages, you can just open Julia in the repository folder, activate the environment, and run `test`:
 
-If this is the first time you work with this repository, follow the instructions below to clone the repository.
+```julia-repl
+julia> # press ]
+pkg> activate .
+pkg> test
+```
 
-1. Fork this repo
-2. Clone your repo (this will create a `git remote` called `origin`)
-3. Add this repo as a remote:
+### Testing local changes to the template
 
-   ```bash
-   git remote add upstream https://github.com/abelsiqueira/COPIERTemplate.jl
-   ```
+I recommend installing copier, although it is possible to test the template using only Julia, it becomes more complicated, and cumbersome. Using `pipx` (as above), you can just run
 
-This will ensure that you have two remotes in your git: `origin` and `upstream`.
-You will create branches and push to `origin`, and you will fetch and update your local `main` branch from `upstream`.
+```bash
+pipx install copier
+```
+
+To test your local modifications, you can run copier with the `--vcs-ref HEAD` flag and point to your local clone. This will use the latest changes, including uncommitted modifications (i.e., the dirty state).
+What I normally do is this:
+
+```bash
+cd $(mktemp -d) # Go to a tmp folder
+copier copy --vcs-ref HEAD /path/to/clone/ pkg # Clone dirty clone into pkg
+```
 
 ## Working on a new issue
+
+We try to keep a linear history in this repo, so it is important to keep your branches up-to-date.
 
 1. Fetch from the remote and fast-forward your local main
 
@@ -84,37 +121,41 @@ You will create branches and push to `origin`, and you will fetch and update you
 
 - Use imperative or present tense, for instance: *Add feature* or *Fix bug*.
 - Have informative titles.
-- If necessary, add a body with details.
+- When necessary, add a body with details.
+- If there are breaking changes, add the information to the commit message.
 
 ### Before creating a pull request
 
-- [Advanced] Try to create "atomic git commits" (recommended reading: [The Utopic Git History](https://blog.esciencecenter.nl/the-utopic-git-history-d44b81c09593)).
+!!! tip "Atomic git commits"
+    Try to create "atomic git commits" (recommended reading: [The Utopic Git History](https://blog.esciencecenter.nl/the-utopic-git-history-d44b81c09593)).
+
 - Make sure the tests pass.
 - Make sure the pre-commit tests pass.
 - Fetch any `main` updates from upstream and rebase your branch, if necessary:
 
-   ```bash
-   git fetch upstream
-   git rebase upstream/main BRANCH_NAME
-   ```
+  ```bash
+  git fetch upstream
+  git rebase upstream/main BRANCH_NAME
+  ```
 
 - Then you can open a pull request and work with the reviewer to address any issues.
 
-## Tips
+## Building and viewing the documentation locally
 
-### Testing local changes
+Following the latest suggestions, we recommend using `LiveServer` to build the documentation.
+Here is how you do it:
 
-To test you local modifications, you can run copier with the `--vcs-ref HEAD` flag and point to your local clone. This will use the latest changes, including uncommitted modifications (i.e., the dirty state).
-What I normally do is this:
+1. Run `julia --project=docs` to open Julia in the environment of the docs.
+1. If this is the first time building the docs
+   1. Press `]` to enter `pkg` mode
+   1. Run `pkg> dev .` to use the development version of your package
+   1. Press backspace to leave `pkg` mode
+1. Run `julia> using LiveServer`
+1. Run `julia> servedocs()`
 
-```bash
-cd $(mktemp -d) # Go to a tmp folder
-copier copy --vcs-ref HEAD /path/to/clone/ pkg # Clone dirty clone into pkg
-```
+## Making a new release
 
-### Making a new release
-
-Simple steps:
+To create a new release, you can follow these simple steps:
 
 - Create a branch `release-x.y.z`
 - Update `version` in `Project.toml`
