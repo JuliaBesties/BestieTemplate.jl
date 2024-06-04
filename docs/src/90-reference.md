@@ -13,5 +13,5 @@ Pages = ["90-reference.md"]
 ```
 
 ```@autodocs
-Modules = [COPIERTemplate]
+Modules = [COPIERTemplate, COPIERTemplate.Copier]
 ```

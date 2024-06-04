@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning].
 ### Changed
 
 - Adds `data` positional argument to `generate` (#142)
+- An internal module `Copier` was created with the wrapper functions
 
 ### Removed
 
