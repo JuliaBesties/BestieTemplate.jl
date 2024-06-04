@@ -111,7 +111,7 @@ end
 
     @testset "Compare copied project vs copier CLI baseline" begin
       mktempdir(TMPDIR; prefix = "copy_") do tmpdir
-        COPIERTemplate.copy(tmpdir, template_options; quiet = true)
+        COPIERTemplate.Copier.copy(tmpdir, template_options; quiet = true)
         test_diff_dir(tmpdir, dir_copier_cli)
       end
     end
@@ -119,7 +119,7 @@ end
     @testset "Compare recopied project vs copier CLI baseline" begin
       mktempdir(TMPDIR; prefix = "recopy_") do tmpdir
         run(`copier copy --defaults --quiet $min_bash_args $template_path $tmpdir`)
-        COPIERTemplate.recopy(tmpdir, template_options; quiet = true, overwrite = true)
+        COPIERTemplate.Copier.recopy(tmpdir, template_options; quiet = true, overwrite = true)
         test_diff_dir(tmpdir, dir_copier_cli)
       end
     end
@@ -134,7 +134,7 @@ end
           run(`git config user.email "test@test.com"`)
           run(`git commit -q -m "First commit"`)
         end
-        COPIERTemplate.update(tmpdir, template_options; overwrite = true, quiet = true)
+        COPIERTemplate.Copier.update(tmpdir, template_options; overwrite = true, quiet = true)
         test_diff_dir(tmpdir, dir_copier_cli)
       end
     end
