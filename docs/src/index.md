@@ -25,12 +25,6 @@ julia> using COPIERTemplate
 julia> COPIERTemplate.generate("YourPackage.jl")
 ```
 
-Or, alternatively, using [copier](https://copier.readthedocs.io), run
-
-```bash
-copier copy https://github.com/abelsiqueira/COPIERTemplate.jl YourPackage.jl
-```
-
 I really recommend checking the [full guide](@ref full_guide), though.
 
 To understand more about our motivation and what the template provides, check the [explanation page](@ref explanation).
