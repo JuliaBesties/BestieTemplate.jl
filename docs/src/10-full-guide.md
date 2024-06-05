@@ -2,36 +2,77 @@
 
 Welcome to **full usage guide** of COPIERTemplate.
 
-## Before installing
-
-1. We highly recommend that you install [`pre-commit`](https://pre-commit.com). Our whole linting is based on that tool, so you might want to adopt it locally.
-1. Decide if you are going to install `copier` or use our Julia interface.
-1. If you use `copier` directly, find a UUID version 4 generator.
-   - On Linux and MacOS, you can run `uuidgen`
-   - On Julia, you can run `using UUIDs; uuid4()`
-   - Online, you can try [uuidgenerator.net](https://www.uuidgenerator.net/version4)
-
-## Installation
-
-To install with COPIERTemplate.jl, install the package, use it, and run `COPIERTemplate.generate(path)`.
-
-Alternatively, this can also be installed directly via [copier](https://copier.readthedocs.io), with the command
-
-```bash
-copier copy https://github.com/abelsiqueira/COPIERTemplate.jl YourPackage.jl
+```@contents
+Pages = ["10-full-guide.md"]
+Depth = 2:3
 ```
 
-Many questions will be asked. The explanation on them should be sufficient (if they aren't, please let us know).
+## Before installing
 
-## Post-installation
+Install a plugin on your editor to use [EditorConfig](https://editorconfig.org).
+This will ensure that your editor is configured with important formatting settings.
 
-### Add to GitHub
+We use [https://pre-commit.com](https://pre-commit.com) to run the linters and formatters.
+In particular, the Julia code is formatted using [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl), so please install it globally first:
 
-The resulting folder will not be a `git` package yet (to avoid trust issues), so you need to handle that yourself.
-Here is a short example:
+```julia-repl
+julia> # Press ]
+pkg> activate
+pkg> add JuliaFormatter
+```
+
+To install `pre-commit`, we recommend using [pipx](https://pipx.pypa.io) as follows:
 
 ```bash
-cd YourPackage.jl
+# Install pipx following the link
+pipx install pre-commit
+```
+
+## Install COPIERTemplate (or copier)
+
+To use the template, we recommend installing the package `COPIERTemplate.jl` globally:
+
+```julia-repl
+julia> # press ]
+pkg> activate
+pkg> add COPIERTemplate
+```
+
+The COPIERTemplate package wraps [copier](https://copier.readthedocs.io/) and adds some lightweight checks and parameters to make your user experience better.
+
+!!! warning "Alternative"
+    Alternatively, you can use [copier](https://copier.readthedocs.io/) directly, in which case you will have the pure template generation experience. If that is the case, I will assume that you know what you are doing and won't show the full command here to avoid confusing new users.
+
+## Using the template
+
+There are three use cases on using the template:
+
+1. You are using the template to start a [new package](@ref new_package).
+1. You already have a Julia project and you want to [apply the template to your project](@ref existing_package).
+1. You already uses the template and you want to [update to get the latest changes](@ref updating_package).
+
+The three cases are listed below.
+
+### [New package](@id new_package)
+
+Simply run
+
+```julia-repl
+julia> using COPIERTemplate
+julia> COPIERTemplate.generate("full/path/to/YourPackage.jl")
+```
+
+This will create the folder at the given path and create a package named `YourPackage` using the latest release of the COPIERTemplate.
+You will be prompted with many questions, **some required** and some with our **recommended** choices.
+
+You can give more options to the `generate` function, including the source of the template, pre-filled data, and options passed to the underlying project generator `copier`.
+See the full docstring for [`COPIERTemplate.generate`](@ref) for more information.
+
+The resulting folder will not be a `git` package yet (to avoid trust issues), so you need to handle that yourself.
+You should see a short guide on screen, but here it is again:
+
+```bash
+cd full/path/to/YourPackage.jl
 git init
 git add .
 pre-commit run -a # Try to fix possible pre-commit issues (failures are expected)
@@ -40,9 +81,63 @@ git commit -m "First commit"
 pre-commit install # Future commits can't be directly to main unless you use -n
 ```
 
-It is common to have some pre-commit issues due to your package's name length triggering JuliaFormatter.
+Now, create a new repository on [GitHub](https://github.com) and push your code.
+We won't give you details on how to do this, but you can check [The Turing Way](https://the-turing-way.netlify.app/collaboration/github-novice).
 
-Create a repo on GitHub and push your code to it.
+After that, jump on to [Setting up your package](@ref).
+
+### [Applying to an existing package](@id existing_package)
+
+To apply the template to an existing package, you can do the following:
+
+!!! warning "git"
+    This assumes that you already use git on that package and the your working directory is clean.
+
+```julia-repl
+julia> using COPIERTemplate
+julia> COPIERTemplate.generate("full/path/to/YourPackage.jl")
+```
+
+This will look for a file `Project.toml` at the root of the given path and use the information there to guess some of the answers.
+Currently, we guess the `PackageName`, `PackageUUID` from the `name` and `uuid` fields, and try to guess the `AuthorName` and `AuthorEmail` from the `authors` field by looking at the first match.
+
+If you don't like the result, or want to override the answers, you can run the `generate` function with a additional arguments:
+
+```julia-repl
+julia> data = Dict("AuthorName" => "Bob", "AuthorEmail" => "bob@bob.br")
+julia> COPIERTemplate.generate("full/path/to/YourPackage.jl", data)
+```
+
+See the full docstring for [`COPIERTemplate.generate`](@ref) for more information.
+
+You will most likely have conflicts when you apply the template.
+Whenever a conflict appears, you will need to decide on whether to accept or reject the new changes.
+Unfortunately, they are not shown to you when the conflict appears, so the best solution is to just accept all of them and then fix the conflicts using `git`.
+
+After the template is applied and you are happy with the conflict resolution, enable pre-commit and push your code.
+
+```bash
+pre-commit run -a # Try to fix possible pre-commit issues (failures are expected)
+git add .
+git commit -m "Apply COPIERTemplate vx.y.z"
+pre-commit install # Future commits can't be directly to main unless you use -n
+```
+
+Push your code to GitHub and head to [Setting up your package](@ref) for information on what to do next.
+
+Now, go to [Setting up your package](@ref) to check what you still need to configure for your package.
+
+### [Updating](@id updating_package)
+
+WIP. Tracked in issue #113.
+
+## Setting up your package
+
+There are various steps to setting up your package on GitHub. Some are important now, and some will be relevant when you try to make your first release.
+
+### Add to GitHub
+
+If you haven't yet, create a repo on GitHub and push your code to it.
 
 !!! info
     The actions will run and you will see errors in the documentation and linting. Do not despair.
@@ -66,7 +161,12 @@ After circa 1 minute, you can check that the documentation was built properly.
     2. Lint was fixed when we pushed the code to GitHub.
     3. Docs was fixed with the permissions change.
 
-You will still need to set a `DOCUMENTER_KEY` to build the documentation from the tags automatically when using TagBot (which we do by default).
+#### Documentation for releases
+
+!!! info
+    This section is only relevant when making your first release, but it might be better to get it out of the way now.
+
+You need to set a `DOCUMENTER_KEY` to build the documentation from the tags automatically when using TagBot (which we do by default).
 Do the following:
 
 ```bash
@@ -127,3 +227,11 @@ Before releasing, enable Zenodo integration at <https://zenodo.org/account/setti
 ### Enable discussions
 
 Enable GitHub discussions.
+
+### First release
+
+When you are ready to make your first release, enable the [Julia Registrator bot](https://github.com/apps/juliateam-registrator/installations/select_target).
+Make sure that you haven't skipped these sections:
+
+- [Documentation for releases](@ref)
+- [CITATION.cff and Zenodo deposition](@ref)
