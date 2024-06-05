@@ -19,10 +19,9 @@ Welcome to **full usage guide** of COPIERTemplate.
 
 Install it:
 
-```julia-shell
-> julia> using Pkg
-> julia> Pkg.add("COPIERTemplate")
-```
+```julia-repl
+julia> # press ]
+pkg> add COPIERTemplate
 
 Load it:
 
