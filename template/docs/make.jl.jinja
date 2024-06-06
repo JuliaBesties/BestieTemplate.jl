@@ -16,7 +16,7 @@ end
 makedocs(;
   modules = [{{ PackageName }}],
   doctest = true,
-  linkcheck = true,
+  linkcheck = false, # Rely on Lint.yml/lychee for the links
   authors = "{{ AuthorName }} <{{ AuthorEmail }}> and contributors",
   repo = "https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/{commit}{path}#{line}",
   sitename = "{{ PackageName }}.jl",

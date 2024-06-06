@@ -1,0 +1,9 @@
+exclude = [
+  "@ref",
+  "^https://github.com/.*/releases/tag/v.*$"
+]
+
+exclude_path = [
+  "docs/build",
+  "test/conda-env"
+]

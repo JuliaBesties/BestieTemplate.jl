@@ -16,7 +16,7 @@ end
 makedocs(;
   modules = [COPIERTemplate],
   doctest = true,
-  linkcheck = true,
+  linkcheck = false,
   authors = "Abel Soares Siqueira <abel.s.siqueira@gmail.com> and contributors",
   repo = "https://github.com/abelsiqueira/COPIERTemplate.jl/blob/{commit}{path}#{line}",
   sitename = "COPIERTemplate.jl",
