@@ -40,7 +40,6 @@ If your interest is in developing the package, check the [development guide](90-
 ## Contributors
 
 ```@raw html
-<!-- markdown-link-check-disable -->
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->

@@ -211,7 +211,6 @@ and this project adheres to [Semantic Versioning].
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
 
 <!-- Versions -->
-<!-- markdown-link-check-disable -->
 
 [unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.4.0...HEAD
 [0.4.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.4.0
