@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.5.0]
+
 ### Added
 
 - New question: SimplifiedPRTest to simplify the testing on Pull Requests (#105)
@@ -21,6 +23,7 @@ and this project adheres to [Semantic Versioning].
 
 - Adds `data` positional argument to `generate` (#142)
 - An internal module `Copier` was created with the wrapper functions
+- Use lychee for link-checker instead of markdown-link-checker (#160)
 
 ### Removed
 
@@ -212,7 +215,8 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.4.0...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.5.0
 [0.4.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.4.0
 [0.3.2]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.3.2
 [0.3.1]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.3.1
