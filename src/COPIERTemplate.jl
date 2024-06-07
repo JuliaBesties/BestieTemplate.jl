@@ -53,6 +53,26 @@ function generate(dst_path, data::Dict = Dict(); kwargs...)
 end
 
 """
+    update([data]; kwargs...)
+    update(dst_path[, data]; kwargs...)
+
+Run the update command of copier, updating the `dst_path` (or the current path if omitted) with a new version of the template with a new version of the template.
+
+The `data` argument is a dictionary of answers (values) to questions (keys) that can be used to bypass some of the interactive questions.
+
+## Keyword arguments
+
+The keyword arguments are passed directly to the internal [`Copier.update`](@ref).
+"""
+function update(dst_path, data::Dict = Dict(); kwargs...)
+  Copier.update(dst_path, data; overwrite = true, kwargs...)
+end
+
+function update(data::Dict = Dict(); kwargs...)
+  update(".", data; overwrite = true, kwargs...)
+end
+
+"""
     data = _read_data_from_existing_path(dst_path)
 
 Reads the destination folder to figure out some answers.
