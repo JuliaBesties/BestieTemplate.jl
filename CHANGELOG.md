@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.5.1] - 2024-06-07
+
 ### Added
 
 - New question: AddPrecommit to add pre-commit related files (#231)
@@ -20,7 +22,7 @@ and this project adheres to [Semantic Versioning].
 
 - Issue checklists are now just text (#234)
 
-## [0.5.0]
+## [0.5.0] - 2024-06-06
 
 ### Added
 
@@ -226,7 +228,8 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.5.0...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.5.1...HEAD
+[0.5.1]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.5.1
 [0.5.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.5.0
 [0.4.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.4.0
 [0.3.2]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.3.2
