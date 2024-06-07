@@ -2,6 +2,19 @@ name: "Usage question"
 description: Questions related to the usage
 labels: ["documentation"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+
+        Please, before submitting make sure that:
+
+        - You have checked the [documentation](https://{{ PackageOwner }}.github.io/{{ PackageName }}.jl) and haven't found enough information
+        - There is not an [existing issue](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/issues) with the same question
+        - You have read the [contributing guide](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/main/docs/src/90-contributing.md/)
+        - You follow the [code of conduct](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/main/CODE_OF_CONDUCT.md)
+
+        The form below should help you in filling out this issue.
   - type: textarea
     id: description
     attributes:
@@ -9,17 +22,3 @@ body:
       description: Write your question
     validations:
       required: true
-  - type: checkboxes
-    id: checks
-    attributes:
-      label: Checks
-      description: Confirm the following, please
-      options:
-        - label: I have checked the [documentation](https://{{ PackageOwner }}.github.io/{{ PackageName }}.jl) and haven't found enough information
-          required: true
-        - label: There is not an [existing issue](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/issues) with the same question
-          required: true
-        - label: I have read the [contributing guide](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/main/docs/src/90-contributing.md/)
-          required: true
-        - label: I agree with the [code of conduct](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/main/CODE_OF_CONDUCT.md)
-          required: true

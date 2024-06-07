@@ -7,6 +7,14 @@ body:
     attributes:
       value: |
         Thanks for taking the time to fill out this bug report!
+
+        Please, before submitting make sure that:
+
+        - There is not an [existing issue](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/issues) with the same question
+        - You have read the [contributing guide](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/main/docs/src/90-contributing.md/)
+        - You follow the [code of conduct](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/main/CODE_OF_CONDUCT.md)
+
+        The form below should help you in filling out this issue.
   - type: textarea
     id: description
     attributes:
@@ -51,15 +59,3 @@ body:
         - Windows
         - Linux
         - Mac
-  - type: checkboxes
-    id: checks
-    attributes:
-      label: Checks
-      description: Confirm the following, please
-      options:
-        - label: There is not an [existing issue](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/issues) with the same question
-          required: true
-        - label: I have read the [contributing guide](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/main/docs/src/90-contributing.md/)
-          required: true
-        - label: I agree with the [code of conduct](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/main/CODE_OF_CONDUCT.md)
-          required: true
