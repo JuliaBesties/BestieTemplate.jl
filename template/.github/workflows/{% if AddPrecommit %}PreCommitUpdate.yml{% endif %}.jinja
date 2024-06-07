@@ -31,5 +31,5 @@ jobs:
           labels: chore
       - name: Check outputs
         run: |
-          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
-          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+          {% raw %}echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"{% endraw %}
+          {% raw %}echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"{% endraw %}

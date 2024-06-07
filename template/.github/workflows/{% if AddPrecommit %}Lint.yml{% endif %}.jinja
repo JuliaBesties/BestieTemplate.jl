@@ -10,10 +10,11 @@ on:
 concurrency:
   # Skip intermediate builds: always.
   # Cancel intermediate builds: only if it is a pull request build.
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+  group: {% raw %}${{ github.workflow }}-${{ github.ref }}{% endraw %}
+  cancel-in-progress: {% raw %}${{ startsWith(github.ref, 'refs/pull/') }}{% endraw %}
 
 jobs:
+  {% if AddPrecommit %}
   lint:
     name: Linting
     runs-on: ubuntu-latest
@@ -36,11 +37,12 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit
-          key: ${{ runner.os }}-pre-commit-${{ hashFiles('**/.pre-commit-config.yaml') }}
+          key: {% raw %}${{ runner.os }}-pre-commit-${{ hashFiles('**/.pre-commit-config.yaml') }}{% endraw %}
       - name: Install pre-commit
         run: pip install pre-commit
       - name: Run pre-commit
         run: SKIP=no-commit-to-branch pre-commit run -a
+  {% endif %}
   link-checker:
     name: Link checker
     runs-on: ubuntu-latest

@@ -44,6 +44,12 @@ AskAdvancedQuestions:
   default: false
 
 # Formatting and Linting
+AddPrecommit:
+  when: "{{ AskAdvancedQuestions }}"
+  type: bool
+  default: true
+  help: Add pre-commit config? (pre-commit runs before every commit fixing your formatting and preventing bad practices)
+
 Indentation:
   when: "{{ AskAdvancedQuestions }}"
   type: int
