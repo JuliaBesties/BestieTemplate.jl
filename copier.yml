@@ -1,3 +1,4 @@
+# Essential questions
 PackageName:
   type: str
   help: Package name without '.jl'
@@ -36,29 +37,26 @@ License:
     - MPL-2.0
   default: MIT
 
+# Optional
 AskAdvancedQuestions:
   type: bool
   help: Ask further questions? You can stop now with the minimum and use the default values for code of conduct, indentation, and package tests.
   default: false
 
-AddAllcontributors:
-  when: "{{ AskAdvancedQuestions }}"
-  type: bool
-  default: true
-  help: Add allcontributors to the package?
-
-AddCodeOfConduct:
-  when: "{{ AskAdvancedQuestions }}"
-  type: bool
-  default: true
-  help: Add a CODE_OF_CONDUCT.md file from Contributor Covenant? {{ AuthorEmail }} will be listed as contact point.
-
+# Formatting and Linting
 Indentation:
   when: "{{ AskAdvancedQuestions }}"
   type: int
   help: Indentation length for many formatters and linters
   validator: "{% if Indentation <= 0 %}Indentation must be positive{% endif %}"
   default: 2
+
+# CI
+SimplifiedPRTest:
+  when: "{{ AskAdvancedQuestions }}"
+  type: bool
+  help: (Simplified PR Test) Do you want to limit the Pull Request test to a single configuration (ubuntu + latest stable Julia)? This will make the PR tests run faster, but might miss OS-specific or LTS specific errors.
+  default: true
 
 AddMacToCI:
   when: "{{ AskAdvancedQuestions }}"
@@ -75,16 +73,23 @@ RunJuliaNightlyOnCI:
   type: bool
   help: Package tests run on Julia version {{ JuliaMinVersion }} and on the latest stable release. Do you also want to run them on the nightly version?
 
-SimplifiedPRTest:
-  when: "{{ AskAdvancedQuestions }}"
-  type: bool
-  help: (Simplified PR Test) Do you want to limit the Pull Request test to a single configuration (ubuntu + latest stable Julia)? This will make the PR tests run faster, but might miss OS-specific or LTS specific errors.
-  default: true
-
 UseCirrusCI:
   when: "{{ AskAdvancedQuestions }}"
   type: bool
   help: Add CirrusCI to run the package tests on FreeBSD?
+
+# General
+AddAllcontributors:
+  when: "{{ AskAdvancedQuestions }}"
+  type: bool
+  default: true
+  help: Add allcontributors to the package?
+
+AddCodeOfConduct:
+  when: "{{ AskAdvancedQuestions }}"
+  type: bool
+  default: true
+  help: Add a CODE_OF_CONDUCT.md file from Contributor Covenant? {{ AuthorEmail }} will be listed as contact point.
 
 _skip_if_exists:
   - "**/*.jl"
