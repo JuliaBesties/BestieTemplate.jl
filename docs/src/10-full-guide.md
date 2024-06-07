@@ -194,7 +194,11 @@ Step 2 is not necessary because it is already present in the template.
 
 The next time that the tests are run, the coverage page will be updated, and the badge will be fixed.
 
-### Add key for Copier.yml workflow (or delete it)
+### Add key for Copier.yml workflow
+
+!!! warning "Copier.yml is work in progress"
+    This option is not selected by default because it is a work in progress.
+    If you want to use it, you have to pass the key `"AddCopierCI" => true` to the `data` argument of `generate`, or select "Ask me" when deciding how to answer the optional questions.
 
 You can reapply the template in the future. This is normally a manual job, specially because normally there are conflicts.
 That being said, we are experimenting with having a workflow that automatically checks whether there are updates to the template and reapplies it.
