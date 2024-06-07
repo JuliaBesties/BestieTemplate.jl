@@ -1,4 +1,4 @@
-# Reference
+# [Reference](@id reference)
 
 ## Contents
 
