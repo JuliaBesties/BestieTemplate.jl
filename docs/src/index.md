@@ -13,6 +13,8 @@ The main features of this package/template are:
 - It provides a curated (opinionated) list of tools and best practices for Julia package development;
 - It can be applied and reapplied to existing packages, allowing the updates in the template to be imported into the package;
 
+[![asciicast](assets/demo.gif)](https://asciinema.org/a/611189)
+
 ## Using
 
 To fully benefit from the template, there are some steps to be done **before** and **after** you generate your package.

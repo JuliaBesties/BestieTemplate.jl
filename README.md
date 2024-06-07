@@ -60,7 +60,7 @@ julia> COPIERTemplate.generate("YourPackage.jl")
 
 please note that `"YourPackage.jl"` can either be a fresh new package or an existing one.
 
-<!-- agg https://asciinema.org/a/611189 docs/src/assets/demo.gif --speed 2.5 --cols 80 --rows 20 --font-family "JuliaMono" -->
+<!-- agg https://asciinema.org/a/... docs/src/assets/demo.gif --speed 2.5 --cols 80 --rows 20 --font-family "JuliaMono" -->
 [![asciicast](docs/src/assets/demo.gif)](https://asciinema.org/a/611189)
 
 If you like what you see, check the [full usage guide](https://abelsiqueira.com/COPIERTemplate.jl/stable/10-full-guide/).
