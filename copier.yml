@@ -97,6 +97,12 @@ AddCodeOfConduct:
   default: true
   help: Add a CODE_OF_CONDUCT.md file from Contributor Covenant? {{ AuthorEmail }} will be listed as contact point.
 
+AddGitHubTemplates:
+  when: "{{ AskAdvancedQuestions }}"
+  type: bool
+  default: true
+  help: Add GitHub issue and PR templates? (These create forms for issue creation and information on Pull Requests to improve the description quality.)
+
 _skip_if_exists:
   - "**/*.jl"
   - "!docs/make.jl"
