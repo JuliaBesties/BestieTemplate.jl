@@ -44,6 +44,7 @@ template_options = Dict(
   "RunJuliaNightlyOnCI" => true,
   "SimplifiedPRTest" => true,
   "UseCirrusCI" => true,
+  "AddPrecommit" => true,
 )
 
 function test_diff_dir(dir1, dir2)
