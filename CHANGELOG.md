@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning].
 - New question: AddPrecommit to add pre-commit related files (#231)
 - New question: AddGitHubTemplates to add issue and PR templates (#233)
 - New question: AnswerStrategy to choose between using recommended, minimum, or ask every question (#235)
+- New question: AddCopierCI to add Copier.yml (#237)
 
 ### Changed
 

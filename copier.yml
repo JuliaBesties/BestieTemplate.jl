@@ -92,6 +92,12 @@ UseCirrusCI:
   help: Add CirrusCI to run the package tests on FreeBSD?
   default: false
 
+AddCopierCI:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: bool
+  help: Add workflow to check for template updates? (This is a work in progress workflow that checks whether there has been an update to the template and automatically create a pull request)
+  default: false
+
 # General
 AddAllcontributors:
   when: "{{ AnswerStrategy == 'ask' }}"

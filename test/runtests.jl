@@ -47,6 +47,7 @@ template_options = Dict(
   "AddPrecommit" => true,
   "AddGitHubTemplates" => true,
   "AnswerStrategy" => "ask",
+  "AddCopierCI" => false,
 )
 
 function test_diff_dir(dir1, dir2)
