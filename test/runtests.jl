@@ -111,6 +111,34 @@ end
   end
 end
 
+@testset "Compare COPIERTemplate.update vs copier CLI update" begin
+  mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
+    run(`copier copy --defaults --quiet $min_bash_args $template_url $dir_copier_cli`)
+    cd(dir_copier_cli) do
+      run(`git init`)
+      run(`git add .`)
+      run(`git config user.name "Test"`)
+      run(`git config user.email "test@test.com"`)
+      run(`git commit -q -m "First commit"`)
+    end
+    run(`copier update --defaults --quiet $bash_args $dir_copier_cli`)
+
+    mktempdir(TMPDIR; prefix = "update_") do tmpdir
+      COPIERTemplate.generate(tmpdir, template_minimum_options; defaults = true, quiet = true)
+      cd(tmpdir) do
+        run(`git init`)
+        run(`git add .`)
+        run(`git config user.name "Test"`)
+        run(`git config user.email "test@test.com"`)
+        run(`git commit -q -m "First commit"`)
+        COPIERTemplate.update(template_options; defaults = true, quiet = true)
+      end
+
+      test_diff_dir(tmpdir, dir_copier_cli)
+    end
+  end
+end
+
 @testset "Testing copy, recopy and rebase" begin
   mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
     run(`copier copy --quiet $bash_args $template_path $dir_copier_cli`)

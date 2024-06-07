@@ -129,7 +129,36 @@ Now, go to [Setting up your package](@ref) to check what you still need to confi
 
 ### [Updating](@id updating_package)
 
-WIP. Tracked in issue #113.
+To update the package, simply call
+
+```julia-repl
+julia> COPIERTemplate.update()
+```
+
+You will be asked the relevant questions of the package as if you had applied it.
+The big differences are:
+
+- It will only apply the things that are new since you last applied/updated
+- It will remember previous answer.
+
+!!! tip "Change previous answers"
+    You can change your previous answers. In other words, if you though something was not mature enough in the past, but you are more confident in that now, you can adopt it now.
+
+As with the first application, you need to run `pre-commit run -a` to fix the unavoidable linting and formatting issues.
+Check the modifications in the relevant linter and formatting files, if you changed them manually, before doing it, though.
+
+```bash
+pre-commit run -a
+```
+
+The underlying package `copier` will use `git` to apply the differences and it will overwrite whatever files it finds in the way.
+Since `git` is mandatory, the changes will be left for you to review.
+
+!!! warning "Review the changes"
+    I repeat, the changes will be left for you to review.
+    Don't just add them blindly, because some of your modifications can and will be overwritten.
+
+If you need some help with undoing some of these changes, I recommend using a graphical interface.
 
 ## Setting up your package
 
