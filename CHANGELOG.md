@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- New question: AddPrecommit to add pre-commit related files (#231)
+- New question: AddGitHubTemplates to add issue and PR templates (#233)
+- New question: AnswerStrategy to choose between using recommended, minimum, or ask every question (#235)
+
+### Changed
+
+- Issue checklists are now just text (#234)
+
 ## [0.5.0]
 
 ### Added
