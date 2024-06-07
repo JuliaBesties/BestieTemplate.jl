@@ -96,10 +96,10 @@ _skip_if_exists:
 _subdirectory: template
 
 _message_after_copy: |
-  Your project {{ PackageName }}.jl has been created successfully! 🎉
+  Your package {{ PackageName }}.jl has been created successfully! 🎉
 
   Next steps: Create git repository and push to Github.
-  $ cd {{ PackageName }}.jl
+  $ cd <path>
   $ git init
   $ git add .
   $ pre-commit run -a # Try to fix possible pre-commit issues (failures are expected)
