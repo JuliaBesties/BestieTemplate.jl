@@ -7,12 +7,12 @@ body:
       value: |
         Thanks for taking the time to fill out this bug report!
 
-        Please, before submitting make sure that:
+        Please, before submitting, make sure that:
 
         - You have checked the [documentation](https://abelsiqueira.github.io/COPIERTemplate.jl) and haven't found enough information
         - There is not an [existing issue](https://github.com/abelsiqueira/COPIERTemplate.jl/issues) with the same question
         - You have read the [contributing guide](https://github.com/abelsiqueira/COPIERTemplate.jl/blob/main/docs/src/90-contributing.md/)
-        - You follow the [code of conduct](https://github.com/abelsiqueira/COPIERTemplate.jl/blob/main/CODE_OF_CONDUCT.md)
+        - You are following the [code of conduct](https://github.com/abelsiqueira/COPIERTemplate.jl/blob/main/CODE_OF_CONDUCT.md)
 
         The form below should help you in filling out this issue.
   - type: textarea

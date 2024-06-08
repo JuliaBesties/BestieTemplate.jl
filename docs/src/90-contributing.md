@@ -4,7 +4,7 @@ First of all, thanks for the interest!
 
 We welcome all kinds of contribution, including, but not limited to code, documentation, examples, configuration, issue creating, etc.
 
-Be polite and respectful and follow the code of conduct.
+Be polite and respectful, and follow the code of conduct.
 
 ## Bug reports and discussions
 
