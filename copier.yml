@@ -121,8 +121,11 @@ _skip_if_exists:
   - "**/*.jl"
   - "!docs/make.jl"
   - "**/Project.toml"
+  - .all-contributorsrc
   - CITATION.cff
   - LICENSE
+  - README.md
+  - docs/src/index.md
 
 _subdirectory: template
 
