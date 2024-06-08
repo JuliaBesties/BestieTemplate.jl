@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Changed
+
+- Improve skip section in README.md and make small corrections in the template
+
 ## [0.5.1] - 2024-06-07
 
 ### Added
