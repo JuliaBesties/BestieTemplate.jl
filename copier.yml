@@ -1,7 +1,7 @@
 # Essential questions
 PackageName:
   type: str
-  help: Package name without '.jl'
+  help: Package name (without '.jl')
   validator: "{% if PackageName | length == 0 %}Can't be empty{% endif %}"
 
 PackageUUID:
@@ -12,24 +12,27 @@ PackageUUID:
 
 PackageOwner:
   type: str
-  help: GitHub organization or user that owns the package
+  help: GitHub username or organization that owns the package (This will be used for URLs)
   validator: "{% if PackageOwner | length == 0 %}Can't be empty{% endif %}"
 
 AuthorName:
   type: str
+  help: Name of the package author (Used to kickstart a few files)
   validator: "{% if AuthorName | length == 0 %}Can't be empty{% endif %}"
 
 AuthorEmail:
   type: str
+  help: E-mail of the package author (Used to kickstart a few files)
   validator: "{% if AuthorEmail | length == 0 %}Can't be empty{% endif %}"
 
 JuliaMinVersion:
   type: str
-  help: Minimum Julia version to be used in Project.toml and CI (Normally the LTS version)
+  help: Minimum Julia version (Used in Project.toml and CI. The suggestion below is the LTS version)
   default: 1.6
 
 License:
   type: str
+  help: Package license (You need an OSI license to register. You can suggest new licenses in the issues)
   choices:
     - Apache-2.0
     - GPL-3.0
@@ -41,7 +44,7 @@ License:
 AnswerStrategy:
   type: str
   default: recommended
-  help: How do you want to deal with the optional questions? (You can use our defaults, or the bare minimum, or decide everything)
+  help: Optional questions (You can use our defaults, or the bare minimum, or decide everything)
   choices:
     Recommended (Our defaults): "recommended"
     Minimum (Answer no to any addition): "minimum"
@@ -52,12 +55,12 @@ AddPrecommit:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool
   default: "{{ AnswerStrategy != 'minimum' }}"
-  help: Add pre-commit config? (pre-commit runs before every commit fixing your formatting and preventing bad practices)
+  help: Pre-commit (Whether to add pre-commit.org. It runs before every commit fixing your formatting and preventing bad practices)
 
 Indentation:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: int
-  help: Indentation length for many formatters and linters
+  help: Indentation length (Used in configuration files of formatters and linters)
   validator: "{% if Indentation <= 0 %}Indentation must be positive{% endif %}"
   default: 2
 
@@ -65,37 +68,37 @@ Indentation:
 SimplifiedPRTest:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool
-  help: (Simplified PR Test) Do you want to limit the Pull Request test to a single configuration (ubuntu + latest stable Julia)? This will make the PR tests run faster, but might miss OS-specific or LTS specific errors.
+  help: Simplified PR Test (Do you want to limit the Pull Request test to a single configuration (ubuntu + latest stable Julia)? This will make the PR tests run faster, but might miss OS-specific or LTS specific errors)
   default: "{{ AnswerStrategy != 'minimum' }}"
 
 AddMacToCI:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool
-  help: Package tests run on Ubuntu latest. Do you want to add macOS latest as well?
+  help: MacOS CI test (Package tests run on Ubuntu latest. Do you want to add macOS latest as well?)
   default: "{{ AnswerStrategy != 'minimum' }}"
 
 AddWinToCI:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool
-  help: Do you want to add Windows latest as well?
+  help: Windows CI test (Same as above, but for Windows)
   default: "{{ AnswerStrategy != 'minimum' }}"
 
 RunJuliaNightlyOnCI:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool
-  help: Package tests run on Julia version {{ JuliaMinVersion }} and on the latest stable release. Do you also want to run them on the nightly version?
+  help: Julia nightly CI test (Package tests run on Julia version {{ JuliaMinVersion }} and on the latest stable release. Do you also want to run them on the nightly version?)
   default: false
 
 UseCirrusCI:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool
-  help: Add CirrusCI to run the package tests on FreeBSD?
+  help: FreeBSD CI test with CirrusCI (Add CirrusCI to run the package tests on FreeBSD?)
   default: false
 
 AddCopierCI:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool
-  help: Add workflow to check for template updates? (This is a work in progress workflow that checks whether there has been an update to the template and automatically create a pull request)
+  help: Copier.yml (Add workflow to check for template updates? This is a work in progress workflow that checks whether there has been an update to the template and automatically create a pull request)
   default: false
 
 # General
@@ -103,19 +106,19 @@ AddAllcontributors:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool
   default: "{{ AnswerStrategy != 'minimum' }}"
-  help: Add allcontributors to the package?
+  help: Add allcontributors (all-contributors.org is a project that adds collaborators information in the README and the docs)
 
 AddCodeOfConduct:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool
   default: "{{ AnswerStrategy != 'minimum' }}"
-  help: Add a CODE_OF_CONDUCT.md file from Contributor Covenant? {{ AuthorEmail }} will be listed as contact point.
+  help: Code of conduct file (Add a CODE_OF_CONDUCT.md file from Contributor Covenant? {{ AuthorEmail }} will be listed as contact point)
 
 AddGitHubTemplates:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool
   default: "{{ AnswerStrategy != 'minimum' }}"
-  help: Add GitHub issue and PR templates? (These create forms for issue creation and information on Pull Requests to improve the description quality.)
+  help: GitHub issue and PR templates (Add forms for issue creation and information on Pull Requests to improve the description quality)
 
 _skip_if_exists:
   - "**/*.jl"
