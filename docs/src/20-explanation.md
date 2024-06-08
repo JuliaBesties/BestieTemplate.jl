@@ -3,6 +3,9 @@
 In this section, we hope to explain the motivation for the package, and what is inside the template.
 Some things might have been obvious when creating the package and not at the moment, so feel free to create issues to ask, or suggest, clarifications.
 
+!!! tip
+    If something is missing or not explained enough, please open an issue.
+
 ## The engine, the project generator, and the template
 
 Let me start by marking some names clearer.
