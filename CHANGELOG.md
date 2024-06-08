@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.5.2] - 2024-06-08
+
+### Added
+
+- Update function that calls copier's run_update (#113)
+- Safeguard to avoid running generate when you want update (#247)
+
 ### Changed
 
 - Improve skip section in README.md and make small corrections in the template
@@ -232,7 +239,8 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.5.1...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.5.2...HEAD
+[0.5.2]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.5.2
 [0.5.1]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.5.1
 [0.5.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.5.0
 [0.4.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.4.0
