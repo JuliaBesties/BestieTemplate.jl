@@ -23,9 +23,20 @@ The `data` argument is a dictionary of answers (values) to questions (keys) that
 
 ## Keyword arguments
 
-The keyword arguments are passed directly to the internal [`Copier.copy`](@ref).
+- `warn_existing_pkg::Boolean = true`: Whether to check if you actually meant `update`. If you run `generate` and the `dst_path` contains a `.copier-answers.yml`, it means that the copy was already made, so you might have means `update` instead. When `true`, a warning is shown and execution is stopped.
+
+The other keyword arguments are passed directly to the internal [`Copier.copy`](@ref).
 """
-function generate(src_path, dst_path, data::Dict = Dict(); kwargs...)
+function generate(src_path, dst_path, data::Dict = Dict(); warn_existing_pkg = true, kwargs...)
+  if warn_existing_pkg && isfile(joinpath(dst_path, ".copier-answers.yml"))
+    @warn """There already exists a `.copier-answers.yml` file in the destination path.
+    You might have meant to use `COPIERTemplate.update` instead, which only fetches the non-applying updates.
+    If you really meant to use this command, then pass the `warn_existing_pkg = false` flag to this call.
+    """
+
+    return nothing
+  end
+
   # If there are answers in the destionation path, skip guessing the answers
   if !isfile(joinpath(dst_path, ".copier-answers")) && isdir(dst_path)
     existing_data = _read_data_from_existing_path(dst_path)
@@ -46,6 +57,8 @@ function generate(src_path, dst_path, data::Dict = Dict(); kwargs...)
     end
   end
   Copier.copy(src_path, dst_path, data; kwargs...)
+
+  return nothing
 end
 
 function generate(dst_path, data::Dict = Dict(); kwargs...)
