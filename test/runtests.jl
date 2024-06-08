@@ -139,6 +139,14 @@ end
   end
 end
 
+@testset "Test that COPIERTemplate.generate warns and exits for existing copy" begin
+  mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
+    run(`copier copy --quiet $bash_args $template_url $dir_copier_cli`)
+
+    @test_logs (:warn,) COPIERTemplate.generate(dir_copier_cli; quiet = true)
+  end
+end
+
 @testset "Testing copy, recopy and rebase" begin
   mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
     run(`copier copy --quiet $bash_args $template_path $dir_copier_cli`)
