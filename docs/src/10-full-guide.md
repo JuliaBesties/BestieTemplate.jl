@@ -101,7 +101,10 @@ julia> COPIERTemplate.generate("full/path/to/YourPackage.jl")
 This will look for a file `Project.toml` at the root of the given path and use the information there to guess some of the answers.
 Currently, we guess the `PackageName`, `PackageUUID` from the `name` and `uuid` fields, and try to guess the `AuthorName` and `AuthorEmail` from the `authors` field by looking at the first match.
 
-If you don't like the result, or want to override the answers, you can run the `generate` function with a additional arguments:
+!!! tip "Overwrite"
+    You will be asked whether to overwrite existing files or not. Since you are using `git`, you can try it out and reset if you don't like the result.
+
+If you don't like the result, or want to override the answers, you can run the `generate` function with additional arguments:
 
 ```julia-repl
 julia> data = Dict("AuthorName" => "Bob", "AuthorEmail" => "bob@bob.br")
@@ -117,10 +120,11 @@ Unfortunately, they are not shown to you when the conflict appears, so the best 
 After the template is applied and you are happy with the conflict resolution, enable pre-commit and push your code.
 
 ```bash
+git add .
 pre-commit run -a # Try to fix possible pre-commit issues (failures are expected)
+pre-commit install # All commits will run pre-commit now
 git add .
 git commit -m "Apply COPIERTemplate vx.y.z"
-pre-commit install # Future commits can't be directly to main unless you use -n
 ```
 
 Push your code to GitHub and head to [Setting up your package](@ref) for information on what to do next.
