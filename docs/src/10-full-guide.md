@@ -9,6 +9,22 @@ Depth = 2:3
 
 ## Before installing
 
+### Things to know
+
+This template is an attempt to provide many best practices to package development.
+This can be overwhelming, so you might prefer to take it easy at first and install only the fewest amount of new things possible.
+
+Thinking of you, the first optional question in the template is how to deal with the optional questions:
+
+- The "Recommended" option lets us select the best practices that we like the most. This means "yes" to most of the optional answers.
+- The "Minimum" option does not add any optional feature. Your package will still be a valid Julia package with a few things that we deem essential (such as online testing, documentation, and CITATION.CFF).
+
+The "Minimum" option is still a step above the bare minimum for a Julia package, so you will still benefit from the template.
+The "Recommended" option adds many features that package maintainers might find useful in the long run, but might be too much at once.
+Check the [Explanation](@ref explanation) page for more information.
+
+### Things to install
+
 Install a plugin on your editor to use [EditorConfig](https://editorconfig.org).
 This will ensure that your editor is configured with important formatting settings.
 
