@@ -177,3 +177,92 @@ After that, you only need to wait and verify:
 - After the release is create, a "docs" GitHub action will start for the tag.
 - After it passes, a deploy action will run.
 - After that runs, the [stable docs](https://abelsiqueira.github.io/COPIERTemplate.jl/stable) should be updated. Check them and look for the version number.
+
+## Additions to the templates
+
+!!! info "Suggestions are not here"
+    This section is aimed at the developer working on a new question, if you have any new idea or think the template needs to be updated or fixed, please search our [issues](https://github.com/abelsiqueira/COPIERTemplate.jl/issues) and if there isn't anything relevant, open a new issue.
+
+### Creating a new question
+
+To create a new question, you have to open the file `copier.yml` in the root.
+Find an appropriate place to add the question. Comments help identify the optional sections in the file.
+
+Follow the other questions style and syntax. The gist of it is that you need:
+
+- A `CamelCase` name.
+- `when: "{{ AnswerStrategy == 'ask' }}"` if the question is optional.
+- A `type`.
+- A `help: Short description or title (Longer description and details)`.
+- A `default`, if the question is optional.
+  - To default to `true` if "Recommended" or `false` for "Minimum", use `{{ AnswerStrategy != 'minimum' }}`.
+
+### Dependent sections in a file
+
+To create a section in a file that depends on a variable, first add `.jinja` to the end of the file name and use something like
+
+```jinja
+{% if AddSomeStuff %}
+...
+{% endif %}
+```
+
+`AddSomeStuff` is assumed to be boolean here, but you can use other conditions, such as `{% if PackageName == 'Pkg' %}`.
+
+Notice that the empty spaces are included as well, so in some situation you might need to make it less readable.
+For instance, the code below will correctly parse into a list of three elements if `AddBob` is false.
+
+```jinja
+# Good
+
+- Alice{% if AddBob %}
+- Bob{% endif}
+- Carlos
+- Diana
+```
+
+While the code below will parse into two lists of one and two elements, respectively:
+
+```jinja
+# Bad
+- Alice
+{% if AddBob %}- Bob{% endif}
+- Carlos
+- Diana
+```
+
+### Dependent files and directories
+
+To make a file depend on a variable, you can change the name of the file to include the conditional and the `.jinja` extension.
+
+```jinja
+{% if AddSomeFile %}some-file.txt{% endif %}.jinja
+```
+
+If `AddSomeFile`, then `some-file.txt` will exist.
+
+For directories, you do the same, except that you don't add the `.jinja` extension.
+
+```jinja
+{% if AddGitHubTemplates %}ISSUE_TEMPLATE{% endif %}
+```
+
+### Using answers
+
+To use the answers of a question outside of a conditional, you can use `{{ SomeValue }}`.
+This will translate to the value of `SomeValue` as answered by the user.
+For instance
+
+```jinja
+whoami() = "Hi, I'm package {{ PackageName }}.jl"
+```
+
+This also works on file names and in the `copier.yml` file.
+
+### Raw tag and avoiding clashes in GitHub workflow files
+
+Since the GitHub workflow also uses `{` and `}` for their commands, we want to enclose them using the `{% raw %}...{% endraw %}` tag:
+
+```jinja
+os: {% raw %}%{{ matrix.os }}{% endraw %}
+```
