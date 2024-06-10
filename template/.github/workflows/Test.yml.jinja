@@ -23,7 +23,7 @@ jobs:
       version: {% raw %}${{ matrix.version }}{% endraw %}
       arch: {% raw %}${{ matrix.arch }}{% endraw %}
       allow_failure: {% raw %}${{ matrix.allow_failure }}{% endraw %}
-      run_codecov: {% raw %}${{ matrix.version == "1" && matrix.os == "ubuntu-latest" }}{% endraw %}
+      run_codecov: {% raw %}${{ matrix.version == '1' && matrix.os == 'ubuntu-latest' }}{% endraw %}
     secrets:
       codecov_token: {% raw %}${{ secrets.CODECOV_TOKEN }}{% endraw %}
     strategy:
