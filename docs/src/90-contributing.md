@@ -23,3 +23,7 @@ Otherwise, say what your proposed solution is and wait for a discussion around i
 
 If your solution involves code (or something that requires running the package locally), check the [developer documentation](90-developer.md).
 Otherwise, you can use the GitHub interface directly to create your pull request.
+
+## Additions and modifications to the template
+
+If you have any new idea or think the template needs to be updated or fixed, please search our [issues](https://github.com/abelsiqueira/COPIERTemplate.jl/issues) and if there isn't anything relevant, open a new issue.
