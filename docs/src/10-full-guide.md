@@ -23,6 +23,12 @@ The "Minimum" option is still a step above the bare minimum for a Julia package,
 The "Recommended" option adds many features that package maintainers might find useful in the long run, but might be too much at once.
 Check the [Explanation](@ref explanation) page for more information.
 
+If you decide to gradually adopt, do this:
+
+1. Follow the relevant application section for [New](@ref new_package) or [Existing](@ref existing_package).
+1. Remember to select the "Minimum" optional questions.
+1. Follow the [Update section](@ref updating_package), change your answer from "Minimum" to "Recommended" or "Ask me".
+
 ### Things to install
 
 Install a plugin on your editor to use [EditorConfig](https://editorconfig.org).
@@ -133,6 +139,19 @@ You will most likely have conflicts when you apply the template.
 Whenever a conflict appears, you will need to decide on whether to accept or reject the new changes.
 Unfortunately, they are not shown to you when the conflict appears, so the best solution is to just accept all of them and then fix the conflicts using `git`.
 
+!!! warning "Review the changes"
+    Don't just add the changes blindly, because some of your files can and will be overwritten.
+
+!!! warning "README.md conflicts"
+    We really can't avoid some conflicts, and although some file can be skipped if existing (such as CITATION.cff), some can't.
+    For instance, README.md will most likely be wrong when you apply the template, but the badges (for instance), need to be included in your project.
+    This means that README.md cannot be skipped, and you will have to accept the overwrite and manually fix your README.md.
+
+!!! tip "Formatting"
+    You might most likely see changes in the formatting. So if you have are a formatter, it might be best to run it before reviewing the changes.
+    If you have chosen the "Recommended" answers, or explicitly chose to add `pre-commit`, then you should use it now (see below).
+
+If you need some help with undoing some of these changes, I recommend using a graphical interface.
 After the template is applied and you are happy with the conflict resolution, enable pre-commit and push your code.
 
 ```bash
@@ -160,9 +179,11 @@ The big differences are:
 
 - It will only apply the things that are new since you last applied/updated
 - It will remember previous answer.
+- It will overwrite without asking.
 
 !!! tip "Change previous answers"
     You can change your previous answers. In other words, if you though something was not mature enough in the past, but you are more confident in that now, you can adopt it now.
+    This works even if the template was not updated itself.
 
 As with the first application, you need to run `pre-commit run -a` to fix the unavoidable linting and formatting issues.
 Check the modifications in the relevant linter and formatting files, if you changed them manually, before doing it, though.
