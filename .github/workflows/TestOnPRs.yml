@@ -8,6 +8,7 @@ on:
       - "src/**"
       - "test/**"
       - "*.toml"
+      - "copier.yml"
     types: [opened, synchronize, reopened]
 
 concurrency:
