@@ -47,9 +47,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Link Checker
         id: lychee
         uses: lycheeverse/lychee-action@v1
         with:
           fail: true
+
+  aqua:
+    name: Aqua checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone
+        uses: actions/checkout@v4
+      - name: Setup Julia
+        uses: julia-actions/setup-julia@v2
+        with:
+          version: "1"
+      - name: Use Julia cache
+        uses: julia-actions/cache@v2
+      - uses: julia-actions/julia-buildpkg@v1
+      - name: Install Aqua
+        run: julia -e 'using Pkg; pkg"add Aqua"'
+      - name: Run Aqua
+        shell: julia --color=yes {0}
+        run: |
+          using Aqua # From the global env
+          using Pkg
+          pkg"activate ."
+          using COPIERTemplate
+          Aqua.test_all(COPIERTemplate)
