@@ -127,8 +127,6 @@ _skip_if_exists:
   - .all-contributorsrc
   - CITATION.cff
   - LICENSE
-  - README.md
-  - docs/src/index.md
 
 _subdirectory: template
 
