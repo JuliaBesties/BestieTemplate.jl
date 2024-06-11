@@ -40,6 +40,12 @@ License:
     - MPL-2.0
   default: MIT
 
+Indentation:
+  type: int
+  help: Indentation length (Used in .JuliaFormatter and other configuration files of formatters and linters if you add them)
+  validator: "{% if Indentation <= 0 %}Indentation must be positive{% endif %}"
+  default: 2
+
 # Optional
 AnswerStrategy:
   type: str
@@ -56,13 +62,6 @@ AddPrecommit:
   type: bool
   default: "{{ AnswerStrategy != 'minimum' }}"
   help: Pre-commit (Whether to add pre-commit.org. It runs before every commit fixing your formatting and preventing bad practices)
-
-Indentation:
-  when: "{{ AnswerStrategy == 'ask' }}"
-  type: int
-  help: Indentation length (Used in configuration files of formatters and linters)
-  validator: "{% if Indentation <= 0 %}Indentation must be positive{% endif %}"
-  default: 2
 
 # CI
 SimplifiedPRTest:
