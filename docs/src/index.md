@@ -70,6 +70,7 @@ This also doesn't explain where each file came from or why they are here. You ca
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/sverhoeven"><img src="https://avatars.githubusercontent.com/u/1713488?v=4?s=100" width="100px;" alt="Stefan Verhoeven"/><br /><sub><b>Stefan Verhoeven</b></sub></a><br /><a href="#code-sverhoeven" title="Code">💻</a> <a href="#ideas-sverhoeven" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://dpo.github.io"><img src="https://avatars.githubusercontent.com/u/38760?v=4?s=100" width="100px;" alt="Dominique"/><br /><sub><b>Dominique</b></sub></a><br /><a href="#ideas-dpo" title="Ideas, Planning, & Feedback">🤔</a></td>
     </tr>
   </tbody>
 </table>
