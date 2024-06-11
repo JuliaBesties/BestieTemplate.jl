@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.5.4] - 2024-06-11
+
+### Changed
+
+- Indentation is now a required question
+
 ## [0.5.3] - 2024-06-10
 
 ### Changed
@@ -250,7 +256,8 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.5.3...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.5.4...HEAD
+[0.5.4]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.5.4
 [0.5.3]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.5.3
 [0.5.2]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.5.2
 [0.5.1]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.5.1
