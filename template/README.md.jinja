@@ -19,8 +19,10 @@ If you use {{ PackageName }}.jl in your work, please cite using the reference gi
 ## Contributing
 
 If you want to make contributions of any kind, please first that a look into our [contributing guide directly on GitHub](docs/src/90-contributing.md) or the [contributing page on the website](https://{{ PackageOwner }}.github.io/{{ PackageName }}.jl/dev/contributing/).
+{% if AddAllcontributors %}
+---
 
-{% if AddAllcontributors %}### Contributors
+### Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
@@ -31,7 +33,3 @@ If you want to make contributions of any kind, please first that a look into our
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 {% endif %}
-
----
-
-This repo was created with the [COPIERTemplate.jl](https://github.com/abelsiqueira/COPIERTemplate.jl) package.
