@@ -26,7 +26,7 @@ makedocs(;
     assets = ["assets/style.css"],
   ),
   pages = [
-    "Home" => "index.md";
+    "Home" => "index.md"
     [
       nice_name(file) => file for
       file in readdir(joinpath(@__DIR__, "src")) if file != "index.md" && splitext(file)[2] == ".md"
