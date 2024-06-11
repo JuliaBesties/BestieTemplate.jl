@@ -39,6 +39,17 @@ If you would like to get involved in the COPIERTemplate growth, please check our
 
 If your interest is in developing the package, check the [development guide](90-developer.md) as well.
 
+## References
+
+Here is a list of links/repos that include content that we have used for inspiration, or used directly.
+This is most likely not a complete list, since many of the things included here were based on existing packages and knowledge that we brought from other projects.
+This also doesn't explain where each file came from or why they are here. You can find some of that information in the [Explanation](https://abelsiqueira.com/COPIERTemplate.jl/stable/20-explanation/) section of the docs.
+
+- [PkgTemplates.jl](https://github.com/JuliaCI/PkgTemplates.jl), naturally. We used it for many years, and in particular for the initial TulipaEnergyModel.jl commit (see below).
+- [Netherlands eScience Center's python template](https://github.com/NLeSC/python-template) includes many of the best practices that we apply here. We used many of the ideas there in a Julia context, and took many non-Julia specific ideas from there.
+- [TulipaEnergyModel.jl](https://github.com/TulipaEnergy/TulipaEnergyModel.jl) was the project that motivated this version of a template. From the start we decide to implement many best practices and so we started from a PkgTemplates.jl template and started adding parts of the python template that made sense.
+- The [Julia Smooth Optimizers](https://jso.dev) package ecosystem was one of the main motivations to look for a solution that could be applied and reapplied to existing packages, in particular to help maintainers.
+
 ## Contributors
 
 ```@raw html
