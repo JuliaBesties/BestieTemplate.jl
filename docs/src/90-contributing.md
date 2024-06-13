@@ -21,7 +21,7 @@ Otherwise, say what your proposed solution is and wait for a discussion around i
 !!! tip
     Feel free to ping us after a few days if there are no responses.
 
-If your solution involves code (or something that requires running the package locally), check the [developer documentation](90-developer.md).
+If your solution involves code (or something that requires running the package locally), check the [developer documentation](91-developer.md).
 Otherwise, you can use the GitHub interface directly to create your pull request.
 
 ## Additions and modifications to the template
