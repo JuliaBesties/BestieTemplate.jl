@@ -84,8 +84,8 @@ On top of the basic structure, we add some Documenter.jl structure.
 - docs/
   - src/
     - 90-contributing.md
-    - 90-developer.md
-    - 90-reference.md
+    - 91-developer.md
+    - 95-reference.md
     - index.md
   - make.jl
   - Project.toml
@@ -94,8 +94,8 @@ Brief explanation of the details:
 
 - The `Project.toml`, `make.jl` and `src/index.md` are the basic structure.
 - `docs/src/90-contributing.md`: Sometimes added as CONTRIBUTING.md, it explains how contributors can get involved in the project.
-- `docs/src/90-developer.md`: Sometimes added as README.dev.md or DEVELOPER.md, it explains how to setup your local environment and other information relevant for developers only.
-- `docs/src/90-reference.md` is the API reference page, which include an `@autodocs`.
+- `docs/src/91-developer.md`: Sometimes added as README.dev.md or DEVELOPER.md, it explains how to setup your local environment and other information relevant for developers only.
+- `docs/src/95-reference.md` is the API reference page, which include an `@autodocs`.
 
 One noteworthy aspect of our `make.jl`, is that we include some code to automatically generate the list of pages.
 Create a file in the form `##-name.md`, where `##` is a two-digit number, and it will be automatically added to the pages list.

@@ -76,7 +76,7 @@ Feel free to create a pull request to add your repo.
 
 If you would like to get involved in the COPIERTemplate growth, please check our [contributing guide](docs/src/90-contributing.md). We welcome contributions of many types, including coding, reviewing, creating issues, creating tutorials, interacting with users, etc. Make sure to follow our [code of conduct](CODE_OF_CONDUCT.md).
 
-If your interest is in developing the package, check the [development guide](docs/src/90-developer.md) as well.
+If your interest is in developing the package, check the [development guide](docs/src/91-developer.md) as well.
 
 ### Contributors
 
