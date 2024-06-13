@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Changed
+
+- Rename files in docs/src/ 90-developer to 91 and 90-reference to 95 (#273)
+
 ## [0.5.4] - 2024-06-11
 
 ### Changed
