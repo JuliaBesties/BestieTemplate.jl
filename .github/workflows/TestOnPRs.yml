@@ -9,6 +9,7 @@ on:
       - "test/**"
       - "*.toml"
       - "copier.yml"
+      - "template/**"
     types: [opened, synchronize, reopened]
 
 concurrency:
