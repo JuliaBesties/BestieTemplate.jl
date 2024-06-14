@@ -100,6 +100,9 @@ Brief explanation of the details:
 One noteworthy aspect of our `make.jl`, is that we include some code to automatically generate the list of pages.
 Create a file in the form `##-name.md`, where `##` is a two-digit number, and it will be automatically added to the pages list.
 
+!!! info "index.md"
+    You might have noticed that index.md is not numbered, and that is because Documenter.jl checks for that files specifically to define the landing page. Instead, we explicitly add `"Home" => "index."` to `make.jl`.
+
 ### Linting and Formatting
 
 The most important file related to linting and formatting is `.pre-commit-config.yaml`, which is the configuration for [pre-commit](https://pre-commit.com).
