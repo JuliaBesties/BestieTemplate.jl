@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.6.0] - 2024-06-14
+
 ### Changed
 
 - Rename files in docs/src/ 90-developer to 91 and 90-reference to 95 (#273)
@@ -260,7 +262,8 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.5.4...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.6.0
 [0.5.4]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.5.4
 [0.5.3]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.5.3
 [0.5.2]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.5.2
