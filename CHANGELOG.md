@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.6.1] - 2024-06-21
+
+### Changed
+
+- Small improvements to templates
+
 ## [0.6.0] - 2024-06-14
 
 ### Changed
@@ -262,7 +268,8 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.6.0...HEAD
+[unreleased]: https://github.com/abelsiqueira/COPIERTemplate.jl/compare/v0.6.1...HEAD
+[0.6.1]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.6.1
 [0.6.0]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.6.0
 [0.5.4]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.5.4
 [0.5.3]: https://github.com/abelsiqueira/COPIERTemplate.jl/releases/tag/v0.5.3
