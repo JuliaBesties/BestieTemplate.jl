@@ -2,7 +2,7 @@
 CurrentModule = BestieTemplate
 ```
 
-# BestieTemplate - Copier OPInionated Evolving Reusable Template
+# BestieTemplate - Your best practices friend
 
 ![BestieTemplate.jl](assets/logo.png)
 
