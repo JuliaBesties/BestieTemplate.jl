@@ -1,5 +1,5 @@
-<p>
-  <img src="docs/src/assets/logo-wide.png" alt="BestieTemplate.jl">
+<p align="center">
+  <img src="docs/src/assets/logo.png" alt="BestieTemplate.jl">
 </p>
 
 # BestieTemplate.jl

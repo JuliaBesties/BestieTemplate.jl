@@ -4,7 +4,7 @@ CurrentModule = BestieTemplate
 
 # BestieTemplate - Copier OPInionated Evolving Reusable Template
 
-![BestieTemplate.jl](assets/logo-wide.png)
+![BestieTemplate.jl](assets/logo.png)
 
 Welcome to the documentation of BestieTemplate.jl. This package provides a template in the [copier](https://copier.readthedocs.io) engine for a Julia package. Furthermore, it provides a wrapper around convenience calls to that package.
 
