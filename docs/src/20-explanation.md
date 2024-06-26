@@ -22,7 +22,7 @@ The short answer is that we want a more streamlined development experience, a te
 
 In more details, first, see the differences in the parts of the project in the table below:
 
-|                   | COPIERTemplate.jl                                                          | PkgTemplates.jl                         |
+|                   | BestieTemplate.jl                                                          | PkgTemplates.jl                         |
 | ----------------- | -------------------------------------------------------------------------- | --------------------------------------- |
 | Template          | Part of the package                                                        | Part of the package                     |
 | Engine            | [Jinja](https://palletsprojects.com/p/jinja)                               | [Mustache](https://mustache.github.io/) |

@@ -14,7 +14,7 @@ if get(ENV, "CI", "nothing") == "nothing"
   end
 end
 
-using COPIERTemplate
+using BestieTemplate
 using Pkg
 using Test
 using YAML
@@ -76,30 +76,30 @@ end
 min_bash_args = vcat([["-d"; "$k=$v"] for (k, v) in template_minimum_options]...)
 bash_args = vcat([["-d"; "$k=$v"] for (k, v) in template_options]...)
 template_path = joinpath(@__DIR__, "..")
-template_url = "https://github.com/abelsiqueira/COPIERTemplate.jl"
+template_url = "https://github.com/abelsiqueira/BestieTemplate.jl"
 
 # This is a hack because Windows managed to dirty the repo.
 if get(ENV, "CI", "nothing") == "true" && Sys.iswindows()
   run(`git reset --hard HEAD`)
 end
 
-@testset "Compare COPIERTemplate.generate vs copier CLI on URL/main" begin
+@testset "Compare BestieTemplate.generate vs copier CLI on URL/main" begin
   mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
     run(`copier copy --vcs-ref main --quiet $bash_args $template_url $dir_copier_cli`)
 
     mktempdir(TMPDIR; prefix = "copy_") do tmpdir
-      COPIERTemplate.generate(tmpdir, template_options; quiet = true, vcs_ref = "main")
+      BestieTemplate.generate(tmpdir, template_options; quiet = true, vcs_ref = "main")
       test_diff_dir(tmpdir, dir_copier_cli)
     end
   end
 end
 
-@testset "Compare COPIERTemplate.generate vs copier CLI on HEAD" begin
+@testset "Compare BestieTemplate.generate vs copier CLI on HEAD" begin
   mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
     run(`copier copy --vcs-ref HEAD --quiet $bash_args $template_path $dir_copier_cli`)
 
     mktempdir(TMPDIR; prefix = "copy_") do tmpdir
-      COPIERTemplate.generate(
+      BestieTemplate.generate(
         template_path,
         tmpdir,
         template_options;
@@ -111,7 +111,7 @@ end
   end
 end
 
-@testset "Compare COPIERTemplate.update vs copier CLI update" begin
+@testset "Compare BestieTemplate.update vs copier CLI update" begin
   mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
     run(`copier copy --defaults --quiet $min_bash_args $template_url $dir_copier_cli`)
     cd(dir_copier_cli) do
@@ -124,14 +124,14 @@ end
     run(`copier update --defaults --quiet $bash_args $dir_copier_cli`)
 
     mktempdir(TMPDIR; prefix = "update_") do tmpdir
-      COPIERTemplate.generate(tmpdir, template_minimum_options; defaults = true, quiet = true)
+      BestieTemplate.generate(tmpdir, template_minimum_options; defaults = true, quiet = true)
       cd(tmpdir) do
         run(`git init`)
         run(`git add .`)
         run(`git config user.name "Test"`)
         run(`git config user.email "test@test.com"`)
         run(`git commit -q -m "First commit"`)
-        COPIERTemplate.update(template_options; defaults = true, quiet = true)
+        BestieTemplate.update(template_options; defaults = true, quiet = true)
       end
 
       test_diff_dir(tmpdir, dir_copier_cli)
@@ -139,11 +139,11 @@ end
   end
 end
 
-@testset "Test that COPIERTemplate.generate warns and exits for existing copy" begin
+@testset "Test that BestieTemplate.generate warns and exits for existing copy" begin
   mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
     run(`copier copy --quiet $bash_args $template_url $dir_copier_cli`)
 
-    @test_logs (:warn,) COPIERTemplate.generate(dir_copier_cli; quiet = true)
+    @test_logs (:warn,) BestieTemplate.generate(dir_copier_cli; quiet = true)
   end
 end
 
@@ -153,7 +153,7 @@ end
 
     @testset "Compare copied project vs copier CLI baseline" begin
       mktempdir(TMPDIR; prefix = "copy_") do tmpdir
-        COPIERTemplate.Copier.copy(tmpdir, template_options; quiet = true)
+        BestieTemplate.Copier.copy(tmpdir, template_options; quiet = true)
         test_diff_dir(tmpdir, dir_copier_cli)
       end
     end
@@ -161,7 +161,7 @@ end
     @testset "Compare recopied project vs copier CLI baseline" begin
       mktempdir(TMPDIR; prefix = "recopy_") do tmpdir
         run(`copier copy --defaults --quiet $min_bash_args $template_path $tmpdir`)
-        COPIERTemplate.Copier.recopy(tmpdir, template_options; quiet = true, overwrite = true)
+        BestieTemplate.Copier.recopy(tmpdir, template_options; quiet = true, overwrite = true)
         test_diff_dir(tmpdir, dir_copier_cli)
       end
     end
@@ -176,7 +176,7 @@ end
           run(`git config user.email "test@test.com"`)
           run(`git commit -q -m "First commit"`)
         end
-        COPIERTemplate.Copier.update(tmpdir, template_options; overwrite = true, quiet = true)
+        BestieTemplate.Copier.update(tmpdir, template_options; overwrite = true, quiet = true)
         test_diff_dir(tmpdir, dir_copier_cli)
       end
     end
@@ -187,7 +187,7 @@ end
   mktempdir(TMPDIR; prefix = "existing_") do dir_existing
     cd(dir_existing) do
       Pkg.generate("NewPkg")
-      COPIERTemplate.generate(
+      BestieTemplate.generate(
         template_path,
         "NewPkg/",
         Dict("AuthorName" => "T. Esther", "PackageOwner" => "test");
@@ -208,7 +208,7 @@ end
       cd(dir_path_is_dir) do
         data = Dict(key => value for (key, value) in template_options if key != "PackageName")
         mkdir("some_folder")
-        COPIERTemplate.generate(
+        BestieTemplate.generate(
           template_path,
           "some_folder/SomePackage1.jl",
           data;
@@ -217,7 +217,7 @@ end
         )
         answers = YAML.load_file("some_folder/SomePackage1.jl/.copier-answers.yml")
         @test answers["PackageName"] == "SomePackage1"
-        COPIERTemplate.generate(
+        BestieTemplate.generate(
           template_path,
           "some_folder/SomePackage2.jl",
           merge(data, Dict("PackageName" => "OtherName"));

@@ -2,7 +2,7 @@
 # Visit https://bit.ly/cffinit to generate yours today!
 
 cff-version: 1.2.0
-title: COPIERTemplate.jl
+title: BestieTemplate.jl
 message: >-
   If you use this software, please cite it using the
   metadata from this file.
@@ -17,5 +17,5 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.8350577
     description: Zenodo Concept DOI
-repository-code: "https://github.com/abelsiqueira/COPIERTemplate.jl"
+repository-code: "https://github.com/abelsiqueira/BestieTemplate.jl"
 license: MPL-2.0

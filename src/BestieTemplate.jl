@@ -1,12 +1,12 @@
 """
-# COPIERTemplate.jl
+# BestieTemplate.jl
 
 This package defines a copier template for Julia packages and a basic user interface aroud copier
 to use it from Julia.
 
 The main functions are: [`generate`](@ref)
 """
-module COPIERTemplate
+module BestieTemplate
 
 include("Copier.jl")
 
@@ -16,8 +16,8 @@ using TOML: TOML
     generate(dst_path[, data]; kwargs...)
     generate(src_path, dst_path[, data]; true, kwargs...)
 
-Runs the `copy` command of [copier](https://github.com/copier-org/copier) with the COPIERTemplate template.
-If `src_path` is not informed, the GitHub URL of COPIERTemplate.jl is used.
+Runs the `copy` command of [copier](https://github.com/copier-org/copier) with the BestieTemplate template.
+If `src_path` is not informed, the GitHub URL of BestieTemplate.jl is used.
 
 The `data` argument is a dictionary of answers (values) to questions (keys) that can be used to bypass some of the interactive questions.
 
@@ -30,7 +30,7 @@ The other keyword arguments are passed directly to the internal [`Copier.copy`](
 function generate(src_path, dst_path, data::Dict = Dict(); warn_existing_pkg = true, kwargs...)
   if warn_existing_pkg && isfile(joinpath(dst_path, ".copier-answers.yml"))
     @warn """There already exists a `.copier-answers.yml` file in the destination path.
-    You might have meant to use `COPIERTemplate.update` instead, which only fetches the non-applying updates.
+    You might have meant to use `BestieTemplate.update` instead, which only fetches the non-applying updates.
     If you really meant to use this command, then pass the `warn_existing_pkg = false` flag to this call.
     """
 
@@ -62,7 +62,7 @@ function generate(src_path, dst_path, data::Dict = Dict(); warn_existing_pkg = t
 end
 
 function generate(dst_path, data::Dict = Dict(); kwargs...)
-  generate("https://github.com/abelsiqueira/COPIERTemplate.jl", dst_path, data; kwargs...)
+  generate("https://github.com/abelsiqueira/BestieTemplate.jl", dst_path, data; kwargs...)
 end
 
 """

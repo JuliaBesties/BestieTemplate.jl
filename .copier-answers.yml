@@ -4,8 +4,8 @@ AuthorEmail: abel.s.siqueira@gmail.com
 AuthorName: Abel Soares Siqueira
 JuliaMinVersion: '1.6'
 License: MPL-2.0
-PackageName: COPIERTemplate
+PackageName: BestieTemplate
 PackageOwner: abelsiqueira
-PackageUUID: 5022dd56-1d41-4538-9f4c-b20739ff8283
+PackageUUID: E5D671A7-4186-4F1A-BF88-C19B630DA94F
 _commit: v0.5.2
-_src_path: https://github.com/abelsiqueira/COPIERTemplate.jl
+_src_path: https://github.com/abelsiqueira/BestieTemplate.jl

@@ -44,8 +44,8 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: {% raw %}${{ secrets.COPIER_PAT }}{% endraw %}
-          commit-message: ":robot: COPIERTemplate.jl update"
-          title: "[AUTO] COPIERTemplate.jl update"
+          commit-message: ":robot: BestieTemplate.jl update"
+          title: "[AUTO] BestieTemplate.jl update"
           body-path: /tmp/body.md
           branch: auto-copier-template-update
           delete-branch: true

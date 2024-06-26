@@ -142,4 +142,4 @@ _message_after_copy: |
   $ pre-commit install # Future commits can't be directly to main unless you use -n
   Create a repo on GitHub and push your code to it.
 
-  Read the full guide: https://abelsiqueira.com/COPIERTemplate.jl/stable/10-full-guide
+  Read the full guide: https://abelsiqueira.com/BestieTemplate.jl/stable/10-full-guide

@@ -1,35 +1,37 @@
 <p>
-  <img src="docs/src/assets/logo-wide.png" alt="COPIERTemplate.jl">
+  <img src="docs/src/assets/logo-wide.png" alt="BestieTemplate.jl">
 </p>
 
-# Copier OPInionated Evolving Reusable Template
+# BestieTemplate.jl
+
+Your best practices friend.
 
 <div align="center">
 
-[![Stable Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://abelsiqueira.github.io/COPIERTemplate.jl/stable)
-[![In development documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://abelsiqueira.github.io/COPIERTemplate.jl/dev)
-[![Build Status](https://github.com/abelsiqueira/COPIERTemplate.jl/workflows/Test/badge.svg)](https://github.com/abelsiqueira/COPIERTemplate.jl/actions)
-[![Test workflow status](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Test.yml/badge.svg?branch=main)](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Test.yml?query=branch%3Amain)
-[![Lint workflow Status](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Lint.yml/badge.svg?branch=main)](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Lint.yml?query=branch%3Amain)
-[![Docs workflow Status](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Docs.yml/badge.svg?branch=main)](https://github.com/abelsiqueira/COPIERTemplate.jl/actions/workflows/Docs.yml?query=branch%3Amain)
-[![Coverage](https://codecov.io/gh/abelsiqueira/COPIERTemplate.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/abelsiqueira/COPIERTemplate.jl)
+[![Stable Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://abelsiqueira.github.io/BestieTemplate.jl/stable)
+[![In development documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://abelsiqueira.github.io/BestieTemplate.jl/dev)
+[![Build Status](https://github.com/abelsiqueira/BestieTemplate.jl/workflows/Test/badge.svg)](https://github.com/abelsiqueira/BestieTemplate.jl/actions)
+[![Test workflow status](https://github.com/abelsiqueira/BestieTemplate.jl/actions/workflows/Test.yml/badge.svg?branch=main)](https://github.com/abelsiqueira/BestieTemplate.jl/actions/workflows/Test.yml?query=branch%3Amain)
+[![Lint workflow Status](https://github.com/abelsiqueira/BestieTemplate.jl/actions/workflows/Lint.yml/badge.svg?branch=main)](https://github.com/abelsiqueira/BestieTemplate.jl/actions/workflows/Lint.yml?query=branch%3Amain)
+[![Docs workflow Status](https://github.com/abelsiqueira/BestieTemplate.jl/actions/workflows/Docs.yml/badge.svg?branch=main)](https://github.com/abelsiqueira/BestieTemplate.jl/actions/workflows/Docs.yml?query=branch%3Amain)
+[![Coverage](https://codecov.io/gh/abelsiqueira/BestieTemplate.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/abelsiqueira/BestieTemplate.jl)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8350577.svg)](https://doi.org/10.5281/zenodo.8350577)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
-[![All Contributors](https://img.shields.io/github/all-contributors/abelsiqueira/COPIERTemplate.jl?labelColor=5e1ec7&color=c0ffee&style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/github/all-contributors/abelsiqueira/BestieTemplate.jl?labelColor=5e1ec7&color=c0ffee&style=flat-square)](#contributors)
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-black.json)](https://github.com/copier-org/copier)
 
 </div>
 
-## What does `COPIERTemplate` do?
+## What does `BestieTemplate` do?
 
 Creating `Julia` packages involve the creation and edition of many tiny files.
 Wouldn't it be great to automate this?
 
-This is exactly what `COPIERTemplate` does.
+This is exactly what `BestieTemplate` does.
 
 ### FAQ
 
-- How is `COPIERTemplate` different from `PkgTemplates`?
+- How is `BestieTemplate` different from `PkgTemplates`?
   - it can be applied to existing packages
   - it invites to follow some (opinionated) best practices
   - it can be reapplied to acquire updates made to the template
@@ -37,24 +39,24 @@ This is exactly what `COPIERTemplate` does.
 
 ### Architecture
 
-Under the hood, `COPIERTemplate` is no more and no less than:
+Under the hood, `BestieTemplate` is no more and no less than:
 
 - a [copier](https://copier.readthedocs.io) template/skeleton for Julia packages (see folder [template](template)); and
 - a package that wraps `copier` in Julia using `PythonCall`.
 
 ## Quickstart
 
-Install `COPIERTemplate` in your chosen environment (we recommend globally) by entering `pkg` mode by pressing `]` and then:
+Install `BestieTemplate` in your chosen environment (we recommend globally) by entering `pkg` mode by pressing `]` and then:
 
 ```julia-repl
-pkg> add COPIERTemplate
+pkg> add BestieTemplate
 ```
 
 then:
 
 ```julia-repl
-julia> using COPIERTemplate
-julia> COPIERTemplate.generate("YourPackage.jl")
+julia> using BestieTemplate
+julia> BestieTemplate.generate("YourPackage.jl")
 ```
 
 please note that `"YourPackage.jl"` can either be a fresh new package or an existing one.
@@ -62,7 +64,7 @@ please note that `"YourPackage.jl"` can either be a fresh new package or an exis
 <!-- agg https://asciinema.org/a/... docs/src/assets/demo.gif --speed 2.5 --cols 80 --rows 20 --font-family "JuliaMono" -->
 [![asciicast](docs/src/assets/demo.gif)](https://asciinema.org/a/611189)
 
-If you like what you see, check the [full usage guide](https://abelsiqueira.com/COPIERTemplate.jl/stable/10-full-guide/).
+If you like what you see, check the [full usage guide](https://abelsiqueira.com/BestieTemplate.jl/stable/10-full-guide/).
 
 ## Users and Examples
 
@@ -70,11 +72,11 @@ The following are users and examples of repos using this template, or other temp
 Feel free to create a pull request to add your repo.
 
 - This package itself uses the template.
-- [COPIERTemplateExample.jl](https://github.com/abelsiqueira/COPIERTemplateExample.jl)
+- [TulipaIO.jl](https://github.com/TulipaEnergy/TulipaIO.jl)
 
 ## Contributing
 
-If you would like to get involved in the COPIERTemplate growth, please check our [contributing guide](docs/src/90-contributing.md). We welcome contributions of many types, including coding, reviewing, creating issues, creating tutorials, interacting with users, etc. Make sure to follow our [code of conduct](CODE_OF_CONDUCT.md).
+If you would like to get involved in the BestieTemplate growth, please check our [contributing guide](docs/src/90-contributing.md). We welcome contributions of many types, including coding, reviewing, creating issues, creating tutorials, interacting with users, etc. Make sure to follow our [code of conduct](CODE_OF_CONDUCT.md).
 
 If your interest is in developing the package, check the [development guide](docs/src/91-developer.md) as well.
 
@@ -82,7 +84,7 @@ If your interest is in developing the package, check the [development guide](doc
 
 Here is a list of links/repos that include content that we have used for inspiration, or used directly.
 This is most likely not a complete list, since many of the things included here were based on existing packages and knowledge that we brought from other projects.
-This also doesn't explain where each file came from or why they are here. You can find some of that information in the [Explanation](https://abelsiqueira.com/COPIERTemplate.jl/stable/20-explanation/) section of the docs.
+This also doesn't explain where each file came from or why they are here. You can find some of that information in the [Explanation](https://abelsiqueira.com/BestieTemplate.jl/stable/20-explanation/) section of the docs.
 
 - [PkgTemplates.jl](https://github.com/JuliaCI/PkgTemplates.jl), naturally. We used it for many years, and in particular for the initial TulipaEnergyModel.jl commit (see below).
 - [Netherlands eScience Center's python template](https://github.com/NLeSC/python-template) includes many of the best practices that we apply here. We used many of the ideas there in a Julia context, and took many non-Julia specific ideas from there.
