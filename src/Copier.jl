@@ -22,7 +22,7 @@ end
 
 Wrapper around [copier.run_copy](https://copier.readthedocs.io/en/stable/reference/main/#copier.main.run_copy).
 
-This is an internal function, if COPIERTemplate's main API is not sufficient, open an issue.
+This is an internal function, if BestieTemplate's main API is not sufficient, open an issue.
 """
 function Base.copy(src_path, dst_path, data::Dict = Dict(); kwargs...)
   copier = PythonCall.pyimport("copier")
@@ -38,7 +38,7 @@ end
 
 Wrapper around [copier.run_recopy](https://copier.readthedocs.io/en/stable/reference/main/#copier.main.run_recopy).
 
-This is an internal function, if COPIERTemplate's main API is not sufficient, open an issue.
+This is an internal function, if BestieTemplate's main API is not sufficient, open an issue.
 """
 function recopy(dst_path, data::Dict = Dict(); kwargs...)
   copier = PythonCall.pyimport("copier")
@@ -50,7 +50,7 @@ end
 
 Wrapper around [copier.run_update](https://copier.readthedocs.io/en/stable/reference/main/#copier.main.run_update).
 
-This is an internal function, if COPIERTemplate's main API is not sufficient, open an issue.
+This is an internal function, if BestieTemplate's main API is not sufficient, open an issue.
 """
 function update(dst_path, data::Dict = Dict(); kwargs...)
   copier = PythonCall.pyimport("copier")

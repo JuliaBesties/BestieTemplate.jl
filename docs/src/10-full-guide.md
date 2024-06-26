@@ -1,6 +1,6 @@
 # [Full guide](@id full_guide)
 
-Welcome to **full usage guide** of COPIERTemplate.
+Welcome to **full usage guide** of BestieTemplate.
 
 ```@contents
 Pages = ["10-full-guide.md"]
@@ -50,17 +50,17 @@ To install `pre-commit`, we recommend using [pipx](https://pipx.pypa.io) as foll
 pipx install pre-commit
 ```
 
-## Install COPIERTemplate (or copier)
+## Install BestieTemplate (or copier)
 
-To use the template, we recommend installing the package `COPIERTemplate.jl` globally:
+To use the template, we recommend installing the package `BestieTemplate.jl` globally:
 
 ```julia-repl
 julia> # press ]
 pkg> activate
-pkg> add COPIERTemplate
+pkg> add BestieTemplate
 ```
 
-The COPIERTemplate package wraps [copier](https://copier.readthedocs.io/) and adds some lightweight checks and parameters to make your user experience better.
+The BestieTemplate package wraps [copier](https://copier.readthedocs.io/) and adds some lightweight checks and parameters to make your user experience better.
 
 !!! warning "Alternative"
     Alternatively, you can use [copier](https://copier.readthedocs.io/) directly, in which case you will have the pure template generation experience. If that is the case, I will assume that you know what you are doing and won't show the full command here to avoid confusing new users.
@@ -80,15 +80,15 @@ The three cases are listed below.
 Simply run
 
 ```julia-repl
-julia> using COPIERTemplate
-julia> COPIERTemplate.generate("full/path/to/YourPackage.jl")
+julia> using BestieTemplate
+julia> BestieTemplate.generate("full/path/to/YourPackage.jl")
 ```
 
-This will create the folder at the given path and create a package named `YourPackage` using the latest release of the COPIERTemplate.
+This will create the folder at the given path and create a package named `YourPackage` using the latest release of the BestieTemplate.
 You will be prompted with many questions, **some required** and some with our **recommended** choices.
 
 You can give more options to the `generate` function, including the source of the template, pre-filled data, and options passed to the underlying project generator `copier`.
-See the full docstring for [`COPIERTemplate.generate`](@ref) for more information.
+See the full docstring for [`BestieTemplate.generate`](@ref) for more information.
 
 The resulting folder will not be a `git` package yet (to avoid trust issues), so you need to handle that yourself.
 You should see a short guide on screen, but here it is again:
@@ -116,8 +116,8 @@ To apply the template to an existing package, you can do the following:
     This assumes that you already use git on that package and the your working directory is clean.
 
 ```julia-repl
-julia> using COPIERTemplate
-julia> COPIERTemplate.generate("full/path/to/YourPackage.jl")
+julia> using BestieTemplate
+julia> BestieTemplate.generate("full/path/to/YourPackage.jl")
 ```
 
 This will look for a file `Project.toml` at the root of the given path and use the information there to guess some of the answers.
@@ -130,10 +130,10 @@ If you don't like the result, or want to override the answers, you can run the `
 
 ```julia-repl
 julia> data = Dict("AuthorName" => "Bob", "AuthorEmail" => "bob@bob.br")
-julia> COPIERTemplate.generate("full/path/to/YourPackage.jl", data)
+julia> BestieTemplate.generate("full/path/to/YourPackage.jl", data)
 ```
 
-See the full docstring for [`COPIERTemplate.generate`](@ref) for more information.
+See the full docstring for [`BestieTemplate.generate`](@ref) for more information.
 
 You will most likely have conflicts when you apply the template.
 Whenever a conflict appears, you will need to decide on whether to accept or reject the new changes.
@@ -159,7 +159,7 @@ git add .
 pre-commit run -a # Try to fix possible pre-commit issues (failures are expected)
 pre-commit install # All commits will run pre-commit now
 git add .
-git commit -m "Apply COPIERTemplate vx.y.z"
+git commit -m "Apply BestieTemplate vx.y.z"
 ```
 
 Push your code to GitHub and head to [Setting up your package](@ref) for information on what to do next.
@@ -171,7 +171,7 @@ Now, go to [Setting up your package](@ref) to check what you still need to confi
 To update the package, simply call
 
 ```julia-repl
-julia> COPIERTemplate.update()
+julia> BestieTemplate.update()
 ```
 
 You will be asked the relevant questions of the package as if you had applied it.

@@ -1,7 +1,7 @@
-using COPIERTemplate
+using BestieTemplate
 using Documenter
 
-DocMeta.setdocmeta!(COPIERTemplate, :DocTestSetup, :(using COPIERTemplate); recursive = true)
+DocMeta.setdocmeta!(BestieTemplate, :DocTestSetup, :(using BestieTemplate); recursive = true)
 
 const page_rename = Dict("developer.md" => "Developer docs") # Without the numbers
 
@@ -14,15 +14,15 @@ function nice_name(file)
 end
 
 makedocs(;
-  modules = [COPIERTemplate],
+  modules = [BestieTemplate],
   doctest = true,
   linkcheck = false, # Rely on Lint.yml/lychee for the links
   authors = "Abel Soares Siqueira <abel.s.siqueira@gmail.com> and contributors",
-  repo = "https://github.com/abelsiqueira/COPIERTemplate.jl/blob/{commit}{path}#{line}",
-  sitename = "COPIERTemplate.jl",
+  repo = "https://github.com/abelsiqueira/BestieTemplate.jl/blob/{commit}{path}#{line}",
+  sitename = "BestieTemplate.jl",
   format = Documenter.HTML(;
     prettyurls = true,
-    canonical = "https://abelsiqueira.github.io/COPIERTemplate.jl",
+    canonical = "https://abelsiqueira.github.io/BestieTemplate.jl",
     assets = ["assets/style.css"],
   ),
   pages = [
@@ -34,4 +34,4 @@ makedocs(;
   ],
 )
 
-deploydocs(; repo = "github.com/abelsiqueira/COPIERTemplate.jl", push_preview = true)
+deploydocs(; repo = "github.com/abelsiqueira/BestieTemplate.jl", push_preview = true)

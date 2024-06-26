@@ -13,5 +13,5 @@ Pages = ["95-reference.md"]
 ```
 
 ```@autodocs
-Modules = [COPIERTemplate, COPIERTemplate.Copier]
+Modules = [BestieTemplate, BestieTemplate.Copier]
 ```

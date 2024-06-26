@@ -43,9 +43,9 @@ jobs:
       - run: |
           julia --project=docs -e '
             using Documenter: DocMeta, doctest
-            using COPIERTemplate
-            DocMeta.setdocmeta!(COPIERTemplate, :DocTestSetup, :(using COPIERTemplate); recursive=true)
-            doctest(COPIERTemplate)'
+            using BestieTemplate
+            DocMeta.setdocmeta!(BestieTemplate, :DocTestSetup, :(using BestieTemplate); recursive=true)
+            doctest(BestieTemplate)'
       - run: julia --project=docs docs/make.jl
         env:
           JULIA_PKG_SERVER: ""

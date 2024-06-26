@@ -1,5 +1,5 @@
 [deps]
-COPIERTemplate = "5022dd56-1d41-4538-9f4c-b20739ff8283"
+BestieTemplate = "E5D671A7-4186-4F1A-BF88-C19B630DA94F"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 LiveServer = "16fef848-5104-11e9-1b77-fb7a48bbb589"
 
