@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning].
 
 <!-- markdownlint-disable MD024 -->
 
-## [Unreleased]
+## [0.7.0] - 2024-06-26
 
 ### Changed
 
@@ -272,7 +272,7 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/abelsiqueira/BestieTemplate.jl/compare/v0.6.1...HEAD
+[0.7.0]: https://github.com/abelsiqueira/BestieTemplate.jl/releases/tag/v0.7.0
 [0.6.1]: https://github.com/abelsiqueira/BestieTemplate.jl/releases/tag/v0.6.1
 [0.6.0]: https://github.com/abelsiqueira/BestieTemplate.jl/releases/tag/v0.6.0
 [0.5.4]: https://github.com/abelsiqueira/BestieTemplate.jl/releases/tag/v0.5.4

@@ -1,7 +1,7 @@
 name = "BestieTemplate"
 uuid = "E5D671A7-4186-4F1A-BF88-C19B630DA94F"
 authors = ["Abel Soares Siqueira <abel.s.siqueira@gmail.com> and contributors"]
-version = "0.6.1"
+version = "0.7.0"
 
 [deps]
 CondaPkg = "992eb4ea-22a4-4c89-a5bb-47a3300528ab"
