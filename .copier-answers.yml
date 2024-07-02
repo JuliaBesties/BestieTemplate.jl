@@ -2,10 +2,11 @@
 AnswerStrategy: recommended
 AuthorEmail: abel.s.siqueira@gmail.com
 AuthorName: Abel Soares Siqueira
+Indentation: 2
 JuliaMinVersion: '1.6'
 License: MPL-2.0
 PackageName: BestieTemplate
 PackageOwner: abelsiqueira
 PackageUUID: E5D671A7-4186-4F1A-BF88-C19B630DA94F
-_commit: v0.5.2
+_commit: v0.7.0
 _src_path: https://github.com/abelsiqueira/BestieTemplate.jl

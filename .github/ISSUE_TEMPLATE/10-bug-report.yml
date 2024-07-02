@@ -11,7 +11,7 @@ body:
         Please, before submitting, make sure that:
 
         - There is not an [existing issue](https://github.com/abelsiqueira/BestieTemplate.jl/issues) with the same question
-        - You have read the [contributing guide](https://github.com/abelsiqueira/BestieTemplate.jl/blob/main/docs/src/90-contributing.md/)
+        - You have read the [contributing guide](https://abelsiqueira.github.io/BestieTemplate.jl/dev/90-contributing/)
         - You are following the [code of conduct](https://github.com/abelsiqueira/BestieTemplate.jl/blob/main/CODE_OF_CONDUCT.md)
 
         The form below should help you in filling out this issue.
@@ -40,7 +40,7 @@ body:
     id: reproduction
     attributes:
       label: Reproduction steps
-      description: What steps led to the bug happening?
+      description: What steps led to the bug happening? Please provide a minimal reproducible example.
     validations:
       required: true
   - type: textarea
