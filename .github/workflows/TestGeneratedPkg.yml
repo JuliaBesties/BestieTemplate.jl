@@ -1,0 +1,81 @@
+name: Test generated package
+
+on:
+  push:
+    branches:
+      - main
+    tags: ["*"]
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "test/**"
+      - "*.toml"
+      - "copier.yml"
+      - "template/**"
+    types: [opened, synchronize, reopened]
+
+  workflow_dispatch:
+
+jobs:
+  test-generated-pkg:
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - "1.6"
+          - "1"
+        os:
+          - ubuntu-latest
+        arch:
+          - x64
+        allow_failure: [false]
+
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.allow_failure }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: ${{ matrix.version }}
+          arch: ${{ matrix.arch }}
+      - name: Use Julia cache
+        uses: julia-actions/cache@v2
+      - uses: julia-actions/julia-buildpkg@v1
+      - name: Create a package using the template
+        run: |
+          julia --project=. --eval '
+            using BestieTemplate, UUIDs;
+            t = Dict(
+              "PackageName" => "Guldasta",
+              "PackageUUID" => string(UUIDs.uuid4()),
+              "PackageOwner" => "Bagicha",
+              "AuthorName" => "Mali",
+              "AuthorEmail" => "mali@bagicha.site"
+            );
+            BestieTemplate.generate("tmp/guldasta.jl", t; defaults = true, quiet = true);
+          '
+      - name: Test generate package
+        run: |
+          julia --project=tmp/guldasta.jl --eval 'using Pkg; Pkg.test()'
+      - name: Generation docs
+        run: |
+          julia --project=tmp/guldasta.jl --eval 'using Pkg; Pkg.add("Documenter")' \
+            -L tmp/guldasta.jl/docs/make.jl
+      - name: Check docs genereation
+        run: |
+          while IFS= read -r -d '' f; do
+            f=${f/src/build};
+            case $f in
+              *index.md) f=${f/%.md/.html};;
+              *) f=${f/%.md//index.html};;
+            esac
+            [[ -e $f ]] || { echo $f missing; }
+          done < <(find tmp/guldasta.jl/docs/ -type f -name '*.md' -print0 ) | grep missing
+          [[ $? -ne 0 ]]
