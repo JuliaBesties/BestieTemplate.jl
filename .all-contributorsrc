@@ -101,6 +101,16 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "fdiblen",
+      "name": "fdiblen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/144492?v=4",
+      "profile": "https://github.com/fdiblen",
+      "contributions": [
+        "code",
+        "review"
+      ]
     }
   ]
 }
