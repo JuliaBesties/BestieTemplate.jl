@@ -80,3 +80,5 @@ jobs:
             [[ -e $f ]] || { echo $f missing; }
           done < <(find tmp/Guldasta.jl/docs/ -type f -name '*.md' -print0 ) | grep missing
           [[ $? -ne 0 ]]
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
