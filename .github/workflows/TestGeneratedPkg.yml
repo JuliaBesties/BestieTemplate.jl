@@ -55,18 +55,27 @@ jobs:
             t = Dict(
               "PackageName" => "Guldasta",
               "PackageUUID" => string(UUIDs.uuid4()),
-              "PackageOwner" => "Bagicha",
+              "PackageOwner" => "BestieTemplate",
               "AuthorName" => "Mali",
               "AuthorEmail" => "mali@bagicha.site"
             );
             BestieTemplate.generate("tmp/Guldasta.jl", t; defaults = true, quiet = true);
           '
+      - name: Run git commands
+        run: |
+          cd tmp/Guldasta.jl
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git init
+          git add .
+          git commit -m "First commit"
+          git remote add origin https://github.com/BestieTemplate/Guldasta.jl
       - name: Test generated package
         run: |
           julia --project=tmp/Guldasta.jl --eval 'using Pkg; Pkg.test()'
       - name: Generate docs
         run: |
-          julia --project=tmp/Guldasta.jl --eval 'using Pkg; Pkg.add("Documenter")' \
+          julia --project=tmp/Guldasta.jl/docs --eval 'using Pkg; pkg"dev tmp/Guldasta.jl"' \
             -L tmp/Guldasta.jl/docs/make.jl
       - name: Check docs generation
         run: |
