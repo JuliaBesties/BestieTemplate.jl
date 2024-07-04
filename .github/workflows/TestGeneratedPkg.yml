@@ -59,23 +59,24 @@ jobs:
               "AuthorName" => "Mali",
               "AuthorEmail" => "mali@bagicha.site"
             );
-            BestieTemplate.generate("tmp/guldasta.jl", t; defaults = true, quiet = true);
+            BestieTemplate.generate("tmp/Guldasta.jl", t; defaults = true, quiet = true);
           '
-      - name: Test generate package
+      - name: Test generated package
         run: |
-          julia --project=tmp/guldasta.jl --eval 'using Pkg; Pkg.test()'
-      - name: Generation docs
+          julia --project=tmp/Guldasta.jl --eval 'using Pkg; Pkg.test()'
+      - name: Generate docs
         run: |
-          julia --project=tmp/guldasta.jl --eval 'using Pkg; Pkg.add("Documenter")' \
-            -L tmp/guldasta.jl/docs/make.jl
-      - name: Check docs genereation
+          julia --project=tmp/Guldasta.jl --eval 'using Pkg; Pkg.add("Documenter")' \
+            -L tmp/Guldasta.jl/docs/make.jl
+      - name: Check docs generation
         run: |
           while IFS= read -r -d '' f; do
             f=${f/src/build};
+            # Converts path/file.md to path/file/index.html (index.md just changes to index.html) 
             case $f in
               *index.md) f=${f/%.md/.html};;
               *) f=${f/%.md//index.html};;
             esac
             [[ -e $f ]] || { echo $f missing; }
-          done < <(find tmp/guldasta.jl/docs/ -type f -name '*.md' -print0 ) | grep missing
+          done < <(find tmp/Guldasta.jl/docs/ -type f -name '*.md' -print0 ) | grep missing
           [[ $? -ne 0 ]]
