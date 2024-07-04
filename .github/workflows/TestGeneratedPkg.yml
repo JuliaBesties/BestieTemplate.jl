@@ -70,13 +70,4 @@ jobs:
             -L tmp/Guldasta.jl/docs/make.jl
       - name: Check docs generation
         run: |
-          while IFS= read -r -d '' f; do
-            f=${f/src/build};
-            # Converts path/file.md to path/file/index.html (index.md just changes to index.html)
-            case $f in
-              *index.md) f=${f/%.md/.html};;
-              *) f=${f/%.md//index.html};;
-            esac
-            [[ -e $f ]] || { echo $f missing; }
-          done < <(find tmp/Guldasta.jl/docs/ -type f -name '*.md' -print0 ) | grep missing
-          [[ $? -ne 0 ]]
+          ./.github/scripts/check-docs.bash tmp/Guldasta.jl
