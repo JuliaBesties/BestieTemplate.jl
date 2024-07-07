@@ -117,7 +117,7 @@ AddGitHubTemplates:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool
   default: "{{ AnswerStrategy != 'minimum' }}"
-  help: GitHub issue and PR templates (Add forms for issue creation and information on Pull Requests to improve the description quality)
+  help: GitHub issue templates (Add forms for issue creation to improve the description quality)
 
 _skip_if_exists:
   - "**/*.jl"

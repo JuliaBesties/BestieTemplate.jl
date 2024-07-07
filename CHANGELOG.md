@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Changed
+
+- GitHub PR template is now part of the minimal options (#308)
+
 ## [0.7.2] - 2024-07-07
 
 ### Added
