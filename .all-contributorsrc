@@ -112,6 +112,15 @@
         "code",
         "review"
       ]
+    },
+    {
+      "login": "greg-neustroev",
+      "name": "Greg Neustroev",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32451432?v=4",
+      "profile": "https://github.com/greg-neustroev",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }
