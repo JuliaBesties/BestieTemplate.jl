@@ -7,9 +7,22 @@ and this project adheres to [Semantic Versioning].
 
 <!-- markdownlint-disable MD024 -->
 
-## Unreleased
+## [Unreleased]
 
-- Fixed typos in the template for README.md
+## [0.7.2] - 2024-07-07
+
+### Added
+
+- Add example to the generated package src and test (#299)
+
+### Changed
+
+- Fixed typos in the template for README.md (#327)
+- Simplify Cirrus CI (PR #332)
+
+### Fixed
+
+- Lint.yml was missing from minimum options (#317)
 
 ## [0.7.1] - 2024-07-02
 
@@ -283,6 +296,8 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 
+[unreleased]: https://github.com/abelsiqueira/BestieTemplate.jl/compare/v0.7.2...HEAD
+[0.7.2]: https://github.com/abelsiqueira/BestieTemplate.jl/releases/tag/v0.7.2
 [0.7.1]: https://github.com/abelsiqueira/BestieTemplate.jl/releases/tag/v0.7.1
 [0.7.0]: https://github.com/abelsiqueira/BestieTemplate.jl/releases/tag/v0.7.0
 [0.6.1]: https://github.com/abelsiqueira/BestieTemplate.jl/releases/tag/v0.6.1
