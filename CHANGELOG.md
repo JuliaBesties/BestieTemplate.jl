@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning].
 
 ## Unreleased
 
+- Fixed typos in the template for README.md
+
 ## [0.7.1] - 2024-07-02
 
 ### Changed
