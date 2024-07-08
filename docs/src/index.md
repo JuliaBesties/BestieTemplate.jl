@@ -24,7 +24,8 @@ However, if you kinda know what you need to do, this is the TL;DR:
 
 ```julia-repl
 julia> using BestieTemplate
-julia> BestieTemplate.generate("YourPackage.jl")
+julia> BestieTemplate.generate("path/to/YourNewPackage.jl")
+julia> # or BestieTemplate.apply("path/to/YourExistingPackage.jl")
 ```
 
 I really recommend checking the [full guide](@ref full_guide), though.

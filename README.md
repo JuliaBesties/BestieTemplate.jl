@@ -56,7 +56,8 @@ then:
 
 ```julia-repl
 julia> using BestieTemplate
-julia> BestieTemplate.generate("YourPackage.jl")
+julia> BestieTemplate.generate("path/to/YourNewPackage.jl")
+julia> # or BestieTemplate.apply("path/to/YourExistingPackage.jl")
 ```
 
 please note that `"YourPackage.jl"` can either be a fresh new package or an existing one.

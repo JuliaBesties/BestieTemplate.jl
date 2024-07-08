@@ -130,16 +130,4 @@ _skip_if_exists:
 _subdirectory: template
 
 _message_after_copy: |
-  Your package {{ PackageName }}.jl has been created successfully! 🎉
-
-  Next steps: Create git repository and push to Github.
-  $ cd <path>
-  $ git init
-  $ git add .
-  $ pre-commit run -a # Try to fix possible pre-commit issues (failures are expected)
-  $ git add .
-  $ git commit -m "First commit"
-  $ pre-commit install # Future commits can't be directly to main unless you use -n
-  Create a repo on GitHub and push your code to it.
-
-  Read the full guide: https://abelsiqueira.com/BestieTemplate.jl/stable/10-full-guide
+  All went well on copier's side. Going back to BestieTemplate.

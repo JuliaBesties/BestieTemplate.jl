@@ -50,6 +50,14 @@ template_options = Dict(
   "AddCopierCI" => false,
 )
 
+function _git_setup()
+  run(`git init`)
+  run(`git add .`)
+  run(`git config user.name "Test"`)
+  run(`git config user.email "test@test.com"`)
+  run(`git commit -q -m "First commit"`)
+end
+
 function test_diff_dir(dir1, dir2)
   ignore(line) = startswith("_commit")(line) || startswith("_src_path")(line)
   @testset "$(basename(dir1)) vs $(basename(dir2))" begin
@@ -115,22 +123,14 @@ end
   mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
     run(`copier copy --defaults --quiet $min_bash_args $template_url $dir_copier_cli`)
     cd(dir_copier_cli) do
-      run(`git init`)
-      run(`git add .`)
-      run(`git config user.name "Test"`)
-      run(`git config user.email "test@test.com"`)
-      run(`git commit -q -m "First commit"`)
+      _git_setup()
     end
     run(`copier update --defaults --quiet $bash_args $dir_copier_cli`)
 
     mktempdir(TMPDIR; prefix = "update_") do tmpdir
       BestieTemplate.generate(tmpdir, template_minimum_options; defaults = true, quiet = true)
       cd(tmpdir) do
-        run(`git init`)
-        run(`git add .`)
-        run(`git config user.name "Test"`)
-        run(`git config user.email "test@test.com"`)
-        run(`git commit -q -m "First commit"`)
+        _git_setup()
         BestieTemplate.update(template_options; defaults = true, quiet = true)
       end
 
@@ -142,8 +142,51 @@ end
 @testset "Test that BestieTemplate.generate warns and exits for existing copy" begin
   mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
     run(`copier copy --vcs-ref HEAD --quiet $bash_args $template_url $dir_copier_cli`)
+    cd(dir_copier_cli) do
+      _git_setup()
+    end
 
-    @test_logs (:warn,) BestieTemplate.generate(dir_copier_cli; quiet = true)
+    @test_logs (:warn,) BestieTemplate.apply(dir_copier_cli; quiet = true)
+  end
+end
+
+@testset "Test that generate fails for existing non-empty paths" begin
+  mktempdir(TMPDIR) do dir
+    cd(dir) do
+      @testset "It fails if the dst_path exists and is non-empty" begin
+        mkdir("some_folder1")
+        open(joinpath("some_folder1", "README.md"), "w") do io
+          println(io, "Hi")
+        end
+        @test_throws Exception BestieTemplate.generate("some_folder1")
+      end
+
+      @testset "It works if the dst_path is ." begin
+        mkdir("some_folder2")
+        cd("some_folder2") do
+          # Should not throw
+          BestieTemplate.generate(
+            template_path,
+            ".",
+            template_options;
+            quiet = true,
+            vcs_ref = "HEAD",
+          )
+        end
+      end
+
+      @testset "It works if the dst_path exists but is empty" begin
+        mkdir("some_folder3")
+        # Should not throw
+        BestieTemplate.generate(
+          template_path,
+          "some_folder3",
+          template_options;
+          quiet = true,
+          vcs_ref = "HEAD",
+        )
+      end
+    end
   end
 end
 
@@ -195,11 +238,14 @@ end
   end
 end
 
-@testset "Test generating the template on an existing project" begin
+@testset "Test applying the template on an existing project" begin
   mktempdir(TMPDIR; prefix = "existing_") do dir_existing
     cd(dir_existing) do
       Pkg.generate("NewPkg")
-      BestieTemplate.generate(
+      cd("NewPkg") do
+        _git_setup()
+      end
+      BestieTemplate.apply(
         template_path,
         "NewPkg/",
         Dict("AuthorName" => "T. Esther", "PackageOwner" => "test");
@@ -238,6 +284,21 @@ end
         )
         answers = YAML.load_file("some_folder/SomePackage2.jl/.copier-answers.yml")
         @test answers["PackageName"] == "OtherName"
+      end
+    end
+  end
+
+  @testset "Test input validation of apply" begin
+    mktempdir(TMPDIR) do dir
+      cd(dir) do
+        @testset "It fails if the dst_path does not exist" begin
+          @test_throws Exception BestieTemplate.apply("some_folder1")
+        end
+
+        @testset "It fails if the dst_path exists but does not contains .git" begin
+          mkdir("some_folder2")
+          @test_throws Exception BestieTemplate.apply("some_folder2")
+        end
       end
     end
   end
