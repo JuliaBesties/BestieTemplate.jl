@@ -61,6 +61,51 @@ Furthermore, they can keep reaping benefits when we create new versions of the t
 
 Let's dive into the details of the template now.
 
+### Recommended vs Minimum vs Others (hidden)
+
+The template contains a few required questions and then asks you whether you would like to use
+
+- The "recommended" options, which include our current recommendation for best practices;
+- The "minimum" options, which answers "no" to everything, but still leaves you with a decent package to start; or
+- The option to answer every optional question individually.
+
+The motivation behind "minimum" vs "recommended" is:
+
+The "minimum" option includes all the Julia package basic plus a few things we think are of interest to all use cases of package development.
+Normal use cases for the "minimum" option are:
+
+- You are testing the template;
+- You are developing solo and wants to "move fast and break things";
+- Your package is in very early stage.
+- You are installing the "minimum" before installing the "recommended" to decrease the PR size.
+
+Our **loose** criteria to make something part of the minimum is (exceptions may apply):
+
+- It is not too intrusive to development (e.g., `.editorconfig`);
+- It is a very common practice or tool (e.g., `TagBot.yml` and `CompatHelper.yml`);
+- It is a very strong recommendation that we think you should adopt (e.g., docs).
+
+The "recommended" option includes all the minimum things plus things that we believe will improve quality and sustainability of packages.
+Normal use cases for the "recommended" option are:
+
+- You have a large package or a collection of packages;
+- You are not developing the package alone;
+- You expect open source contributions;
+- You agree with the best practices.
+
+Our **loose** criteria to make something part of the recommended, but not minimum, is (exceptions may apply):
+
+- Despite being good, it requires change of behaviour (e.g., `pre-commit`);
+- It does not make sense for solo devs (e.g., `all-contributors`);
+- It creates friction - which is good to ensure quality but slows developement (e.g., issue templates).
+
+Finally, there are **other optional features**.
+These are neither recommended nor part of the minimum template, which means that unless you (know and) set them explicitly, you are not using them.
+
+The **loose** criteria to make something not recommended, nor minimum, is:
+
+- It is a best practices, but for a niche audience (e.g., `.cirrus.yml` for testing on FreeBSD);
+
 ### Basic package structure
 
 This is the basic structure of a package:
