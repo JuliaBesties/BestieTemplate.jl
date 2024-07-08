@@ -49,6 +49,7 @@ Under the hood, `BestieTemplate` is no more and no less than:
 Install `BestieTemplate` in your chosen environment (we recommend globally) by entering `pkg` mode by pressing `]` and then:
 
 ```julia-repl
+julia> # press ]
 pkg> add BestieTemplate
 ```
 
