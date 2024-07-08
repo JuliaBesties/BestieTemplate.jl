@@ -16,9 +16,11 @@
 
 If you use {{ PackageName }}.jl in your work, please cite using the reference given in [CITATION.cff](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/main/CITATION.cff).
 
+{% if AddContributionDocs %}
 ## Contributing
 
 If you want to make contributions of any kind, please first that a look into our [contributing guide directly on GitHub](docs/src/90-contributing.md) or the [contributing page on the website](https://{{ PackageOwner }}.github.io/{{ PackageName }}.jl/dev/90-contributing/).
+{% endif %}
 {% if AddAllcontributors %}
 ---
 

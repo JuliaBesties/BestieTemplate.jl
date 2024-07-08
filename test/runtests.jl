@@ -42,7 +42,7 @@ template_options = Dict(
   "AddMacToCI" => true,
   "AddWinToCI" => true,
   "RunJuliaNightlyOnCI" => true,
-  "SimplifiedPRTest" => true,
+  "AddContributionDocs" => true,
   "UseCirrusCI" => false,
   "AddPrecommit" => true,
   "AddGitHubTemplates" => true,
@@ -141,7 +141,7 @@ end
 
 @testset "Test that BestieTemplate.generate warns and exits for existing copy" begin
   mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
-    run(`copier copy --quiet $bash_args $template_url $dir_copier_cli`)
+    run(`copier copy --vcs-ref HEAD --quiet $bash_args $template_url $dir_copier_cli`)
 
     @test_logs (:warn,) BestieTemplate.generate(dir_copier_cli; quiet = true)
   end
@@ -149,19 +149,25 @@ end
 
 @testset "Testing copy, recopy and rebase" begin
   mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
-    run(`copier copy --quiet $bash_args $template_path $dir_copier_cli`)
+    run(`copier copy --vcs-ref HEAD --quiet $bash_args $template_path $dir_copier_cli`)
 
     @testset "Compare copied project vs copier CLI baseline" begin
       mktempdir(TMPDIR; prefix = "copy_") do tmpdir
-        BestieTemplate.Copier.copy(tmpdir, template_options; quiet = true)
+        BestieTemplate.Copier.copy(tmpdir, template_options; quiet = true, vcs_ref = "HEAD")
         test_diff_dir(tmpdir, dir_copier_cli)
       end
     end
 
     @testset "Compare recopied project vs copier CLI baseline" begin
       mktempdir(TMPDIR; prefix = "recopy_") do tmpdir
-        run(`copier copy --defaults --quiet $min_bash_args $template_path $tmpdir`)
-        BestieTemplate.Copier.recopy(tmpdir, template_options; quiet = true, overwrite = true)
+        run(`copier copy --vcs-ref HEAD --defaults --quiet $min_bash_args $template_path $tmpdir`)
+        BestieTemplate.Copier.recopy(
+          tmpdir,
+          template_options;
+          quiet = true,
+          overwrite = true,
+          vcs_ref = "HEAD",
+        )
         test_diff_dir(tmpdir, dir_copier_cli)
       end
     end
@@ -176,7 +182,13 @@ end
           run(`git config user.email "test@test.com"`)
           run(`git commit -q -m "First commit"`)
         end
-        BestieTemplate.Copier.update(tmpdir, template_options; overwrite = true, quiet = true)
+        BestieTemplate.Copier.update(
+          tmpdir,
+          template_options;
+          overwrite = true,
+          quiet = true,
+          vcs_ref = "HEAD",
+        )
         test_diff_dir(tmpdir, dir_copier_cli)
       end
     end

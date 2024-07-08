@@ -95,6 +95,12 @@ AddCopierCI:
   default: false
 
 # General
+AddContributionDocs:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: bool
+  default: "{{ AnswerStrategy != 'minimum' }}"
+  help: Add documentation files on how to contribute to the project (90-contributing.md will give general guidelines, and 91-developer.md will give practical information)
+
 AddAllcontributors:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool

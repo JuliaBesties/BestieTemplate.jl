@@ -9,8 +9,12 @@ body:
         Please, before submitting, make sure that:
 
         - There is not an [existing issue](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/issues) with the same question
+        {% if AddContributionDocs %}
         - You have read the [contributing guide](https://{{ PackageOwner }}.github.io/{{ PackageName }}.jl/dev/90-contributing/)
+        {% endif %}
+        {% if AddCodeOfConduct %}
         - You are following the [code of conduct](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/main/CODE_OF_CONDUCT.md)
+        {% endif %}
 
         The form below should help you in filling out this issue.
   - type: textarea
