@@ -9,10 +9,15 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- New question: AddContributionDocs to decide whether to add 90-contributing.md and 91-developer.md (#313)
+
 ### Changed
 
 - (breaking change) GitHub PR template is now part of the minimal options (#308)
 - (breaking change) TestOnPRs.yml is now part of the minimal options (#312)
+- (breaking change) 90-contributing.md and 91-developer.md have moved from minimal to recommended. If you use the minimal option, then these files will be removed (#313)
 
 ### Removed
 
