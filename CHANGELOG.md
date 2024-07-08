@@ -11,7 +11,12 @@ and this project adheres to [Semantic Versioning].
 
 ### Changed
 
-- GitHub PR template is now part of the minimal options (#308)
+- (breaking change) GitHub PR template is now part of the minimal options (#308)
+- (breaking change) TestOnPRs.yml is now part of the minimal options (#312)
+
+### Removed
+
+- (breaking change) Question SimplifiedPRTest was removed and the behaviour now is as if it were selected as true (#312)
 
 ## [0.7.2] - 2024-07-07
 
