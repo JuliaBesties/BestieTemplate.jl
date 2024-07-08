@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.8.0] - 2024-07-08
+
 ### Added
 
 - New question: AddContributionDocs to decide whether to add 90-contributing.md and 91-developer.md (#313)
@@ -311,7 +313,8 @@ and this project adheres to [Semantic Versioning].
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/abelsiqueira/BestieTemplate.jl/compare/v0.7.2...HEAD
+[unreleased]: https://github.com/abelsiqueira/BestieTemplate.jl/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/abelsiqueira/BestieTemplate.jl/releases/tag/v0.8.0
 [0.7.2]: https://github.com/abelsiqueira/BestieTemplate.jl/releases/tag/v0.7.2
 [0.7.1]: https://github.com/abelsiqueira/BestieTemplate.jl/releases/tag/v0.7.1
 [0.7.0]: https://github.com/abelsiqueira/BestieTemplate.jl/releases/tag/v0.7.0
