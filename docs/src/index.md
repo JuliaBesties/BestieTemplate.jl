@@ -23,6 +23,8 @@ Check the [full guide](@ref full_guide) for more details.
 However, if you kinda know what you need to do, this is the TL;DR:
 
 ```julia-repl
+using> # press ]
+pkg> add BestieTemplate
 julia> using BestieTemplate
 julia> BestieTemplate.generate("path/to/YourNewPackage.jl")
 julia> # or BestieTemplate.apply("path/to/YourExistingPackage.jl")
