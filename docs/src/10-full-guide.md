@@ -114,10 +114,11 @@ To apply the template to an existing package, you can do the following:
 
 !!! warning "git"
     This assumes that you already use git on that package and the your working directory is clean.
+    It will fail otherwise.
 
 ```julia-repl
 julia> using BestieTemplate
-julia> BestieTemplate.generate("full/path/to/YourPackage.jl")
+julia> BestieTemplate.apply("full/path/to/YourPackage.jl")
 ```
 
 This will look for a file `Project.toml` at the root of the given path and use the information there to guess some of the answers.
@@ -126,14 +127,14 @@ Currently, we guess the `PackageName`, `PackageUUID` from the `name` and `uuid` 
 !!! tip "Overwrite"
     You will be asked whether to overwrite existing files or not. Since you are using `git`, you can try it out and reset if you don't like the result.
 
-If you don't like the result, or want to override the answers, you can run the `generate` function with additional arguments:
+If you don't like the result, or want to override the answers, you can run the `apply` function with additional arguments:
 
 ```julia-repl
 julia> data = Dict("AuthorName" => "Bob", "AuthorEmail" => "bob@bob.br")
-julia> BestieTemplate.generate("full/path/to/YourPackage.jl", data)
+julia> BestieTemplate.apply("full/path/to/YourPackage.jl", data)
 ```
 
-See the full docstring for [`BestieTemplate.generate`](@ref) for more information.
+See the full docstring for [`BestieTemplate.apply`](@ref) for more information.
 
 You will most likely have conflicts when you apply the template.
 Whenever a conflict appears, you will need to decide on whether to accept or reject the new changes.
@@ -268,7 +269,7 @@ The next time that the tests are run, the coverage page will be updated, and the
 
 !!! warning "Copier.yml is work in progress"
     This option is not selected by default because it is a work in progress.
-    If you want to use it, you have to pass the key `"AddCopierCI" => true` to the `data` argument of `generate`, or select "Ask me" when deciding how to answer the optional questions.
+    If you want to use it, you have to pass the key `"AddCopierCI" => true` to the `data` argument of `generate` or `apply`, or select "Ask me" when deciding how to answer the optional questions.
 
 You can reapply the template in the future. This is normally a manual job, specially because normally there are conflicts.
 That being said, we are experimenting with having a workflow that automatically checks whether there are updates to the template and reapplies it.
