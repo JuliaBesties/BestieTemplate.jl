@@ -34,20 +34,21 @@ If you decide to gradually adopt, do this:
 Install a plugin on your editor to use [EditorConfig](https://editorconfig.org).
 This will ensure that your editor is configured with important formatting settings.
 
-We use [https://pre-commit.com](https://pre-commit.com) to run the linters and formatters.
+We recommend using [https://pre-commit.com](https://pre-commit.com) to run linters and formatters.
+If you select the "recommended" options later on, you will need `pre-commit` installed.
+To install `pre-commit`, we recommend using [pipx](https://pipx.pypa.io) as follows:
+
+```bash
+# Install pipx following the link
+pipx install pre-commit
+```
+
 In particular, the Julia code is formatted using [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl), so please install it globally first:
 
 ```julia-repl
 julia> # Press ]
 pkg> activate
 pkg> add JuliaFormatter
-```
-
-To install `pre-commit`, we recommend using [pipx](https://pipx.pypa.io) as follows:
-
-```bash
-# Install pipx following the link
-pipx install pre-commit
 ```
 
 ## Install BestieTemplate (or copier)
