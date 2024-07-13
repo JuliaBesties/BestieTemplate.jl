@@ -31,24 +31,24 @@ function _copy(src_path, dst_path, data; kwargs...)
 
   display(md"""Hi, **❤ Bestie ❤** here.
 
-    Below you will find a few questions to configure your template.
-    First, some **required** questions will need to be filled.
-    Then, you will have the option of selecting
+        Below you will find a few questions to configure your template.
+        First, some **required** questions will need to be filled.
+        Then, you will have the option of selecting
 
-    - The _recommended_ options, which includes our current _best practices recommendations_;
-    - The _minimum_ options, which will answer _no_ to everything, but still give you what
-      we consider the minimum best practices you need to get started; or
-    - Answer every optional question.
+        - The _recommended_ options, which includes our current _best practices recommendations_;
+        - The _minimum_ options, which will answer _no_ to everything, but still give you what
+          we consider the minimum best practices you need to get started; or
+        - Answer every optional question.
 
-    On any case, we suggest reading the **full guide**, and possibly other documentation pages:
+        On any case, we suggest reading the **full guide**, and possibly other documentation pages:
 
-    `https://abelsiqueira.com/BestieTemplate.jl/stable/10-full-guide`
+        `https://abelsiqueira.com/BestieTemplate.jl/stable/10-full-guide`
 
-    If something does not work as you would expect or you need clarifications,
-    please open an issue or discussion.
+        If something does not work as you would expect or you need clarifications,
+        please open an issue or discussion.
 
-    **❤ Good luck filling the questions, and thanks for choosing BestieTemplate ❤**
-  """)
+        **❤ Good luck filling the questions, and thanks for choosing BestieTemplate ❤**
+      """)
   Copier.copy(src_path, dst_path, data; kwargs...)
 end
 
@@ -161,23 +161,23 @@ function apply(src_path, dst_path, data::Dict = Dict(); warn_existing_pkg = true
 
   println("""BestieTemplate was applied to $package_name.jl! 🎉
 
-  Next steps:
+      Next steps:
 
-  Review the modifications.
-  In particular README.md and docs/src/index.md tend to be heavily edited.
+      Review the modifications.
+      In particular README.md and docs/src/index.md tend to be heavily edited.
 
-  \$ git switch -c apply-bestie # If you haven't created a branch
-  \$ git add .
-  \$ pre-commit run -a # Try to fix possible pre-commit issues (failures are expected)
-  \$ pre-commit run -a # Again. Now failures should not happen
-  \$ gid add .
-  \$ git commit -m "Apply BestieTemplate $bestie_version"
-  \$ pre-commit install
-  \$ git push -u origin apply-bestie
+      \$ git switch -c apply-bestie # If you haven't created a branch
+      \$ git add .
+      \$ pre-commit run -a # Try to fix possible pre-commit issues (failures are expected)
+      \$ pre-commit run -a # Again. Now failures should not happen
+      \$ gid add .
+      \$ git commit -m "Apply BestieTemplate $bestie_version"
+      \$ pre-commit install
+      \$ git push -u origin apply-bestie
 
-  Go to GitHub and create a Pull Request from apply-bestie to main.
-  Continue on the full guide: https://abelsiqueira.com/BestieTemplate.jl/stable/10-full-guide
-  """)
+      Go to GitHub and create a Pull Request from apply-bestie to main.
+      Continue on the full guide: https://abelsiqueira.com/BestieTemplate.jl/stable/10-full-guide
+      """)
 
   return nothing
 end

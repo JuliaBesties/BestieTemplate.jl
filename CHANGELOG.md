@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Changed
+
+- Default `.JuliaFormatter` now includes only minimal configuration that matches `.editorconfig` (#358)
+
 ## [0.8.0] - 2024-07-08
 
 ### Added
