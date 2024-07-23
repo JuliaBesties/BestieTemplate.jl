@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Changed
+
+- Update pre-commit hook versions
+  - JuliaFormatter 1.0.56 -> 1.0.58
+
 ## [0.9.0] - 2024-07-13
 
 ### Changed
