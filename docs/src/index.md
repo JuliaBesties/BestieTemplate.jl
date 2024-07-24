@@ -80,6 +80,9 @@ This also doesn't explain where each file came from or why they are here. You ca
       <td align="center" valign="top" width="14.28%"><a href="https://gdalle.github.io/"><img src="https://avatars.githubusercontent.com/u/22795598?v=4?s=100" width="100px;" alt="Guillaume Dalle"/><br /><sub><b>Guillaume Dalle</b></sub></a><br /><a href="#ideas-gdalle" title="Ideas, Planning, & Feedback">🤔</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://jhidding.github.io/"><img src="https://avatars.githubusercontent.com/u/3082555?v=4?s=100" width="100px;" alt="Johannes Hidding"/><br /><sub><b>Johannes Hidding</b></sub></a><br /><a href="#bug-jhidding" title="Bug reports">🐛</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/thanks"><img src="https://avatars.githubusercontent.com/u/1121545?v=4?s=100" width="100px;" alt="Thanks"/><br /><sub><b>Thanks</b></sub></a><br /><a href="#review-Thanks" title="Reviewed Pull Requests">👀</a></td>
+    </tr>
   </tbody>
 </table>
 
