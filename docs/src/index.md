@@ -78,6 +78,7 @@ This also doesn't explain where each file came from or why they are here. You ca
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/greg-neustroev"><img src="https://avatars.githubusercontent.com/u/32451432?v=4?s=100" width="100px;" alt="Greg Neustroev"/><br /><sub><b>Greg Neustroev</b></sub></a><br /><a href="#code-greg-neustroev" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/lucaferranti"><img src="https://avatars.githubusercontent.com/u/49938764?v=4?s=100" width="100px;" alt="Luca Ferranti"/><br /><sub><b>Luca Ferranti</b></sub></a><br /><a href="#ideas-lucaferranti" title="Ideas, Planning, & Feedback">🤔</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://gdalle.github.io/"><img src="https://avatars.githubusercontent.com/u/22795598?v=4?s=100" width="100px;" alt="Guillaume Dalle"/><br /><sub><b>Guillaume Dalle</b></sub></a><br /><a href="#ideas-gdalle" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://jhidding.github.io/"><img src="https://avatars.githubusercontent.com/u/3082555?v=4?s=100" width="100px;" alt="Johannes Hidding"/><br /><sub><b>Johannes Hidding</b></sub></a><br /><a href="#bug-jhidding" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
