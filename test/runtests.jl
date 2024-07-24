@@ -16,6 +16,7 @@ end
 
 using BestieTemplate
 using Pkg
+using PythonCall
 using Test
 using YAML
 
@@ -284,6 +285,23 @@ end
         )
         answers = YAML.load_file("some_folder/SomePackage2.jl/.copier-answers.yml")
         @test answers["PackageName"] == "OtherName"
+      end
+    end
+  end
+
+  @testset "Test that bad PackageName gets flagged" begin
+    mktempdir(TMPDIR; prefix = "valid_pkg_name_") do dir
+      cd(dir) do
+        for name in ["Bad.jl", "0Bad", "bad"]
+          data = copy(template_options)
+          data["PackageName"] = name
+          @test_throws PythonCall.Core.PyException BestieTemplate.generate(
+            template_path,
+            ".",
+            data,
+            vcs_ref = "HEAD",
+          )
+        end
       end
     end
   end

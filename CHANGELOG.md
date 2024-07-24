@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning].
 
 - Update pre-commit hook versions
   - JuliaFormatter 1.0.56 -> 1.0.58
+- Validate package name to enforce capital first letter and letters and numbers (#373)
 
 ## [0.9.0] - 2024-07-13
 

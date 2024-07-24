@@ -2,7 +2,13 @@
 PackageName:
   type: str
   help: Package name (without '.jl')
-  validator: "{% if PackageName | length == 0 %}Can't be empty{% endif %}"
+  validator: |
+    {% if PackageName | length == 0 %}
+    Can't be empty
+    {% endif %}
+    {% if not (PackageName | regex_search('^[A-Z][A-z0-9]*$')) %}
+    Must start with a capital letter, and use letters or numbers only
+    {% endif %}
 
 PackageUUID:
   type: str
