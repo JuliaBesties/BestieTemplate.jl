@@ -15,41 +15,11 @@ if get(ENV, "CI", "nothing") == "nothing"
 end
 
 using BestieTemplate
+using BestieTemplate.Debug.Data: Data
 using Pkg
 using PythonCall
 using Test
 using YAML
-
-template_minimum_options = Dict(
-  "PackageName" => "Tmp",
-  "PackageUUID" => "1234",
-  "PackageOwner" => "test",
-  "AuthorName" => "Test",
-  "AuthorEmail" => "test@me.now",
-)
-
-template_options = Dict(
-  "PackageName" => "Tmp",
-  "PackageUUID" => "1234",
-  "PackageOwner" => "test",
-  "AuthorName" => "Test",
-  "AuthorEmail" => "test@me.now",
-  "AskAdvancedQuestions" => true,
-  "AddAllcontributors" => true,
-  "JuliaMinVersion" => "1.6",
-  "License" => "MIT",
-  "AddCodeOfConduct" => true,
-  "Indentation" => "3",
-  "AddMacToCI" => true,
-  "AddWinToCI" => true,
-  "RunJuliaNightlyOnCI" => true,
-  "AddContributionDocs" => true,
-  "UseCirrusCI" => false,
-  "AddPrecommit" => true,
-  "AddGitHubTemplates" => true,
-  "AnswerStrategy" => "ask",
-  "AddCopierCI" => false,
-)
 
 function _git_setup()
   run(`git init`)
@@ -82,8 +52,10 @@ function test_diff_dir(dir1, dir2)
   end
 end
 
-min_bash_args = vcat([["-d"; "$k=$v"] for (k, v) in template_minimum_options]...)
-bash_args = vcat([["-d"; "$k=$v"] for (k, v) in template_options]...)
+data_to_cli_args(dict) = vcat([["-d"; "$k=$v"] for (k, v) in dict]...)
+cli_args_min_defaults = data_to_cli_args(Data.minimum_defaults)
+cli_args_strat_ask = data_to_cli_args(Data.strategy_ask)
+
 template_path = joinpath(@__DIR__, "..")
 template_url = "https://github.com/abelsiqueira/BestieTemplate.jl"
 
@@ -94,10 +66,10 @@ end
 
 @testset "Compare BestieTemplate.generate vs copier CLI on URL/main" begin
   mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
-    run(`copier copy --vcs-ref main --quiet $bash_args $template_url $dir_copier_cli`)
+    run(`copier copy --vcs-ref main --quiet $cli_args_strat_ask $template_url $dir_copier_cli`)
 
     mktempdir(TMPDIR; prefix = "copy_") do tmpdir
-      BestieTemplate.generate(tmpdir, template_options; quiet = true, vcs_ref = "main")
+      BestieTemplate.generate(tmpdir, Data.strategy_ask; quiet = true, vcs_ref = "main")
       test_diff_dir(tmpdir, dir_copier_cli)
     end
   end
@@ -105,13 +77,13 @@ end
 
 @testset "Compare BestieTemplate.generate vs copier CLI on HEAD" begin
   mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
-    run(`copier copy --vcs-ref HEAD --quiet $bash_args $template_path $dir_copier_cli`)
+    run(`copier copy --vcs-ref HEAD --quiet $cli_args_strat_ask $template_path $dir_copier_cli`)
 
     mktempdir(TMPDIR; prefix = "copy_") do tmpdir
       BestieTemplate.generate(
         template_path,
         tmpdir,
-        template_options;
+        Data.strategy_ask;
         quiet = true,
         vcs_ref = "HEAD",
       )
@@ -122,17 +94,17 @@ end
 
 @testset "Compare BestieTemplate.update vs copier CLI update" begin
   mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
-    run(`copier copy --defaults --quiet $min_bash_args $template_url $dir_copier_cli`)
+    run(`copier copy --defaults --quiet $cli_args_min_defaults $template_url $dir_copier_cli`)
     cd(dir_copier_cli) do
       _git_setup()
     end
-    run(`copier update --defaults --quiet $bash_args $dir_copier_cli`)
+    run(`copier update --defaults --quiet $cli_args_strat_ask $dir_copier_cli`)
 
     mktempdir(TMPDIR; prefix = "update_") do tmpdir
-      BestieTemplate.generate(tmpdir, template_minimum_options; defaults = true, quiet = true)
+      BestieTemplate.generate(tmpdir, Data.minimum_defaults; defaults = true, quiet = true)
       cd(tmpdir) do
         _git_setup()
-        BestieTemplate.update(template_options; defaults = true, quiet = true)
+        BestieTemplate.update(Data.strategy_ask; defaults = true, quiet = true)
       end
 
       test_diff_dir(tmpdir, dir_copier_cli)
@@ -142,7 +114,7 @@ end
 
 @testset "Test that BestieTemplate.generate warns and exits for existing copy" begin
   mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
-    run(`copier copy --vcs-ref HEAD --quiet $bash_args $template_url $dir_copier_cli`)
+    run(`copier copy --vcs-ref HEAD --quiet $cli_args_strat_ask $template_url $dir_copier_cli`)
     cd(dir_copier_cli) do
       _git_setup()
     end
@@ -169,7 +141,7 @@ end
           BestieTemplate.generate(
             template_path,
             ".",
-            template_options;
+            Data.strategy_ask;
             quiet = true,
             vcs_ref = "HEAD",
           )
@@ -182,7 +154,7 @@ end
         BestieTemplate.generate(
           template_path,
           "some_folder3",
-          template_options;
+          Data.strategy_ask;
           quiet = true,
           vcs_ref = "HEAD",
         )
@@ -193,21 +165,23 @@ end
 
 @testset "Testing copy, recopy and rebase" begin
   mktempdir(TMPDIR; prefix = "cli_") do dir_copier_cli
-    run(`copier copy --vcs-ref HEAD --quiet $bash_args $template_path $dir_copier_cli`)
+    run(`copier copy --vcs-ref HEAD --quiet $cli_args_strat_ask $template_path $dir_copier_cli`)
 
     @testset "Compare copied project vs copier CLI baseline" begin
       mktempdir(TMPDIR; prefix = "copy_") do tmpdir
-        BestieTemplate.Copier.copy(tmpdir, template_options; quiet = true, vcs_ref = "HEAD")
+        BestieTemplate.Copier.copy(tmpdir, Data.strategy_ask; quiet = true, vcs_ref = "HEAD")
         test_diff_dir(tmpdir, dir_copier_cli)
       end
     end
 
     @testset "Compare recopied project vs copier CLI baseline" begin
       mktempdir(TMPDIR; prefix = "recopy_") do tmpdir
-        run(`copier copy --vcs-ref HEAD --defaults --quiet $min_bash_args $template_path $tmpdir`)
+        run(
+          `copier copy --vcs-ref HEAD --defaults --quiet $cli_args_min_defaults $template_path $tmpdir`,
+        )
         BestieTemplate.Copier.recopy(
           tmpdir,
-          template_options;
+          Data.strategy_ask;
           quiet = true,
           overwrite = true,
           vcs_ref = "HEAD",
@@ -218,7 +192,7 @@ end
 
     @testset "Compare updated project vs copier CLI baseline" begin
       mktempdir(TMPDIR; prefix = "update_") do tmpdir
-        run(`copier copy --defaults --quiet $min_bash_args $template_path $tmpdir`)
+        run(`copier copy --defaults --quiet $cli_args_min_defaults $template_path $tmpdir`)
         cd(tmpdir) do
           run(`git init`)
           run(`git add .`)
@@ -228,7 +202,7 @@ end
         end
         BestieTemplate.Copier.update(
           tmpdir,
-          template_options;
+          Data.strategy_ask;
           overwrite = true,
           quiet = true,
           vcs_ref = "HEAD",
@@ -265,7 +239,7 @@ end
   @testset "Test automatic guessing the package name from the path" begin
     mktempdir(TMPDIR; prefix = "path_is_dir_") do dir_path_is_dir
       cd(dir_path_is_dir) do
-        data = Dict(key => value for (key, value) in template_options if key != "PackageName")
+        data = Dict(key => value for (key, value) in Data.strategy_ask if key != "PackageName")
         mkdir("some_folder")
         BestieTemplate.generate(
           template_path,
@@ -293,7 +267,7 @@ end
     mktempdir(TMPDIR; prefix = "valid_pkg_name_") do dir
       cd(dir) do
         for name in ["Bad.jl", "0Bad", "bad"]
-          data = copy(template_options)
+          data = copy(Data.strategy_ask)
           data["PackageName"] = name
           @test_throws PythonCall.Core.PyException BestieTemplate.generate(
             template_path,
