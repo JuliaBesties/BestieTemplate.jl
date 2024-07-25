@@ -142,16 +142,14 @@ function apply(src_path, dst_path, data::Dict = Dict(); warn_existing_pkg = true
   end
 
   # If there are answers in the destination path, skip guessing the answers
-  if !isfile(joinpath(dst_path, ".copier-answers"))
-    existing_data = _read_data_from_existing_path(dst_path)
-    for (key, value) in existing_data
-      @info "Inferred $key=$value from destination path"
-      if haskey(data, key)
-        @info "  Being overriden by supplied $key=$(data[key]) value"
-      end
+  existing_data = _read_data_from_existing_path(dst_path)
+  for (key, value) in existing_data
+    @info "Inferred $key=$value from destination path"
+    if haskey(data, key)
+      @info "  Being overriden by supplied $key=$(data[key]) value"
     end
-    data = merge(existing_data, data)
   end
+  data = merge(existing_data, data)
 
   _copy(src_path, dst_path, data; kwargs...)
 
