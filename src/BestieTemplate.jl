@@ -16,6 +16,7 @@ using YAML: YAML
 
 include("Copier.jl")
 include("api.jl")
+include("debug/Debug.jl")
 include("guess.jl")
 
 end

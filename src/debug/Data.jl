@@ -1,0 +1,52 @@
+"""
+Fake data for testing
+
+- `Debug.Data`: NamedTuple of Dictionaries with default data
+  - `Debug.Data.minimum_defaults`: Required data if you use `defaults = true`
+  - `Debug.Data.strategy_minimum`: Required data for strategy minimum, no defaults.
+  - `Debug.Data.strategy_recommended`: Required data for strategy recommended, no defaults.
+  - `Debug.Data.strategy_ask`: Required data for strategy ask, no defaults.
+"""
+module Data
+
+using Random: MersenneTwister
+using UUIDs: uuid4
+
+const minimum_defaults = Dict(
+  "PackageName" => "FakePkg",
+  "PackageUUID" => string(uuid4(MersenneTwister(123))),
+  "PackageOwner" => "bestietemplate",
+  "AuthorName" => "Bestie Template",
+  "AuthorEmail" => "bestie@fake.nl",
+)
+
+const strategy_minimum = merge(
+  minimum_defaults,
+  Dict(
+    "JuliaMinVersion" => "1.6",
+    "License" => "MIT",
+    "Indentation" => "2",
+    "AnswerStrategy" => "minimum",
+  ),
+)
+
+const strategy_recommended = merge(strategy_minimum, Dict("AnswerStrategy" => "recommended"))
+
+const strategy_ask = merge(
+  strategy_recommended,
+  Dict(
+    "AnswerStrategy" => "ask",
+    "AddPrecommit" => true,
+    "AddMacToCI" => true,
+    "AddWinToCI" => true,
+    "RunJuliaNightlyOnCI" => true,
+    "UseCirrusCI" => false,
+    "AddCopierCI" => false,
+    "AddContributionDocs" => true,
+    "AddAllcontributors" => true,
+    "AddCodeOfConduct" => true,
+    "AddGitHubTemplates" => true,
+  ),
+)
+
+end
