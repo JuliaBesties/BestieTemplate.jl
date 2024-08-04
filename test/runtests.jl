@@ -54,7 +54,7 @@ end
 
 data_to_cli_args(dict) = vcat([["-d"; "$k=$v"] for (k, v) in dict]...)
 cli_args_min_defaults = data_to_cli_args(Data.minimum_defaults)
-cli_args_strat_ask = data_to_cli_args(Data.strategy_ask)
+cli_args_strat_ask = data_to_cli_args(Data.strategy_ask_default)
 
 template_path = joinpath(@__DIR__, "..")
 template_url = "https://github.com/abelsiqueira/BestieTemplate.jl"
@@ -69,7 +69,7 @@ end
     run(`copier copy --vcs-ref main --quiet $cli_args_strat_ask $template_url $dir_copier_cli`)
 
     mktempdir(TMPDIR; prefix = "copy_") do tmpdir
-      BestieTemplate.generate(tmpdir, Data.strategy_ask; quiet = true, vcs_ref = "main")
+      BestieTemplate.generate(tmpdir, Data.strategy_ask_default; quiet = true, vcs_ref = "main")
       test_diff_dir(tmpdir, dir_copier_cli)
     end
   end
@@ -83,7 +83,7 @@ end
       BestieTemplate.generate(
         template_path,
         tmpdir,
-        Data.strategy_ask;
+        Data.strategy_ask_default;
         quiet = true,
         vcs_ref = "HEAD",
       )
@@ -104,7 +104,7 @@ end
       BestieTemplate.generate(tmpdir, Data.minimum_defaults; defaults = true, quiet = true)
       cd(tmpdir) do
         _git_setup()
-        BestieTemplate.update(Data.strategy_ask; defaults = true, quiet = true)
+        BestieTemplate.update(Data.strategy_ask_default; defaults = true, quiet = true)
       end
 
       test_diff_dir(tmpdir, dir_copier_cli)
@@ -141,7 +141,7 @@ end
           BestieTemplate.generate(
             template_path,
             ".",
-            Data.strategy_ask;
+            Data.strategy_ask_default;
             quiet = true,
             vcs_ref = "HEAD",
           )
@@ -154,7 +154,7 @@ end
         BestieTemplate.generate(
           template_path,
           "some_folder3",
-          Data.strategy_ask;
+          Data.strategy_ask_default;
           quiet = true,
           vcs_ref = "HEAD",
         )
@@ -169,7 +169,12 @@ end
 
     @testset "Compare copied project vs copier CLI baseline" begin
       mktempdir(TMPDIR; prefix = "copy_") do tmpdir
-        BestieTemplate.Copier.copy(tmpdir, Data.strategy_ask; quiet = true, vcs_ref = "HEAD")
+        BestieTemplate.Copier.copy(
+          tmpdir,
+          Data.strategy_ask_default;
+          quiet = true,
+          vcs_ref = "HEAD",
+        )
         test_diff_dir(tmpdir, dir_copier_cli)
       end
     end
@@ -181,7 +186,7 @@ end
         )
         BestieTemplate.Copier.recopy(
           tmpdir,
-          Data.strategy_ask;
+          Data.strategy_ask_default;
           quiet = true,
           overwrite = true,
           vcs_ref = "HEAD",
@@ -202,7 +207,7 @@ end
         end
         BestieTemplate.Copier.update(
           tmpdir,
-          Data.strategy_ask;
+          Data.strategy_ask_default;
           overwrite = true,
           quiet = true,
           vcs_ref = "HEAD",
@@ -239,7 +244,8 @@ end
   @testset "Test automatic guessing the package name from the path" begin
     mktempdir(TMPDIR; prefix = "path_is_dir_") do dir_path_is_dir
       cd(dir_path_is_dir) do
-        data = Dict(key => value for (key, value) in Data.strategy_ask if key != "PackageName")
+        data =
+          Dict(key => value for (key, value) in Data.strategy_ask_default if key != "PackageName")
         mkdir("some_folder")
         BestieTemplate.generate(
           template_path,
@@ -267,7 +273,7 @@ end
     mktempdir(TMPDIR; prefix = "valid_pkg_name_") do dir
       cd(dir) do
         for name in ["Bad.jl", "0Bad", "bad"]
-          data = copy(Data.strategy_ask)
+          data = copy(Data.strategy_ask_default)
           data["PackageName"] = name
           @test_throws PythonCall.Core.PyException BestieTemplate.generate(
             template_path,

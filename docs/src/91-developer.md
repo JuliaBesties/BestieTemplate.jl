@@ -70,19 +70,70 @@ pkg> test
 
 ### Testing local changes to the template
 
-I recommend installing copier, although it is possible to test the template using only Julia, it becomes more complicated, and cumbersome. Using `pipx` (as above), you can just run
+We have created tools to help test and debug changes to the template.
+These tools are subject to change without notice, but we will try to keep this section updated.
 
-```bash
-pipx install copier
+My normal testing strategy is
+
+#### 1. Go to a temp path
+
+On Linux and OSX you should be able to use `cd $(mktemp -d)`, but you can also use `julia`:
+
+```julia-repl
+julia> cd(mktempdir())  # creates a temporary folder and enter it
+julia> pwd()            # shows where you are
 ```
 
-To test your local modifications, you can run copier with the `--vcs-ref HEAD` flag and point to your local clone. This will use the latest changes, including uncommitted modifications (i.e., the dirty state).
-What I normally do is this:
+#### 2. `pkg> dev` the Bestie path
+
+Now, in a temporary folder, start Julia if you haven't and do the following:
+
+```julia-repl
+julia> # press ]
+pkg> dev full/path/to/bestie
+pkg> # press backspace
+julia> using BestieTemplate
+```
+
+#### 3. Use the debug tools
+
+```julia-repl
+julia> Dbg = BestieTemplate.Debug
+julia> Dbg.Data           # module for the various data examples
+julia> Dbg.dbg_generate   # to test generate
+julia> Dbg.dbg_apply      # to test apply
+```
+
+To check everything available in the Debug module, check the [Debug auto docs](@ref).
+
+The minimum that you need is:
+
+```julia-repl
+julia> Dbg.dbg_generate()
+```
+
+This will create a new folder inside the current temporary folder with a name like `PkgDebugBestieX`. The `X` is a number automatically increased. It will use the path of the Bestie that you `dev`ed, and it will use some fake data, some defaults, and the "minimum" strategy.
+
+If you want to change the data being used, you can give the keyword argument `data_choice`:
+
+```julia-repl
+julia> Dbg.dbg_generate(data_choice = :rec)
+```
+
+This will use the "recommended" strategy. Check [`BestieTemplate.Debug.dbg_data`](@ref) to see all options.
+
+Check the full docs and the code for more details on what `dbg_generate` can do.
+
+#### Alternative: use copier directly
+
+You can also use `copier` directly to test the template.
+You just have to run copier with the `--vcs-ref HEAD` flag and point to your local clone:
 
 ```bash
-cd $(mktemp -d) # Go to a tmp folder
-copier copy --vcs-ref HEAD /path/to/clone/ pkg # Clone dirty clone into pkg
+copier copy --vcs-ref HEAD /path/to/bestie/ pkg
 ```
+
+Of course, in this case you won't have the pre-filled data, so it isn't the preferred way for longer testing/debugging sessions.
 
 ## Working on a new issue
 
