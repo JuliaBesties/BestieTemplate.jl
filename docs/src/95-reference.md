@@ -12,6 +12,14 @@ Pages = ["95-reference.md"]
 Pages = ["95-reference.md"]
 ```
 
+## Auto docs
+
 ```@autodocs
-Modules = [BestieTemplate, BestieTemplate.Copier, BestieTemplate.Debug, BestieTemplate.Debug.Data]
+Modules = [BestieTemplate, BestieTemplate.Copier]
+```
+
+## Debug auto docs
+
+```@autodocs
+Modules = [BestieTemplate.Debug, BestieTemplate.Debug.Data]
 ```

@@ -32,21 +32,27 @@ const strategy_minimum = merge(
 
 const strategy_recommended = merge(strategy_minimum, Dict("AnswerStrategy" => "recommended"))
 
-const strategy_ask = merge(
-  strategy_recommended,
-  Dict(
-    "AnswerStrategy" => "ask",
-    "AddPrecommit" => true,
-    "AddMacToCI" => true,
-    "AddWinToCI" => true,
-    "RunJuliaNightlyOnCI" => true,
-    "UseCirrusCI" => false,
-    "AddCopierCI" => false,
-    "AddContributionDocs" => true,
-    "AddAllcontributors" => true,
-    "AddCodeOfConduct" => true,
-    "AddGitHubTemplates" => true,
-  ),
+const strategy_ask = merge(strategy_recommended, Dict("AnswerStrategy" => "ask"))
+
+const optional_questions_with_default = Dict(
+  "AddPrecommit" => true,
+  "AddMacToCI" => true,
+  "AddWinToCI" => true,
+  "RunJuliaNightlyOnCI" => true,
+  "UseCirrusCI" => false,
+  "AddCopierCI" => false,
+  "AddContributionDocs" => true,
+  "AddAllcontributors" => true,
+  "AddCodeOfConduct" => true,
+  "AddGitHubTemplates" => true,
 )
+
+const strategy_ask_default = merge(strategy_ask, optional_questions_with_default)
+
+const strategy_ask_and_say_no =
+  merge(strategy_recommended, Dict(k => false for k in keys(optional_questions_with_default)))
+
+const strategy_ask_and_say_yes =
+  merge(strategy_recommended, Dict(k => true for k in keys(optional_questions_with_default)))
 
 end
