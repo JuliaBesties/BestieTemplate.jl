@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- The keyword argument `quiet` is now used to define verbosity (#379)
+
+### Changed
+
 - Update pre-commit hook versions
   - JuliaFormatter 1.0.58 -> 1.0.59
 
