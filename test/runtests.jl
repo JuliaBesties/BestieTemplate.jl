@@ -22,7 +22,7 @@ using Test
 using YAML
 
 function _git_setup()
-  run(`git init`)
+  run(`git init -q`)
   run(`git add .`)
   run(`git config user.name "Test"`)
   run(`git config user.email "test@test.com"`)
@@ -199,11 +199,7 @@ end
       mktempdir(TMPDIR; prefix = "update_") do tmpdir
         run(`copier copy --defaults --quiet $cli_args_min_defaults $template_path $tmpdir`)
         cd(tmpdir) do
-          run(`git init`)
-          run(`git add .`)
-          run(`git config user.name "Test"`)
-          run(`git config user.email "test@test.com"`)
-          run(`git commit -q -m "First commit"`)
+          _git_setup()
         end
         BestieTemplate.Copier.update(
           tmpdir,
@@ -279,6 +275,7 @@ end
             template_path,
             ".",
             data,
+            quiet = true,
             vcs_ref = "HEAD",
           )
         end
@@ -290,12 +287,12 @@ end
     mktempdir(TMPDIR) do dir
       cd(dir) do
         @testset "It fails if the dst_path does not exist" begin
-          @test_throws Exception BestieTemplate.apply("some_folder1")
+          @test_throws Exception BestieTemplate.apply("some_folder1", quiet = true)
         end
 
         @testset "It fails if the dst_path exists but does not contains .git" begin
           mkdir("some_folder2")
-          @test_throws Exception BestieTemplate.apply("some_folder2")
+          @test_throws Exception BestieTemplate.apply("some_folder2", quiet = true)
         end
       end
     end

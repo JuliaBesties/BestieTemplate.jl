@@ -4,16 +4,18 @@
 Internal function to run common code for new or existing packages.
 """
 function _copy(src_path, dst_path, data; kwargs...)
+  quiet = get(kwargs, :quiet, false)
+
   # If the PackageName was not given or guessed from the Project.toml, use the sanitized path
   if !haskey(data, "PackageName")
     package_name = _sanitize_package_name(dst_path)
     if package_name != ""
-      @info "Using sanitized path $package_name as package name"
+      quiet || @info "Using sanitized path $package_name as package name"
       data["PackageName"] = package_name
     end
   end
 
-  display(md"""Hi, **❤ Bestie ❤** here.
+  quiet || display(md"""Hi, **❤ Bestie ❤** here.
 
         Below you will find a few questions to configure your template.
         First, some **required** questions will need to be filled.
@@ -64,10 +66,13 @@ The `data` argument is a dictionary of answers (values) to questions (keys) that
 ## Keyword arguments
 
 - `warn_existing_pkg::Boolean = true`: Whether to check if you actually meant `update`. If you run `generate` and the `dst_path` contains a `.copier-answers.yml`, it means that the copy was already made, so you might have means `update` instead. When `true`, a warning is shown and execution is stopped.
+- `quiet::Boolean = false`: Whether to print greetings, info, and other messages. This keyword is also used by copier.
 
 The other keyword arguments are passed directly to the internal [`Copier.copy`](@ref).
 """
 function generate(src_path, dst_path, data::Dict = Dict(); kwargs...)
+  quiet = get(kwargs, :quiet, false)
+
   if dst_path != "." && isdir(dst_path) && length(readdir(dst_path)) > 0
     error("$dst_path already exists. For existing packages, use `BestieTemplate.apply` instead.")
   end
@@ -78,16 +83,18 @@ function generate(src_path, dst_path, data::Dict = Dict(); kwargs...)
   package_name = data["PackageName"]
   bestie_version = data["_commit"]
 
-  println("""Your package $package_name.jl has been created successfully! 🎉
+  quiet || println("""Your package $package_name.jl has been created successfully! 🎉
 
   Next steps: Create git repository and push to Github.
-  \$ cd <path>
+
+  \$ cd $dst_path
   \$ git init
   \$ git add .
-  \$ pre-commit run -a # Try to fix possible pre-commit issues (failures are expected)
+  \$ pre-commit run -a     # Try to fix possible pre-commit issues (failures are expected)
   \$ git add .
   \$ git commit -m "Generate repo with BestieTemplate $bestie_version"
-  \$ pre-commit install # Future commits can't be directly to main unless you use -n
+  \$ pre-commit install    # Future commits can't be directly to main unless you use -n
+
   Create a repo on GitHub and push your code to it.
 
   Read the full guide: https://abelsiqueira.com/BestieTemplate.jl/stable/10-full-guide
@@ -116,10 +123,13 @@ The `data` argument is a dictionary of answers (values) to questions (keys) that
 ## Keyword arguments
 
 - `warn_existing_pkg::Boolean = true`: Whether to check if you actually meant `update`. If you run `apply` and the `dst_path` contains a `.copier-answers.yml`, it means that the copy was already made, so you might have means `update` instead. When `true`, a warning is shown and execution is stopped.
+- `quiet::Boolean = false`: Whether to print greetings, info, and other messages. This keyword is also used by copier.
 
 The other keyword arguments are passed directly to the internal [`Copier.copy`](@ref).
 """
 function apply(src_path, dst_path, data::Dict = Dict(); warn_existing_pkg = true, kwargs...)
+  quiet = get(kwargs, :quiet, false)
+
   if !isdir(dst_path)
     error("$dst_path does not exist. For new packages, use `BestieTemplate.generate` instead.")
   end
@@ -140,9 +150,9 @@ function apply(src_path, dst_path, data::Dict = Dict(); warn_existing_pkg = true
   # If there are answers in the destination path, skip guessing the answers
   existing_data = _read_data_from_existing_path(dst_path)
   for (key, value) in existing_data
-    @info "Inferred $key=$value from destination path"
+    quiet || @info "Inferred $key=$value from destination path"
     if haskey(data, key)
-      @info "  Being overriden by supplied $key=$(data[key]) value"
+      quiet || @info "  Being overriden by supplied $key=$(data[key]) value"
     end
   end
   data = merge(existing_data, data)
@@ -153,7 +163,7 @@ function apply(src_path, dst_path, data::Dict = Dict(); warn_existing_pkg = true
   package_name = data["PackageName"]
   bestie_version = data["_commit"]
 
-  println("""BestieTemplate was applied to $package_name.jl! 🎉
+  quiet || println("""BestieTemplate was applied to $package_name.jl! 🎉
 
       Next steps:
 
