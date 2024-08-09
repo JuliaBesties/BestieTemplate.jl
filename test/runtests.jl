@@ -18,9 +18,9 @@ using PythonCall
 using Test
 using YAML
 
-include("aux.jl")
+include("utils.jl")
 
-# Defined in aux.jl to hold constants
+# Defined in utils.jl to hold constants
 using .C: C
 
 test_files = filter(file -> startswith("test-")(file) && endswith(".jl")(file), readdir(@__DIR__))
