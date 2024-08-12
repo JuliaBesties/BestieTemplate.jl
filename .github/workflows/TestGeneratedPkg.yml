@@ -48,27 +48,54 @@ jobs:
           arch: ${{ matrix.arch }}
       - name: Use Julia cache
         uses: julia-actions/cache@v2
-      - uses: julia-actions/julia-buildpkg@v1
+      - name: Build the package
+        uses: julia-actions/julia-buildpkg@v1
+      - name: Install JuliaFormatter.jl
+        run: julia -e 'using Pkg; pkg"add JuliaFormatter"'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          cache: "pip"
+      - name: Cache pre-commit
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit
+          key: ${{ runner.os }}-pre-commit-${{ hashFiles('**/.pre-commit-config.yaml') }}
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      # Actual tests
       - name: Create a package using the template
         run: |
           julia --project=. --eval '
             using BestieTemplate, UUIDs;
-            t = Dict(
+            data = Dict(
               "PackageName" => "Guldasta",
               "PackageUUID" => string(UUIDs.uuid4()),
               "PackageOwner" => "Bagicha",
               "AuthorName" => "Mali",
               "AuthorEmail" => "mali@bagicha.site"
             );
-            BestieTemplate.generate("tmp/Guldasta.jl", t; defaults = true, quiet = true);
+            BestieTemplate.generate("tmp/Guldasta.jl", data; defaults = true, quiet = true);
           '
-      - name: Test generated package
+      - name: Run the tests in the generated package
         run: |
           julia --project=tmp/Guldasta.jl --eval 'using Pkg; Pkg.test()'
-      - name: Generate docs
+      - name: Build the docs of the generated package
         run: |
           julia --project=tmp/Guldasta.jl/docs --eval 'using Pkg; pkg"dev tmp/Guldasta.jl"' \
             -L tmp/Guldasta.jl/docs/make.jl
-      - name: Check docs generation
+      - name: Check that the docs wre properly generated
         run: |
           ./.github/scripts/check-docs.bash tmp/Guldasta.jl
+      - name: Check that running pre-commit will fix its own issues
+        shell: bash {0} # The default shell uses -e which checks intermediary failures
+        run: |
+          cd tmp/Guldasta.jl
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub action"
+          git init
+          git add .
+          git commit -m "First commit"
+          SKIP=no-commit-to-branch pre-commit run -a # Should fail
+          SKIP=no-commit-to-branch pre-commit run -a # Should not
