@@ -42,7 +42,7 @@ This is exactly what `BestieTemplate` does.
 Under the hood, `BestieTemplate` is no more and no less than:
 
 - a [copier](https://copier.readthedocs.io) template/skeleton for Julia packages (see folder [template](template)); and
-- a package that wraps `copier` in Julia using `PythonCall`.
+- a package that wraps `copier` in Julia using `PythonCall` with some convenience functions.
 
 ## Quickstart
 
