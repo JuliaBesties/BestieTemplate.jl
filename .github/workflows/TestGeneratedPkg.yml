@@ -15,6 +15,7 @@ on:
       - "*.toml"
       - "copier.yml"
       - "template/**"
+      - ".github/workflows/TestGeneratedPkg.yml"
     types: [opened, synchronize, reopened]
 
   workflow_dispatch:
