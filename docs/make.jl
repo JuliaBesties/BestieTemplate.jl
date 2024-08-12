@@ -20,4 +20,4 @@ makedocs(;
   ],
 )
 
-deploydocs(; repo = "github.com/abelsiqueira/BestieTemplate.jl", push_preview = true)
+deploydocs(; repo = "github.com/abelsiqueira/BestieTemplate.jl")
