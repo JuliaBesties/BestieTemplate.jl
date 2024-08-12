@@ -66,7 +66,7 @@ jobs:
           julia --project=tmp/Guldasta.jl --eval 'using Pkg; Pkg.test()'
       - name: Generate docs
         run: |
-          julia --project=tmp/Guldasta.jl --eval 'using Pkg; Pkg.add("Documenter")' \
+          julia --project=tmp/Guldasta.jl/docs --eval 'using Pkg; pkg"dev tmp/Guldasta.jl"' \
             -L tmp/Guldasta.jl/docs/make.jl
       - name: Check docs generation
         run: |
