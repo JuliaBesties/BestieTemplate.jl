@@ -1,10 +1,14 @@
 @testset "Testing copy, recopy and rebase" begin
   _with_tmp_dir() do dir_copier
     run(`copier copy --vcs-ref HEAD --quiet $(C.args.copier.ask) $(C.template_path) .`)
+    _git_setup()
+    _full_precommit()
 
     @testset "Compare copied project vs copier CLI baseline" begin
       _with_tmp_dir() do dir_bestie
         BestieTemplate.Copier.copy(dir_bestie, C.args.bestie.ask; quiet = true, vcs_ref = "HEAD")
+        _git_setup()
+        _full_precommit()
         _test_diff_dir(dir_bestie, dir_copier)
       end
     end
@@ -21,6 +25,8 @@
           overwrite = true,
           vcs_ref = "HEAD",
         )
+        _git_setup()
+        _full_precommit()
         _test_diff_dir(dir_bestie, dir_copier)
       end
     end
@@ -36,6 +42,8 @@
           quiet = true,
           vcs_ref = "HEAD",
         )
+        _git_setup()
+        _full_precommit()
         _test_diff_dir(dir_bestie, dir_copier)
       end
     end
