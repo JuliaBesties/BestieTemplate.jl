@@ -6,18 +6,18 @@ DocMeta.setdocmeta!({{ PackageName }}, :DocTestSetup, :(using {{ PackageName }})
 const page_rename = Dict("developer.md" => "Developer docs") # Without the numbers
 
 makedocs(;
-  modules = [{{ PackageName }}],
-  authors = "{{ AuthorName }} <{{ AuthorEmail }}> and contributors",
-  repo = "https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/{commit}{path}#{line}",
-  sitename = "{{ PackageName }}.jl",
-  format = Documenter.HTML(; canonical = "https://{{ PackageOwner }}.github.io/{{ PackageName }}.jl"),
-  pages = [
-    "index.md"
-    [
-      file for
-      file in readdir(joinpath(@__DIR__, "src")) if file != "index.md" && splitext(file)[2] == ".md"
-    ]
-  ],
+    modules = [{{ PackageName }}],
+    authors = "{{ AuthorName }} <{{ AuthorEmail }}> and contributors",
+    repo = "https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/{commit}{path}#{line}",
+    sitename = "{{ PackageName }}.jl",
+    format = Documenter.HTML(; canonical = "https://{{ PackageOwner }}.github.io/{{ PackageName }}.jl"),
+    pages = [
+        "index.md"
+        [
+            file for file in readdir(joinpath(@__DIR__, "src")) if
+            file != "index.md" && splitext(file)[2] == ".md"
+        ]
+    ],
 )
 
 deploydocs(; repo = "github.com/{{ PackageOwner }}/{{ PackageName }}.jl")

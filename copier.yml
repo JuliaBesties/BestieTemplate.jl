@@ -50,7 +50,7 @@ Indentation:
   type: int
   help: Indentation length (Used in .JuliaFormatter and other configuration files of formatters and linters if you add them)
   validator: "{% if Indentation <= 0 %}Indentation must be positive{% endif %}"
-  default: 2
+  default: 4
 
 # Optional
 AnswerStrategy:

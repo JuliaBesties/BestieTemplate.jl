@@ -46,6 +46,17 @@ jobs:
           arch: ${{ inputs.arch }}
       - name: Use Julia cache
         uses: julia-actions/cache@v2
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          cache: "pip"
+      - name: Cache pre-commit
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit
+          key: ${{ runner.os }}-pre-commit-${{ hashFiles('**/.pre-commit-config.yaml') }}
+      - name: Install pre-commit
+        run: pip install pre-commit
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
         env:

@@ -6,6 +6,21 @@ function _git_setup()
   run(`git commit -q -m "First commit"`)
 end
 
+function _precommit()
+  try
+    read(`pre-commit run -a`) # run and ignore output
+  catch
+    nothing
+  end
+end
+
+function _full_precommit()
+  run(`git add .`)
+  _precommit()
+  run(`git add .`)
+  run(`git commit -q -m "git add . and pre-commit run -a"`)
+end
+
 function _with_tmp_dir(f, args...; kwargs...)
   # Can't use mktempdir on GitHub actions willy nilly (at least on Mac)
   tmpdir = get(ENV, "TMPDIR", mktempdir())
@@ -34,11 +49,16 @@ function _test_diff_dir(dir1, dir2)
   ignore(line) = startswith("_commit")(line) || startswith("_src_path")(line)
   @testset "$(basename(dir1)) vs $(basename(dir2))" begin
     for (root, _, files) in walkdir(dir1)
+      if contains("node_modules")(root)
+        continue
+      end
+
       nice_dir(file) =
         replace(root, dir1 => "") |> out -> replace(out, r"^/" => "") |> out -> joinpath(out, file)
       if nice_dir("") |> x -> occursin(r"[\\/]?git[\\/]+", x)
         continue
       end
+
       @testset "File $(nice_dir(file))" for file in files
         file1 = joinpath(root, file)
         file2 = replace(file1, dir1 => dir2)
