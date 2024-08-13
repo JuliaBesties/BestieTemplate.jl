@@ -23,13 +23,14 @@ end
 Wrapper around [copier.run_copy](https://copier.readthedocs.io/en/stable/reference/main/#copier.main.run_copy).
 
 This is an internal function, if BestieTemplate's main API is not sufficient, open an issue.
+Note: this is not `Base.copy`, inside the Copier module we shadow that name.
 """
-function Base.copy(src_path, dst_path, data::Dict = Dict(); kwargs...)
+function copy(src_path, dst_path, data::Dict = Dict(); kwargs...)
   copier = PythonCall.pyimport("copier")
   copier.run_copy(src_path, dst_path, data; kwargs...)
 end
 
-function Base.copy(dst_path, data::Dict = Dict(); kwargs...)
+function copy(dst_path, data::Dict = Dict(); kwargs...)
   copy(joinpath(@__DIR__, ".."), dst_path, data; kwargs...)
 end
 
