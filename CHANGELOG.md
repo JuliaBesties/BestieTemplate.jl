@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning].
 
 - The keyword argument `quiet` is now used to define verbosity (#379)
 - The keyword `guess` in `apply` to control whether guessing answers is desired (#225)
+- The minimum Julia version is also guessed now (#225)
 
 ### Changed
 
