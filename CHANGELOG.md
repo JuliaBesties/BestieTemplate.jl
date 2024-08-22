@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning].
 - The keyword `guess` in `apply` to control whether guessing answers is desired (#225)
 - The minimum Julia version is also guessed now (#225)
 - The package owner is also guessed now (#225)
+- The indentation is also guessed now (#225)
 
 ### Changed
 
