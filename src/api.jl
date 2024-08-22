@@ -124,12 +124,20 @@ The `data` argument is a dictionary of answers (values) to questions (keys) that
 
 ## Keyword arguments
 
-- `warn_existing_pkg::Boolean = true`: Whether to check if you actually meant `update`. If you run `apply` and the `dst_path` contains a `.copier-answers.yml`, it means that the copy was already made, so you might have means `update` instead. When `true`, a warning is shown and execution is stopped.
-- `quiet::Boolean = false`: Whether to print greetings, info, and other messages. This keyword is also used by copier.
+- `guess:Bool = true`: Whether to try to guess some of the data from the package itself.
+- `warn_existing_pkg::Bool = true`: Whether to check if you actually meant `update`. If you run `apply` and the `dst_path` contains a `.copier-answers.yml`, it means that the copy was already made, so you might have means `update` instead. When `true`, a warning is shown and execution is stopped.
+- `quiet::Bool = false`: Whether to print greetings, info, and other messages. This keyword is also used by copier.
 
 The other keyword arguments are passed directly to the internal [`Copier.copy`](@ref).
 """
-function apply(src_path, dst_path, data::Dict = Dict(); warn_existing_pkg = true, kwargs...)
+function apply(
+  src_path,
+  dst_path,
+  data::Dict = Dict();
+  warn_existing_pkg = true,
+  guess = true,
+  kwargs...,
+)
   quiet = get(kwargs, :quiet, false)
 
   if !isdir(dst_path)
@@ -150,7 +158,7 @@ function apply(src_path, dst_path, data::Dict = Dict(); warn_existing_pkg = true
   end
 
   # If there are answers in the destination path, skip guessing the answers
-  existing_data = _read_data_from_existing_path(dst_path)
+  existing_data = guess ? _read_data_from_existing_path(dst_path) : Dict()
   for (key, value) in existing_data
     quiet || @info "Inferred $key=$value from destination path"
     if haskey(data, key)

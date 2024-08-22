@@ -73,6 +73,15 @@ function _test_diff_dir(dir1, dir2)
   end
 end
 
+_random(::Val{T}, value) where {T} = rand(C.letters, length(value)) |> join
+_random(::Val{T}, value::Bool) where {T} = rand(Bool)
+_random(::Val{:PackageName}, value) = return "Pkg" * join(rand(C.letters, length(value) - 3))
+_random(::Val{:AnswerStrategy}, value) = rand(["minimum", "recommended", "ask"])
+_random(::Val{:License}, value) = rand(["Apache-2.0", "GPL-3.0", "MIT", "MPL-2.0"])
+_random(::Val{:Indentation}, value) = rand(2:8)
+_random(::Val{:PackageUUID}, value) = [x in C.hex ? rand(C.hex) : x for x in value] |> join
+_random(::Val{:JuliaMinVersion}, value) = "1.$(rand(0:20))"
+
 """
 Constants used in the tests
 """
@@ -94,5 +103,11 @@ args = (
 
 template_path = joinpath(@__DIR__, "..")
 template_url = "https://github.com/abelsiqueira/BestieTemplate.jl"
+
+lowercase_letters = 'a':'z'
+uppercase_letters = 'A':'Z'
+letters = lowercase_letters ∪ uppercase_letters
+digits = '0':'9'
+hex = digits ∪ ('a':'f')
 
 end

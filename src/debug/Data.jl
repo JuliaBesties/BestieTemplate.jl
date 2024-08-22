@@ -25,7 +25,7 @@ const strategy_minimum = merge(
   Dict(
     "JuliaMinVersion" => "1.6",
     "License" => "MIT",
-    "Indentation" => "4",
+    "Indentation" => 4,
     "AnswerStrategy" => "minimum",
   ),
 )
