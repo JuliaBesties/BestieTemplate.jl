@@ -18,6 +18,7 @@
             "AuthorEmail",
             "AuthorName",
             "JuliaMinVersion",
+            "Indentation",
             "PackageName",
             "PackageOwner",
             "PackageUUID",

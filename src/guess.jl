@@ -58,5 +58,17 @@ function _read_data_from_existing_path(dst_path)
     end
   end
 
+  # Check JuliaFormatter for default indentation
+  if isfile(_j(".JuliaFormatter.toml"))
+    toml_data = TOML.parsefile(_j(".JuliaFormatter.toml"))
+    if haskey(toml_data, "indent")
+      data["Indentation"] = toml_data["indent"]
+    else
+      @debug "No indent found in .JuliaFormatter.toml"
+    end
+  else
+    @debug "No file .JuliaFormatter.toml"
+  end
+
   return data
 end
