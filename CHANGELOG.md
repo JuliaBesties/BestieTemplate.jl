@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning].
 ### Added
 
 - The keyword argument `quiet` is now used to define verbosity (#379)
+- The keyword `guess` in `apply` to control whether guessing answers is desired (#225)
 
 ### Changed
 

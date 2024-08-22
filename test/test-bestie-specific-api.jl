@@ -1,3 +1,45 @@
+@testset "Automatic guessing of data" begin
+  src_data = copy(C.args.bestie.ask)
+  @testset "Using random data" for _ in 1:10
+    for (key, value) in src_data
+      src_data[key] = _random(Val(Symbol(key)), value)
+    end
+
+    _with_tmp_dir() do dir
+      BestieTemplate.generate(C.template_path, ".", src_data; quiet = true, vcs_ref = "HEAD")
+
+      @testset "Test that guesses are correct" begin
+        data = BestieTemplate._read_data_from_existing_path(".")
+        @testset for (key, value) in data
+          @test value == src_data[key]
+        end
+        @testset "All keys were guessed" begin
+          @test Set(keys(data)) == Set(["AuthorEmail", "AuthorName", "PackageName", "PackageUUID"])
+        end
+      end
+
+      @testset "Test that keyword guess=false ignores the guessed data" begin
+        rm(".copier-answers.yml")
+        _git_setup()
+        BestieTemplate.apply(
+          C.template_path,
+          ".",
+          C.args.bestie.ask;
+          guess = false,
+          overwrite = true,
+          quiet = true,
+          vcs_ref = "HEAD",
+        )
+        answers = YAML.load_file(".copier-answers.yml")
+        data = BestieTemplate._read_data_from_existing_path(".")
+        for (key, value) in data
+          @test answers[key] == C.args.bestie.ask[key]
+        end
+      end
+    end
+  end
+end
+
 @testset "Test applying the template on an existing project" begin
   _with_tmp_dir() do dir_existing
     _basic_new_pkg("NewPkg")
