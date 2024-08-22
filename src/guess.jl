@@ -32,6 +32,15 @@ function _read_data_from_existing_path(dst_path)
     else
       @debug "No authors information"
     end
+
+    # Minimum Julia version
+    if haskey(toml_data, "compat") && haskey(toml_data["compat"], "julia")
+      data["JuliaMinVersion"] = toml_data["compat"]["julia"]
+    else
+      @debug "No compat information"
+    end
+  else
+    @debug "No Project.toml"
   end
 
   return data

@@ -14,7 +14,8 @@
           @test value == src_data[key]
         end
         @testset "All keys were guessed" begin
-          @test Set(keys(data)) == Set(["AuthorEmail", "AuthorName", "PackageName", "PackageUUID"])
+          @test Set(keys(data)) ==
+                Set(["AuthorEmail", "AuthorName", "JuliaMinVersion", "PackageName", "PackageUUID"])
         end
       end
 
