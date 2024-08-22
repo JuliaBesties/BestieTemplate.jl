@@ -43,5 +43,20 @@ function _read_data_from_existing_path(dst_path)
     @debug "No Project.toml"
   end
 
+  # Get the package owner **without** assuming the github.user (e.g., forks would be wrong)
+  if isfile(_j("docs", "make.jl"))
+    pkg_name = get(data, "PackageName", "[[:alnum:]-]*")
+    owner_repo_regex = r"([[:alnum:]-]*)\/" * pkg_name * ".jl" # to avoid using ugly Regex(...) syntax
+
+    # docs/make.jl can have the repo keyword in two places (see template)
+    # this should match optional
+    repo_regex = r"repo\s*=\s*\"(?:https?:\/\/)?.*\/" * owner_repo_regex
+    m = match(repo_regex, read(_j("docs", "make.jl"), String))
+
+    if !isnothing(m)
+      data["PackageOwner"] = m[1]
+    end
+  end
+
   return data
 end
