@@ -15,7 +15,7 @@ function _read_data_from_existing_path(dst_path)
       if haskey(toml_data, toml_key)
         data[copier_key] = toml_data[toml_key]
       else
-        @debug "No key @toml_key in TOML"
+        @debug "No key $toml_key in TOML"
       end
     end
 
@@ -45,7 +45,7 @@ function _read_data_from_existing_path(dst_path)
 
   # Get the package owner **without** assuming the github.user (e.g., forks would be wrong)
   if isfile(_j("docs", "make.jl"))
-    pkg_name = get(data, "PackageName", "[[:alnum:]-]*")
+    pkg_name = get(data, "PackageName", r"[[:alnum:]-]*")
     owner_repo_regex = r"([[:alnum:]-]*)\/" * pkg_name * ".jl" # to avoid using ugly Regex(...) syntax
 
     # docs/make.jl can have the repo keyword in two places (see template)
@@ -55,7 +55,11 @@ function _read_data_from_existing_path(dst_path)
 
     if !isnothing(m)
       data["PackageOwner"] = m[1]
+    else
+      @debug "No match for repo regex"
     end
+  else
+    @debug "No file docs/make.jl"
   end
 
   # Check JuliaFormatter for default indentation

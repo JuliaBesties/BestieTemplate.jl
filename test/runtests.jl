@@ -13,6 +13,7 @@ if get(ENV, "CI", "nothing") == "true" && Sys.iswindows()
 end
 
 using BestieTemplate
+using Logging
 using Pkg
 using PythonCall
 using Test
