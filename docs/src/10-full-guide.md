@@ -122,17 +122,29 @@ julia> using BestieTemplate
 julia> BestieTemplate.apply("full/path/to/YourPackage.jl")
 ```
 
-This will look for a file `Project.toml` at the root of the given path and use the information there to guess some of the answers.
-Currently, we guess the `PackageName`, `PackageUUID` from the `name` and `uuid` fields, and try to guess the `AuthorName` and `AuthorEmail` from the `authors` field by looking at the first match.
+This command will look around your project path and try to guess some of the answers.
+Currently, we guess:
+
+- `PackageName` and `PackageUUID` from the `name` and `uuid` fields in `Project.toml`,
+- `AuthorName` and `AuthorEmail` from the `authors` field in `Project.toml`,
+- `PackageOwner` from the `repo` in `docs/make.jl`,
+- `JuliaMinVersion` from the `compat` section in `Project.toml`,
+- `Indentation` from the `indent` field in `.JuliaFormatter.toml`.
 
 !!! tip "Overwrite"
     You will be asked whether to overwrite existing files or not. Since you are using `git`, you can try it out and reset if you don't like the result.
 
-If you don't like the result, or want to override the answers, you can run the `apply` function with additional arguments:
+If you don't like the result, or want to override the answers, you can run the `apply` function with additional arguments, for instance:
 
 ```julia-repl
 julia> data = Dict("AuthorName" => "Bob", "AuthorEmail" => "bob@bob.br")
 julia> BestieTemplate.apply("full/path/to/YourPackage.jl", data)
+```
+
+Alternatively, you can also tell Bestie to not guess:
+
+```julia-repl
+julia> BestieTemplate.apply("full/path/to/YourPackage.jl"; guess = false)
 ```
 
 See the full docstring for [`BestieTemplate.apply`](@ref) for more information.
