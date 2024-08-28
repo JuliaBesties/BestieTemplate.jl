@@ -1,5 +1,14 @@
 @testset "Automatic guessing of data" begin
   src_data = copy(C.args.bestie.ask)
+  guessable_answers = Set([
+    "AuthorEmail",
+    "AuthorName",
+    "JuliaMinVersion",
+    "Indentation",
+    "PackageName",
+    "PackageOwner",
+    "PackageUUID",
+  ])
   @testset "Using random data" for _ in 1:10
     for (key, value) in src_data
       src_data[key] = _random(Val(Symbol(key)), value)
@@ -14,15 +23,7 @@
           @test value == src_data[key]
         end
         @testset "All keys were guessed" begin
-          @test Set(keys(data)) == Set([
-            "AuthorEmail",
-            "AuthorName",
-            "JuliaMinVersion",
-            "Indentation",
-            "PackageName",
-            "PackageOwner",
-            "PackageUUID",
-          ])
+          @test Set(keys(data)) == guessable_answers
         end
       end
 
@@ -42,6 +43,89 @@
         data = BestieTemplate._read_data_from_existing_path(".")
         for (key, value) in data
           @test answers[key] == C.args.bestie.ask[key]
+        end
+      end
+    end
+  end
+
+  @testset "Incomplete guesses" begin
+    @testset "Missing or incomplete Project.toml" begin
+      _with_tmp_dir() do dir
+        BestieTemplate.generate(C.template_path, ".", src_data; quiet = true, vcs_ref = "HEAD")
+        rm("Project.toml")
+        @test_logs (:debug, "No Project.toml") min_level = Logging.Debug BestieTemplate._read_data_from_existing_path(
+          ".",
+        )
+        data = BestieTemplate._read_data_from_existing_path(".")
+        @testset "Guessed $key correctly" for (key, value) in data
+          @test value == src_data[key]
+        end
+        missing_keys =
+          ["AuthorEmail", "AuthorName", "JuliaMinVersion", "PackageName", "PackageUUID"]
+        @test Set(keys(data)) == setdiff(guessable_answers, missing_keys)
+
+        @testset "Add empty Project.toml" begin
+          touch("Project.toml")
+          @test_logs (:debug, "No key name in TOML") (:debug, "No key uuid in TOML") (
+            :debug,
+            "No authors information",
+          ) (:debug, "No compat information") min_level = Logging.Debug BestieTemplate._read_data_from_existing_path(
+            ".",
+          )
+        end
+
+        @testset "Wrong format for authors" begin
+          open("Project.toml", "w") do io
+            println(io, "authors = [\"Some author\"]")
+          end
+          @test_logs (:debug, "authors field don't match regex") min_level = Logging.Debug match_mode =
+            :any BestieTemplate._read_data_from_existing_path(".")
+        end
+      end
+    end
+
+    @testset "Missing or incomplete docs/make.jl" begin
+      _with_tmp_dir() do dir
+        BestieTemplate.generate(C.template_path, ".", src_data; quiet = true, vcs_ref = "HEAD")
+        rm("docs/make.jl")
+        @test_logs (:debug, "No file docs/make.jl") min_level = Logging.Debug BestieTemplate._read_data_from_existing_path(
+          ".",
+        )
+        data = BestieTemplate._read_data_from_existing_path(".")
+        @testset "Guessed $key correctly" for (key, value) in data
+          @test value == src_data[key]
+        end
+        missing_keys = ["PackageOwner"]
+        @test Set(keys(data)) == setdiff(guessable_answers, missing_keys)
+
+        @testset "Add empty docs/make.jl" begin
+          touch("docs/make.jl")
+          @test_logs (:debug, "No match for repo regex") min_level = Logging.Debug BestieTemplate._read_data_from_existing_path(
+            ".",
+          )
+        end
+      end
+    end
+
+    @testset "Missing or incomplete .JuliaFormatter.toml" begin
+      _with_tmp_dir() do dir
+        BestieTemplate.generate(C.template_path, ".", src_data; quiet = true, vcs_ref = "HEAD")
+        rm(".JuliaFormatter.toml")
+        @test_logs (:debug, "No file .JuliaFormatter.toml") min_level = Logging.Debug BestieTemplate._read_data_from_existing_path(
+          ".",
+        )
+        data = BestieTemplate._read_data_from_existing_path(".")
+        @testset "Guessed $key correctly" for (key, value) in data
+          @test value == src_data[key]
+        end
+        missing_keys = ["Indentation"]
+        @test Set(keys(data)) == setdiff(guessable_answers, missing_keys)
+
+        @testset "Add empty .JuliaFormatter.toml" begin
+          touch(".JuliaFormatter.toml")
+          @test_logs (:debug, "No indent found in .JuliaFormatter.toml") min_level = Logging.Debug BestieTemplate._read_data_from_existing_path(
+            ".",
+          )
         end
       end
     end
