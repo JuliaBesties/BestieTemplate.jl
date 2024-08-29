@@ -1,3 +1,9 @@
+# Constants
+JULIA_LTS_VERSION:
+  when: false
+  type: str
+  default: 1.6
+
 # Essential questions
 PackageName:
   type: str
@@ -34,7 +40,7 @@ AuthorEmail:
 JuliaMinVersion:
   type: str
   help: Minimum Julia version (Used in Project.toml and CI. The suggestion below is the LTS version)
-  default: 1.6
+  default: "{{ JULIA_LTS_VERSION }}"
 
 License:
   type: str
@@ -70,6 +76,12 @@ AddPrecommit:
   help: Pre-commit (Whether to add pre-commit.org. It runs before every commit fixing your formatting and preventing bad practices)
 
 # CI
+JuliaMinCIVersion:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: str
+  help: Minimum Julia version used in the tests (lts defaults to the Long Term Support version)
+  default: "{% if JuliaMinVersion == JULIA_LTS_VERSION %}lts{% else %}{{ JuliaMinVersion }}{% endif %}"
+
 AddMacToCI:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool

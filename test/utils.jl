@@ -81,6 +81,7 @@ _random(::Val{:License}, value) = rand(["Apache-2.0", "GPL-3.0", "MIT", "MPL-2.0
 _random(::Val{:Indentation}, value) = rand(2:8)
 _random(::Val{:PackageUUID}, value) = [x in C.hex ? rand(C.hex) : x for x in value] |> join
 _random(::Val{:JuliaMinVersion}, value) = "1.$(rand(0:20))"
+_random(::Val{:JuliaMinCIVersion}, value) = rand() < 0.2 ? "lts" : "1.$(rand(0:20))"
 
 """
 Constants used in the tests

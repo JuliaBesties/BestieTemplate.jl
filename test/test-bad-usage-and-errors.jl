@@ -22,6 +22,7 @@ end
     @testset "It works if the dst_path is ." begin
       mkdir("some_folder2")
       cd("some_folder2") do
+        @show readdir(".")
         # Should not throw
         BestieTemplate.generate(
           C.template_path,
