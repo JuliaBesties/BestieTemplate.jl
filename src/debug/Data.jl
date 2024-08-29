@@ -36,6 +36,7 @@ const strategy_ask = merge(strategy_recommended, Dict("AnswerStrategy" => "ask")
 
 const optional_questions_with_default = Dict(
   "AddPrecommit" => true,
+  "JuliaMinCIVersion" => "lts",
   "AddMacToCI" => true,
   "AddWinToCI" => true,
   "RunJuliaNightlyOnCI" => true,

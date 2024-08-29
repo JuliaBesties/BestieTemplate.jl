@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning].
 - The minimum Julia version is also guessed now (#225)
 - The package owner is also guessed now (#225)
 - The indentation is also guessed now (#225)
+- New question: JuliaMinCIVersion, which defines which Julia version to use in the CI (#400)
 
 ### Changed
 
