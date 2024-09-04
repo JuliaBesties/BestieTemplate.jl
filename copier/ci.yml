@@ -1,0 +1,35 @@
+JuliaMinCIVersion:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: str
+  help: Minimum Julia version used in the tests (lts defaults to the Long Term Support version)
+  default: "{% if JuliaMinVersion == JULIA_LTS_VERSION %}lts{% else %}{{ JuliaMinVersion }}{% endif %}"
+
+AddMacToCI:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: bool
+  help: MacOS CI test (Package tests run on Ubuntu latest. Do you want to add macOS latest as well?)
+  default: "{{ AnswerStrategy != 'minimum' }}"
+
+AddWinToCI:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: bool
+  help: Windows CI test (Same as above, but for Windows)
+  default: "{{ AnswerStrategy != 'minimum' }}"
+
+RunJuliaNightlyOnCI:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: bool
+  help: Julia nightly CI test (Package tests run on Julia version {{ JuliaMinVersion }} and on the latest stable release. Do you also want to run them on the nightly version?)
+  default: false
+
+UseCirrusCI:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: bool
+  help: FreeBSD CI test with CirrusCI (Add CirrusCI to run the package tests on FreeBSD?)
+  default: false
+
+AddCopierCI:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: bool
+  help: Copier.yml (Add workflow to check for template updates? This is a work in progress workflow that checks whether there has been an update to the template and automatically create a pull request)
+  default: false

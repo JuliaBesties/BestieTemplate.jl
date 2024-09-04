@@ -1,0 +1,52 @@
+PackageName:
+  type: str
+  help: Package name (without '.jl')
+  validator: |
+    {% if PackageName | length == 0 %}
+    Can't be empty
+    {% endif %}
+    {% if not (PackageName | regex_search('^[A-Z][A-z0-9]*$')) %}
+    Must start with a capital letter, and use letters or numbers only
+    {% endif %}
+
+PackageUUID:
+  type: str
+  help: UUID (For existing packages, copy the UUID from Project.toml, otherwise use the one generated below)
+  validator: "{% if PackageUUID | length == 0 %}Can't be empty{% endif %}"
+  default: "{{ 999999999999999999999999999999999 | ans_random | to_uuid }}"
+
+PackageOwner:
+  type: str
+  help: GitHub username or organization that owns the package (This will be used for URLs)
+  validator: "{% if PackageOwner | length == 0 %}Can't be empty{% endif %}"
+
+AuthorName:
+  type: str
+  help: Name of the package author (Used to kickstart a few files)
+  validator: "{% if AuthorName | length == 0 %}Can't be empty{% endif %}"
+
+AuthorEmail:
+  type: str
+  help: E-mail of the package author (Used to kickstart a few files)
+  validator: "{% if AuthorEmail | length == 0 %}Can't be empty{% endif %}"
+
+JuliaMinVersion:
+  type: str
+  help: Minimum Julia version (Used in Project.toml and CI. The suggestion below is the LTS version)
+  default: "{{ JULIA_LTS_VERSION }}"
+
+License:
+  type: str
+  help: Package license (You need an OSI license to register. You can suggest new licenses in the issues)
+  choices:
+    - Apache-2.0
+    - GPL-3.0
+    - MIT
+    - MPL-2.0
+  default: MIT
+
+Indentation:
+  type: int
+  help: Indentation length (Used in .JuliaFormatter and other configuration files of formatters and linters if you add them)
+  validator: "{% if Indentation <= 0 %}Indentation must be positive{% endif %}"
+  default: 4

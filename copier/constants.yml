@@ -1,0 +1,4 @@
+JULIA_LTS_VERSION:
+  when: false
+  type: str
+  default: 1.6

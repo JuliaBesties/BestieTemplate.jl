@@ -13,6 +13,7 @@ repos:
       - id: check-json
       - id: check-toml
       - id: check-yaml
+        args: [--allow-multiple-documents, --unsafe] # These options are here because of the copier.yml file
       - id: end-of-file-fixer
       - id: file-contents-sorter
         files: .JuliaFormatter.toml
