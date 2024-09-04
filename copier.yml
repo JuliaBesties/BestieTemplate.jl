@@ -20,6 +20,7 @@
 ---
 _skip_if_exists:
   - "**/*.jl"
+  - "!test/runtests.jl"
   - "!docs/make.jl"
   - "**/Project.toml"
   - .all-contributorsrc
