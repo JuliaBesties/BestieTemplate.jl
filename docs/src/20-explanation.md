@@ -158,7 +158,7 @@ Installing pre-commit (`pre-commit install`) will make sure that it runs the rel
 Furthermore, if you run `pre-commit run -a`, it runs all hooks.
 
 Some hooks in the `.pre-commit-config.yaml` file have configuration files of their own:
-`.JuliaFormatter.toml`, `.markdownlint.json`, `lychee.toml`, and `.yamllint.yml`.
+`.JuliaFormatter.toml`, `.markdownlint.json`, `.lychee.toml`, and `.yamllint.yml`.
 
 Also slightly related, is the `.editorconfig` file, which tells your editor, if you install the correct plugin, how to format some things.
 

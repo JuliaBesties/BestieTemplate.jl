@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning].
 - Update pre-commit hook versions
   - JuliaFormatter 1.0.58 -> 1.0.60
 - Default Indentation changed from 2 to 4 (#403)
+- Change lychee configuration to a hidden file `.lychee.toml`
 
 ## [0.9.1] - 2024-07-24
 
