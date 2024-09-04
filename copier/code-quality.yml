@@ -3,3 +3,9 @@ AddPrecommit:
   type: bool
   default: "{{ AnswerStrategy != 'minimum' }}"
   help: Pre-commit (Whether to add pre-commit.org. It runs before every commit fixing your formatting and preventing bad practices)
+
+AutoIncludeTests:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: bool
+  default: "{{ AnswerStrategy != 'minimum' }}"
+  help: Auto-include test files named `test-<name>.jl` (Incentivizes splitting your tests and better naming them, and helps avoiding forgetting to include the tests manually)

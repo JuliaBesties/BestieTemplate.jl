@@ -17,11 +17,12 @@ and this project adheres to [Semantic Versioning].
 - The package owner is also guessed now (#225)
 - The indentation is also guessed now (#225)
 - New question: JuliaMinCIVersion, which defines which Julia version to use in the CI (#400)
+- New question: AutoIncludeTests, that auto-includes all `test-*.jl` files in `runtests.jl` (#261)
 
 ### Changed
 
 - Update pre-commit hook versions
-  - JuliaFormatter 1.0.58 -> 1.0.59
+  - JuliaFormatter 1.0.58 -> 1.0.60
 - Default Indentation changed from 2 to 4 (#403)
 
 ## [0.9.1] - 2024-07-24

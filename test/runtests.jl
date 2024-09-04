@@ -24,10 +24,14 @@ include("utils.jl")
 # Defined in utils.jl to hold constants
 using .C: C
 
-test_files = filter(file -> startswith("test-")(file) && endswith(".jl")(file), readdir(@__DIR__))
-for file in test_files
-  title = splitext(file)[1] |> x -> replace(x, "-" => " ") |> titlecase
-  @testset "$title" begin
-    include(file)
+for (root, dirs, files) in walkdir(@__DIR__)
+  for file in files
+    if isnothing(match(r"^test-.*\.jl$", file))
+      continue
+    end
+    title = titlecase(replace(splitext(file[6:end])[1], "-" => " "))
+    @testset "$title" begin
+      include(file)
+    end
   end
 end
