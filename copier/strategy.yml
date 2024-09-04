@@ -1,0 +1,8 @@
+AnswerStrategy:
+  type: str
+  default: recommended
+  help: Optional questions (You can use our defaults, or the bare minimum, or decide everything)
+  choices:
+    Recommended (Our defaults): "recommended"
+    Minimum (Answer no to any addition): "minimum"
+    Ask me (Ask all questions): "ask"

@@ -1,0 +1,23 @@
+AddContributionDocs:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: bool
+  default: "{{ AnswerStrategy != 'minimum' }}"
+  help: Add documentation files on how to contribute to the project (90-contributing.md will give general guidelines, and 91-developer.md will give practical information)
+
+AddAllcontributors:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: bool
+  default: "{{ AnswerStrategy != 'minimum' }}"
+  help: Add allcontributors (all-contributors.org is a project that adds collaborators information in the README and the docs)
+
+AddCodeOfConduct:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: bool
+  default: "{{ AnswerStrategy != 'minimum' }}"
+  help: Code of conduct file (Add a CODE_OF_CONDUCT.md file from Contributor Covenant? {{ AuthorEmail }} will be listed as contact point)
+
+AddGitHubTemplates:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: bool
+  default: "{{ AnswerStrategy != 'minimum' }}"
+  help: GitHub issue templates (Add forms for issue creation to improve the description quality)

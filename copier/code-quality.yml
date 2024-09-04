@@ -1,0 +1,5 @@
+AddPrecommit:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: bool
+  default: "{{ AnswerStrategy != 'minimum' }}"
+  help: Pre-commit (Whether to add pre-commit.org. It runs before every commit fixing your formatting and preventing bad practices)
