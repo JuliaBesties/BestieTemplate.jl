@@ -184,7 +184,7 @@ function apply(
       \$ git add .
       \$ pre-commit run -a # Try to fix possible pre-commit issues (failures are expected)
       \$ pre-commit run -a # Again. Now failures should not happen
-      \$ gid add .
+      \$ git add .
       \$ git commit -m "Apply BestieTemplate $bestie_version"
       \$ pre-commit install
       \$ git push -u origin apply-bestie
