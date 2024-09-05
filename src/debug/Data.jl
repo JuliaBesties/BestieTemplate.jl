@@ -46,6 +46,7 @@ const optional_questions_with_default = Dict(
   "AddContributionDocs" => true,
   "AddAllcontributors" => true,
   "AddCodeOfConduct" => true,
+  "CodeOfConductContact" => strategy_minimum["AuthorEmail"],
   "AddGitHubTemplates" => true,
 )
 

@@ -16,8 +16,9 @@ and this project adheres to [Semantic Versioning].
 - The minimum Julia version is also guessed now (#225)
 - The package owner is also guessed now (#225)
 - The indentation is also guessed now (#225)
-- New question: JuliaMinCIVersion, which defines which Julia version to use in the CI (#400)
-- New question: AutoIncludeTests, that auto-includes all `test-*.jl` files in `runtests.jl` (#261)
+- New question: `JuliaMinCIVersion`, which defines which Julia version to use in the CI (#400)
+- New question: `AutoIncludeTests`, that auto-includes all `test-*.jl` files in `runtests.jl` (#261)
+- New question: `CodeOfConductContact`, the contact person/entity for the `CODE_OF_CONDUCT.md` file (#426)
 
 ### Changed
 
