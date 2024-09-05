@@ -19,16 +19,8 @@ function _read_data_from_existing_path(dst_path)
       end
     end
 
-    # Author capture is limited and does not handle multiple authors. See #118 for more information.
     if haskey(toml_data, "authors")
-      author_regex = r"^(.*) <(.*)>(?: and contributors)?"
-      m = match(author_regex, toml_data["authors"][1])
-      if !isnothing(m)
-        data["AuthorName"] = m[1]
-        data["AuthorEmail"] = m[2]
-      else
-        @debug "authors field don't match regex"
-      end
+      data["Authors"] = join(toml_data["authors"], ",")
     else
       @debug "No authors information"
     end

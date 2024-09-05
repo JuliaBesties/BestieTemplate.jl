@@ -20,7 +20,7 @@ CodeOfConductContact:
   when: "{{ AddCodeOfConduct }}"
   type: str
   help: Contact person/entity listed in the CODE_OF_CONDUCT.md file (Will be listed as contact to enforce the code of conduct, if necessary)
-  default: "{{ AuthorEmail }}"
+  default: "{{ Authors.split(',')[0] | regex_replace('.*<(.*)>.*', '\\\\1') }}"
 
 AddGitHubTemplates:
   when: "{{ AnswerStrategy == 'ask' }}"

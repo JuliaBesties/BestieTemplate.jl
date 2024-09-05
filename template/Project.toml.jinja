@@ -1,6 +1,18 @@
 name = "{{ PackageName }}"
 uuid = "{{ PackageUUID }}"
-authors = ["{{ AuthorName }} <{{ AuthorEmail }}> and contributors"]
+{%- if Authors | length > 0 %}
+{%- if Authors.split(',') | length == 1 %}
+authors = ["{{ Authors }}"]
+{%- else %}
+authors = [
+{%- for author in Authors.split(',') %}
+{%- if author | length > 0 %}
+    "{{ author }}",
+{%- endif %}
+{%- endfor %}
+]
+{%- endif %}
+{%- endif %}
 version = "0.1.0"
 
 [compat]
