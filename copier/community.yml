@@ -14,7 +14,13 @@ AddCodeOfConduct:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool
   default: "{{ AnswerStrategy != 'minimum' }}"
-  help: Code of conduct file (Add a CODE_OF_CONDUCT.md file from Contributor Covenant? {{ AuthorEmail }} will be listed as contact point)
+  help: Code of conduct file (Add a CODE_OF_CONDUCT.md file from Contributor Covenant?)
+
+CodeOfConductContact:
+  when: "{{ AddCodeOfConduct }}"
+  type: str
+  help: Contact person/entity listed in the CODE_OF_CONDUCT.md file (Will be listed as contact to enforce the code of conduct, if necessary)
+  default: "{{ AuthorEmail }}"
 
 AddGitHubTemplates:
   when: "{{ AnswerStrategy == 'ask' }}"
