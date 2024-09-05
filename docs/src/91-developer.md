@@ -317,3 +317,26 @@ Since the GitHub workflow also uses `{` and `}` for their commands, we want to e
 ```jinja
 os: {% raw %}%{{ matrix.os }}{% endraw %}
 ```
+
+## Removing/replacing a question
+
+!!! warn
+    This has only been tested with a single change
+
+Before removing a question, we should deprecate it for one major release.
+We also want to ensure a smooth transition when the user updates.
+
+Luckily, we do have one test that minimally simulates this situation:
+"Test updating from main to HEAD vs generate in HEAD" inside file `test/test-bestie-specific-api`.
+
+This test will run `generate` using the local `main` branch (which won't contain the changes), and run the `update` command, with `defaults=true`, and then compare the result to running `generate` directly.
+
+- Change the `help` field to start with "(Deprecated in VERSION)" (VERSION should be the next major release)
+- Set `when: false` in the question
+- Update the CHANGELOG
+  - Entry in `Deprecated` section
+  - Add or update a "Breaking notice" in the beginning to inform of the changes
+- Move the default questions answers in `src/debug/Data.jl` to the `deprecated` dictionary.
+- Make sure that nothing depends on the old question
+- If necessary, change some `default` values to use the deprecated questions, to ensure a smooth transition.
+- Remove the question in the next release

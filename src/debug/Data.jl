@@ -2,7 +2,7 @@
 Fake data for testing
 
 - `Debug.Data`: NamedTuple of Dictionaries with default data
-  - `Debug.Data.minimum_defaults`: Required data if you use `defaults = true`
+  - `Debug.Data.required`: Required data if you use `defaults = true`
   - `Debug.Data.strategy_minimum`: Required data for strategy minimum, no defaults.
   - `Debug.Data.strategy_recommended`: Required data for strategy recommended, no defaults.
   - `Debug.Data.strategy_ask`: Required data for strategy ask, no defaults.
@@ -12,16 +12,21 @@ module Data
 using Random: MersenneTwister
 using UUIDs: uuid4
 
-const minimum_defaults = Dict(
-  "PackageName" => "FakePkg",
-  "PackageUUID" => string(uuid4(MersenneTwister(123))),
-  "PackageOwner" => "bestietemplate",
-  "AuthorName" => "Bestie Template",
-  "AuthorEmail" => "bestie@fake.nl",
+const deprecated = Dict()
+
+const required = merge(
+  Dict(
+    "PackageName" => "FakePkg",
+    "PackageUUID" => string(uuid4(MersenneTwister(123))),
+    "PackageOwner" => "bestietemplate",
+    "AuthorName" => "Bestie Template",
+    "AuthorEmail" => "bestie@fake.nl",
+  ),
+  deprecated,
 )
 
 const strategy_minimum = merge(
-  minimum_defaults,
+  required,
   Dict(
     "JuliaMinVersion" => "1.6",
     "License" => "MIT",
