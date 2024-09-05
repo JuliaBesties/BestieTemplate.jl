@@ -40,6 +40,9 @@ jobs:
       - run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
+      - name: Create branch main
+        if: github.ref != 'refs/heads/main'
+        run: |
           git branch this-pr
           git checkout origin/main
           git branch --track main origin/main
