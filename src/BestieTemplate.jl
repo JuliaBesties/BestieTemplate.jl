@@ -6,6 +6,18 @@ to use it from Julia.
 
 The main functions are: [`generate`](@ref), [`apply`](@ref), and [`update`](@ref).
 
+To create a new package using BestieTemplate run
+
+```julia
+julia> BestieTemplate.generate("path/to/YourNewPackage.jl")
+```
+
+To apply the template to an existing package
+
+```julia
+julia> BestieTemplate.apply("path/to/YourExistingPackage.jl")
+```
+
 Check the documentation: https://abelsiqueira.com/BestieTemplate.jl
 """
 module BestieTemplate
