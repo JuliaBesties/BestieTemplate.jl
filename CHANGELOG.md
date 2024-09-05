@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+Breaking notice:
+
+- `AuthorName` and `AuthorEmail` have been deprecated. Expect them to be removed in the next version. They are replaced by a single question `Authors`, which receives a comma separated list. Additionally, the Code of Conduct used the `AuthorEmail`, and now it has its own question.
+
 ### Added
 
 - The keyword argument `quiet` is now used to define verbosity (#379)
@@ -20,6 +24,7 @@ and this project adheres to [Semantic Versioning].
 - New question: `AutoIncludeTests`, that auto-includes all `test-*.jl` files in `runtests.jl` (#261)
 - New question: `CodeOfConductContact`, the contact person/entity for the `CODE_OF_CONDUCT.md` file (#426)
 - New question: `LicenseCopyrightHolders`, the copyright holders listed in the LICENSE (#427)
+- New question: `Authors`, a comma separated list of authors. (#118)
 
 ### Changed
 
@@ -27,6 +32,10 @@ and this project adheres to [Semantic Versioning].
   - JuliaFormatter 1.0.58 -> 1.0.60
 - Default Indentation changed from 2 to 4 (#403)
 - Change lychee configuration to a hidden file `.lychee.toml`
+
+### Deprecated
+
+- `AuthorName` and `AuthorEmail` have been removed.
 
 ## [0.9.1] - 2024-07-24
 

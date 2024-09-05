@@ -126,7 +126,7 @@ This command will look around your project path and try to guess some of the ans
 Currently, we guess:
 
 - `PackageName` and `PackageUUID` from the `name` and `uuid` fields in `Project.toml`,
-- `AuthorName` and `AuthorEmail` from the `authors` field in `Project.toml`,
+- `Authors` from the `authors` field in `Project.toml`,
 - `PackageOwner` from the `repo` in `docs/make.jl`,
 - `JuliaMinVersion` from the `compat` section in `Project.toml`,
 - `Indentation` from the `indent` field in `.JuliaFormatter.toml`.
@@ -137,7 +137,7 @@ Currently, we guess:
 If you don't like the result, or want to override the answers, you can run the `apply` function with additional arguments, for instance:
 
 ```julia-repl
-julia> data = Dict("AuthorName" => "Bob", "AuthorEmail" => "bob@bob.br")
+julia> data = Dict("Authors" => "Bob <bob@bob.br>")
 julia> BestieTemplate.apply("full/path/to/YourPackage.jl", data)
 ```
 

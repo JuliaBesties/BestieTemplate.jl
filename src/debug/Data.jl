@@ -12,15 +12,13 @@ module Data
 using Random: MersenneTwister
 using UUIDs: uuid4
 
-const deprecated = Dict()
+const deprecated = Dict("AuthorName" => "Bestie Template", "AuthorEmail" => "bestie@fake.nl")
 
 const required = merge(
   Dict(
     "PackageName" => "FakePkg",
     "PackageUUID" => string(uuid4(MersenneTwister(123))),
     "PackageOwner" => "bestietemplate",
-    "AuthorName" => "Bestie Template",
-    "AuthorEmail" => "bestie@fake.nl",
   ),
   deprecated,
 )
@@ -28,6 +26,7 @@ const required = merge(
 const strategy_minimum = merge(
   required,
   Dict(
+    "Authors" => "Bestie Template <bestie@fake.nl> and contributors", # Move to required after 0.11
     "JuliaMinVersion" => "1.6",
     "License" => "MIT",
     "LicenseCopyrightHolders" => "Bestie Template",
@@ -52,7 +51,7 @@ const optional_questions_with_default = Dict(
   "AddContributionDocs" => true,
   "AddAllcontributors" => true,
   "AddCodeOfConduct" => true,
-  "CodeOfConductContact" => strategy_minimum["AuthorEmail"],
+  "CodeOfConductContact" => split(strategy_minimum["Authors"], ",")[1],
   "AddGitHubTemplates" => true,
 )
 

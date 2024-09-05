@@ -6,5 +6,12 @@ message: >-
   metadata from this file.
 type: software
 authors:
-  - given-names: {{ AuthorName }}
-    email: {{ AuthorEmail }}
+{%- for author in Authors.split(',') %}
+{%- if author | length > 0 %}
+  - given-names: {{ author | regex_replace('^\\s*(.*)\\s*<.*>.*$', '\\1') }}
+{%- set email = author | regex_replace('.*<(.*)>.*', '\\1') %}
+{%- if email | length > 0 %}
+    email: {{ email }}
+{%- endif %}
+{%- endif %}
+{%- endfor %}

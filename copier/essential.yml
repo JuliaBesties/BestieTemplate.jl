@@ -21,14 +21,22 @@ PackageOwner:
   validator: "{% if PackageOwner | length == 0 %}Can't be empty{% endif %}"
 
 AuthorName:
+  when: false
   type: str
-  help: Name of the package author (Used to kickstart a few files)
+  help: (Deprecated in 0.10.0) Name of the package author (Used to kickstart a few files)
   validator: "{% if AuthorName | length == 0 %}Can't be empty{% endif %}"
 
 AuthorEmail:
+  when: false
   type: str
-  help: E-mail of the package author (Used to kickstart a few files)
+  help: (Deprecated in 0.10.0) E-mail of the package author (Used to kickstart a few files)
   validator: "{% if AuthorEmail | length == 0 %}Can't be empty{% endif %}"
+
+Authors:
+  type: str
+  help: Package authors separated by commas (We recommend the form AUTHOR <EMAIL>, but this can be ignored)
+  placeholder: AUTHOR <EMAIL>,AUTHOR <EMAIL>
+  default: "{% if AuthorName | length > 0 %}{{ AuthorName }} <{{ AuthorEmail }}> and contributors{% endif %}"
 
 JuliaMinVersion:
   type: str
@@ -48,7 +56,7 @@ License:
 LicenseCopyrightHolders:
   type: str
   help: License Copyright Holders (Added in front of "Copyright (c) " notices, when applicable)
-  default: "{{ AuthorName }}"
+  default: "{{ Authors | regex_replace('\\s*([^,]*)\\s*<[^,]*>[^,]*', '\\\\1') | regex_replace('\\s*,\\s*', ', ') | trim }}"
   validator: "{% if LicenseCopyrightHolders | length == 0%}Can't be empty{% endif %}"
 
 Indentation:

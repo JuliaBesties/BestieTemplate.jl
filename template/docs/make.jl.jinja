@@ -11,7 +11,7 @@ const numbered_pages = [
 
 makedocs(;
     modules = [{{ PackageName }}],
-    authors = "{{ AuthorName }} <{{ AuthorEmail }}> and contributors",
+    authors = "{{ Authors }}",
     repo = "https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/{commit}{path}#{line}",
     sitename = "{{ PackageName }}.jl",
     format = Documenter.HTML(; canonical = "https://{{ PackageOwner }}.github.io/{{ PackageName }}.jl"),

@@ -1,14 +1,7 @@
 @testset "Automatic guessing of data" begin
   src_data = copy(C.args.bestie.ask)
-  guessable_answers = Set([
-    "AuthorEmail",
-    "AuthorName",
-    "JuliaMinVersion",
-    "Indentation",
-    "PackageName",
-    "PackageOwner",
-    "PackageUUID",
-  ])
+  guessable_answers =
+    Set(["Authors", "JuliaMinVersion", "Indentation", "PackageName", "PackageOwner", "PackageUUID"])
   @testset "Using random data" for _ in 1:10
     for (key, value) in src_data
       src_data[key] = _random(Val(Symbol(key)), value)
@@ -60,8 +53,7 @@
         @testset "Guessed $key correctly" for (key, value) in data
           @test value == src_data[key]
         end
-        missing_keys =
-          ["AuthorEmail", "AuthorName", "JuliaMinVersion", "PackageName", "PackageUUID"]
+        missing_keys = ["Authors", "JuliaMinVersion", "PackageName", "PackageUUID"]
         @test Set(keys(data)) == setdiff(guessable_answers, missing_keys)
 
         @testset "Add empty Project.toml" begin
@@ -72,14 +64,6 @@
           ) (:debug, "No compat information") min_level = Logging.Debug BestieTemplate._read_data_from_existing_path(
             ".",
           )
-        end
-
-        @testset "Wrong format for authors" begin
-          open("Project.toml", "w") do io
-            println(io, "authors = [\"Some author\"]")
-          end
-          @test_logs (:debug, "authors field don't match regex") min_level = Logging.Debug match_mode =
-            :any BestieTemplate._read_data_from_existing_path(".")
         end
       end
     end
@@ -138,7 +122,7 @@ end
     BestieTemplate.apply(
       C.template_path,
       "NewPkg/",
-      Dict("AuthorName" => "T. Esther", "PackageOwner" => "test");
+      Dict("Authors" => "T. Esther", "PackageOwner" => "test");
       defaults = true,
       overwrite = true,
       quiet = true,
@@ -146,7 +130,7 @@ end
     )
     answers = YAML.load_file("NewPkg/.copier-answers.yml")
     @test answers["PackageName"] == "NewPkg"
-    @test answers["AuthorName"] == "T. Esther"
+    @test answers["Authors"] == "T. Esther"
     @test answers["PackageOwner"] == "test"
   end
 
