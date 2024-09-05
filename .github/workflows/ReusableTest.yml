@@ -40,6 +40,10 @@ jobs:
       - run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
+          git branch this-pr
+          git checkout origin/main
+          git branch --track main origin/main
+          git checkout this-pr
       - uses: julia-actions/setup-julia@v2
         with:
           version: ${{ inputs.version }}

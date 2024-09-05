@@ -60,6 +60,9 @@ function _test_diff_dir(dir1, dir2)
       end
 
       @testset "File $(nice_dir(file))" for file in files
+        if endswith(".rej")(file)
+          continue
+        end
         file1 = joinpath(root, file)
         file2 = replace(file1, dir1 => dir2)
         lines1 = readlines(file1)
@@ -94,7 +97,7 @@ using BestieTemplate.Debug.Data: Data
 _bestie_args_to_copier_args(dict) = vcat([["-d"; "$k=$v"] for (k, v) in dict]...)
 
 "Arguments for the different calls"
-_bestie_args = (min = Data.strategy_minimum, ask = Data.strategy_ask_default)
+_bestie_args = (req = Data.required, min = Data.strategy_minimum, ask = Data.strategy_ask_default)
 args = (
   bestie = _bestie_args,
   copier = NamedTuple(
