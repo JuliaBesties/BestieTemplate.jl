@@ -205,41 +205,43 @@ end
   end
 end
 
-@testset "Test updating from main to HEAD vs generate in HEAD" begin
-  _with_tmp_dir() do dir
-    common_args = (defaults = true, quiet = true)
+if read(`git branch --show-current`, String) != "main"
+  @testset "Test updating from main to HEAD vs generate in HEAD" begin
+    _with_tmp_dir() do dir
+      common_args = (defaults = true, quiet = true)
 
-    mkdir("gen_then_up")
-    cd("gen_then_up") do
-      # Generate the release version
-      BestieTemplate.generate(
-        C.template_path,
-        ".",
-        C.args.bestie.req;
-        vcs_ref = "main",
-        common_args...,
-      )
-      _git_setup()
-      _full_precommit()
-      # Update using the HEAD version
-      BestieTemplate.update(".", C.args.bestie.req; vcs_ref = "HEAD", common_args...)
-      _full_precommit()
+      mkdir("gen_then_up")
+      cd("gen_then_up") do
+        # Generate the release version
+        BestieTemplate.generate(
+          C.template_path,
+          ".",
+          C.args.bestie.req;
+          vcs_ref = "main",
+          common_args...,
+        )
+        _git_setup()
+        _full_precommit()
+        # Update using the HEAD version
+        BestieTemplate.update(".", C.args.bestie.req; vcs_ref = "HEAD", common_args...)
+        _full_precommit()
+      end
+
+      mkdir("gen_direct")
+      cd("gen_direct") do
+        # Generate directly in the HEAD version
+        BestieTemplate.generate(
+          C.template_path,
+          ".",
+          C.args.bestie.req;
+          vcs_ref = "HEAD",
+          common_args...,
+        )
+        _git_setup()
+        _full_precommit()
+      end
+
+      _test_diff_dir("gen_then_up", "gen_direct")
     end
-
-    mkdir("gen_direct")
-    cd("gen_direct") do
-      # Generate directly in the HEAD version
-      BestieTemplate.generate(
-        C.template_path,
-        ".",
-        C.args.bestie.req;
-        vcs_ref = "HEAD",
-        common_args...,
-      )
-      _git_setup()
-      _full_precommit()
-    end
-
-    _test_diff_dir("gen_then_up", "gen_direct")
   end
 end
