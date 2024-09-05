@@ -205,7 +205,7 @@ end
   end
 end
 
-if read(`git branch --show-current`, String) != "main"
+if chomp(read(`git branch --show-current`, String)) != "main"
   @testset "Test updating from main to HEAD vs generate in HEAD" begin
     _with_tmp_dir() do dir
       common_args = (defaults = true, quiet = true)
