@@ -4,6 +4,10 @@ using Documenter
 DocMeta.setdocmeta!({{ PackageName }}, :DocTestSetup, :(using {{ PackageName }}); recursive = true)
 
 const page_rename = Dict("developer.md" => "Developer docs") # Without the numbers
+const numbered_pages = [
+  file for
+  file in readdir(joinpath(@__DIR__, "src")) if file != "index.md" && splitext(file)[2] == ".md"
+]
 
 makedocs(;
     modules = [{{ PackageName }}],
@@ -11,13 +15,7 @@ makedocs(;
     repo = "https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/{commit}{path}#{line}",
     sitename = "{{ PackageName }}.jl",
     format = Documenter.HTML(; canonical = "https://{{ PackageOwner }}.github.io/{{ PackageName }}.jl"),
-    pages = [
-        "index.md"
-        [
-            file for file in readdir(joinpath(@__DIR__, "src")) if
-            file != "index.md" && splitext(file)[2] == ".md"
-        ]
-    ],
+    pages = ["index.md"; numbered_pages],
 )
 
 deploydocs(; repo = "github.com/{{ PackageOwner }}/{{ PackageName }}.jl")
