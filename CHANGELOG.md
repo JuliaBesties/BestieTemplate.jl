@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning].
 - New question: `JuliaMinCIVersion`, which defines which Julia version to use in the CI (#400)
 - New question: `AutoIncludeTests`, that auto-includes all `test-*.jl` files in `runtests.jl` (#261)
 - New question: `CodeOfConductContact`, the contact person/entity for the `CODE_OF_CONDUCT.md` file (#426)
+- New question: `LicenseCopyrightHolders`, the copyright holders listed in the LICENSE (#427)
 
 ### Changed
 

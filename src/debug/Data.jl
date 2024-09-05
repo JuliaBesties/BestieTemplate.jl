@@ -25,6 +25,7 @@ const strategy_minimum = merge(
   Dict(
     "JuliaMinVersion" => "1.6",
     "License" => "MIT",
+    "LicenseCopyrightHolders" => "Bestie Template",
     "Indentation" => 4,
     "AnswerStrategy" => "minimum",
   ),

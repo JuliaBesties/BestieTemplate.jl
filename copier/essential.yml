@@ -45,6 +45,12 @@ License:
     - MPL-2.0
   default: MIT
 
+LicenseCopyrightHolders:
+  type: str
+  help: License Copyright Holders (Added in front of "Copyright (c) " notices, when applicable)
+  default: "{{ AuthorName }}"
+  validator: "{% if LicenseCopyrightHolders | length == 0%}Can't be empty{% endif %}"
+
 Indentation:
   type: int
   help: Indentation length (Used in .JuliaFormatter and other configuration files of formatters and linters if you add them)
