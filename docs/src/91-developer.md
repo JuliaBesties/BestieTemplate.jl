@@ -247,6 +247,7 @@ Follow the other questions style and syntax. The gist of it is that you need:
 - A `help: Short description or title (Longer description and details)`.
 - A `default`, if the question is optional.
   - To default to `true` if "Recommended" or `false` for "Minimum", use `{{ AnswerStrategy != 'minimum' }}`.
+- A `description`, which is not actually part of `copier`, but we use to further describe the question to users in the documentation (it gets rendered in [Questions](@ref)).
 
 ### Dependent sections in a file
 

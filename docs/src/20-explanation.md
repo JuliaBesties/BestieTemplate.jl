@@ -3,6 +3,8 @@
 In this section, we hope to explain the motivation for the package, and what is inside the template.
 Some things might have been obvious when creating the package and not at the moment, so feel free to create issues to ask, or suggest, clarifications.
 
+You can see all questions in details in the [Questions](@ref) page.
+
 !!! tip
     If something is missing or not explained enough, please open an issue.
 
@@ -104,7 +106,9 @@ These are neither recommended nor part of the minimum template, which means that
 
 The **loose** criteria to make something not recommended, nor minimum, is:
 
-- It is a best practices, but for a niche audience (e.g., `.cirrus.yml` for testing on FreeBSD);
+- It is a best practice, but for a niche audience (e.g., `.cirrus.yml` for testing on FreeBSD);
+
+To see all the questions, head to [Questions](@ref).
 
 ### Basic package structure
 
