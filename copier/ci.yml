@@ -1,11 +1,12 @@
 JuliaMinCIVersion:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: str
-  help: Minimum Julia version used in the tests (lts defaults to the Long Term Support version)
+  help: Minimum Julia version used in the tests (min, lts, or a version. See https://github.com/julia-actions/setup-julia#examples for accepted values)
   default: "{% if JuliaMinVersion == JULIA_LTS_VERSION %}lts{% else %}{{ JuliaMinVersion }}{% endif %}"
   description: |
     The Test workflow runs two versions of Julia by default: the latest stable release, which is defined by "1", and this version.
     It defaults to either "lts", or the version that you answered in JuliaMinVersion, if it wasn't the LTS.
+    Also accepts "min", which defaults to the minimum supported version in the compat section of Project.toml, or a version specification. See https://github.com/julia-actions/setup-julia#examples for more options.
 
 AddMacToCI:
   when: "{{ AnswerStrategy == 'ask' }}"
