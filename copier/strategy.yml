@@ -1,8 +1,15 @@
 AnswerStrategy:
   type: str
   default: recommended
-  help: Optional questions (You can use our defaults, or the bare minimum, or decide everything)
+  help: "Strategy for optional questions (You can see the full list of questions in https://abelsiqueira.com/BestieTemplate.jl/dev/30-questions/)"
   choices:
     Recommended (Our defaults): "recommended"
     Minimum (Answer no to any addition): "minimum"
     Ask me (Ask all questions): "ask"
+  description: |
+    This defines how to deal with the rest of the questions.
+    The `minimum` strategy answers "no" to every question. This is not the same as a bare-bones package. The resulting package will have the minimum amount of best practices that we recommend.
+    The `recommended` strategy uses all our recommended best practices, which might be overwhelming for anyone. See the answers below this step to see all the options. This is not the same as saying "yes" to everything.
+    The `ask` strategy does not select anything from the list below. All questions will be asked.
+    Notice that some options are only available through the `ask` strategy, or by explicitly passing them to the Bestie command.
+    Defaults to the "recommended" strategy.

@@ -8,40 +8,75 @@ PackageName:
     {% if not (PackageName | regex_search('^[A-Z][A-z0-9]*$')) %}
     Must start with a capital letter, and use letters or numbers only
     {% endif %}
+  description: |
+    The package name. Must start with a capital letter, and be comprised of letters and numbers.
+    Required.
+    For new packages, it will be inferred from the path, the first argument of `generate`.
+    For existing packages, it will be inferred from the Project.toml `name` field.
 
 PackageUUID:
   type: str
   help: UUID (For existing packages, copy the UUID from Project.toml, otherwise use the one generated below)
   validator: "{% if PackageUUID | length == 0 %}Can't be empty{% endif %}"
   default: "{{ 999999999999999999999999999999999 | ans_random | to_uuid }}"
+  description: |
+    The unique identifier of the package.
+    Required.
+    Defaults to randomly generated UUID.
+    For existing packages, it will be inferred from the Project.toml `uuid` field.
 
 PackageOwner:
   type: str
   help: GitHub username or organization that owns the package (This will be used for URLs)
   validator: "{% if PackageOwner | length == 0 %}Can't be empty{% endif %}"
+  description: |
+    The owner of the package repo, i.e., the user or organization in the package URL.
+    This assumes that GitHub is being used, which, at the moment, is the only possibility.
+    Does not have a default.
+    For existing packages, it will be inferred from the `repo` information in the `docs/make.jl` file.
 
 AuthorName:
   when: false
   type: str
   help: (Deprecated in 0.10.0) Name of the package author (Used to kickstart a few files)
   validator: "{% if AuthorName | length == 0 %}Can't be empty{% endif %}"
+  description: |
+    !!! warning Deprecated
+        AuthorName has been replaced by Authors.
+    Defines the name of the author.
 
 AuthorEmail:
   when: false
   type: str
   help: (Deprecated in 0.10.0) E-mail of the package author (Used to kickstart a few files)
   validator: "{% if AuthorEmail | length == 0 %}Can't be empty{% endif %}"
+  description: |
+    !!! warning Deprecated
+        AuthorEmail has been replaced by Authors.
+    Defines the e-mail of the author.
 
 Authors:
   type: str
-  help: Package authors separated by commas (We recommend the form AUTHOR <EMAIL>, but this can be ignored)
-  placeholder: AUTHOR <EMAIL>,AUTHOR <EMAIL>
+  help: Package authors separated by commas (We recommend the form NAME <EMAIL>, but this can be ignored)
+  placeholder: NAME <EMAIL>,NAME <EMAIL>
   default: "{% if AuthorName | length > 0 %}{{ AuthorName }} <{{ AuthorEmail }}> and contributors{% endif %}"
+  description: |
+    The authors of the package in a single line, separated by commas. The actual content is not verified.
+    We recommend using the format `NAME <EMAIL>` for each author, so that it is consistent with most uses of author. However, that is not necessary.
+    If you follow the recommended format, there are better defaults in other places.
+    Another common alternative is to list the main author and add `and contributors`. This is also completely valid.
+    Can't be empty.
+    Required. No default.
+    For existing packages, it will be inferred from the `authors` information in the Project.toml.
 
 JuliaMinVersion:
   type: str
-  help: Minimum Julia version (Used in Project.toml and CI. The suggestion below is the LTS version)
+  help: Minimum Julia version (Used in Project.toml. The suggestion below is the LTS version)
   default: "{{ JULIA_LTS_VERSION }}"
+  description: |
+    Minimum compat Julia version. This will be used in the Project.toml and as a suggestion for the minimum Julia version in the CI, which is another question.
+    Defaults to the LTS version.
+    For existing packages, it will be inferred from the compat section in the Project.toml files.
 
 License:
   type: str
@@ -52,15 +87,35 @@ License:
     - MIT
     - MPL-2.0
   default: MIT
+  description: |
+    Multiple choice question to select a License.
+    Defaults to the MIT License, which is the most common choice for Julia packages.
 
 LicenseCopyrightHolders:
   type: str
   help: License Copyright Holders (Added in front of "Copyright (c) " notices, when applicable)
   default: "{{ Authors | regex_replace('\\s*([^,]*)\\s*<[^,]*>[^,]*', '\\\\1') | regex_replace('\\s*,\\s*', ', ') | trim }}"
   validator: "{% if LicenseCopyrightHolders | length == 0%}Can't be empty{% endif %}"
+  description: |
+    Some license files include a "Copyright (c) <LicenseCopyrightHolders>" notice.
+    Defaults to names in the Authors question, if they follow the recommended format.
+    For instance, if the Authors field is "NAME1 <EMAIL1>,NAME2 <EMAIL2>", this will default to "NAME1, NAME2".
 
 Indentation:
   type: int
   help: Indentation length (Used in .JuliaFormatter and other configuration files of formatters and linters if you add them)
   validator: "{% if Indentation <= 0 %}Indentation must be positive{% endif %}"
   default: 4
+  description: |
+    The number of spaces that define an indentation level.
+    This is used in many configuration files:
+
+    - `.JuliaFormatter.toml`: To control indentation in Julia;
+    - `.editorconfig`: To suggest indentation in many languages;
+    - `.markdownlint.json`: To control indentation in Markdown;
+    - `.pre-commit-config.yml`: In the hook `pretty-format-json` to control the indentation of JSON files.
+    - `.yamllint.yml`: To control indentation in YAML files;
+
+    This does **NOT** enforce indentation by itself, you still need tools to indent these.
+    `pre-commit` is the recommended way to run these tools.
+    For existing packages, this will be inferred from the indent value in the `.JuliaFormatter.toml` file.

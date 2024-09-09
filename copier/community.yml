@@ -3,27 +3,46 @@ AddContributionDocs:
   type: bool
   default: "{{ AnswerStrategy != 'minimum' }}"
   help: Add documentation files on how to contribute to the project (90-contributing.md will give general guidelines, and 91-developer.md will give practical information)
+  description: |
+    There are two files for contributors:
+    - `90-contributing.md` is aimed at anyone interested in contributing to the project. It provides general guidelines on how to communicate and where to find help.
+    - `91-developer.md` is aimed at code contributors. It provides more focused information for people that will need to clone the package to contribute to it, such as branching guidelines, pre-commit installation, building documentation, and making a new release.
+    Some projects will add files like `CONTRIBUTING.md` and `README.dev.md` with this information, or just paste everything in the `README.md`. We choose to have this information as part of the Julia docs, to focus information in a single source (documentation pages).
+    Defaults to yes for the recommended strategy, or no otherwise.
 
 AddAllcontributors:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool
   default: "{{ AnswerStrategy != 'minimum' }}"
-  help: Add allcontributors (all-contributors.org is a project that adds collaborators information in the README and the docs)
+  help: Add allcontributors (allcontributors.org is a project that adds collaborators information in the README and the docs)
+  description: |
+    To make it easy to recognize contributions of every kind, we recommend using [allcontributors](https://allcontributors.org).
+    The proposed workflow with allcontributors is to add a comment like "@allcontributors, please add @username for <type>" in a PR or issue. The bot will create a PR adding the information to the relevant places (README.md and docs/src/index.md).
+    Defaults to yes for the recommended strategy, or no otherwise.
 
 AddCodeOfConduct:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool
   default: "{{ AnswerStrategy != 'minimum' }}"
   help: Code of conduct file (Add a CODE_OF_CONDUCT.md file from Contributor Covenant?)
+  description: |
+    This uses version 2.1 of the [Contributor Covenant](https://www.contributor-covenant.org) code of conduct.
+    Defaults to yes for the recommended strategy, or no otherwise.
 
 CodeOfConductContact:
   when: "{{ AddCodeOfConduct }}"
   type: str
   help: Contact person/entity listed in the CODE_OF_CONDUCT.md file (Will be listed as contact to enforce the code of conduct, if necessary)
   default: "{{ Authors.split(',')[0] | regex_replace('.*<(.*)>.*', '\\\\1') }}"
+  description: |
+    This is the contact person or entity for enforcement of the code of conduct. It will be added to the CODE_OF_CONDUCT file, in a section titled "Enforcement".
+    Defaults to the first authors' e-mail using a Regex substitution from the `Authors` question.
 
 AddGitHubTemplates:
   when: "{{ AnswerStrategy == 'ask' }}"
   type: bool
   default: "{{ AnswerStrategy != 'minimum' }}"
   help: GitHub issue templates (Add forms for issue creation to improve the description quality)
+  description: |
+    Whether to add GitHub issue templates files. These files become forms when an user wants to create an issue on GitHub. They are useful for separating the kind of questions the user needs to fill and the automatic label added to the created issue.
+    Defaults to yes for the recommended strategy, or no otherwise.
