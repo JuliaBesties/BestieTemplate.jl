@@ -17,6 +17,8 @@ jobs:
   lint:
     name: Linting
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Clone
         uses: actions/checkout@v4
@@ -45,6 +47,9 @@ jobs:
   link-checker:
     name: Link checker
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+      statuses: write
     steps:
       - uses: actions/checkout@v4
 

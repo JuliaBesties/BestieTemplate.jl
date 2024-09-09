@@ -31,6 +31,8 @@ jobs:
   test:
     name: Julia ${{ inputs.version }} - ${{ inputs.os }} - ${{ inputs.arch }} - ${{ github.event_name }}
     runs-on: ${{ inputs.os }}
+    permissions:
+      contents: read
     continue-on-error: ${{ inputs.allow_failure }}
 
     steps:
