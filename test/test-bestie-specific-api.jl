@@ -189,7 +189,9 @@ end
   end
 end
 
-if chomp(read(`git branch --show-current`, String)) != "main"
+# Don't run for branch main or releases
+if chomp(read(`git branch --show-current`, String)) != "main" &&
+   get(ENV, "GITHUB_EVENT_NAME", "nothing") != "release"
   @testset "Test updating from main to HEAD vs generate in HEAD" begin
     _with_tmp_dir() do dir
       common_args = (defaults = true, quiet = true)
