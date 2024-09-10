@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning].
 ### Fixed
 
 - The TestGeneratedPkg workflow now runs the latest unreleased version of the pkg (#450)
+- The tests of the generated package correctly include the `test-*.jl` files (#452)
 
 ## [0.10.0] - 2024-09-10
 
