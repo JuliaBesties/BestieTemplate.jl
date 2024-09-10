@@ -73,10 +73,16 @@ jobs:
               "PackageName" => "Guldasta",
               "PackageUUID" => string(UUIDs.uuid4()),
               "PackageOwner" => "Bagicha",
-              "AuthorName" => "Mali",
-              "AuthorEmail" => "mali@bagicha.site"
+              "Authors" => "Mali <mali@bagicha.site>"
             );
-            BestieTemplate.generate("tmp/Guldasta.jl", data; defaults = true, quiet = true);
+            BestieTemplate.generate(
+              pkgdir(BestieTemplate),
+              "tmp/Guldasta.jl",
+              data;
+              defaults = true,
+              quiet = true,
+              vcs_ref="HEAD"
+            );
           '
       - name: Run the tests in the generated package
         run: |

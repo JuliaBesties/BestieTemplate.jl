@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Fixed
+
+- The TestGeneratedPkg workflow now runs the latest unreleased version of the pkg (#450)
+
 ## [0.10.0] - 2024-09-10
 
 Breaking notice:
