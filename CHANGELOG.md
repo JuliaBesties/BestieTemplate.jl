@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.10.0] - 2024-09-10
+
 Breaking notice:
 
 - `AuthorName` and `AuthorEmail` have been deprecated. Expect them to be removed in the next version. They are replaced by a single question `Authors`, which receives a comma separated list. Additionally, the Code of Conduct used the `AuthorEmail`, and now it has its own question.
@@ -35,7 +37,7 @@ Breaking notice:
 
 ### Deprecated
 
-- `AuthorName` and `AuthorEmail` have been removed.
+- `AuthorName` and `AuthorEmail` have been deprecated in favour of `Authors`.
 
 ## [0.9.1] - 2024-07-24
 
@@ -355,7 +357,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/abelsiqueira/BestieTemplate.jl/compare/v0.9.1...HEAD
+[unreleased]: https://github.com/abelsiqueira/BestieTemplate.jl/compare/v0.10.0...HEAD
+[0.10.0]: https://github.com/abelsiqueira/BestieTemplate.jl/releases/tag/v0.10.0
 [0.9.1]: https://github.com/abelsiqueira/BestieTemplate.jl/releases/tag/v0.9.1
 [0.9.0]: https://github.com/abelsiqueira/BestieTemplate.jl/releases/tag/v0.9.0
 [0.8.0]: https://github.com/abelsiqueira/BestieTemplate.jl/releases/tag/v0.8.0
