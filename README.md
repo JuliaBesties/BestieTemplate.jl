@@ -19,7 +19,7 @@ Your best practices friend.
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![All Contributors](https://img.shields.io/github/all-contributors/abelsiqueira/BestieTemplate.jl?labelColor=5e1ec7&color=c0ffee&style=flat-square)](#contributors)
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-black.json)](https://github.com/copier-org/copier)
-![BestieTemplate](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/abelsiqueira/BestieTemplate.jl/main/docs/src/assets/badge.json)
+[![BestieTemplate](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/abelsiqueira/BestieTemplate.jl/main/docs/src/assets/badge.json)](https://github.com/abelsiqueira/BestieTemplate.jl)
 
 </div>
 
