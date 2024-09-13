@@ -19,10 +19,15 @@ jobs:
         uses: julia-actions/cache@v2
       - name: Install JuliaFormatter.jl
         run: julia -e 'using Pkg; pkg"add JuliaFormatter"'
+      - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
+        run: touch requirements.txt
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           cache: 'pip'
+          python-version: "3.11"
+      - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
+        run: rm requirements.txt
       - name: Check for update in the template
         run: |
           pip install copier

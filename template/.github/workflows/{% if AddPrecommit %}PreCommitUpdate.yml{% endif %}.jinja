@@ -10,10 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
+        run: touch requirements.txt
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           cache: pip
+          python-version: "3.11"
+      - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
+        run: rm requirements.txt
       - name: Install pre-commit
         run: pip install pre-commit
       - name: Run pre-commit's autoupdate
