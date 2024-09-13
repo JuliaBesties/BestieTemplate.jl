@@ -149,7 +149,7 @@ Currently, we guess:
 - `Indentation` from the `indent` field in `.JuliaFormatter.toml`.
 
 !!! tip "Overwrite"
-    You will be asked whether to overwrite existing files or not. Since you are using `git`, you can try it out and reset if you don't like the result.
+    You will be asked whether to overwrite existing files or not. Since you are using `git`, you can try it out and reset if you don't like the result. So we recommend overwriting at this point.
 
 If you don't like the result, or want to override the answers, you can run the `apply` function with additional arguments, for instance:
 
@@ -166,10 +166,6 @@ julia> BestieTemplate.apply("full/path/to/YourPackage.jl"; guess = false)
 
 See the full docstring for [`BestieTemplate.apply`](@ref) for more information.
 
-You will most likely have conflicts when you apply the template.
-Whenever a conflict appears, you will need to decide on whether to accept or reject the new changes.
-Unfortunately, they are not shown to you when the conflict appears, so the best solution is to just accept all of them and then fix the conflicts using `git`.
-
 !!! warning "Review the changes"
     Don't just add the changes blindly, because some of your files can and will be overwritten.
 
@@ -179,10 +175,10 @@ Unfortunately, they are not shown to you when the conflict appears, so the best 
     This means that README.md cannot be skipped, and you will have to accept the overwrite and manually fix your README.md.
 
 !!! tip "Formatting"
-    You might most likely see changes in the formatting. So if you have are a formatter, it might be best to run it before reviewing the changes.
+    You might most likely see changes in the formatting. So if you have a formatter, it might be best to run it before reviewing the changes.
     If you have chosen the "Recommended" answers, or explicitly chose to add `pre-commit`, then you should use it now (see below).
 
-If you need some help with undoing some of these changes, I recommend using a graphical interface.
+If you need some help with undoing some of these changes, I recommend using a graphical interface for git.
 After the template is applied and you are happy with the conflict resolution, enable pre-commit and push your code.
 
 ```bash
@@ -223,6 +219,10 @@ Check the modifications in the relevant linter and formatting files, if you chan
 pre-commit run -a
 ```
 
+You will possibly have conflicts when you apply the template - i.e., updates to the template that conflicts with changes that you've made to the package.
+Whenever a conflict appears, you will need to decide on whether to accept or reject the new changes.
+Fix the conflicts using `git`.
+
 The underlying package `copier` will use `git` to apply the differences and it will overwrite whatever files it finds in the way.
 Since `git` is mandatory, the changes will be left for you to review.
 
@@ -230,7 +230,7 @@ Since `git` is mandatory, the changes will be left for you to review.
     I repeat, the changes will be left for you to review.
     Don't just add them blindly, because some of your modifications can and will be overwritten.
 
-If you need some help with undoing some of these changes, I recommend using a graphical interface.
+If you need some help with undoing some of these changes, I recommend using a graphical interface to git.
 
 ## Setting up your package
 
