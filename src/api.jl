@@ -89,6 +89,7 @@ function generate(src_path, dst_path, data::Dict = Dict(); kwargs...)
 
   Next steps: Create git repository and push to Github.
 
+  \$ exit()                # Exit the Julia REPL
   \$ cd $dst_path
   \$ git init
   \$ git add .
@@ -180,6 +181,7 @@ function apply(
       Review the modifications.
       In particular README.md and docs/src/index.md tend to be heavily edited.
 
+      \$ exit() # Exit the Julia REPL
       \$ git switch -c apply-bestie # If you haven't created a branch
       \$ git add .
       \$ pre-commit run -a # Try to fix possible pre-commit issues (failures are expected)
