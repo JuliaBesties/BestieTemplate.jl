@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Changed
+
+- Update pre-commit hook versions
+  - markdownlint-cli 0.41.0 -> 0.42.0
+
 ## [0.10.1] - 2024-09-10
 
 ### Fixed
