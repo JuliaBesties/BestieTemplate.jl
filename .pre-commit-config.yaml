@@ -44,6 +44,12 @@ repos:
     rev: v1.35.1
     hooks:
       - id: yamllint
+  - repo: https://github.com/ericphanson/ExplicitImports.jl
+    rev: v1.10.0
+    hooks:
+      - id: explicit-imports
+        name: ExplicitImports checks
+        args: [--print, --checklist, exclude_all_qualified_accesses_are_public]
   - repo: https://github.com/domluna/JuliaFormatter.jl
     rev: v1.0.61
     hooks:
