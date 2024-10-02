@@ -1,3 +1,5 @@
+@compat public generate, apply, update
+
 """
     _copy(src_path, dst_path, data; kwargs...)
 
