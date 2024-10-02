@@ -35,7 +35,7 @@ jobs:
           version: "1"
       - name: Use Julia cache
         uses: julia-actions/cache@v2
-      - name: Build package
+      - name: Instantiate environment with development version of the package
         run: |
           julia --project=docs -e '
             using Pkg
