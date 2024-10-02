@@ -6,16 +6,22 @@ We welcome all kinds of contribution, including, but not limited to code, docume
 
 Be polite and respectful, and follow the code of conduct.
 
-## Bug reports and discussions
+## Bug reports, feature requests, and discussions
 
 If you think you found a bug, feel free to open an [issue](https://github.com/abelsiqueira/BestieTemplate.jl/issues).
 Focused suggestions and requests can also be opened as issues.
 Before opening a pull request, start an issue or a discussion on the topic, please.
 
+### Niche
+
+Some of the files in Bestie are niche, i.e., they are important for a specific group or organization, but not for the great majority of users.
+Please check the [MAINTAINERS](https://github.com/abelsiqueira/BestieTemplate.jl/blob/main/MAINTAINERS.md) file for the list of maintainers of the niche files.
+If your issue involves one of these files, please ping the maintainer.
+
 ## Working on an issue
 
 If you found an issue that interests you, comment on that issue what your plans are.
-If the solution to the issue is clear, you can immediately create a pull request (see below).
+If the solution to the issue is clear, you can immediately create a pull request.
 Otherwise, say what your proposed solution is and wait for a discussion around it.
 
 !!! tip
