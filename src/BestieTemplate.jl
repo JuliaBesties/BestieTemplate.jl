@@ -22,6 +22,7 @@ Check the documentation: https://abelsiqueira.com/BestieTemplate.jl
 """
 module BestieTemplate
 
+using Compat: @compat
 using Markdown: @md_str
 using TOML: TOML
 using YAML: YAML
