@@ -11,7 +11,7 @@ Noteworthy: [`BestieTemplate.Debug.Data`](@ref)
 """
 module Debug
 
-using ..BestieTemplate: BestieTemplate, generate, apply
+using ..BestieTemplate: BestieTemplate
 
 include("Data.jl")
 include("helper.jl")
