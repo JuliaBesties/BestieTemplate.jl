@@ -48,7 +48,7 @@ jobs:
             using {{ PackageName }}
             DocMeta.setdocmeta!({{ PackageName }}, :DocTestSetup, :(using {{ PackageName }}); recursive=true)
             doctest({{ PackageName }})'
-      - name: Generate documentation
+      - name: Generate and deploy documentation
         run: julia --project=docs docs/make.jl
         env:
           JULIA_PKG_SERVER: ""
