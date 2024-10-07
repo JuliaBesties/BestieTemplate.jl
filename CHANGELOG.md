@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+Breaking notice:
+
+- `Indentation` has been deprecated in favour of `JuliaIndentation`, `MarkdownIndentation` and `ConfigIndentation`.
+
+### Added
+
+- New question: `JuliaIndentation`, which controls the indentation for Julia files (#460)
+- New question: `MarkdownIndentation`, which controls the indentation for Markdown files (#460)
+- New question: `ConfigIndentation`, which controls the indentation for configuration files (#460)
+
+### Deprecated
+
+- `Indentation` has been deprecated in favour of `JuliaIndentation`, `MarkdownIndentation` and `ConfigIndentation` (#460)
+
 ## [0.11.0] - 2024-10-07
 
 ### Added

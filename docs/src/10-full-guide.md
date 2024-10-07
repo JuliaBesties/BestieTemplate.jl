@@ -146,7 +146,7 @@ Currently, we guess:
 - `Authors` from the `authors` field in `Project.toml`,
 - `PackageOwner` from the `repo` in `docs/make.jl`,
 - `JuliaMinVersion` from the `compat` section in `Project.toml`,
-- `Indentation` from the `indent` field in `.JuliaFormatter.toml`.
+- `JuliaIndentation` from the `indent` field in `.JuliaFormatter.toml`.
 
 !!! tip "Overwrite"
     You will be asked whether to overwrite existing files or not. Since you are using `git`, you can try it out and reset if you don't like the result. So we recommend overwriting at this point.

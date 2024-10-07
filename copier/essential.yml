@@ -102,8 +102,9 @@ LicenseCopyrightHolders:
     For instance, if the Authors field is "NAME1 <EMAIL1>,NAME2 <EMAIL2>", this will default to "NAME1, NAME2".
 
 Indentation:
+  when: false
   type: int
-  help: Indentation length (Used in .JuliaFormatter and other configuration files of formatters and linters if you add them)
+  help: (Deprecated in 0.12.0) Indentation length (Used in .JuliaFormatter and other configuration files of formatters and linters if you add them)
   validator: "{% if Indentation <= 0 %}Indentation must be positive{% endif %}"
   default: 4
   description: |

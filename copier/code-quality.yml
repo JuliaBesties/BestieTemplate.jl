@@ -20,3 +20,55 @@ AutoIncludeTests:
     This write a `runtests.jl` file that automatically recursively includes all `test-*.jl` files in the `test` folder inside `@testset`s.
     This incentivizes separating the tests and makes sure that you don't forget to include them.
     Defaults to yes for the recommended strategy, or no otherwise.
+
+# This question is not optional, since .JuliaFormatter.toml is always included
+JuliaIndentation:
+  type: int
+  help: Indentation length for Julia files (Used in .JuliaFormatter and .editorconfig)
+  validator: "{% if JuliaIndentation <= 0 %}Indentation must be positive{% endif %}"
+  default: "{{ Indentation }}"
+  description: |
+    The number of spaces that define an indentation level.
+    This is used in the following configuration files:
+
+    - `.JuliaFormatter.toml`: To control indentation in Julia;
+    - `.editorconfig`: To suggest indentation in many languages;
+
+    This does **NOT** enforce indentation by itself, you still need tools to indent these.
+    `pre-commit` is the recommended way to run these tools.
+    For existing packages, this will be inferred from the indent value in the `.JuliaFormatter.toml` file.
+
+MarkdownIndentation:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: int
+  help: Indentation length for Markdown files (Used in .markdownlint.json and .editorconfig)
+  validator: "{% if MarkdownIndentation <= 0 %}Indentation must be positive{% endif %}"
+  default: 2
+  description: |
+    The number of spaces that define an indentation level.
+    This is used in the following configuration files:
+
+    - `.markdownlint.json`: To control indentation in Markdown;
+    - `.editorconfig`: To suggest indentation in many languages;
+
+    This does **NOT** enforce indentation by itself, you still need tools to indent these.
+    `pre-commit` is the recommended way to run these tools.
+    For existing packages, this will be inferred from the indent value in the `.JuliaFormatter.toml` file.
+
+ConfigIndentation:
+  when: "{{ AnswerStrategy == 'ask' }}"
+  type: int
+  help: Indentation length for configuration files (Used to format YAML and JSON files)
+  validator: "{% if ConfigIndentation <= 0 %}Indentation must be positive{% endif %}"
+  default: 2
+  description: |
+    The number of spaces that define an indentation level.
+    This is used in the following configuration files:
+
+    - `.pre-commit-config.yml`: In the hook `pretty-format-json` to control the indentation of JSON files.
+    - `.yamllint.yml`: To control indentation in YAML files;
+    - `.editorconfig`: To suggest indentation in many languages;
+
+    This does **NOT** enforce indentation by itself, you still need tools to indent these.
+    `pre-commit` is the recommended way to run these tools.
+    For existing packages, this will be inferred from the indent value in the `.JuliaFormatter.toml` file.

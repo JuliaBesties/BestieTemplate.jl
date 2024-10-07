@@ -12,7 +12,8 @@ module Data
 using Random: MersenneTwister
 using UUIDs: uuid4
 
-const deprecated = Dict("AuthorName" => "Bestie Template", "AuthorEmail" => "bestie@fake.nl")
+const deprecated =
+  Dict("AuthorName" => "Bestie Template", "AuthorEmail" => "bestie@fake.nl", "Indentation" => 2)
 
 const required = merge(
   Dict(
@@ -30,7 +31,7 @@ const strategy_minimum = merge(
     "JuliaMinVersion" => "1.6",
     "License" => "MIT",
     "LicenseCopyrightHolders" => "Bestie Template",
-    "Indentation" => 4,
+    "JuliaIndentation" => 4,
     "AnswerStrategy" => "minimum",
   ),
 )
@@ -41,6 +42,8 @@ const strategy_ask = merge(strategy_recommended, Dict("AnswerStrategy" => "ask")
 
 const optional_questions_with_default = Dict(
   "AddPrecommit" => true,
+  "MarkdownIndentation" => 2,
+  "ConfigIndentation" => 2,
   "AutoIncludeTests" => true,
   "JuliaMinCIVersion" => "lts",
   "AddMacToCI" => true,
