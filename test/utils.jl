@@ -106,7 +106,7 @@ args = (
 )
 
 template_path = joinpath(@__DIR__, "..")
-template_url = "https://github.com/abelsiqueira/BestieTemplate.jl"
+template_url = "https://github.com/JuliaBesties/BestieTemplate.jl"
 
 lowercase_letters = 'a':'z'
 uppercase_letters = 'A':'Z'

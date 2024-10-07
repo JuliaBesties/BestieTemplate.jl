@@ -31,7 +31,7 @@ function _copy(src_path, dst_path, data; kwargs...)
 
   On any case, we suggest reading the **full guide**, and possibly other documentation pages:
 
-  `https://abelsiqueira.com/BestieTemplate.jl/stable/10-full-guide`
+  `https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-full-guide`
 
   If something does not work as you would expect or you need clarifications,
   please open an issue or discussion.
@@ -102,14 +102,14 @@ function generate(src_path, dst_path, data::Dict = Dict(); kwargs...)
 
   Create a repo on GitHub and push your code to it.
 
-  Read the full guide: https://abelsiqueira.com/BestieTemplate.jl/stable/10-full-guide
+  Read the full guide: https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-full-guide
   """)
 
   return nothing
 end
 
 function generate(dst_path, data::Dict = Dict(); kwargs...)
-  generate("https://github.com/abelsiqueira/BestieTemplate.jl", dst_path, data; kwargs...)
+  generate("https://github.com/JuliaBesties/BestieTemplate.jl", dst_path, data; kwargs...)
 end
 
 """
@@ -194,14 +194,14 @@ function apply(
       \$ git push -u origin apply-bestie
 
       Go to GitHub and create a Pull Request from apply-bestie to main.
-      Continue on the full guide: https://abelsiqueira.com/BestieTemplate.jl/stable/10-full-guide
+      Continue on the full guide: https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-full-guide
       """)
 
   return nothing
 end
 
 function apply(dst_path, data::Dict = Dict(); kwargs...)
-  apply("https://github.com/abelsiqueira/BestieTemplate.jl", dst_path, data; kwargs...)
+  apply("https://github.com/JuliaBesties/BestieTemplate.jl", dst_path, data; kwargs...)
 end
 
 """

@@ -8,7 +8,7 @@ Be polite and respectful, and follow the code of conduct.
 
 ## Bug reports and discussions
 
-If you think you found a bug, feel free to open an [issue](https://github.com/abelsiqueira/BestieTemplate.jl/issues).
+If you think you found a bug, feel free to open an [issue](https://github.com/JuliaBesties/BestieTemplate.jl/issues).
 Focused suggestions and requests can also be opened as issues.
 Before opening a pull request, start an issue or a discussion on the topic, please.
 
@@ -26,4 +26,4 @@ Otherwise, you can use the GitHub interface directly to create your pull request
 
 ## Additions and modifications to the template
 
-If you have any new idea or think the template needs to be updated or fixed, please search our [issues](https://github.com/abelsiqueira/BestieTemplate.jl/issues) and if there isn't anything relevant, open a new issue.
+If you have any new idea or think the template needs to be updated or fixed, please search our [issues](https://github.com/JuliaBesties/BestieTemplate.jl/issues) and if there isn't anything relevant, open a new issue.

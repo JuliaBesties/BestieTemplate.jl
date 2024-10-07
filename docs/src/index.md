@@ -36,9 +36,9 @@ To understand more about our motivation and what the template provides, check th
 
 ## Getting and providing help
 
-I hope you find this package useful. If you have any questions, requests, or comments, check the [issues](https://github.com/abelsiqueira/BestieTemplate.jl/issues) and [discussion](https://github.com/abelsiqueira/BestieTemplate.jl/discussions) pages.
+I hope you find this package useful. If you have any questions, requests, or comments, check the [issues](https://github.com/JuliaBesties/BestieTemplate.jl/issues) and [discussion](https://github.com/JuliaBesties/BestieTemplate.jl/discussions) pages.
 
-If you would like to get involved in the BestieTemplate growth, please check our [contributing guide](90-contributing.md). We welcome contributions of many types, including coding, reviewing, creating issues, creating tutorials, interacting with users, etc. Make sure to follow our [code of conduct](https://github.com/abelsiqueira/BestieTemplate.jl/blob/main/CODE_OF_CONDUCT.md).
+If you would like to get involved in the BestieTemplate growth, please check our [contributing guide](90-contributing.md). We welcome contributions of many types, including coding, reviewing, creating issues, creating tutorials, interacting with users, etc. Make sure to follow our [code of conduct](https://github.com/JuliaBesties/BestieTemplate.jl/blob/main/CODE_OF_CONDUCT.md).
 
 If your interest is in developing the package, check the [development guide](91-developer.md) as well.
 
@@ -46,7 +46,7 @@ If your interest is in developing the package, check the [development guide](91-
 
 Here is a list of links/repos that include content that we have used for inspiration, or used directly.
 This is most likely not a complete list, since many of the things included here were based on existing packages and knowledge that we brought from other projects.
-This also doesn't explain where each file came from or why they are here. You can find some of that information in the [Explanation](https://abelsiqueira.com/BestieTemplate.jl/stable/20-explanation/) section of the docs.
+This also doesn't explain where each file came from or why they are here. You can find some of that information in the [Explanation](https://JuliaBesties.github.io/BestieTemplate.jl/stable/20-explanation/) section of the docs.
 
 - [PkgTemplates.jl](https://github.com/JuliaCI/PkgTemplates.jl), naturally. We used it for many years, and in particular for the initial TulipaEnergyModel.jl commit (see below).
 - [Netherlands eScience Center's python template](https://github.com/NLeSC/python-template) includes many of the best practices that we apply here. We used many of the ideas there in a Julia context, and took many non-Julia specific ideas from there.
