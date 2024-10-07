@@ -1,7 +1,13 @@
 @testset "Automatic guessing of data" begin
   src_data = copy(C.args.bestie.ask)
-  guessable_answers =
-    Set(["Authors", "JuliaMinVersion", "Indentation", "PackageName", "PackageOwner", "PackageUUID"])
+  guessable_answers = Set([
+    "Authors",
+    "JuliaMinVersion",
+    "JuliaIndentation",
+    "PackageName",
+    "PackageOwner",
+    "PackageUUID",
+  ])
   @testset "Using random data" for _ in 1:10
     for (key, value) in src_data
       src_data[key] = _random(Val(Symbol(key)), value)
@@ -102,7 +108,7 @@
         @testset "Guessed $key correctly" for (key, value) in data
           @test value == src_data[key]
         end
-        missing_keys = ["Indentation"]
+        missing_keys = ["JuliaIndentation"]
         @test Set(keys(data)) == setdiff(guessable_answers, missing_keys)
 
         @testset "Add empty .JuliaFormatter.toml" begin

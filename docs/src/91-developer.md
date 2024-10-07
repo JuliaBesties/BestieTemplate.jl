@@ -321,10 +321,10 @@ os: {% raw %}%{{ matrix.os }}{% endraw %}
 
 ## Removing/replacing a question
 
-!!! warn
+!!! warning
     This has only been tested with a single change
 
-Before removing a question, we should deprecate it for one major release.
+Before removing a question, we should deprecate it for at least one major release.
 We also want to ensure a smooth transition when the user updates.
 
 Luckily, we do have one test that minimally simulates this situation:

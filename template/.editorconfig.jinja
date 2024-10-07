@@ -5,6 +5,14 @@ root = true
 end_of_line = lf
 insert_final_newline = true
 charset = utf-8
-indent_size = {{ Indentation }}
 indent_style = space
 trim_trailing_whitespace = true
+
+[*.jl]
+indent_size = {{ JuliaIndentation }}
+
+[*.md]
+indent_size = {{ MarkdownIndentation }}
+
+[*.{yml,toml,json}]
+indent_size = {{ ConfigIndentation }}
