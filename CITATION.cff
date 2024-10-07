@@ -17,5 +17,5 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.8350577
     description: Zenodo Concept DOI
-repository-code: "https://github.com/abelsiqueira/BestieTemplate.jl"
+repository-code: "https://github.com/JuliaBesties/BestieTemplate.jl"
 license: MPL-2.0

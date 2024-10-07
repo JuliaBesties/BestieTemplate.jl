@@ -1,7 +1,7 @@
 AnswerStrategy:
   type: str
   default: recommended
-  help: "Strategy for optional questions (You can see the full list of questions in https://abelsiqueira.com/BestieTemplate.jl/dev/30-questions/)"
+  help: "Strategy for optional questions (You can see the full list of questions in https://JuliaBesties.github.io/BestieTemplate.jl/dev/30-questions/)"
   choices:
     Recommended (Our defaults): "recommended"
     Minimum (Answer no to any addition): "minimum"

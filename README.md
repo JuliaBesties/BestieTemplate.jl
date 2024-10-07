@@ -8,18 +8,18 @@ Your best practices friend.
 
 <div align="center">
 
-[![Stable Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://abelsiqueira.github.io/BestieTemplate.jl/stable)
-[![In development documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://abelsiqueira.github.io/BestieTemplate.jl/dev)
-[![Build Status](https://github.com/abelsiqueira/BestieTemplate.jl/workflows/Test/badge.svg)](https://github.com/abelsiqueira/BestieTemplate.jl/actions)
-[![Test workflow status](https://github.com/abelsiqueira/BestieTemplate.jl/actions/workflows/Test.yml/badge.svg?branch=main)](https://github.com/abelsiqueira/BestieTemplate.jl/actions/workflows/Test.yml?query=branch%3Amain)
-[![Lint workflow Status](https://github.com/abelsiqueira/BestieTemplate.jl/actions/workflows/Lint.yml/badge.svg?branch=main)](https://github.com/abelsiqueira/BestieTemplate.jl/actions/workflows/Lint.yml?query=branch%3Amain)
-[![Docs workflow Status](https://github.com/abelsiqueira/BestieTemplate.jl/actions/workflows/Docs.yml/badge.svg?branch=main)](https://github.com/abelsiqueira/BestieTemplate.jl/actions/workflows/Docs.yml?query=branch%3Amain)
-[![Coverage](https://codecov.io/gh/abelsiqueira/BestieTemplate.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/abelsiqueira/BestieTemplate.jl)
+[![Stable Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaBesties.github.io/BestieTemplate.jl/stable)
+[![In development documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://JuliaBesties.github.io/BestieTemplate.jl/dev)
+[![Build Status](https://github.com/JuliaBesties/BestieTemplate.jl/workflows/Test/badge.svg)](https://github.com/JuliaBesties/BestieTemplate.jl/actions)
+[![Test workflow status](https://github.com/JuliaBesties/BestieTemplate.jl/actions/workflows/Test.yml/badge.svg?branch=main)](https://github.com/JuliaBesties/BestieTemplate.jl/actions/workflows/Test.yml?query=branch%3Amain)
+[![Lint workflow Status](https://github.com/JuliaBesties/BestieTemplate.jl/actions/workflows/Lint.yml/badge.svg?branch=main)](https://github.com/JuliaBesties/BestieTemplate.jl/actions/workflows/Lint.yml?query=branch%3Amain)
+[![Docs workflow Status](https://github.com/JuliaBesties/BestieTemplate.jl/actions/workflows/Docs.yml/badge.svg?branch=main)](https://github.com/JuliaBesties/BestieTemplate.jl/actions/workflows/Docs.yml?query=branch%3Amain)
+[![Coverage](https://codecov.io/gh/JuliaBesties/BestieTemplate.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/JuliaBesties/BestieTemplate.jl)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8350577.svg)](https://doi.org/10.5281/zenodo.8350577)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
-[![All Contributors](https://img.shields.io/github/all-contributors/abelsiqueira/BestieTemplate.jl?labelColor=5e1ec7&color=c0ffee&style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/github/all-contributors/JuliaBesties/BestieTemplate.jl?labelColor=5e1ec7&color=c0ffee&style=flat-square)](#contributors)
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-black.json)](https://github.com/copier-org/copier)
-[![BestieTemplate](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/abelsiqueira/BestieTemplate.jl/main/docs/src/assets/badge.json)](https://github.com/abelsiqueira/BestieTemplate.jl)
+[![BestieTemplate](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/JuliaBesties/BestieTemplate.jl/main/docs/src/assets/badge.json)](https://github.com/JuliaBesties/BestieTemplate.jl)
 
 </div>
 
@@ -67,7 +67,7 @@ please note that `"YourPackage.jl"` can either be a fresh new package or an exis
 <!-- agg https://asciinema.org/a/... docs/src/assets/demo.gif --speed 2.5 --cols 80 --rows 20 --font-family "JuliaMono" -->
 [![asciicast](docs/src/assets/demo.gif)](https://asciinema.org/a/611189)
 
-If you like what you see, check the [full usage guide](https://abelsiqueira.com/BestieTemplate.jl/stable/10-full-guide/).
+If you like what you see, check the [full usage guide](https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-full-guide/).
 
 ## Users and Examples
 
@@ -87,7 +87,7 @@ If your interest is in developing the package, check the [development guide](doc
 
 Here is a list of links/repos that include content that we have used for inspiration, or used directly.
 This is most likely not a complete list, since many of the things included here were based on existing packages and knowledge that we brought from other projects.
-This also doesn't explain where each file came from or why they are here. You can find some of that information in the [Explanation](https://abelsiqueira.com/BestieTemplate.jl/stable/20-explanation/) section of the docs.
+This also doesn't explain where each file came from or why they are here. You can find some of that information in the [Explanation](https://JuliaBesties.github.io/BestieTemplate.jl/stable/20-explanation/) section of the docs.
 
 - [PkgTemplates.jl](https://github.com/JuliaCI/PkgTemplates.jl), naturally. We used it for many years, and in particular for the initial TulipaEnergyModel.jl commit (see below).
 - [Netherlands eScience Center's python template](https://github.com/NLeSC/python-template) includes many of the best practices that we apply here. We used many of the ideas there in a Julia context, and took many non-Julia specific ideas from there.

@@ -18,7 +18,7 @@ To apply the template to an existing package
 julia> BestieTemplate.apply("path/to/YourExistingPackage.jl")
 ```
 
-Check the documentation: https://abelsiqueira.com/BestieTemplate.jl
+Check the documentation: https://JuliaBesties.github.io/BestieTemplate.jl
 """
 module BestieTemplate
 
