@@ -1,6 +1,6 @@
 {
   "projectName": "BestieTemplate.jl",
-  "projectOwner": "abelsiqueira",
+  "projectOwner": "JuliaBesties",
   "files": [
     "README.md",
     "docs/src/index.md"
@@ -159,6 +159,15 @@
       "contributions": [
         "code",
         "bug",
+        "ideas"
+      ]
+    },
+    {
+      "login": "clizbe",
+      "name": "Lauren Clisby",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11889283?v=4",
+      "profile": "https://github.com/clizbe",
+      "contributions": [
         "ideas"
       ]
     }
