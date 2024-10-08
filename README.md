@@ -121,6 +121,7 @@ This also doesn't explain where each file came from or why they are here. You ca
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://www.oxinabox.net/"><img src="https://avatars.githubusercontent.com/u/5127634?v=4?s=100" width="100px;" alt="Frames White"/><br /><sub><b>Frames White</b></sub></a><br /><a href="#code-oxinabox" title="Code">💻</a> <a href="#bug-oxinabox" title="Bug reports">🐛</a> <a href="#ideas-oxinabox" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/clizbe"><img src="https://avatars.githubusercontent.com/u/11889283?v=4?s=100" width="100px;" alt="Lauren Clisby"/><br /><sub><b>Lauren Clisby</b></sub></a><br /><a href="#ideas-clizbe" title="Ideas, Planning, & Feedback">🤔</a></td>
     </tr>
   </tbody>
 </table>
