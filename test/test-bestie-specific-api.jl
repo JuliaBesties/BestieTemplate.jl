@@ -189,9 +189,9 @@ end
   end
 end
 
-# Don't run for branch main or releases
+# Don't run for branch main or tags
 if chomp(read(`git branch --show-current`, String)) != "main" &&
-   get(ENV, "GITHUB_EVENT_NAME", "nothing") != "release"
+   get(ENV, "GITHUB_REF_TYPE", "nothing") != "tag"
   @testset "Test updating from main to HEAD vs generate in HEAD" begin
     _with_tmp_dir() do dir
       common_args = (defaults = true, quiet = true)
