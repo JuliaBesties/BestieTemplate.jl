@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.12.0] - 2024-10-08
+
 Breaking notice:
 
 - `Indentation` has been deprecated in favour of `JuliaIndentation`, `MarkdownIndentation` and `ConfigIndentation`.
@@ -390,7 +392,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.11.0...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.12.0...HEAD
+[0.12.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.12.0
 [0.11.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.11.0
 [0.10.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.10.1
 [0.10.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.10.0
