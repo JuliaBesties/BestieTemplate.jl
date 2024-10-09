@@ -70,7 +70,7 @@ jobs:
         run: pip install pre-commit
 
       # Actual tests
-      - name: Create a package using the template
+      - name: Create a package using the template with default values
         run: |
           julia --project=. --eval '
             using BestieTemplate, UUIDs;
@@ -99,7 +99,7 @@ jobs:
       - name: Check that the docs wre properly generated
         run: |
           ./.github/scripts/check-docs.bash tmp/Guldasta.jl
-      - name: Check that running pre-commit will fix its own issues
+      - name: Check that all pre-commit checks pass
         shell: bash {0} # The default shell uses -e which checks intermediary failures
         run: |
           cd tmp/Guldasta.jl
@@ -108,5 +108,5 @@ jobs:
           git init
           git add .
           git commit -m "First commit"
-          SKIP=no-commit-to-branch pre-commit run -a # Should fail
-          SKIP=no-commit-to-branch pre-commit run -a # Should not
+          # Failures here can be due to whitespace management in Jinja
+          SKIP=no-commit-to-branch pre-commit run -a

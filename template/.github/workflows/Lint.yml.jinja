@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: {% raw %}${{ startsWith(github.ref, 'refs/pull/') }}{% endraw %}
 
 jobs:
-  {% if AddPrecommit %}
+  {% if AddPrecommit -%}
   lint:
     name: Linting
     runs-on: ubuntu-latest
@@ -47,7 +47,7 @@ jobs:
         run: pip install pre-commit
       - name: Run pre-commit
         run: SKIP=no-commit-to-branch pre-commit run -a
-  {% endif %}
+  {% endif -%}
   link-checker:
     name: Link checker
     runs-on: ubuntu-latest
