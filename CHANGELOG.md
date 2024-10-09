@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Fixed
+
+- Many trailing white spaces and duplicate empty lines resulting from Jinja variables. Pre-commit succeeds more often for newly generated files with default answers (#445)
+
 ## [0.12.0] - 2024-10-08
 
 Breaking notice:
