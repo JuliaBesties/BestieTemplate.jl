@@ -1,7 +1,7 @@
 using {{ PackageName }}
 using Test
 
-{% if AutoIncludeTests %}
+{% if AutoIncludeTests -%}
 #=
 Don't add your tests to runtests.jl. Instead, create files named
 
@@ -20,8 +20,8 @@ for (root, dirs, files) in walkdir(@__DIR__)
         end
     end
 end
-{% else %}
+{% else -%}
 @testset "{{ PackageName }}.jl" begin
     @test {{ PackageName }}.hello_world() == "Hello, World!"
 end
-{% endif %}
+{% endif -%}

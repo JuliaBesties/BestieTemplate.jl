@@ -26,22 +26,31 @@ jobs:
           - "1"
         os:
           - ubuntu-latest
-          {% if not AddMacToCI %}#{% endif %}- macOS-latest
-          {% if not AddWinToCI %}#{% endif %}- windows-latest
+          {% if AddMacToCI -%}
+          - macOS-latest
+          {% endif -%}
+          {% if AddWinToCI -%}
+          - windows-latest
+        {% endif -%}
         arch:
           - x64
         allow_failure: [false]
-        {% if RunJuliaNightlyOnCI %}
+        {%- if RunJuliaNightlyOnCI %}
         include:
           - version: "nightly"
             os: ubuntu-latest
             arch: x64
             allow_failure: true
-          {% if AddMacToCI %}- version: "nightly"
+          {% if AddMacToCI -%}
+          - version: "nightly"
             os: macOS-latest
             arch: x64
-            allow_failure: true{% endif %}
-          {% if AddWinToCI %}- version: "nightly"
+            allow_failure: true
+          {% endif -%}
+          {% if AddWinToCI -%}
+          - version: "nightly"
             os: windows-latest
             arch: x64
-            allow_failure: true{% endif %}{% endif %}
+            allow_failure: true
+          {%- endif -%}
+          {%- endif %}

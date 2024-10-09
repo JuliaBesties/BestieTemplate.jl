@@ -183,7 +183,7 @@ After the template is applied and you are happy with the conflict resolution, en
 
 ```bash
 git add .
-pre-commit run -a # Try to fix possible pre-commit issues (failures are expected)
+pre-commit run -a # Try to fix possible pre-commit issues (failures are possible)
 pre-commit install # All commits will run pre-commit now
 git add .
 git commit -m "Apply BestieTemplate vx.y.z"

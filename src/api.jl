@@ -95,7 +95,7 @@ function generate(src_path, dst_path, data::Dict = Dict(); kwargs...)
   \$ cd $dst_path
   \$ git init
   \$ git add .
-  \$ pre-commit run -a     # Try to fix possible pre-commit issues (failures are expected)
+  \$ pre-commit run -a     # Try to fix possible pre-commit issues (failures are possible)
   \$ git add .
   \$ git commit -m "Generate repo with BestieTemplate $bestie_version"
   \$ pre-commit install    # Future commits can't be directly to main unless you use -n

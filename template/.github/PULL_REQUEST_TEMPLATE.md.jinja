@@ -1,13 +1,13 @@
 <!--
 Thanks for making a pull request to {{ PackageName }}.jl.
 We have added this PR template to help you help us.
-{% if AddContributionDocs and AddCodeOfConduct %}
+{% if AddContributionDocs and AddCodeOfConduct -%}
 Make sure to read the contributing guidelines and abide by the code of conduct.
-{% elif AddContributionDocs %}
+{% elif AddContributionDocs -%}
 Make sure to read the contributing guidelines.
-{% elif AddCodeOfConduct %}
+{% elif AddCodeOfConduct -%}
 Make sure to abide by the code of conduct.
-{% endif %}
+{% endif -%}
 See the comments below, fill the required fields, and check the items.
 -->
 
@@ -27,9 +27,9 @@ There is no related issue.
 
 <!-- mark true if NA -->
 <!-- leave PR as draft until all is checked -->
-{% if AddContributionDocs %}
+{% if AddContributionDocs -%}
 - [ ] I am following the [contributing guidelines](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/main/docs/src/90-contributing.md)
-{% endif %}
+{% endif -%}
 - [ ] Tests are passing
 - [ ] Lint workflow is passing
 - [ ] Docs were updated and workflow is passing

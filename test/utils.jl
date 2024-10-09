@@ -18,6 +18,12 @@ function _full_precommit()
   run(`git add .`)
   _precommit()
   run(`git add .`)
+  try
+    read(`git diff-index --exit-code HEAD`)
+    return # No commit necessary, exit now (consequence of pre-commit passing for default values)
+  catch
+    nothing
+  end
   run(`git commit -q -m "git add . and pre-commit run -a"`)
 end
 
