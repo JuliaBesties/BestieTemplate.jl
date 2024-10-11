@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+BREAKING NOTICE (MANUAL INTERVENTION REQUIRED):
+
+- The LTS version has changed from 1.6 to 1.10. When updating, if you want to change the value of `JuliaMinVersion` (the minimum version in Project.toml), then:
+  - You must change the `.copier-answers.yml` file (before or after running `update`)
+  - You must manually change `Project.toml`
+  - You might have to manually change `Test.yml` and/or `TestOnPRs.yml` in the folder `.github/workflows`
+
+### Changed
+
+- Change internal LTS version to 1.10. This affects the default value of `JuliaMinVersion` (#486)
+
 ### Fixed
 
 - Many trailing white spaces and duplicate empty lines resulting from Jinja variables. Pre-commit succeeds more often for newly generated files with default answers (#445)
