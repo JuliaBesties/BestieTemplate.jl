@@ -28,7 +28,7 @@ const strategy_minimum = merge(
   required,
   Dict(
     "Authors" => "Bestie Template <bestie@fake.nl> and contributors", # Move to required after 0.11
-    "JuliaMinVersion" => "1.6",
+    "JuliaMinVersion" => "1.10",
     "License" => "MIT",
     "LicenseCopyrightHolders" => "Bestie Template",
     "JuliaIndentation" => 4,
