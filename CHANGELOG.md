@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.13.0] - 2024-10-11
+
 BREAKING NOTICE (MANUAL INTERVENTION REQUIRED):
 
 - The LTS version has changed from 1.6 to 1.10. When updating, if you want to change the value of `JuliaMinVersion` (the minimum version in Project.toml), then:
@@ -407,7 +409,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.12.0...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.13.0...HEAD
+[0.13.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.13.0
 [0.12.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.12.0
 [0.11.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.11.0
 [0.10.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.10.1
