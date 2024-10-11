@@ -47,6 +47,12 @@ jobs:
           git checkout origin/main
           git branch --track main origin/main
           git checkout this-pr
+      - name: Create ENV if necessary
+        if: github.ref != 'refs/heads/main'
+        run: |
+          if git --no-pager log main..HEAD | grep -q BESTIE_SKIP_UPDATE_TEST; then
+            echo "BESTIE_SKIP_UPDATE_TEST=yes" >> $GITHUB_ENV
+          fi
       - uses: julia-actions/setup-julia@v2
         with:
           version: ${{ inputs.version }}
