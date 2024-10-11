@@ -196,7 +196,8 @@ end
 end
 
 # Don't run for branch main or tags
-if chomp(read(`git branch --show-current`, String)) != "main" &&
+if get(ENV, "BESTIE_SKIP_UPDATE_TEST", "no") != "yes" &&
+   chomp(read(`git branch --show-current`, String)) != "main" &&
    get(ENV, "GITHUB_REF_TYPE", "nothing") != "tag"
   @testset "Test updating from main to HEAD vs generate in HEAD" begin
     _with_tmp_dir() do dir
