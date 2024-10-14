@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+BREAKING NOTICE:
+
+- The link-checker now uses lychee version 2, which might lead to failures. See <https://github.com/JuliaBesties/BestieTemplate.jl/pull/495> for the release notes.
+
+### Changed
+
+- Update action version
+  - lycheeverse/lychee-action 1 -> 2
+
 ## [0.13.0] - 2024-10-11
 
 BREAKING NOTICE (MANUAL INTERVENTION REQUIRED):
