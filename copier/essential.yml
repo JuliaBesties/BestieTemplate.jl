@@ -96,23 +96,10 @@ LicenseCopyrightHolders:
   help: License Copyright Holders (Added in front of "Copyright (c) " notices, when applicable)
   default: "{{ Authors | regex_replace('\\s*([^,]*)\\s*<[^,]*>[^,]*', '\\\\1') | regex_replace('\\s*,\\s*', ', ') | trim }}"
   validator: "{% if LicenseCopyrightHolders | length == 0%}Can't be empty{% endif %}"
-<<<<<<< HEAD
   description: |
     Some license files include a "Copyright (c) <LicenseCopyrightHolders>" notice.
     Defaults to names in the Authors question, if they follow the recommended format.
     For instance, if the Authors field is "NAME1 <EMAIL1>,NAME2 <EMAIL2>", this will default to "NAME1, NAME2".
-=======
-
-StyleGuide:
-  type: str
-  help: Julia formatting style (Do you want to follow any particular style guide?)
-  choices:
-    None (use BestieTemplate default formatting): none
-    Blue Style: blue
-    YAS Style: yas
-    SciML Style: sciml
-  default: none
->>>>>>> c488d85 (Update copier/essential.yml)
 
 Indentation:
   when: false
