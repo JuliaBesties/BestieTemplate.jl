@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- New question: `StyleGuide`, which lets the user choose among popular styleguides (SciML, Blue, YAS) (#440)
+
+### Changed
+
+- `JuliaIndentation` is asked only if no predefined style guide is selected (#440)
+
 ## [0.13.0] - 2024-10-11
 
 BREAKING NOTICE (MANUAL INTERVENTION REQUIRED):

@@ -16,7 +16,7 @@ repos:
         args: [--allow-multiple-documents, --unsafe] # These options are here because of the copier.yml file
       - id: end-of-file-fixer
       - id: file-contents-sorter
-        files: .JuliaFormatter.toml
+        files: .JuliaFormatter.toml$
         args: [--unique]
       - id: mixed-line-ending
         args: [--fix=lf]

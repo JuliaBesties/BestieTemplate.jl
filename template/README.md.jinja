@@ -14,6 +14,7 @@
 {% if AddCodeOfConduct -%}
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 {% endif -%}
+{% if StyleGuide == 'sciml' %}[![SciML Code Style](https://img.shields.io/static/v1?label=code%20style&message=SciML&color=9558b2&labelColor=389826)](https://github.com/SciML/SciMLStyle){% endif %}{% if StyleGuide == 'blue' %}[![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/JuliaDiff/BlueStyle){% endif %}
 {% if AddAllcontributors -%}
 [![All Contributors](https://img.shields.io/github/all-contributors/{{ PackageOwner }}/{{ PackageName }}.jl?labelColor=5e1ec7&color=c0ffee&style=flat-square)](#contributors)
 {% endif -%}
