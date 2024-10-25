@@ -27,7 +27,7 @@ If you decide to gradually adopt, do this:
 
 1. Follow the relevant application section for [New](@ref new_package) or [Existing](@ref existing_package).
 1. Remember to select the "Minimum" optional questions.
-1. Follow the [Update section](@ref updating_package), change your answer from "Minimum" to "Recommended" or "Ask me".
+1. Follow the [Update section](@ref updating_package), change your answer from "Minimum" to one of the others.
 
 ### Things to install
 

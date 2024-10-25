@@ -36,9 +36,12 @@ const strategy_minimum = merge(
   ),
 )
 
-const strategy_recommended = merge(strategy_minimum, Dict("AnswerStrategy" => "recommended"))
+const strategy_recommended_only = merge(strategy_minimum, Dict("AnswerStrategy" => "recommended"))
 
-const strategy_ask = merge(strategy_recommended, Dict("AnswerStrategy" => "ask"))
+const strategy_recommended_ask =
+  merge(strategy_minimum, Dict("AnswerStrategy" => "recommended-ask"))
+
+const strategy_ask = merge(strategy_minimum, Dict("AnswerStrategy" => "ask"))
 
 const optional_questions_with_default = Dict(
   "AddPrecommit" => true,
@@ -61,9 +64,9 @@ const optional_questions_with_default = Dict(
 const strategy_ask_default = merge(strategy_ask, optional_questions_with_default)
 
 const strategy_ask_and_say_no =
-  merge(strategy_recommended, Dict(k => false for k in keys(optional_questions_with_default)))
+  merge(strategy_recommended_only, Dict(k => false for k in keys(optional_questions_with_default)))
 
 const strategy_ask_and_say_yes =
-  merge(strategy_recommended, Dict(k => true for k in keys(optional_questions_with_default)))
+  merge(strategy_recommended_only, Dict(k => true for k in keys(optional_questions_with_default)))
 
 end

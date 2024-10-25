@@ -24,7 +24,8 @@ function _copy(src_path, dst_path, data; kwargs...)
   First, some **required** questions will need to be filled.
   Then, you will have the option of selecting
 
-  - The _recommended_ options, which includes our current _best practices recommendations_;
+  - The _recommended only_ options, which includes our current _best practices recommendations_;
+  - The _recommended and possible extras_ options, which is the same as _recommended but asks additional questions that are not in recommended;
   - The _minimum_ options, which will answer _no_ to everything, but still give you what
     we consider the minimum best practices you need to get started; or
   - Answer every optional question.

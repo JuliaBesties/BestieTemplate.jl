@@ -27,7 +27,7 @@ AddWinToCI:
     Defaults to yes for the recommended strategy, or no otherwise.
 
 RunJuliaNightlyOnCI:
-  when: "{{ AnswerStrategy == 'ask' }}"
+  when: "{{ AnswerStrategy == 'ask' or AnswerStrategy == 'recommended-ask' }}"
   type: bool
   help: Julia nightly CI test (Package tests run on Julia version {{ JuliaMinVersion }} and on the latest stable release. Do you also want to run them on the nightly version?)
   default: false
@@ -36,7 +36,7 @@ RunJuliaNightlyOnCI:
     Defaults to no.
 
 UseCirrusCI:
-  when: "{{ AnswerStrategy == 'ask' }}"
+  when: "{{ AnswerStrategy == 'ask' or AnswerStrategy == 'recommended-ask' }}"
   type: bool
   help: FreeBSD CI test with CirrusCI (Add CirrusCI to run the package tests on FreeBSD?)
   default: false
@@ -45,7 +45,7 @@ UseCirrusCI:
     Defaults to no.
 
 AddCopierCI:
-  when: "{{ AnswerStrategy == 'ask' }}"
+  when: "{{ AnswerStrategy == 'ask' or AnswerStrategy == 'recommended-ask' }}"
   type: bool
   help: Copier.yml (Add workflow to check for template updates? This is a work in progress workflow that checks whether there has been an update to the template and automatically create a pull request)
   default: false

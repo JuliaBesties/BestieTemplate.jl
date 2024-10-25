@@ -242,7 +242,8 @@ Find an appropriate place to add the question. Comments help identify the option
 Follow the other questions style and syntax. The gist of it is that you need:
 
 - A `CamelCase` name.
-- `when: "{{ AnswerStrategy == 'ask' }}"` if the question is optional.
+- `when: "{{ AnswerStrategy == 'ask' }}"` if the question is optional but should be automatically selected for "Recommended only".
+- `when: "{{ AnswerStrategy == 'ask' or AnswerStrategy == 'recommended-ask' }}"` if the question is extra.
 - A `type`.
 - A `help: Short description or title (Longer description and details)`.
 - A `default`, if the question is optional.
