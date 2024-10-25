@@ -45,7 +45,7 @@ repos:
     hooks:
       - id: yamllint
   - repo: https://github.com/ericphanson/ExplicitImports.jl
-    rev: v1.10.0
+    rev: v1.10.1
     hooks:
       - id: explicit-imports
         name: ExplicitImports checks

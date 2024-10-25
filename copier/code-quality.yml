@@ -72,3 +72,41 @@ ConfigIndentation:
     This does **NOT** enforce indentation by itself, you still need tools to indent these.
     `pre-commit` is the recommended way to run these tools.
     For existing packages, this will be inferred from the indent value in the `.JuliaFormatter.toml` file.
+
+CheckExplicitImports:
+  when: "{{ AnswerStrategy == 'ask' or AnswerStrategy == 'recommended-ask' }}"
+  type: bool
+  help: Add ExplicitImports check to pre-commit (Check correct usage of using vs import and public API usage. See https://github.com/ericphanson/ExplicitImports.jl)
+  default: false
+  description: |
+    ExplicitImports performs a few checks to determine if this package is using other packages correctly.
+    See https://github.com/ericphanson/ExplicitImports.jl
+    Defaults to false, since many Julia packages have not adopted the idea yet.
+
+ExplicitImportsChecklist:
+  when: "{{ CheckExplicitImports }}"
+  type: str
+  help: Checklist for ExplicitImports (Comma-separated list to be passed to ExplicitImports' --checklist. Defaults to a reasonable strictness. Use `all` to run everything or see all options in https://github.com/ericphanson/ExplicitImports.jl?tab=readme-ov-file#command-line-usage)
+  default: "exclude_all_qualified_accesses_are_public"
+  description: |
+    ExplicitImports performs various checks. Some depend on the imported
+    packages fixing the definition of public API to Julia's latest definitions,
+    so using "all" is prone to failures until most Julia packages adopt the new
+    definition.
+
+    Valid values for each check are:
+    - Individual checks:
+      - all_explicit_imports_are_public,
+      - all_qualified_accesses_are_public,
+      - all_explicit_imports_via_owners,
+      - all_qualified_accesses_via_owners,
+      - no_implicit_imports,
+      - no_self_qualified_accesses,
+      - no_stale_explicit_imports
+    - Select all checks: all
+    - Exclude a check: prepend an individual check with 'exclude_'
+
+    The selection logic is performed in the order given.
+    If you pass only exclusions, it will assume that it starts from a complete list, and then excludes.
+    If you pass any individual checks, it will assume that it starts from an empty list, and then includes.
+    Passing both individual and exclusion checks does not make sense.

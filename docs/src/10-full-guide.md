@@ -68,6 +68,17 @@ pkg> activate
 pkg> add JuliaFormatter
 ```
 
+#### ExplicitImports
+
+When `CheckExplicitImports` is true, the code will be checked with [ExplicitImports.jl](https://github.com/ericphanson/ExplicitImports.jl) for correct usage of using vs imports and public API usage.
+Like JuliaFormatter, ExplicitImports needs to be explicitly installed in your global environment.
+
+```julia-repl
+julia> # Press ]
+pkg> activate
+pkg> add ExplicitImports
+```
+
 ## Install BestieTemplate (or copier)
 
 To use the template, we recommend installing the package `BestieTemplate.jl` globally:

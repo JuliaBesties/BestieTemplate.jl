@@ -83,6 +83,8 @@ function dbg_generate(
   )
 end
 
+dbg_generate(_data = Dict(); kwargs...) = dbg_generate(rand_pkg_name(), _data; kwargs...)
+
 """
     dbg_apply([dst_path, data]; data_choice=:minimum)
 
