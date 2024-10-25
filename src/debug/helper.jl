@@ -30,8 +30,10 @@ function dbg_data(data_choice, _data = Dict())
     Data.minimum_defaults
   elseif data_choice in [:minimum, :min]
     Data.strategy_minimum
-  elseif data_choice in [:recommended, :rec]
-    Data.strategy_recommended
+  elseif data_choice in [:recommended, (:recommended_only):rec, :rec_only]
+    Data.strategy_recommended_only
+  elseif data_choice in [:recommended_ask, :rec_ask]
+    Data.strategy_recommended_ask
   elseif data_choice in [:ask]
     Data.strategy_ask
   elseif data_choice in [:ask_default]

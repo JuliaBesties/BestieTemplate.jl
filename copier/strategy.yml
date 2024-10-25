@@ -3,13 +3,15 @@ AnswerStrategy:
   default: recommended
   help: "Strategy for optional questions (You can see the full list of questions in https://JuliaBesties.github.io/BestieTemplate.jl/dev/30-questions/)"
   choices:
-    Recommended (Our defaults): "recommended"
+    Recommended only: "recommended"
+    Recommended and ask other options: "recommended-ask"
     Minimum (Answer no to any addition): "minimum"
     Ask me (Ask all questions): "ask"
   description: |
     This defines how to deal with the rest of the questions.
-    The `minimum` strategy answers "no" to every question. This is not the same as a bare-bones package. The resulting package will have the minimum amount of best practices that we recommend.
-    The `recommended` strategy uses all our recommended best practices, which might be overwhelming for anyone. See the answers below this step to see all the options. This is not the same as saying "yes" to everything.
-    The `ask` strategy does not select anything from the list below. All questions will be asked.
-    Notice that some options are only available through the `ask` strategy, or by explicitly passing them to the Bestie command.
+    The "minimum" strategy answers "no" to every question. This is not the same as a bare-bones package. The resulting package will have the minimum amount of best practices that we recommend.
+    Both "recommended" strategies use all our recommended best practices. You then have the option to ignore or ask the optional questions. The optional questions include features that are being tested or that are too specific to be recommended.
+    The "recommended" strategy might be overwhelming for most people. See the answers below this step to see all the options. This is not the same as saying "yes" to everything.
+    The "ask" strategy does not select anything from the list below. All questions will be asked.
+    Notice that some options are only available through the "ask" or "recommended and ask" strategies, or by explicitly passing them to the Bestie command.
     Defaults to the "recommended" strategy.

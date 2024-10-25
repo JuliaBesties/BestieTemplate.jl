@@ -13,6 +13,10 @@ BREAKING NOTICE:
 
 - The link-checker now uses lychee version 2, which might lead to failures. See <https://github.com/JuliaBesties/BestieTemplate.jl/pull/495> for the release notes.
 
+### Added
+
+- Create a new strategy to allow users to install all recommended and get asked additional questions.
+
 ### Changed
 
 - Update action version

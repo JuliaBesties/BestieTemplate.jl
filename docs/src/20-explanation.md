@@ -63,11 +63,12 @@ Furthermore, they can keep reaping benefits when we create new versions of the t
 
 Let's dive into the details of the template now.
 
-### Recommended vs Minimum vs Others (hidden)
+### Recommended vs Minimum
 
 The template contains a few required questions and then asks you whether you would like to use
 
-- The "recommended" options, which include our current recommendation for best practices;
+- The "recommended only" options, which include our current recommendation for best practices;
+- The "recommended and ask extra" options, which include our current recommendation for best practices and you get asked extra questions;
 - The "minimum" options, which answers "no" to everything, but still leaves you with a decent package to start; or
 - The option to answer every optional question individually.
 
@@ -102,11 +103,12 @@ Our **loose** criteria to make something part of the recommended, but not minimu
 - It creates friction - which is good to ensure quality but slows developement (e.g., issue templates).
 
 Finally, there are **other optional features**.
-These are neither recommended nor part of the minimum template, which means that unless you (know and) set them explicitly, you are not using them.
+These are neither recommended nor part of the minimum template, which means that you need to use one of the strategies that ask extra questions ("Recommended ans ask extra" or "Ask") or set them explicitly.
 
 The **loose** criteria to make something not recommended, nor minimum, is:
 
 - It is a best practice, but for a niche audience (e.g., `.cirrus.yml` for testing on FreeBSD);
+- It is potentially disruptive (e.g., testing on Nightly)
 
 To see all the questions, head to [Questions](@ref).
 

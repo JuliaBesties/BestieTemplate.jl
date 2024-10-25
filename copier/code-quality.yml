@@ -39,7 +39,7 @@ JuliaIndentation:
     For existing packages, this will be inferred from the indent value in the `.JuliaFormatter.toml` file.
 
 MarkdownIndentation:
-  when: "{{ AnswerStrategy == 'ask' }}"
+  when: "{{ AnswerStrategy != 'minimum' }}"
   type: int
   help: Indentation length for Markdown files (Used in .markdownlint.json and .editorconfig)
   validator: "{% if MarkdownIndentation <= 0 %}Indentation must be positive{% endif %}"
@@ -56,7 +56,7 @@ MarkdownIndentation:
     For existing packages, this will be inferred from the indent value in the `.JuliaFormatter.toml` file.
 
 ConfigIndentation:
-  when: "{{ AnswerStrategy == 'ask' }}"
+  when: "{{ AnswerStrategy != 'minimum' }}"
   type: int
   help: Indentation length for configuration files (Used to format YAML and JSON files)
   validator: "{% if ConfigIndentation <= 0 %}Indentation must be positive{% endif %}"
