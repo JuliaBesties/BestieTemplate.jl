@@ -43,6 +43,14 @@ repos:
     rev: v1.35.1
     hooks:
       - id: yamllint
+  {% if CheckExplicitImports -%}
+  - repo: https://github.com/ericphanson/ExplicitImports.jl
+    rev: v1.10.1
+    hooks:
+      - id: explicit-imports
+        name: ExplicitImports checks
+        args: [--print, --checklist, {{ ExplicitImportsChecklist }}]
+  {% endif -%}
   - repo: https://github.com/domluna/JuliaFormatter.jl
     rev: v1.0.61
     hooks:

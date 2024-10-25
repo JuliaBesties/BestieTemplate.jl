@@ -16,6 +16,7 @@ BREAKING NOTICE:
 ### Added
 
 - Create a new strategy to allow users to install all recommended and get asked additional questions.
+- New questions: `CheckExplicitImports` and `ExplicitImportsChecklist`, to determine whether to check for using vs import and public API usage, and which checks to perform (#349)
 
 ### Changed
 
