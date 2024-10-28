@@ -6,7 +6,7 @@ CurrentModule = BestieTemplate
 
 ![BestieTemplate.jl](assets/logo.png)
 
-Welcome to the documentation of BestieTemplate.jl. This package provides a template in the [copier](https://copier.readthedocs.io) engine for a Julia package. Furthermore, it provides a wrapper around convenience calls to that package.
+Welcome to the documentation of [BestieTemplate.jl](https://github.com/JuliaBesties/BestieTemplate.jl). This package provides a template in the [copier](https://copier.readthedocs.io) engine for a Julia package. Furthermore, it provides a wrapper around convenience calls to that package.
 
 The main features of this package/template are:
 
