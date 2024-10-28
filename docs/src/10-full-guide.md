@@ -333,6 +333,21 @@ Before releasing, enable Zenodo integration at <https://zenodo.org/account/setti
 
 Enable GitHub discussions.
 
+### Protect the main branch
+
+If you are working with others, we recommend to protect your main branch, require approvals of pull requests before merging, and enforce a linear history.
+
+1. On GitHub, navigate to the main page of your repository.
+1. Under your repository name, click **Settings**.
+1. In the left menu, click **Branches**.
+1. Next to "Branch protection rules," click **Add rule**.
+1. Under "Branch name pattern," type the branch name that you want to protect, in this case "main."
+1. Select these options:
+   - [x] Require a pull request before merging
+   - [x] Require approvals
+   - [x] Require linear history
+1. Click **Create**
+
 ### First release
 
 When you are ready to make your first release, enable the [Julia Registrator bot](https://github.com/apps/juliateam-registrator/installations/select_target).
