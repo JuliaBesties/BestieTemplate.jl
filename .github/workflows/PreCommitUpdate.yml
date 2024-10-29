@@ -17,7 +17,7 @@ jobs:
         with:
           cache: pip
           python-version: "3.11"
-      - name: Un-Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
+      - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
         run: rm requirements.txt
       - name: Install pre-commit
         run: pip install pre-commit

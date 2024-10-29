@@ -1,12 +1,20 @@
 # Changes here will be overwritten by Copier
-AnswerStrategy: recommended
-AuthorEmail: abel.s.siqueira@gmail.com
-AuthorName: Abel Soares Siqueira
-Indentation: 2
+AddCopierCI: false
+AnswerStrategy: recommended-ask
+Authors: Abel Soares Siqueira <abel.s.siqueira@gmail.com> and contributors
+CheckExplicitImports: true
+CodeOfConductContact: abel.s.siqueira@gmail.com
+ConfigIndentation: 2
+ExplicitImportsChecklist: exclude_all_qualified_accesses_are_public
+JuliaIndentation: 2
 JuliaMinVersion: '1.6'
 License: MPL-2.0
+LicenseCopyrightHolders: Abel Soares Siqueira
+MarkdownIndentation: 2
 PackageName: BestieTemplate
 PackageOwner: JuliaBesties
 PackageUUID: e5d671a7-4186-4f1a-bf88-c19b630da94f
-_commit: v0.9.1
+RunJuliaNightlyOnCI: false
+UseCirrusCI: false
+_commit: v0.13.0-10-g7edad95
 _src_path: https://github.com/JuliaBesties/BestieTemplate.jl
