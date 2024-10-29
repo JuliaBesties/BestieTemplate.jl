@@ -27,10 +27,13 @@ jobs:
           version: "1"
       - name: Use Julia cache
         uses: julia-actions/cache@v2
+      {% if CheckExplicitImports -%}
+      - name: Build package (required for ExplicitImports)
+        uses: julia-actions/julia-buildpkg@v1
       - name: Install Julia packages
-        {% if CheckExplicitImports -%}
-        run: julia -e 'using Pkg; pkg"add CheckExplicitImports, JuliaFormatter"'
+        run: julia -e 'using Pkg; pkg"add ExplicitImports, JuliaFormatter"'
       {% else -%}
+      - name: Install Julia packages
         run: julia -e 'using Pkg; pkg"add JuliaFormatter"'
       {% endif -%}
       - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
