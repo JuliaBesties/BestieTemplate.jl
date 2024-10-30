@@ -30,7 +30,7 @@ function dbg_data(data_choice, _data = Dict())
     Data.minimum_defaults
   elseif data_choice in [:minimum, :min]
     Data.strategy_minimum
-  elseif data_choice in [:recommended, (:recommended_only):rec, :rec_only]
+  elseif data_choice in [:recommended, :recommended_only, :rec, :rec_only]
     Data.strategy_recommended_only
   elseif data_choice in [:recommended_ask, :rec_ask]
     Data.strategy_recommended_ask
@@ -82,8 +82,6 @@ function dbg_generate(
     kwargs...,
   )
 end
-
-dbg_generate(_data = Dict(); kwargs...) = dbg_generate(rand_pkg_name(), _data; kwargs...)
 
 """
     dbg_apply([dst_path, data]; data_choice=:minimum)
