@@ -30,7 +30,7 @@ function dbg_data(data_choice, _data = Dict())
     Data.minimum_defaults
   elseif data_choice in [:minimum, :min]
     Data.strategy_minimum
-  elseif data_choice in [:recommended, (:recommended_only):rec, :rec_only]
+  elseif data_choice in [:recommended, :recommended_only, :rec, :rec_only]
     Data.strategy_recommended_only
   elseif data_choice in [:recommended_ask, :rec_ask]
     Data.strategy_recommended_ask
@@ -52,11 +52,19 @@ end
     dbg_generate([dst_path, data]; data_choice=:minimum)
 
 Convenience function to help debug `generate`.
+
 It runs `generate` with the `dst_path` destination (random by default) and the given `data`
 (nothing by default).
 
 It also uses a `data_choice` to determine fake starting data. This is passed to
 [`dbg_data`](@ref).
+
+This function can be called in multiple ways:
+
+- `dbg_generate()`: Use all defaults
+- `dbg_generate(my_data::Dict)`: Use `my_data` and all defaults
+- `dbg_generate(dst_path::String)`: Use `dst_path` and all defaults
+- `dbg_generate(data_choice::Symbol)`: Use all defaults and `data_choice` to generate `my_data`
 
 It uses the `pkgdir` location of Bestie and adds the flags
 
@@ -66,8 +74,8 @@ It uses the `pkgdir` location of Bestie and adds the flags
   changes.
 """
 function dbg_generate(
-  dst_path = rand_pkg_name(),
-  _data = Dict();
+  dst_path::String = rand_pkg_name(),
+  _data::Dict = Dict();
   data_choice::Symbol = :minimum,
   kwargs...,
 )
@@ -83,7 +91,9 @@ function dbg_generate(
   )
 end
 
-dbg_generate(_data = Dict(); kwargs...) = dbg_generate(rand_pkg_name(), _data; kwargs...)
+dbg_generate(_data::Dict, kwargs...) = dbg_generate(rand_pkg_name(), _data; kwargs...)
+dbg_generate(data_choice::Symbol, kwargs...) =
+  dbg_generate(rand_pkg_name(), Dict(); data_choice, kwargs...)
 
 """
     dbg_apply([dst_path, data]; data_choice=:minimum)

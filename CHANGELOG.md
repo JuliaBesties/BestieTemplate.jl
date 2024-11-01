@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix method overwriting error of `dbg_generate` in precompilation and enable more flexible calling signatures (#514)
+
 ## [0.14.0] - 2024-10-29
 
 BREAKING NOTICE:
