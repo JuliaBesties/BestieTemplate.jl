@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.14.1] - 2024-11-12
+
 ### Fixed
 
 - Fix method overwriting error of `dbg_generate` in precompilation and enable more flexible calling signatures (#514)
@@ -430,7 +432,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.14.0...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.14.1...HEAD
+[0.14.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.14.1
 [0.14.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.14.0
 [0.13.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.13.0
 [0.12.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.12.0
