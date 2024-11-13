@@ -8,6 +8,9 @@ on:
 jobs:
   pre-commit-update:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
