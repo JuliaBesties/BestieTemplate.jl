@@ -82,7 +82,7 @@ jobs:
           TMPDIR: "${{ runner.temp }}"
       - uses: julia-actions/julia-processcoverage@v1
         if: ${{ inputs.run_codecov }}
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v5
         if: ${{ inputs.run_codecov }}
         with:
           file: lcov.info
