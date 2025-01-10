@@ -27,7 +27,7 @@ jobs:
           # save updated versions to file and ignore exit code
           pre-commit autoupdate | grep updating >> ~/pre-commit.msg || true
           # create output
-          echo "PRE_COMMIT_MSG=\"chore: :robot: pre-commit update\n\n$(cat ~/pre-commit.msg)\" >> "$GITHUB_OUTPUT"
+          echo "PRE_COMMIT_MSG=\"chore: :robot: pre-commit update\n\n$(cat ~/pre-commit.msg)\"" >> "$GITHUB_OUTPUT"
       - name: Apply patch to template
         run: |
           git diff -- .pre-commit-config.yaml > pre-commit.patch
