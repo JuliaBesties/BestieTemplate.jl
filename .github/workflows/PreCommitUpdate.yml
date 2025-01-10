@@ -32,6 +32,8 @@ jobs:
       - name: Apply patch to template
         run: |
           git diff -- .pre-commit-config.yaml > pre-commit.patch
+          cat pre-commit.patch
+          patch --version
           patch -p1 "template/{% if AddPreCommit %}.pre-commit.config.yaml{% endif %}.jinja" pre-commit.patch
       - name: Create Pull Request
         id: cpr
