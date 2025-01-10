@@ -22,15 +22,23 @@ jobs:
       - name: Install pre-commit
         run: pip install pre-commit
       - name: Run pre-commit's autoupdate
+        id: pre_commit_autoupdate
         run: |
-          # ignore exit code
-          pre-commit autoupdate || true
+          # save updated versions to file and ignore exit code
+          pre-commit autoupdate | grep updating >> ~/pre-commit.msg || true
+          # create output
+          echo "PRE_COMMIT_MSG=\"chore: :robot: pre-commit update\n\n$(cat ~/pre-commit.msg)\" >> "$GITHUB_OUTPUT"
+      - name: Apply patch to template
+        run: |
+          git diff -- .pre-commit-config.yaml > pre-commit.patch
+          patch -p1 "template/{% if AddPrecommit %}.pre-commit.config.yaml{% endif %}.jinja" pre-commit.patch
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: "chore: :robot: pre-commit update"
+          commit-message: "${{ steps.pre_commit_autoupdate.outputs.PRE_COMMIT_MSG }}"
           title: "[AUTO] pre-commit update"
+          body-path: "~/pre-commit.msg"
           branch: auto-pre-commit-update
           delete-branch: true
           labels: chore
