@@ -35,6 +35,7 @@ jobs:
           cat pre-commit.patch
           patch --version
           patch -p1 "template/{% if AddPreCommit %}.pre-commit.config.yaml{% endif %}.jinja" pre-commit.patch
+          cat "template/{% if AddPreCommit %}.pre-commit.config.yaml{% endif %}.jinja.rej"
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v7
