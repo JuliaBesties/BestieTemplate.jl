@@ -1,6 +1,9 @@
 name: pre-commit Update
 
 on:
+  push:
+    branches:
+      - debug
   schedule:
     - cron: "0 7 1/7 * *" # At 7:00 every 7 days
   workflow_dispatch:
@@ -29,7 +32,7 @@ jobs:
       - name: Apply patch to template
         run: |
           git diff -- .pre-commit-config.yaml > pre-commit.patch
-          patch -p1 "template/{% if AddPrecommit %}.pre-commit.config.yaml{% endif %}.jinja" pre-commit.patch
+          patch -p1 "template/{% if AddPreCommit %}.pre-commit.config.yaml{% endif %}.jinja" pre-commit.patch
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v7
