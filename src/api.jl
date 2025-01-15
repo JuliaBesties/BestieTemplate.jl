@@ -30,7 +30,7 @@ function _copy(src_path, dst_path, data; kwargs...)
     we consider the minimum best practices you need to get started; or
   - Answer every optional question.
 
-  On any case, we suggest reading the **full guide**, and possibly other documentation pages:
+  In any case, we suggest reading the **full guide**, and possibly other documentation pages:
 
   `https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-full-guide`
 
