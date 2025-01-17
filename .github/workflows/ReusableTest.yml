@@ -85,5 +85,5 @@ jobs:
       - uses: codecov/codecov-action@v5
         if: ${{ inputs.run_codecov }}
         with:
-          file: lcov.info
+          files: lcov.info
           token: ${{ secrets.codecov_token }}
