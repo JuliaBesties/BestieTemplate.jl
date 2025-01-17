@@ -10,6 +10,7 @@ on:
       - "*.toml"
       - "copier.yml"
       - "template/**"
+      - ".github/workflows/*Test*"
     types: [opened, synchronize, reopened]
 
 concurrency:
