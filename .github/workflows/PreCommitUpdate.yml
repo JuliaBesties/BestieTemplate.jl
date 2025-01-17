@@ -38,8 +38,8 @@ jobs:
           cat pre-commit.patch
           # Apply patch
           patch -p1 "template/{% if AddPrecommit %}.pre-commit-config.yaml{% endif %}.jinja" pre-commit.patch
-      - name: DEbug
-        run: cat $HOME/pre-commit.msg
+      - name: Debug
+        run: echo ${{ steps.pre_commit_autoupdate.outputs.message }} | base64 --decode
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v7
