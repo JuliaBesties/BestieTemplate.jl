@@ -26,7 +26,7 @@ repos:
       - id: check-merge-conflict
         args: [--assume-in-merge]
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.42.0
+    rev: v0.43.0
     hooks:
       - id: markdownlint-fix
   - repo: https://github.com/citation-file-format/cffconvert
@@ -52,6 +52,6 @@ repos:
         args: [--print, --checklist, {{ ExplicitImportsChecklist }}]
   {% endif -%}
   - repo: https://github.com/domluna/JuliaFormatter.jl
-    rev: v1.0.61
+    rev: v2.0.0
     hooks:
       - id: julia-formatter
