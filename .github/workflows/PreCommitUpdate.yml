@@ -28,7 +28,8 @@ jobs:
         id: pre_commit_autoupdate
         run: |
           # save updated versions to file and ignore exit code
-          pre-commit autoupdate | grep updating >> $HOME/pre-commit.msg || true
+          pre-commit autoupdate | grep updating >> pre-commit.msg || true
+          echo "message=$(cat pre-commit.msg | base64)" >> "$GITHUB_OUTPUT"
       - name: Apply patch to template
         run: |
           # Create patch
@@ -43,9 +44,9 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: "chore: :robot: pre-commit update\n\n$(cat $HOME/pre-commit.msg)"
+          commit-message: "chore: :robot: pre-commit update\n\n$(echo ${{ steps.pre_commit_autoupdate.outputs.message }} | base64 --decode)"
           title: "[AUTO] pre-commit update"
-          body-path: "$HOME/pre-commit.msg"
+          body: "$(echo ${{ steps.pre_commit_autoupdate.outputs.message }} | base64 --decode)"
           branch: auto-pre-commit-update
           delete-branch: true
           labels: chore
