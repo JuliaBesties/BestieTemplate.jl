@@ -29,7 +29,7 @@ jobs:
         run: |
           # save updated versions to file and ignore exit code
           pre-commit autoupdate | grep updating >> pre-commit.msg || true
-          echo "message=$(cat pre-commit.msg | base64)" >> "$GITHUB_OUTPUT"
+          echo "message=$(cat pre-commit.msg | base64 --wrap=0)" >> "$GITHUB_OUTPUT"
       - name: Apply patch to template
         run: |
           # Create patch
