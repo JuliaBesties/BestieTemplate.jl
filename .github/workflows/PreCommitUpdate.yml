@@ -45,12 +45,12 @@ jobs:
           # Delete patch and old version
           rm -f pre-commit.patch "$filename.orig"
       - name: Debug
-        run: echo ${{ steps.pre_commit_autoupdate.outputs.message }}
+        run: echo "${{ steps.pre_commit_autoupdate.outputs.message }}"
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: "chore: :robot: pre-commit update\n\n$(echo ${{ steps.pre_commit_autoupdate.outputs.message }})"
+          commit-message: "chore: :robot: pre-commit update\n\n${{ steps.pre_commit_autoupdate.outputs.message }}"
           title: "[AUTO] pre-commit update"
           body: ${{ steps.pre_commit_autoupdate.outputs.message }}
           branch: auto-pre-commit-update
