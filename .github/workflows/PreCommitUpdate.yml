@@ -29,7 +29,10 @@ jobs:
         run: |
           # save updated versions to file and ignore exit code
           pre-commit autoupdate | grep updating >> pre-commit.msg || true
-          echo "message=$(cat pre-commit.msg | base64 --wrap=0)" >> "$GITHUB_OUTPUT"
+          echo "message<<EOF" >> "$GITHUB_OUTPUT"
+          cat pre-commit.msg >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+          rm -f pre-commit.msg
       - name: Apply patch to template
         run: |
           # Create patch
@@ -37,16 +40,19 @@ jobs:
           # For debuggin
           cat pre-commit.patch
           # Apply patch
-          patch -p1 "template/{% if AddPrecommit %}.pre-commit-config.yaml{% endif %}.jinja" pre-commit.patch
+          filename="template/{% if AddPrecommit %}.pre-commit-config.yaml{% endif %}.jinja"
+          patch -p1 "$filename" pre-commit.patch
+          # Delete patch and old version
+          rm -f pre-commit.patch "$filename.orig"
       - name: Debug
-        run: echo ${{ steps.pre_commit_autoupdate.outputs.message }} | base64 --decode
+        run: echo ${{ steps.pre_commit_autoupdate.outputs.message }}
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: "chore: :robot: pre-commit update\n\n$(echo ${{ steps.pre_commit_autoupdate.outputs.message }} | base64 --decode)"
+          commit-message: "chore: :robot: pre-commit update\n\n$(echo ${{ steps.pre_commit_autoupdate.outputs.message }})"
           title: "[AUTO] pre-commit update"
-          body: "$(echo ${{ steps.pre_commit_autoupdate.outputs.message }} | base64 --decode)"
+          body: ${{ steps.pre_commit_autoupdate.outputs.message }}
           branch: auto-pre-commit-update
           delete-branch: true
           labels: chore
