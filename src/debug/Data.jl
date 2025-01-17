@@ -12,8 +12,7 @@ module Data
 using Random: MersenneTwister
 using UUIDs: uuid4
 
-const deprecated =
-  Dict("AuthorName" => "Bestie Template", "AuthorEmail" => "bestie@fake.nl", "Indentation" => 2)
+const deprecated = Dict()
 
 const required = merge(
   Dict(

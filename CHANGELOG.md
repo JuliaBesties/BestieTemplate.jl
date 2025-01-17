@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+BREAKING NOTICE:
+
+- Previously deprecated questions for `AuthorName`, `AuthorEmail`, and `Indentation` are now removed.
+
+### Removed
+
+- `AuthorName` and `AuthorEmail` were deprecated in 0.10.0 and are now removed
+- `Indentation` was deprecated in 0.12.0 and is now removed
+
 ## [0.14.1] - 2024-11-12
 
 ### Fixed

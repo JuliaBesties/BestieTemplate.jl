@@ -35,31 +35,10 @@ PackageOwner:
     Does not have a default.
     For existing packages, it will be inferred from the `repo` information in the `docs/make.jl` file.
 
-AuthorName:
-  when: false
-  type: str
-  help: (Deprecated in 0.10.0) Name of the package author (Used to kickstart a few files)
-  validator: "{% if AuthorName | length == 0 %}Can't be empty{% endif %}"
-  description: |
-    !!! warning Deprecated
-        AuthorName has been replaced by Authors.
-    Defines the name of the author.
-
-AuthorEmail:
-  when: false
-  type: str
-  help: (Deprecated in 0.10.0) E-mail of the package author (Used to kickstart a few files)
-  validator: "{% if AuthorEmail | length == 0 %}Can't be empty{% endif %}"
-  description: |
-    !!! warning Deprecated
-        AuthorEmail has been replaced by Authors.
-    Defines the e-mail of the author.
-
 Authors:
   type: str
   help: Package authors separated by commas (We recommend the form NAME <EMAIL>, but this can be ignored)
   placeholder: NAME <EMAIL>,NAME <EMAIL>
-  default: "{% if AuthorName | length > 0 %}{{ AuthorName }} <{{ AuthorEmail }}> and contributors{% endif %}"
   description: |
     The authors of the package in a single line, separated by commas. The actual content is not verified.
     We recommend using the format `NAME <EMAIL>` for each author, so that it is consistent with most uses of author. However, that is not necessary.
@@ -100,23 +79,3 @@ LicenseCopyrightHolders:
     Some license files include a "Copyright (c) <LicenseCopyrightHolders>" notice.
     Defaults to names in the Authors question, if they follow the recommended format.
     For instance, if the Authors field is "NAME1 <EMAIL1>,NAME2 <EMAIL2>", this will default to "NAME1, NAME2".
-
-Indentation:
-  when: false
-  type: int
-  help: (Deprecated in 0.12.0) Indentation length (Used in .JuliaFormatter and other configuration files of formatters and linters if you add them)
-  validator: "{% if Indentation <= 0 %}Indentation must be positive{% endif %}"
-  default: 4
-  description: |
-    The number of spaces that define an indentation level.
-    This is used in many configuration files:
-
-    - `.JuliaFormatter.toml`: To control indentation in Julia;
-    - `.editorconfig`: To suggest indentation in many languages;
-    - `.markdownlint.json`: To control indentation in Markdown;
-    - `.pre-commit-config.yml`: In the hook `pretty-format-json` to control the indentation of JSON files.
-    - `.yamllint.yml`: To control indentation in YAML files;
-
-    This does **NOT** enforce indentation by itself, you still need tools to indent these.
-    `pre-commit` is the recommended way to run these tools.
-    For existing packages, this will be inferred from the indent value in the `.JuliaFormatter.toml` file.
