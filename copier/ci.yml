@@ -1,5 +1,5 @@
 JuliaMinCIVersion:
-  when: "{{ AnswerStrategy == 'ask' }}"
+  when: "{{ WhenForAnyAsk }}"
   type: str
   help: Minimum Julia version used in the tests (min, lts, or a version. See https://github.com/julia-actions/setup-julia#examples for accepted values)
   default: "{% if JuliaMinVersion == JULIA_LTS_VERSION %}lts{% else %}{{ JuliaMinVersion }}{% endif %}"
@@ -8,50 +8,57 @@ JuliaMinCIVersion:
     It defaults to either "lts", or the version that you answered in JuliaMinVersion, if it wasn't the LTS.
     Also accepts "min", which defaults to the minimum supported version in the compat section of Project.toml, or a version specification. See https://github.com/julia-actions/setup-julia#examples for more options.
 
+    Strategy: none
+
 AddMacToCI:
-  when: "{{ AnswerStrategy == 'ask' }}"
+  when: "{{ WhenForRobust }}"
   type: bool
   help: MacOS CI test (Package tests run on Ubuntu latest. Do you want to add macOS latest as well?)
-  default: "{{ AnswerStrategy != 'minimum' }}"
+  default: "{{ DefaultForRobust }}"
   description: |
     Controls whether `macos-latest` is added to list of OSs being tested in the Test workflow.
-    Defaults to yes for the recommended strategy, or no otherwise.
+
+    Strategy: Robust
 
 AddWinToCI:
-  when: "{{ AnswerStrategy == 'ask' }}"
+  when: "{{ WhenForRobust }}"
   type: bool
   help: Windows CI test (Same as above, but for Windows)
-  default: "{{ AnswerStrategy != 'minimum' }}"
+  default: "{{ DefaultForRobust }}"
   description: |
     Controls whether `windows-latest` is added to list of OSs being tested in the Test workflow.
-    Defaults to yes for the recommended strategy, or no otherwise.
+
+    Strategy: Robust
 
 RunJuliaNightlyOnCI:
-  when: "{{ AnswerStrategy == 'ask' or AnswerStrategy == 'recommended-ask' }}"
+  when: "{{ WhenForAdvanced }}"
   type: bool
   help: Julia nightly CI test (Package tests run on Julia version {{ JuliaMinVersion }} and on the latest stable release. Do you also want to run them on the nightly version?)
-  default: false
+  default: "{{ DefaultForAdvanced }}"
   description: |
     Controls whether the nightly version of Julia is added to the list of Julia versions being tested in the Test workflow.
-    Defaults to no.
+
+    Strategy: none
 
 UseCirrusCI:
-  when: "{{ AnswerStrategy == 'ask' or AnswerStrategy == 'recommended-ask' }}"
+  when: "{{ WhenForAdvanced }}"
   type: bool
   help: FreeBSD CI test with CirrusCI (Add CirrusCI to run the package tests on FreeBSD?)
-  default: false
+  default: "{{ DefaultForAdvanced }}"
   description: |
     Controls whether to add a `.cirrus.yml` to run tests on the Cirrus CI platform for the FreeBSD Operating System.
-    Defaults to no.
+
+    Strategy: none
 
 AddCopierCI:
-  when: "{{ AnswerStrategy == 'ask' or AnswerStrategy == 'recommended-ask' }}"
+  when: "{{ WhenForAdvanced }}"
   type: bool
   help: Copier.yml (Add workflow to check for template updates? This is a work in progress workflow that checks whether there has been an update to the template and automatically create a pull request)
-  default: false
+  default: "{{ DefaultForAdvanced }}"
   description: |
     !!! warning Highly experimental
         This feature is highly experimental and can be removed without a deprecation period.
 
     Controls whether to add a workflow to check for updates in the template and create a PR applying them.
-    Defaults to yes for the recommended strategy, or no otherwise.
+
+    Strategy: none

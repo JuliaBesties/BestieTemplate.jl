@@ -1,17 +1,85 @@
-AnswerStrategy:
-  type: str
-  default: recommended
-  help: "Strategy for optional questions (You can see the full list of questions in https://JuliaBesties.github.io/BestieTemplate.jl/dev/30-questions/)"
+StrategyLevel:
+  type: int
+  default: 2
+  help: "Which level of selection would you like? (How many default to yes)"
   choices:
-    Recommended only: "recommended"
-    Recommended and ask other options: "recommended-ask"
-    Minimum (Answer no to any addition): "minimum"
-    Ask me (Ask all questions): "ask"
-  description: |
-    This defines how to deal with the rest of the questions.
-    The "minimum" strategy answers "no" to every question. This is not the same as a bare-bones package. The resulting package will have the minimum amount of best practices that we recommend.
-    Both "recommended" strategies use all our recommended best practices. You then have the option to ignore or ask the optional questions. The optional questions include features that are being tested or that are too specific to be recommended.
-    The "recommended" strategy might be overwhelming for most people. See the answers below this step to see all the options. This is not the same as saying "yes" to everything.
-    The "ask" strategy does not select anything from the list below. All questions will be asked.
-    Notice that some options are only available through the "ask" or "recommended and ask" strategies, or by explicitly passing them to the Bestie command.
-    Defaults to the "recommended" strategy.
+    Robust selection (Daring selection for larger projects): 3
+    Moderate selection (Good for starters and smaller projects): 2
+    Light selection (Short selection with most common items): 1
+    Minimalistic selection (No to all additions): 0
+
+StrategyLevelName:
+  when: false
+  type: str
+  default: "{% if StrategyLevel == 0 %}Minimalistic{% elif StrategyLevel == 1 %}Light{% elif StrategyLevel == 2 %}Moderate{% elif StrategyLevel == 3 %}Robust{% endif %}"
+
+StrategyConfirmIncluded:
+  type: bool
+  default: false
+  help: "You have select strategy '{{ StrategyLevelName }}'. Do you want to confirm each included item?"
+
+StrategyReviewExcluded:
+  type: bool
+  default: false
+  help: "Do you want review each excluded item?"
+
+# These are internal values to be used in the 'default' fields of the questions
+# There are N levels of questions,
+
+# If 'StrategyLevel = 0', then all questions default to 'false'
+# If 'StrategyLevel = 1', then light questions default to 'true' and all others to 'false'
+# If 'StrategyLevel = 2', then light and moderate questions default to 'true' and all other to 'false'
+# If 'StrategyLevel = 3', then light, moderate, and robust questions default to 'true' and only advanced to 'false'
+# There is no option to default 'true' for advanced questions
+
+# DefaultForMinimalistic does not exist, because there are no "minimal"
+# question, i.e., if it's minimal, there is no question whether it should be
+# included.
+
+DefaultForLight:
+  when: false
+  default: "{{ StrategyLevel > 0 }}"
+
+DefaultForModerate:
+  when: false
+  default: "{{ StrategyLevel > 1 }}"
+
+DefaultForRobust:
+  when: false
+  default: "{{ StrategyLevel > 2 }}"
+
+# This one is added for symmetry. It is always false
+DefaultForAdvanced:
+  when: false
+  default: "false"
+
+# These are internal values to be used in the 'when' fields of the questions
+# Whether a questions defaults to true or false depends on the StrategyLevel above
+# Whether it is asked or not depends on StrategyConfirmIncluded or StrategyReviewExcluded, respectively.
+# If 'DefaultForX = false', then
+#   If 'StrategyReviewExcluded = false', then 'WhenForX = false'
+#   If 'StrategyReviewExcluded = true', then 'WhenForX = true'
+# If 'DefaultForX = true', then
+#   If 'StrategyConfirmIncluded = false', then 'WhenForX = false'
+#   If 'StrategyConfirmIncluded = true', then 'WhenForX = true'
+
+WhenForLight:
+  when: false
+  default: "{% if DefaultForBasic is true %}{{ StrategyConfirmIncluded }}{% else %}{{ StrategyReviewExcluded }}{% endif %}"
+
+WhenForModerate:
+  when: false
+  default: "{% if DefaultForModerate is true %}{{ StrategyConfirmIncluded }}{% else %}{{ StrategyReviewExcluded }}{% endif %}"
+
+WhenForRobust:
+  when: false
+  default: "{% if DefaultForRobust is true %}A{{ StrategyConfirmIncluded }}{% else %}{{ StrategyReviewExcluded }}{% endif %}"
+
+WhenForAdvanced:
+  when: false
+  default: "{% if DefaultForAdvanced is true %}{{ StrategyConfirmIncluded }}{% else %}{{ StrategyReviewExcluded }}{% endif %}"
+
+# These are asked if any Confirm is true, because they are about choosing options
+WhenForAnyAsk:
+  when: false
+  default: "{{ StrategyConfirmIncluded or StrategyReviewExcluded }}"

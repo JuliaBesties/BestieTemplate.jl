@@ -66,8 +66,15 @@ for section in sections
   out *= "## Section: $title\n\n"
   for question in questions[section]
     name, answers = question
+    if haskey(answers, "when") && answers["when"] == false
+      continue
+    end
     out *= "### $name\n\n"
 
+    if !haskey(answers, "help")
+      @info answers["when"]
+      error("Key 'help' not found for '$name'")
+    end
     help = answers["help"]
     out *= "**Question (in the CLI)**: $help\n\n"
 
