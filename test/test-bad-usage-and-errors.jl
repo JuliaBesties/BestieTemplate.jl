@@ -1,7 +1,7 @@
 
 @testset "Test that BestieTemplate.generate warns and exits for existing copy" begin
   _with_tmp_dir() do dir_copier
-    run(`copier copy --vcs-ref HEAD --quiet $(C.args.copier.ask) $(C.template_url) .`)
+    run(`copier copy --vcs-ref HEAD --quiet $(C.args.copier.robust) $(C.template_path) .`)
     _git_setup()
 
     @test_logs (:warn,) BestieTemplate.apply("."; quiet = true)
@@ -26,7 +26,7 @@ end
         BestieTemplate.generate(
           C.template_path,
           ".",
-          C.args.bestie.ask;
+          C.args.bestie.robust;
           quiet = true,
           vcs_ref = "HEAD",
         )
@@ -39,7 +39,7 @@ end
       BestieTemplate.generate(
         C.template_path,
         "some_folder3",
-        C.args.bestie.ask;
+        C.args.bestie.robust;
         quiet = true,
         vcs_ref = "HEAD",
       )

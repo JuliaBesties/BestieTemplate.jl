@@ -10,7 +10,7 @@ You can see all questions in details in the [Questions](@ref) page.
 
 ## The engine, the project generator, and the template
 
-Let me start by marking some names clearer.
+Let me start by making some names clearer.
 
 - The **template** is the collection of files and folders written with some placeholders. For instance, the link to a GitHub project will be something like `https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl`.
 - The **engine** is the tool that converts the template into the end result, by changing the placeholders into the actual values that we want.
@@ -21,6 +21,7 @@ Let me start by marking some names clearer.
 Julia has a very good package generator called [PkgTemplates.jl](https://github.com/JuliaCI/PkgTemplates.jl), so why did we create another one?
 
 The short answer is that we want a more streamlined development experience, a template more focused on _best practices_, and the ability to keep reusing the template whenever new tools and ideas are implemented.
+Implementing these things inside `PkgTemplates.jl` would involve much more work and maintenance than creating a new tool based on existing software, so we decided to go that way.
 
 In more details, first, see the differences in the parts of the project in the table below:
 
@@ -35,6 +36,7 @@ Now, we can split this into three comparisons.
 ### Template differences
 
 The template differences are mostly due to opinion and contributions and it should be easy to translate files from one template to the other.
+See [issue #353](https://github.com/JuliaBesties/BestieTemplate.jl/issues/353) for a list of what is missing and if you want to contribute.
 We are heavily inspired by PkgTemplates.jl, as we used it for many years, but we made some changes in the hopes of improving _software sustainability_, _package maintainability_ and _code quality_ (which we just overtly simplify as best practices).
 As such, our current differences (as of the time of writing) are:
 
@@ -43,7 +45,8 @@ As such, our current differences (as of the time of writing) are:
 
 ### Engine differences
 
-We can't say much about these, since we don't know or care in details.
+We can't say much about these (Jinja and Mustache), since we don't know or care in details.
+We use what the project generator requires (see below).
 
 ### Project generator differences
 
@@ -63,49 +66,81 @@ Furthermore, they can keep reaping benefits when we create new versions of the t
 
 Let's dive into the details of the template now.
 
-### Recommended vs Minimum
+### Option selection strategy
 
-The template contains a few required questions and then asks you whether you would like to use
+The template contains some essential questions (such as authors and license) and then many optional questions.
+What we call the **selection strategy** is a choice that determines the default value for the optional questions.
+The strategies are:
 
-- The "recommended only" options, which include our current recommendation for best practices;
-- The "recommended and ask extra" options, which include our current recommendation for best practices and you get asked extra questions;
-- The "minimum" options, which answers "no" to everything, but still leaves you with a decent package to start; or
-- The option to answer every optional question individually.
+- **Minimalistic selection**: This will be the closest to a bare-bones package the BestieTemplate will provide. Since we incentivize the addition of best practices, we don't recommend this option, even for beginners.
+- **Light selection**: This will add a reasonable amount of items to your package, including automated testing and documentation. This is the minimum we recommend, and it includes many common things that you'll find in the Julia ecosystem.
+- **Moderate selection**: This starts to include some practices that are not always common in Julia, but we believe are great additions. This option is great for most people. In particular, for packages with a single developer, this is a great starting point.
+- **Robust selection**: Most options will be added to your package. This option is good for larger packages with already a few contributors, to allow better maintenance.
 
-The motivation behind "minimum" vs "recommended" is:
+After this selection, you can choose to "confirm each question", which will show you every question you selected above and ask for a "Y/n" confirmation (defaults to yes).
+After that, you can choose to "be asked other questions", which will show you every other unselected question and ask for "y/N" decision (default to no).
 
-The "minimum" option includes all the Julia package basic plus a few things we think are of interest to all use cases of package development.
-Normal use cases for the "minimum" option are:
+The motivation behind each strategy and more rationale on why an option is in one strategy or another is in the subsections below:
 
-- You are testing the template;
-- You are developing solo and wants to "move fast and break things";
+#### Minimalistic strategy
+
+The "Minimalistic" strategy is the closest Bestie has to a bare-bones package. I.e., your package can be installed, tested and registered. It is close to `pkg> generate`. You probably want more than that, unless you have a specific use in mind. Things in the "Minimalistic" strategy are not behind any question, i.e., they are mandatory.
+
+!!! note "Incomplete"
+    At the moment, this options adds more than promised.
+
+#### Light strategy
+
+The "Light" strategy is the least amount of options to what we most people expect in a Julia package. This includes documentation and online testing, for example.
+Some normal use cases for the light strategy are:
+
+- You want a simple package, but with the batteries included.
+- You are developing solo and wants to "move fast and break things".
+- You want to quickly prototype something that might not even be released.
 - Your package is in very early stage.
-- You are installing the "minimum" before installing the "recommended" to decrease the PR size.
 
-Our **loose** criteria to make something part of the minimum is (exceptions may apply):
+Our **loose** criteria to make something part of the light strategy are (exceptions may apply):
 
-- It is not too intrusive to development (e.g., `.editorconfig`);
-- It is a very common practice or tool (e.g., `TagBot.yml` and `CompatHelper.yml`);
-- It is a very strong recommendation that we think you should adopt (e.g., docs).
+- Most Julia packages have it.
+- Most Julia developers know what it does.
+- It is a common practice, file, or tool _inside the Julia ecosystem_ (e.g., `TagBot.yml` and `CompatHelper.yml`).
 
-The "recommended" option includes all the minimum things plus things that we believe will improve quality and sustainability of packages.
-Normal use cases for the "recommended" option are:
+#### Moderate strategy
+
+The "Moderate" strategy extends the light strategies with best-practices that are less common, but not too niche.
+Some normal use cases for the moderate strategy are:
+
+- You want more best practices than the usual Julia package development.
+- You want a compromise between old practices and new ones.
+
+Our **loose** criteria to make something part of the moderate strategy are (exceptions may apply):
+
+- It is not too intrusive to development (e.g., `.editorconfig`).
+- It is a good recommendation that we think you should adopt (e.g., `CITATION.cff`).
+- It is a common practice, file, or tool _in general_ (e.g., link checking).
+
+#### Robust strategy
+
+The "Robust" strategy includes everything so far and adds things that we believe will improve quality and sustainability of packages.
+Normal use cases for the robust strategy are:
 
 - You have a large package or a collection of packages;
 - You are not developing the package alone;
 - You expect open source contributions;
 - You agree with the best practices.
 
-Our **loose** criteria to make something part of the recommended, but not minimum, is (exceptions may apply):
+Our **loose** criteria to make something part of the robust strategy are (exceptions may apply):
 
 - Despite being good, it requires change of behaviour (e.g., `pre-commit`);
 - It does not make sense for solo devs (e.g., `all-contributors`);
-- It creates friction - which is good to ensure quality but slows developement (e.g., issue templates).
+- It creates friction - which is good to ensure quality but slows development (e.g., issue templates).
 
-Finally, there are **other optional features**.
-These are neither recommended nor part of the minimum template, which means that you need to use one of the strategies that ask extra questions ("Recommended ans ask extra" or "Ask") or set them explicitly.
+#### Advanced options
 
-The **loose** criteria to make something not recommended, nor minimum, is:
+Finally, there are **other optional features** that are not part of any strategy because they are much more specific or experimental.
+This means that they will only be shown if you answer "yes" to the question "Do you want to be asked other questions?" that appears after selecting the strategy.
+
+The **loose** criteria to make something advanced, ans thus not default for any strategy, are:
 
 - It is a best practice, but for a niche audience (e.g., `.cirrus.yml` for testing on FreeBSD);
 - It is potentially disruptive (e.g., testing on Nightly)

@@ -78,7 +78,8 @@ jobs:
               "PackageName" => "Guldasta",
               "PackageUUID" => string(UUIDs.uuid4()),
               "PackageOwner" => "Bagicha",
-              "Authors" => "Mali <mali@bagicha.site>"
+              "Authors" => "Mali <mali@bagicha.site>",
+              "StrategyLevel" => 3,
             );
             BestieTemplate.generate(
               pkgdir(BestieTemplate),

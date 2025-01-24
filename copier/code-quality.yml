@@ -1,28 +1,30 @@
 AddPrecommit:
-  when: "{{ AnswerStrategy == 'ask' }}"
+  when: "{{ WhenForRobust }}"
   type: bool
-  default: "{{ AnswerStrategy != 'minimum' }}"
-  help: Pre-commit (Whether to add pre-commit.org. It runs before every commit fixing your formatting and preventing bad practices)
+  default: "{{ DefaultForRobust }}"
+  help: Pre-commit (>{{ WhenForRobust }}|{{ DefaultForRobust }}|{{ StrategyReviewExcluded }}< Whether to add pre-commit.org. It runs before every commit fixing your formatting and preventing bad practices)
   description: |
     Pre-commit runs several "hooks" whenever you make a commit. These hooks mostly fall into these categories:
     - Formatters: Not only JuliaFormatter, but also formatters for Markdown, TOML, YAML, and JSON files.
     - Linters: Analyze the code to prevent "bad" things. Sometimes includes formatting rules, but frequently useful for what falls outside formatting, but leads to poor code performance or possible pitfalls. In Julia, JET would be a candidate for this, although we don't have any Julia linters in the pre-commit hooks (yet).
     - Quality of Life checks: Prevents commits if you have `.rej` files, if you are on the main branch, if you forget a git merge marker, etc.
     Many pre-commit hooks are also available as editor plugins, and could be run continually in your editor, although we don't have a list for that (yet).
-    Defaults to yes for the recommended strategy, or no otherwise.
+
+    Strategy: Robust
 
 AutoIncludeTests:
-  when: "{{ AnswerStrategy == 'ask' }}"
+  when: "{{ WhenForRobust }}"
   type: bool
-  default: "{{ AnswerStrategy != 'minimum' }}"
+  default: "{{ DefaultForRobust }}"
   help: Auto-include test files named `test-<name>.jl` (Incentivizes splitting your tests and better naming them, and helps avoiding forgetting to include the tests manually)
   description: |
     This write a `runtests.jl` file that automatically recursively includes all `test-*.jl` files in the `test` folder inside `@testset`s.
     This incentivizes separating the tests and makes sure that you don't forget to include them.
-    Defaults to yes for the recommended strategy, or no otherwise.
 
-# This question is not optional, since .JuliaFormatter.toml is always included
+    Strategy: Robust
+
 JuliaIndentation:
+  when: "{{ WhenForAnyAsk }}"
   type: int
   help: Indentation length for Julia files (Used in .JuliaFormatter and .editorconfig)
   validator: "{% if JuliaIndentation <= 0 %}Indentation must be positive{% endif %}"
@@ -38,8 +40,10 @@ JuliaIndentation:
     `pre-commit` is the recommended way to run these tools.
     For existing packages, this will be inferred from the indent value in the `.JuliaFormatter.toml` file.
 
+    Strategy: none
+
 MarkdownIndentation:
-  when: "{{ AnswerStrategy != 'minimum' }}"
+  when: "{{ WhenForRobust }}"
   type: int
   help: Indentation length for Markdown files (Used in .markdownlint.json and .editorconfig)
   validator: "{% if MarkdownIndentation <= 0 %}Indentation must be positive{% endif %}"
@@ -55,8 +59,10 @@ MarkdownIndentation:
     `pre-commit` is the recommended way to run these tools.
     For existing packages, this will be inferred from the indent value in the `.JuliaFormatter.toml` file.
 
+    Strategy: Robust
+
 ConfigIndentation:
-  when: "{{ AnswerStrategy != 'minimum' }}"
+  when: "{{ WhenForRobust }}"
   type: int
   help: Indentation length for configuration files (Used to format YAML and JSON files)
   validator: "{% if ConfigIndentation <= 0 %}Indentation must be positive{% endif %}"
@@ -73,18 +79,22 @@ ConfigIndentation:
     `pre-commit` is the recommended way to run these tools.
     For existing packages, this will be inferred from the indent value in the `.JuliaFormatter.toml` file.
 
+    Strategy: Robust
+
 CheckExplicitImports:
-  when: "{{ AnswerStrategy == 'ask' or AnswerStrategy == 'recommended-ask' }}"
+  when: "{{ WhenForAdvanced }}"
   type: bool
   help: Add ExplicitImports check to pre-commit (Check correct usage of using vs import and public API usage. See https://github.com/ericphanson/ExplicitImports.jl)
-  default: false
+  default: "{{ DefaultForAdvanced }}"
   description: |
     ExplicitImports performs a few checks to determine if this package is using other packages correctly.
     See https://github.com/ericphanson/ExplicitImports.jl
     Defaults to false, since many Julia packages have not adopted the idea yet.
 
+    Strategy: none
+
 ExplicitImportsChecklist:
-  when: "{{ CheckExplicitImports }}"
+  when: "{{ CheckExplicitImports and WhenForAnyAsk }}"
   type: str
   help: Checklist for ExplicitImports (Comma-separated list to be passed to ExplicitImports' --checklist. Defaults to a reasonable strictness. Use `all` to run everything or see all options in https://github.com/ericphanson/ExplicitImports.jl?tab=readme-ov-file#command-line-usage)
   default: "exclude_all_qualified_accesses_are_public"
@@ -110,3 +120,5 @@ ExplicitImportsChecklist:
     If you pass only exclusions, it will assume that it starts from a complete list, and then excludes.
     If you pass any individual checks, it will assume that it starts from an empty list, and then includes.
     Passing both individual and exclusion checks does not make sense.
+
+    Strategy: none

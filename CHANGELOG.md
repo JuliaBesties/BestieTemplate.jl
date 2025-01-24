@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Changed
+
+- Reworks the strategy system to use `StrategyLevel`.
+  - Introduces the levels Minimalistic, Light, Moderate, and Robust.
+
 ## [0.15.0] - 2025-02-21
 
 BREAKING NOTICE:

@@ -85,7 +85,7 @@ end
 _random(::Val{T}, value) where {T} = rand(C.letters, length(value)) |> join
 _random(::Val{T}, value::Bool) where {T} = rand(Bool)
 _random(::Val{:PackageName}, value) = return "Pkg" * join(rand(C.letters, length(value) - 3))
-_random(::Val{:AnswerStrategy}, value) = rand(["minimum", "recommended", "ask"])
+_random(::Val{:StrategyLevel}, value) = rand(0:3)
 _random(::Val{:License}, value) = rand(["Apache-2.0", "GPL-3.0", "MIT", "MPL-2.0"])
 _random(::Val{:Indentation}, value) = rand(2:8)
 _random(::Val{:JuliaIndentation}, value) = rand(2:8)
@@ -106,13 +106,13 @@ using BestieTemplate.Debug.Data: Data
 _bestie_args_to_copier_args(dict) = vcat([["-d"; "$k=$v"] for (k, v) in dict]...)
 
 "Arguments for the different calls"
-_bestie_args = (req = Data.required, min = Data.strategy_minimum, ask = Data.strategy_ask_default)
-args = (
-  bestie = _bestie_args,
-  copier = NamedTuple(
-    key => _bestie_args_to_copier_args(value) for (key, value) in pairs(_bestie_args)
-  ),
-)
+_bestie_args =
+  args = (
+    bestie = Data.strategies,
+    copier = NamedTuple(
+      key => _bestie_args_to_copier_args(value) for (key, value) in pairs(Data.strategies)
+    ),
+  )
 
 template_path = joinpath(@__DIR__, "..")
 template_url = "https://github.com/JuliaBesties/BestieTemplate.jl"

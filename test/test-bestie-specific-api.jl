@@ -1,5 +1,5 @@
 @testset "Automatic guessing of data" begin
-  src_data = copy(C.args.bestie.ask)
+  src_data = copy(C.args.bestie.robust)
   guessable_answers = Set([
     "Authors",
     "JuliaMinVersion",
@@ -32,7 +32,7 @@
         BestieTemplate.apply(
           C.template_path,
           ".",
-          C.args.bestie.ask;
+          C.args.bestie.robust;
           guess = false,
           overwrite = true,
           quiet = true,
@@ -41,7 +41,7 @@
         answers = YAML.load_file(".copier-answers.yml")
         data = BestieTemplate._read_data_from_existing_path(".")
         for (key, value) in data
-          @test answers[key] == C.args.bestie.ask[key]
+          @test answers[key] == C.args.bestie.robust[key]
         end
       end
     end
@@ -142,7 +142,7 @@ end
 
   @testset "Test automatic guessing the package name from the path" begin
     _with_tmp_dir() do dir_path_is_dir
-      data = Dict(key => value for (key, value) in C.args.bestie.ask if key != "PackageName")
+      data = Dict(key => value for (key, value) in C.args.bestie.robust if key != "PackageName")
       mkdir("some_folder")
       BestieTemplate.generate(
         C.template_path,
@@ -168,7 +168,7 @@ end
   @testset "Test that bad PackageName gets flagged" begin
     _with_tmp_dir() do dir
       for name in ["Bad.jl", "0Bad", "bad"]
-        data = copy(C.args.bestie.ask)
+        data = copy(C.args.bestie.robust)
         data["PackageName"] = name
         @test_throws PythonCall.Core.PyException BestieTemplate.generate(
           C.template_path,
@@ -209,14 +209,14 @@ if get(ENV, "BESTIE_SKIP_UPDATE_TEST", "no") != "yes" &&
         BestieTemplate.generate(
           C.template_path,
           ".",
-          C.args.bestie.req;
+          C.args.bestie.robust;
           vcs_ref = "main",
           common_args...,
         )
         _git_setup()
         _full_precommit()
         # Update using the HEAD version
-        BestieTemplate.update(".", C.args.bestie.req; vcs_ref = "HEAD", common_args...)
+        BestieTemplate.update(".", C.args.bestie.robust; vcs_ref = "HEAD", common_args...)
         _full_precommit()
       end
 
@@ -226,7 +226,7 @@ if get(ENV, "BESTIE_SKIP_UPDATE_TEST", "no") != "yes" &&
         BestieTemplate.generate(
           C.template_path,
           ".",
-          C.args.bestie.req;
+          C.args.bestie.robust;
           vcs_ref = "HEAD",
           common_args...,
         )
