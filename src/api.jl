@@ -22,15 +22,9 @@ function _copy(src_path, dst_path, data; kwargs...)
 
   Below you will find a few questions to configure your template.
   First, some **required** questions will need to be filled.
-  Then, you will have the option of selecting
+  Among them, which strategy for default selection, and whether to be asked for confirmation or not on these defaults.
 
-  - The _recommended only_ options, which includes our current _best practices recommendations_;
-  - The _recommended and possible extras_ options, which is the same as _recommended but asks additional questions that are not in recommended;
-  - The _minimum_ options, which will answer _no_ to everything, but still give you what
-    we consider the minimum best practices you need to get started; or
-  - Answer every optional question.
-
-  In any case, we suggest reading the **full guide**, and possibly other documentation pages:
+  We suggest reading the **full guide**, and possibly other documentation pages:
 
   `https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-full-guide`
 

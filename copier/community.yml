@@ -1,7 +1,7 @@
 AddContributionDocs:
-  when: "{{ AnswerStrategy == 'ask' }}"
+  when: "{{ WhenForRobust }}"
   type: bool
-  default: "{{ AnswerStrategy != 'minimum' }}"
+  default: "{{ DefaultForRobust }}"
   help: Add documentation files on how to contribute to the project (90-contributing.md will give general guidelines, and 91-developer.md will give practical information)
   description: |
     There are two files for contributors:
@@ -11,9 +11,9 @@ AddContributionDocs:
     Defaults to yes for the recommended strategy, or no otherwise.
 
 AddAllcontributors:
-  when: "{{ AnswerStrategy == 'ask' }}"
+  when: "{{ WhenForRobust }}"
   type: bool
-  default: "{{ AnswerStrategy != 'minimum' }}"
+  default: "{{ DefaultForRobust }}"
   help: Add allcontributors (allcontributors.org is a project that adds collaborators information in the README and the docs)
   description: |
     To make it easy to recognize contributions of every kind, we recommend using [allcontributors](https://allcontributors.org).
@@ -21,16 +21,16 @@ AddAllcontributors:
     Defaults to yes for the recommended strategy, or no otherwise.
 
 AddCodeOfConduct:
-  when: "{{ AnswerStrategy == 'ask' }}"
+  when: "{{ WhenForRobust }}"
   type: bool
-  default: "{{ AnswerStrategy != 'minimum' }}"
+  default: "{{ DefaultForRobust }}"
   help: Code of conduct file (Add a CODE_OF_CONDUCT.md file from Contributor Covenant?)
   description: |
     This uses version 2.1 of the [Contributor Covenant](https://www.contributor-covenant.org) code of conduct.
     Defaults to yes for the recommended strategy, or no otherwise.
 
 CodeOfConductContact:
-  when: "{{ AddCodeOfConduct }}"
+  when: "{{ AddCodeOfConduct and WhenForAnyAsk }}"
   type: str
   help: Contact person/entity listed in the CODE_OF_CONDUCT.md file (Will be listed as contact to enforce the code of conduct, if necessary)
   default: "{{ Authors.split(',')[0] | regex_replace('.*<(.*)>.*', '\\\\1') }}"
@@ -39,9 +39,9 @@ CodeOfConductContact:
     Defaults to the first authors' e-mail using a Regex substitution from the `Authors` question.
 
 AddGitHubTemplates:
-  when: "{{ AnswerStrategy == 'ask' }}"
+  when: "{{ WhenForRobust }}"
   type: bool
-  default: "{{ AnswerStrategy != 'minimum' }}"
+  default: "{{ DefaultForRobust }}"
   help: GitHub issue templates (Add forms for issue creation to improve the description quality)
   description: |
     Whether to add GitHub issue templates files. These files become forms when an user wants to create an issue on GitHub. They are useful for separating the kind of questions the user needs to fill and the automatic label added to the created issue.

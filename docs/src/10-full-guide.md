@@ -11,16 +11,22 @@ Depth = 2:3
 
 ### Things to know
 
-This template is an attempt to provide many best practices to package development.
-This can be overwhelming, so you might prefer to take it easy at first and install only the fewest amount of new things possible.
+This template is an attempt to provide two things:
 
-Thinking of you, the first optional question in the template is how to deal with the optional questions:
+- a quick way to generate a new package; and
+- a quick way to add best practices for package development to your package.
 
-- The "Recommended" option lets us select the best practices that we like the most. This means "yes" to most of the optional answers.
-- The "Minimum" option does not add any optional feature. Your package will still be a valid Julia package with a few things that we deem essential (such as online testing, documentation, and CITATION.CFF).
+The amount of options can be overwhelming, so we have different levels of "commitment" to choose from.
+You **can** choose a simpler commitment level and update to use more later.
+Below, a brief explanation of the strategies:
 
-The "Minimum" option is still a step above the bare minimum for a Julia package, so you will still benefit from the template.
-The "Recommended" option adds many features that package maintainers might find useful in the long run, but might be too much at once.
+- **Minimalistic selection**: This will be the closest to a bare-bones package
+the BestieTemplate will provide. Since we incentivize the addition of best
+practices, we don't recommend this option, even for beginners.
+- **Light selection**: This will add a reasonable amount of items to your package, including automated testing and documentation. This is the minimum we recommend, and it includes many common things that you'll find in the Julia ecosystem.
+- **Moderate selection**: This starts to include some practices that are not always common in Julia, but we believe are great additions. This option is great for most people. In particular, for packages with a single developer, this is a great starting point.
+- **Robust selection**: Most options will be added to your package. This option is good for larger packages with already a few contributors, to allow better maintenance.
+
 Check the [Explanation](@ref explanation) page for more information.
 
 If you decide to gradually adopt, do this:
