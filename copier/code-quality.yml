@@ -96,13 +96,13 @@ ExplicitImportsChecklist:
 
     Valid values for each check are:
     - Individual checks:
-      - all_explicit_imports_are_public,
-      - all_qualified_accesses_are_public,
-      - all_explicit_imports_via_owners,
-      - all_qualified_accesses_via_owners,
-      - no_implicit_imports,
-      - no_self_qualified_accesses,
-      - no_stale_explicit_imports
+      - `all_explicit_imports_are_public`,
+      - `all_qualified_accesses_are_public`,
+      - `all_explicit_imports_via_owners`,
+      - `all_qualified_accesses_via_owners`,
+      - `no_implicit_imports`,
+      - `no_self_qualified_accesses`,
+      - `no_stale_explicit_imports`
     - Select all checks: all
     - Exclude a check: prepend an individual check with 'exclude_'
 
