@@ -34,12 +34,6 @@ repos:
     rev: 054bda51dbe278b3e86f27c890e3f3ac877d616c
     hooks:
       - id: validate-cff
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "v4.0.0-alpha.8" # Use the sha or tag you want to point at
-    hooks:
-      - id: prettier
-        types_or: [yaml, json]
-        exclude: ".copier-answers.yml"
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.35.1
     hooks:
