@@ -13,6 +13,10 @@ BREAKING NOTICE:
 
 - Previously deprecated questions for `AuthorName`, `AuthorEmail`, and `Indentation` are now removed.
 
+### Added
+
+- Pre-commit hook `yamlfmt` added.
+
 ### Removed
 
 - `AuthorName` and `AuthorEmail` were deprecated in 0.10.0 and are now removed
