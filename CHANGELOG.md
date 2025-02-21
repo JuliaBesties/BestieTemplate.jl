@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.15.0] - 2025-02-21
+
 BREAKING NOTICE:
 
 - Previously deprecated questions for `AuthorName`, `AuthorEmail`, and `Indentation` are now removed.
@@ -446,7 +448,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.14.1...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.15.0...HEAD
+[0.15.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.15.0
 [0.14.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.14.1
 [0.14.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.14.0
 [0.13.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.13.0
