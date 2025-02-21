@@ -17,6 +17,7 @@ BREAKING NOTICE:
 
 - `AuthorName` and `AuthorEmail` were deprecated in 0.10.0 and are now removed
 - `Indentation` was deprecated in 0.12.0 and is now removed
+- Pre-commit hook `prettier` was removed due to mirrors-prettier being unsupported.
 
 ## [0.14.1] - 2024-11-12
 
