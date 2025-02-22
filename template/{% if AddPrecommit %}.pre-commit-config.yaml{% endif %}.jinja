@@ -26,7 +26,7 @@ repos:
       - id: check-merge-conflict
         args: [--assume-in-merge]
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.43.0
+    rev: v0.44.0
     hooks:
       - id: markdownlint-fix
   - repo: https://github.com/citation-file-format/cffconvert
@@ -43,7 +43,7 @@ repos:
       - id: yamllint
   {% if CheckExplicitImports -%}
   - repo: https://github.com/ericphanson/ExplicitImports.jl
-    rev: v1.10.1
+    rev: v1.11.1
     hooks:
       - id: explicit-imports
         name: ExplicitImports checks
