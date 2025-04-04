@@ -31,7 +31,7 @@ const strategies = let
 
   light = merge(minimalistic, Dict("StrategyLevel" => 1))
 
-  moderate = merge(light, Dict("StrategyLevel" => 2))
+  moderate = merge(light, Dict("AddCitationCFF" => true, "StrategyLevel" => 2))
 
   robust = merge(
     moderate,
