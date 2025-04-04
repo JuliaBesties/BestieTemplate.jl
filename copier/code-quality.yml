@@ -2,7 +2,7 @@ AddPrecommit:
   when: "{{ WhenForRobust }}"
   type: bool
   default: "{{ DefaultForRobust }}"
-  help: Pre-commit (>{{ WhenForRobust }}|{{ DefaultForRobust }}|{{ StrategyReviewExcluded }}< Whether to add pre-commit.org. It runs before every commit fixing your formatting and preventing bad practices)
+  help: Pre-commit (Whether to add pre-commit.org. It runs before every commit fixing your formatting and preventing bad practices)
   description: |
     Pre-commit runs several "hooks" whenever you make a commit. These hooks mostly fall into these categories:
     - Formatters: Not only JuliaFormatter, but also formatters for Markdown, TOML, YAML, and JSON files.

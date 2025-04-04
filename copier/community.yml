@@ -1,3 +1,15 @@
+AddCitationCFF:
+  when: "{{ WhenForModerate }}"
+  type: bool
+  default: "{{ DefaultForModerate }}"
+  help: Add CITATION.CFF file (Citation information for your file)
+  description: |
+    The Citation File Format (CFF) is a standard for describing how to cite
+    software and data, and is especially useful for scientific software.
+    It gets picked up by Zenodo to generate DOIs and by GitHub to generate a citation line.
+
+    Strategy: Moderate
+
 AddContributionDocs:
   when: "{{ WhenForRobust }}"
   type: bool

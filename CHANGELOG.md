@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- New question: `AddCitationCFF` to make the CITATION.CFF optional.
+
 ### Changed
 
 - Reworks the strategy system to use `StrategyLevel`.
