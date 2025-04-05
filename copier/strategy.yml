@@ -65,21 +65,16 @@ DefaultForAdvanced:
 
 WhenForLight:
   when: false
-  default: "{% if DefaultForBasic is true %}{{ StrategyConfirmIncluded }}{% else %}{{ StrategyReviewExcluded }}{% endif %}"
+  default: "{% if DefaultForLight %}{{ StrategyConfirmIncluded }}{% else %}{{ StrategyReviewExcluded }}{% endif %}"
 
 WhenForModerate:
   when: false
-  default: "{% if DefaultForModerate is true %}{{ StrategyConfirmIncluded }}{% else %}{{ StrategyReviewExcluded }}{% endif %}"
+  default: "{% if DefaultForModerate %}{{ StrategyConfirmIncluded }}{% else %}{{ StrategyReviewExcluded }}{% endif %}"
 
 WhenForRobust:
   when: false
-  default: "{% if DefaultForRobust is true %}A{{ StrategyConfirmIncluded }}{% else %}{{ StrategyReviewExcluded }}{% endif %}"
+  default: "{% if DefaultForRobust %}{{ StrategyConfirmIncluded }}{% else %}{{ StrategyReviewExcluded }}{% endif %}"
 
 WhenForAdvanced:
   when: false
-  default: "{% if DefaultForAdvanced is true %}{{ StrategyConfirmIncluded }}{% else %}{{ StrategyReviewExcluded }}{% endif %}"
-
-# These are asked if any Confirm is true, because they are about choosing options
-WhenForAnyAsk:
-  when: false
-  default: "{{ StrategyConfirmIncluded or StrategyReviewExcluded }}"
+  default: "{% if DefaultForAdvanced %}{{ StrategyConfirmIncluded }}{% else %}{{ StrategyReviewExcluded }}{% endif %}"

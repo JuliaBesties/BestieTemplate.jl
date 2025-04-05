@@ -94,6 +94,10 @@ _random(::Val{:ConfigIndentation}, value) = rand(2:8)
 _random(::Val{:PackageUUID}, value) = [x in C.hex ? rand(C.hex) : x for x in value] |> join
 _random(::Val{:JuliaMinVersion}, value) = "1.$(rand(0:20))"
 _random(::Val{:JuliaMinCIVersion}, value) = rand() < 0.2 ? "lts" : "1.$(rand(0:20))"
+_random(::Val{:AddDocs}, value::Bool) = true
+_random(::Val{:AddFormatterAndLinterConfigFiles}, value::Bool) = true
+_random(::Val{:StrategyConfirmIncluded}, value::Bool) = true
+_random(::Val{:StrategyReviewExcluded}, value::Bool) = true
 
 """
 Constants used in the tests
