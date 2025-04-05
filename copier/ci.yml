@@ -1,3 +1,14 @@
+AddDocsCI:
+  when: "{{ WhenForLight }}"
+  type: bool
+  default: "{{ DefaultForLight }}"
+  help: Add docs workflow (Add docs workflow to automatically build the docs)
+  description: |
+    Whether to add the Docs.yml workflow that automatically builds and deploys
+    the docs to GitHub Pages.
+
+    Strategy: Light
+
 JuliaMinCIVersion:
   when: "{{ WhenForAnyAsk }}"
   type: str
