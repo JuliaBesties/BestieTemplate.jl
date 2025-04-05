@@ -1,3 +1,13 @@
+AddDocs:
+  when: "{{ WhenForLight }}"
+  type: bool
+  default: "{{ DefaultForLight }}"
+  help: Add docs (Add docs folder with initial files)
+  description: |
+    Whether to add a docs folder with the basics to write documentation using Documenter.jl.
+
+    Strategy: Light
+
 AddCitationCFF:
   when: "{{ WhenForModerate }}"
   type: bool
@@ -11,7 +21,7 @@ AddCitationCFF:
     Strategy: Moderate
 
 AddContributionDocs:
-  when: "{{ WhenForRobust }}"
+  when: "{{ AddDocs and WhenForRobust }}"
   type: bool
   default: "{{ DefaultForRobust }}"
   help: Add documentation files on how to contribute to the project (90-contributing.md will give general guidelines, and 91-developer.md will give practical information)

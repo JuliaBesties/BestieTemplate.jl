@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning].
 - New question: `AddDependabot` to make `.github/dependabot.yml` optional.
 - New question: `AddGitHubPRTemplate` to make `.github/PULL_REQUEST_TEMPLATE.md` optional.
 - New question: `AddLintCI` to make `.github/workflows/Lint.yml` optional.
+- New question: `AddDocs` to make the `docs` folder optional.
+- New question: `AddDocsCI` to make `.github/workflows/Docs.yml` optional.
 
 ### Changed
 

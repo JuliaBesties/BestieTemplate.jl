@@ -29,7 +29,15 @@ const strategies = let
     ),
   )
 
-  light = merge(minimalistic, Dict("AddGitHubPRTemplate" => true, "StrategyLevel" => 1))
+  light = merge(
+    minimalistic,
+    Dict(
+      "AddDocs" => true,
+      "AddDocsCI" => true,
+      "AddGitHubPRTemplate" => true,
+      "StrategyLevel" => 1,
+    ),
+  )
 
   moderate = merge(
     light,
