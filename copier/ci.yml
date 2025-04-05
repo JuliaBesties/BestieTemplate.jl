@@ -62,3 +62,14 @@ AddCopierCI:
     Controls whether to add a workflow to check for updates in the template and create a PR applying them.
 
     Strategy: none
+
+AddLintCI:
+  when: "{{ WhenForModerate }}"
+  type: bool
+  help: Lint.yml (Whether to add a Lint.yml workflow that runs a link checker and the pre-commit hooks, if enabled by AddPrecommit)
+  default: "{{ DefaultForModerate }}"
+  description: |
+    Whether to add a Lint.yml workflow that runs a link checker and the
+    pre-commit hooks, if enabled by AddPrecommit.
+
+    Strategy: Moderate

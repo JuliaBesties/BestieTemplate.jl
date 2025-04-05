@@ -31,8 +31,15 @@ const strategies = let
 
   light = merge(minimalistic, Dict("AddGitHubPRTemplate" => true, "StrategyLevel" => 1))
 
-  moderate =
-    merge(light, Dict("AddCitationCFF" => true, "AddDependabot" => true, "StrategyLevel" => 2))
+  moderate = merge(
+    light,
+    Dict(
+      "AddCitationCFF" => true,
+      "AddDependabot" => true,
+      "AddLintCI" => true,
+      "StrategyLevel" => 2,
+    ),
+  )
 
   robust = merge(
     moderate,
