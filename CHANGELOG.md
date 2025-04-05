@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning].
 
 - New question: `AddCitationCFF` to make the CITATION.CFF optional.
 - New question: `AddDependabot` to make `.github/dependabot.yml` optional.
+- New question: `AddGitHubPRTemplate` to make `.github/PULL_REQUEST_TEMPLATE.md` optional.
 
 ### Changed
 

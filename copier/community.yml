@@ -64,3 +64,15 @@ AddGitHubTemplates:
     Whether to add GitHub issue templates files. These files become forms when an user wants to create an issue on GitHub. They are useful for separating the kind of questions the user needs to fill and the automatic label added to the created issue.
 
     Strategy: Robust
+
+AddGitHubPRTemplate:
+  when: "{{ WhenForLight }}"
+  type: bool
+  default: "{{ DefaultForLight }}"
+  help: Add a GitHub Pull Request template (Pre-populate the pull requests to improve the description quality)
+  description: |
+    Whether to add a GitHub Pull Request template file. This file pre-populates
+    the pull request description with a template that incentivizes the
+    developer to describe the pull request better.
+
+    Strategy: Light
