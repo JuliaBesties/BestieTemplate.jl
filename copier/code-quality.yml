@@ -1,5 +1,24 @@
+AddFormatterAndLinterConfigFiles:
+  when: "{{ WhenForLight }}"
+  type: bool
+  default: "{{ DefaultForLight }}"
+  help: Configuration files for linters and formatters (Just adding the configuration files, no tools will be installed)
+  description: |
+    Whether to add the following configuration files:
+
+    - `.JuliaFormatter.toml`
+    - `.editorconfig`
+    - `.markdownlint.json`
+    - `.yamlfmt.yml`
+    - `.yamllint.yml`
+
+    Some might be picked up automatically by your editor.
+    They are all used by the pre-commit tool, if you select AddPrecommit.
+
+    Strategy: Light
+
 AddPrecommit:
-  when: "{{ WhenForRobust }}"
+  when: "{{ AddFormatterAndLinterConfigFiles and WhenForRobust }}"
   type: bool
   default: "{{ DefaultForRobust }}"
   help: Pre-commit (Whether to add pre-commit.org. It runs before every commit fixing your formatting and preventing bad practices)
@@ -24,7 +43,7 @@ AutoIncludeTests:
     Strategy: Robust
 
 JuliaIndentation:
-  when: "{{ WhenForAnyAsk }}"
+  when: "{{ AddFormatterAndLinterConfigFiles and WhenForLight }}"
   type: int
   help: Indentation length for Julia files (Used in .JuliaFormatter and .editorconfig)
   validator: "{% if JuliaIndentation <= 0 %}Indentation must be positive{% endif %}"
@@ -40,10 +59,10 @@ JuliaIndentation:
     `pre-commit` is the recommended way to run these tools.
     For existing packages, this will be inferred from the indent value in the `.JuliaFormatter.toml` file.
 
-    Strategy: none
+    Strategy: Light
 
 MarkdownIndentation:
-  when: "{{ WhenForRobust }}"
+  when: "{{ AddFormatterAndLinterConfigFiles and WhenForLight }}"
   type: int
   help: Indentation length for Markdown files (Used in .markdownlint.json and .editorconfig)
   validator: "{% if MarkdownIndentation <= 0 %}Indentation must be positive{% endif %}"
@@ -59,10 +78,10 @@ MarkdownIndentation:
     `pre-commit` is the recommended way to run these tools.
     For existing packages, this will be inferred from the indent value in the `.JuliaFormatter.toml` file.
 
-    Strategy: Robust
+    Strategy: Light
 
 ConfigIndentation:
-  when: "{{ WhenForRobust }}"
+  when: "{{ AddFormatterAndLinterConfigFiles and WhenForLight }}"
   type: int
   help: Indentation length for configuration files (Used to format YAML and JSON files)
   validator: "{% if ConfigIndentation <= 0 %}Indentation must be positive{% endif %}"
@@ -79,7 +98,7 @@ ConfigIndentation:
     `pre-commit` is the recommended way to run these tools.
     For existing packages, this will be inferred from the indent value in the `.JuliaFormatter.toml` file.
 
-    Strategy: Robust
+    Strategy: Light
 
 CheckExplicitImports:
   when: "{{ WhenForAdvanced }}"
@@ -91,10 +110,10 @@ CheckExplicitImports:
     See https://github.com/ericphanson/ExplicitImports.jl
     Defaults to false, since many Julia packages have not adopted the idea yet.
 
-    Strategy: none
+    Strategy: Advanced
 
 ExplicitImportsChecklist:
-  when: "{{ CheckExplicitImports and WhenForAnyAsk }}"
+  when: "{{ CheckExplicitImports and WhenForAdvanced }}"
   type: str
   help: Checklist for ExplicitImports (Comma-separated list to be passed to ExplicitImports' --checklist. Defaults to a reasonable strictness. Use `all` to run everything or see all options in https://github.com/ericphanson/ExplicitImports.jl?tab=readme-ov-file#command-line-usage)
   default: "exclude_all_qualified_accesses_are_public"
@@ -121,7 +140,7 @@ ExplicitImportsChecklist:
     If you pass any individual checks, it will assume that it starts from an empty list, and then includes.
     Passing both individual and exclusion checks does not make sense.
 
-    Strategy: none
+    Strategy: Advanced
 
 AddDependabot:
   when: "{{ WhenForModerate }}"

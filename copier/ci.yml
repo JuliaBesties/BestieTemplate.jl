@@ -43,7 +43,7 @@ AddTagBotCI:
     Strategy: Light
 
 JuliaMinCIVersion:
-  when: "{{ WhenForAnyAsk }}"
+  when: "{{ AddTestCI and WhenForLight }}"
   type: str
   help: Minimum Julia version used in the tests (min, lts, or a version. See https://github.com/julia-actions/setup-julia#examples for accepted values)
   default: "{% if JuliaMinVersion == JULIA_LTS_VERSION %}lts{% else %}{{ JuliaMinVersion }}{% endif %}"
@@ -52,7 +52,7 @@ JuliaMinCIVersion:
     It defaults to either "lts", or the version that you answered in JuliaMinVersion, if it wasn't the LTS.
     Also accepts "min", which defaults to the minimum supported version in the compat section of Project.toml, or a version specification. See https://github.com/julia-actions/setup-julia#examples for more options.
 
-    Strategy: none
+    Strategy: Light
 
 AddMacToCI:
   when: "{{ WhenForRobust }}"
@@ -82,7 +82,7 @@ RunJuliaNightlyOnCI:
   description: |
     Controls whether the nightly version of Julia is added to the list of Julia versions being tested in the Test workflow.
 
-    Strategy: none
+    Strategy: Advanced
 
 UseCirrusCI:
   when: "{{ WhenForAdvanced }}"
@@ -92,7 +92,7 @@ UseCirrusCI:
   description: |
     Controls whether to add a `.cirrus.yml` to run tests on the Cirrus CI platform for the FreeBSD Operating System.
 
-    Strategy: none
+    Strategy: Advanced
 
 AddCopierCI:
   when: "{{ WhenForAdvanced }}"
@@ -105,7 +105,7 @@ AddCopierCI:
 
     Controls whether to add a workflow to check for updates in the template and create a PR applying them.
 
-    Strategy: none
+    Strategy: Advanced
 
 AddLintCI:
   when: "{{ WhenForModerate }}"

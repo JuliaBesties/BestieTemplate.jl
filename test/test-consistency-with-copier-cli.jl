@@ -80,7 +80,7 @@ end
   _with_tmp_dir() do dir_copier
     _basic_new_pkg("NewPkg")
     run(
-      `copier copy --overwrite --quiet --vcs-ref HEAD $(C.args.copier.minimalistic) $(C.template_path) NewPkg`,
+      `copier copy --defaults --overwrite --quiet --vcs-ref HEAD $(C.args.copier.minimalistic) $(C.template_path) NewPkg`,
     )
     _fix_project_toml("NewPkg")
 
@@ -90,6 +90,7 @@ end
         C.template_path,
         joinpath(dir_bestie, "NewPkg"),
         C.args.bestie.minimalistic;
+        defaults = true,
         overwrite = true,
         quiet = true,
         vcs_ref = "HEAD",

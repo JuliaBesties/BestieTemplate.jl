@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning].
 - New question: `AddTagBotCI` to make `.github/workflows/TagBot.yml` optional.
 - New question: `AddTestCI` to make `.github/workflows/`'s `Test.yml`, `TestOnPRs`, and `ReusableTest.yml` optional.
 - New question: `AddLychee` to make `.lychee.toml` optional.
+- New question: `AddFormatterAndLinterConfigFiles` to include configuration files for linters and formatters.
 
 ### Changed
 

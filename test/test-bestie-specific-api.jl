@@ -12,7 +12,6 @@
     for (key, value) in src_data
       src_data[key] = _random(Val(Symbol(key)), value)
     end
-    src_data["AddDocs"] = true
 
     _with_tmp_dir() do dir
       BestieTemplate.generate(C.template_path, ".", src_data; quiet = true, vcs_ref = "HEAD")
@@ -49,6 +48,7 @@
   end
 
   @testset "Incomplete guesses" begin
+    src_data = copy(C.args.bestie.robust)
     @testset "Missing or incomplete Project.toml" begin
       _with_tmp_dir() do dir
         BestieTemplate.generate(C.template_path, ".", src_data; quiet = true, vcs_ref = "HEAD")
