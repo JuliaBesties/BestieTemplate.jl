@@ -122,3 +122,15 @@ ExplicitImportsChecklist:
     Passing both individual and exclusion checks does not make sense.
 
     Strategy: none
+
+AddDependabot:
+  when: "{{ WhenForModerate }}"
+  type: bool
+  default: "{{ DefaultForModerate }}"
+  help: Add Dependabot (Whether to add dependabot.yml, which runs periodically to update your GitHub actions versions)
+  description: |
+    Adds dependabot.yml (https://docs.github.com/en/code-security/dependabot),
+    which runs on GitHub repos periodically to make automated updates to your
+    GitHub actions.
+
+    Strategy: Moderate
