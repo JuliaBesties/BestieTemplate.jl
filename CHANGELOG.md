@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning].
 ### Added
 
 - New question: `AddCitationCFF` to make the CITATION.CFF optional.
+- New question: `AddDependabot` to make `.github/dependabot.yml` optional.
 
 ### Changed
 
