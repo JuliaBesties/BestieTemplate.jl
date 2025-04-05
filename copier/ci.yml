@@ -9,6 +9,28 @@ AddDocsCI:
 
     Strategy: Light
 
+AddCompatHelperCI:
+  when: "{{ WhenForLight }}"
+  type: bool
+  default: "{{ DefaultForLight }}"
+  help: Add CompatHelper workflow (Add CompatHelper.yml to automatically update the compat section of Project.toml)
+  description: |
+    Whether to add the CompatHelper.yml workflow that runs periodically to
+    automatically update the compat section of the Project.toml file.
+
+    Strategy: Light
+
+AddTagBotCI:
+  when: "{{ WhenForLight }}"
+  type: bool
+  default: "{{ DefaultForLight }}"
+  help: Add TagBot workflow (Add TagBot.yml to automatically create tags, releases and changelogs after registering a package)
+  description: |
+    Add TagBot.yml to automatically create tags, releases and changelogs after
+    registering a package.
+
+    Strategy: Light
+
 JuliaMinCIVersion:
   when: "{{ WhenForAnyAsk }}"
   type: str
