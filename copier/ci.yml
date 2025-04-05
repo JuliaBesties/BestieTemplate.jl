@@ -1,3 +1,14 @@
+AddTestCI:
+  when: "{{ WhenForLight }}"
+  type: bool
+  default: "{{ DefaultForLight }}"
+  help: Add tests workflows (Add tests workflow)
+  description: |
+    Whether to add the ReusableTest.yml, Test.yml and TestOnPRs.yml workflows
+    that automatically runs the tests in various platforms.
+
+    Strategy: Light
+
 AddDocsCI:
   when: "{{ WhenForLight }}"
   type: bool
@@ -106,3 +117,14 @@ AddLintCI:
     pre-commit hooks, if enabled by AddPrecommit.
 
     Strategy: Moderate
+
+# Keep at end and update. This is to automatically delete the '.github/workflows' folder if there is nothing there
+AddWorkflowsFolder:
+  when: false
+  type: bool
+  default: "{{ AddTestCI or AddDocsCI or AddCompatHelperCI or AddTagBotCI or AddMacToCI or UseCirrusCI or AddCopierCI or AddLintCI }}"
+
+AddDotGitHubFolder:
+  when: false
+  type: bool
+  default: "{{ AddWorkflowsFolder or AddDependabot or AddGitHubPRTemplate or AddGitHubTemplates }}"

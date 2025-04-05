@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning].
 - New question: `AddDocsCI` to make `.github/workflows/Docs.yml` optional.
 - New question: `AddCompatHelperCI` to make `.github/workflows/CompatHelper.yml` optional.
 - New question: `AddTagBotCI` to make `.github/workflows/TagBot.yml` optional.
+- New question: `AddTestCI` to make `.github/workflows/`'s `Test.yml`, `TestOnPRs`, and `ReusableTest.yml` optional.
 
 ### Changed
 

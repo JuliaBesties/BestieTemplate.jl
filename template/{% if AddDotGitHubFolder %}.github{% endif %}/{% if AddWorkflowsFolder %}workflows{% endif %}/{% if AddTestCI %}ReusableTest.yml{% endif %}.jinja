@@ -29,24 +29,24 @@ on:
 
 jobs:
   test:
-    name: Julia ${{ inputs.version }} - ${{ inputs.os }} - ${{ inputs.arch }} - ${{ github.event_name }}
-    runs-on: ${{ inputs.os }}
-    continue-on-error: ${{ inputs.allow_failure }}
+    name: Julia {% raw %}${{ inputs.version }}{% endraw %} - {% raw %}${{ inputs.os }}{% endraw %} - {% raw %}${{ inputs.arch }}{% endraw %} - {% raw %}${{ github.event_name }}{% endraw %}
+    runs-on: {% raw %}${{ inputs.os }}{% endraw %}
+    continue-on-error: {% raw %}${{ inputs.allow_failure }}{% endraw %}
 
     steps:
       - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v2
         with:
-          version: ${{ inputs.version }}
-          arch: ${{ inputs.arch }}
+          version: {% raw %}${{ inputs.version }}{% endraw %}
+          arch: {% raw %}${{ inputs.arch }}{% endraw %}
       - name: Use Julia cache
         uses: julia-actions/cache@v2
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
       - uses: julia-actions/julia-processcoverage@v1
-        if: ${{ inputs.run_codecov }}
+        if: {% raw %}${{ inputs.run_codecov }}{% endraw %}
       - uses: codecov/codecov-action@v4
-        if: ${{ inputs.run_codecov }}
+        if: {% raw %}${{ inputs.run_codecov }}{% endraw %}
         with:
           file: lcov.info
-          token: ${{ secrets.codecov_token }}
+          token: {% raw %}${{ secrets.codecov_token }}{% endraw %}
