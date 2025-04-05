@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning].
 - New question: `AddLintCI` to make `.github/workflows/Lint.yml` optional.
 - New question: `AddDocs` to make the `docs` folder optional.
 - New question: `AddDocsCI` to make `.github/workflows/Docs.yml` optional.
+- New question: `AddCompatHelperCI` to make `.github/workflows/CompatHelper.yml` optional.
+- New question: `AddTagBotCI` to make `.github/workflows/TagBot.yml` optional.
 
 ### Changed
 

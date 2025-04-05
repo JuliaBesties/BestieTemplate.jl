@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: JuliaRegistries/TagBot@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
           # Edit the following line to reflect the actual name of the GitHub Secret containing your private key
-          ssh: ${{ secrets.DOCUMENTER_KEY }}
-          # ssh: ${{ secrets.NAME_OF_MY_SSH_PRIVATE_KEY_SECRET }}
+          ssh: {% raw %}${{ secrets.DOCUMENTER_KEY }}{% endraw %}
+          # ssh: {% raw %}${{ secrets.NAME_OF_MY_SSH_PRIVATE_KEY_SECRET }}{% endraw %}

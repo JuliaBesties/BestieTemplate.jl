@@ -32,9 +32,11 @@ const strategies = let
   light = merge(
     minimalistic,
     Dict(
+      "AddCompatHelperCI" => true,
       "AddDocs" => true,
       "AddDocsCI" => true,
       "AddGitHubPRTemplate" => true,
+      "AddTagBotCI" => true,
       "StrategyLevel" => 1,
     ),
   )

@@ -22,7 +22,7 @@ jobs:
         uses: julia-actions/setup-julia@v2
         with:
           version: "1"
-          arch: ${{ runner.arch }}
+          arch: {% raw %}${{ runner.arch }}{% endraw %}
         if: steps.julia_in_path.outcome != 'success'
       - name: Use Julia cache
         uses: julia-actions/cache@v2
@@ -46,6 +46,6 @@ jobs:
           CompatHelper.main()
         shell: julia --color=yes {0}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COMPATHELPER_PRIV: ${{ secrets.DOCUMENTER_KEY }}
-          # COMPATHELPER_PRIV: ${{ secrets.COMPATHELPER_PRIV }}
+          GITHUB_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+          COMPATHELPER_PRIV: {% raw %}${{ secrets.DOCUMENTER_KEY }}{% endraw %}
+          # COMPATHELPER_PRIV: {% raw %}${{ secrets.COMPATHELPER_PRIV }}{% endraw %}
