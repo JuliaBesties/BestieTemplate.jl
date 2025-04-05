@@ -36,6 +36,7 @@ const strategies = let
       "AddDocs" => true,
       "AddDocsCI" => true,
       "AddGitHubPRTemplate" => true,
+      "AddLychee" => true,
       "AddTagBotCI" => true,
       "AddTestCI" => true,
       "StrategyLevel" => 1,

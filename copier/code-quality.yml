@@ -134,3 +134,18 @@ AddDependabot:
     GitHub actions.
 
     Strategy: Moderate
+
+AddLychee:
+  when: "{{ WhenForLight }}"
+  type: bool
+  default: "{{ DefaultForLight }}"
+  help: Add Lychee (Add .lychee.toml, configuration for the Lychee link checker)
+  description: |
+    Adds the configuration file for .lychee.toml, a link checker.
+    To run it, install lychee (https://github.com/lycheeverse/lychee) and run
+
+        lychee --config .lychee.toml .
+
+    It is also used by the Lint.yml action if AddLintCI is true.
+
+    Strategy: Light
