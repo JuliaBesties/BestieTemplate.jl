@@ -43,6 +43,8 @@ As such, our current differences (as of the time of writing) are:
 - We have more _best practices_ tools, such as pre-commit, configuration for linters and formatters for Julia, Markdown, TOML, YAML and JSON, CITATION.cff, Lint GitHub workflow, `.editorconfig` file, issues and pull requests templates, etc.
 - We focus on the main use cases (GitHub and GitHub actions), so we have much less options.
 
+This can change in the future, and will be mainly determined by the contributors.
+
 ### Engine differences
 
 We can't say much about these (Jinja and Mustache), since we don't know or care in details.
@@ -72,26 +74,36 @@ The template contains some essential questions (such as authors and license) and
 What we call the **selection strategy** is a choice that determines the default value for the optional questions.
 The strategies are:
 
-- **Minimalistic selection**: This will be the closest to a bare-bones package the BestieTemplate will provide. Since we incentivize the addition of best practices, we don't recommend this option, even for beginners.
-- **Light selection**: This will add a reasonable amount of items to your package, including automated testing and documentation. This is the minimum we recommend, and it includes many common things that you'll find in the Julia ecosystem.
-- **Moderate selection**: This starts to include some practices that are not always common in Julia, but we believe are great additions. This option is great for most people. In particular, for packages with a single developer, this is a great starting point.
-- **Robust selection**: Most options will be added to your package. This option is good for larger packages with already a few contributors, to allow better maintenance.
+- **Tiny selection**: Closest to a bare-bones package that BestieTemplate will provide. This is **NOT** recommended for a package.
+- **Light selection**: Good amount of items to your package, including automated testing and documentation. This is the minimum we recommend, and it includes many common things that you'll find in the Julia ecosystem.
+- **Moderate selection**: Includes some practices that are not always common in Julia, but we believe are good additions. This is our recommendation for more stability without sacrificing too much development speed.
+- **Robust selection**: Opinionated selection to help with larger packages and more developers. This option is good for larger packages with a few contributors already, to allow better maintenance.
 
 After this selection, you can choose to "confirm each question", which will show you every question you selected above and ask for a "Y/n" confirmation (defaults to yes).
 After that, you can choose to "be asked other questions", which will show you every other unselected question and ask for "y/N" decision (default to no).
 
 The motivation behind each strategy and more rationale on why an option is in one strategy or another is in the subsections below:
 
-#### Minimalistic strategy
+#### Tiny strategy
 
-The "Minimalistic" strategy is the closest Bestie has to a bare-bones package. I.e., your package can be installed, tested and registered. It is close to `pkg> generate`. You probably want more than that, unless you have a specific use in mind. Things in the "Minimalistic" strategy are not behind any question, i.e., they are mandatory.
+The "Tiny" strategy is the closest Bestie has to a bare-bones package. I.e., your package can be installed, tested and registered. It is close to `pkg> generate`. You probably want more than that, unless you have a specific use in mind.
 
-!!! note "Incomplete"
-    At the moment, this options adds more than promised.
+This is the current result of a "Tiny" package:
+
+```plaintext
+- src/PackageName.jl
+- test/Project.toml
+- test/runtests.jl
+- LICENSE
+- Project.toml
+- README.md
+- .gitignore
+- .copier-answers.yml
+```
 
 #### Light strategy
 
-The "Light" strategy is the least amount of options to what we most people expect in a Julia package. This includes documentation and online testing, for example.
+The "Light" strategy are the normal amount things you will find in Julia packages. This includes documentation and online testing, for example.
 Some normal use cases for the light strategy are:
 
 - You want a simple package, but with the batteries included.
@@ -101,9 +113,10 @@ Some normal use cases for the light strategy are:
 
 Our **loose** criteria to make something part of the light strategy are (exceptions may apply):
 
-- Most Julia packages have it.
+- Most better maintained Julia packages have it.
 - Most Julia developers know what it does.
 - It is a common practice, file, or tool _inside the Julia ecosystem_ (e.g., `TagBot.yml` and `CompatHelper.yml`).
+- It is not intrusive (e.g., `.JuliaFormatter.toml` and other configuration files for linters and formatters).
 
 #### Moderate strategy
 
@@ -112,27 +125,27 @@ Some normal use cases for the moderate strategy are:
 
 - You want more best practices than the usual Julia package development.
 - You want a compromise between old practices and new ones.
+- This is a small package approaching stability.
 
 Our **loose** criteria to make something part of the moderate strategy are (exceptions may apply):
 
-- It is not too intrusive to development (e.g., `.editorconfig`).
-- It is a good recommendation that we think you should adopt (e.g., `CITATION.cff`).
+- It is a good recommendation that we think you should adopt (e.g., `pre-commit`).
 - It is a common practice, file, or tool _in general_ (e.g., link checking).
 
 #### Robust strategy
 
-The "Robust" strategy includes everything so far and adds things that we believe will improve quality and sustainability of packages.
+The "Robust" strategy adds some features useful for larger packages with more contributors.
 Normal use cases for the robust strategy are:
 
-- You have a large package or a collection of packages;
-- You are not developing the package alone;
-- You expect open source contributions;
-- You agree with the best practices.
+- You need to add documentation for your contributors and developers.
+- You want to foster the community.
+- You want to add citation information.
+- You want to create some friction to improve the quality of issues and pull requests.
 
 Our **loose** criteria to make something part of the robust strategy are (exceptions may apply):
 
 - Despite being good, it requires change of behaviour (e.g., `pre-commit`);
-- It does not make sense for solo devs (e.g., `all-contributors`);
+- Focuses on community fostering;
 - It creates friction - which is good to ensure quality but slows development (e.g., issue templates).
 
 #### Advanced options
@@ -145,12 +158,14 @@ The **loose** criteria to make something advanced, ans thus not default for any 
 - It is a best practice, but for a niche audience (e.g., `.cirrus.yml` for testing on FreeBSD);
 - It is potentially disruptive (e.g., testing on Nightly)
 
+To see how to pass an advanced option, head to [Advanced options](@ref).
 To see all the questions, head to [Questions](@ref).
 
 ### Basic package structure
 
 This is the basic structure of a package:
 
+```plaintext
 - PackageName.jl/
   - src/
     - PackageName.jl
@@ -160,13 +175,17 @@ This is the basic structure of a package:
   - LICENSE.md
   - Project.toml
   - README.md
+```
 
 With the exception of `test/Project.toml`, all other files are requirements to register a package.
 
 ### Documentation
 
+Part of the "Light" strategy, except for the files `90-contributing.md` and `91-developer.md`, which are part of the "Robust" strategy.
+
 On top of the basic structure, we add some Documenter.jl structure.
 
+```plaintext
 - docs/
   - src/
     - 90-contributing.md
@@ -175,6 +194,7 @@ On top of the basic structure, we add some Documenter.jl structure.
     - index.md
   - make.jl
   - Project.toml
+```
 
 Brief explanation of the details:
 
@@ -191,6 +211,8 @@ Create a file in the form `##-name.md`, where `##` is a two-digit number, and it
 
 ### Linting and Formatting
 
+The configuration files are added as part of the "Light" strategy, but `pre-commit` is only added in the "Moderate" strategy.
+
 The most important file related to linting and formatting is `.pre-commit-config.yaml`, which is the configuration for [pre-commit](https://pre-commit.com).
 It defines a list of linters and formatters for Julia, Markdown, TOML, YAML, and JSON.
 
@@ -205,25 +227,29 @@ Also slightly related, is the `.editorconfig` file, which tells your editor, if 
 
 ### GitHub Workflows
 
+Most workflows are added in the "Light" strategy, but each strategy will have additional workflows or modifications.
+
 We have a few workflows, with plans to expand in the future:
 
-- CompatHelper.yml: Should be well known by now. It checks that your Project.toml compat entries are up-to-date.
-- Copier.yml: This will periodically check the template for updates. If there are updates, this action creates a pull request updating your repo.
-- Docs.yml: Build the docs. Only runs when relevant files change.
-- Lint.yml: Run the linter and formatter through the command `pre-commit run -a`.
-- TagBot.yml: Create GitHub releases automatically after your new release is merged on the Registry.
+- `CompatHelper.yml`: Should be well known by now. It checks that your Project.toml compat entries are up-to-date.
+- `Copier.yml`: This will periodically check the template for updates. If there are updates, this action creates a pull request updating your repo.
+- `Docs.yml`: Build the docs. Only runs when relevant files change.
+- `Lint.yml`: Run the linter and formatter through the command `pre-commit run -a`.
+- `TagBot.yml`: Create GitHub releases automatically after your new release is merged on the Registry.
 - For testing, we have
-  - ReusableTest.yml: Defines a reusable workflow with the testing.
-  - Test.yml: Defines a matrix of tests to be run whenever `main` is updated or a tag is created. Uses the ReusableTest workflow. If "Simplified PR Test" was not chosen, then this also runs when there are pull requests.
-  - TestOnPRs.yml: Defines a test to be run when pull requests are created. Only the latest stable Julia version is tested on a ubuntu-latest image. Uses the ReusableTest workflow. If "Simplified PR Test" was not chosen, then this file does not exist.
+  - `ReusableTest.yml`: Defines a reusable workflow with the testing.
+  - `Test.yml`: Defines a matrix of tests to be run whenever `main` is updated or a tag is created. Uses the ReusableTest workflow. If "Simplified PR Test" was not chosen, then this also runs when there are pull requests.
+  - `TestOnPRs.yml`: Defines a test to be run when pull requests are created. Only the latest stable Julia version is tested on a ubuntu-latest image. Uses the ReusableTest workflow. If "Simplified PR Test" was not chosen, then this file does not exist.
 
 ### Issues and PR templates
+
+Part of the "Robust" strategy.
 
 We include issues and PR templates for GitHub (see `.github/`).
 These provide a starting point to your project management.
 
 ### Other files
 
-- .cirrus.yml: For [Cirrus CI](https://cirrus-ci.org), which we use solely for FreeBSD testing.
-- CITATION.cff: Instead of the more classic `.bib`, we use `.cff`, which serves a better purpose of providing the metadata of the package. CFF files have been adopted by GitHub, so you can generate a BibTeX entry by clicking on "Cite this repository" on the repository's main page. CFF files have also been adopted by [Zenodo](https://zenodo.org) to provide the metadata of your deposition.
-- CODE\_OF\_CONDUCT.md: A code of conduct file from [Contributor Covenant](https://www.contributor-covenant.org).
+- `.cirrus.yml`: For [Cirrus CI](https://cirrus-ci.org), which we use solely for FreeBSD testing.
+- `CITATION.cff`: Instead of the more classic `.bib`, we use `.cff`, which serves a better purpose of providing the metadata of the package. CFF files have been adopted by GitHub, so you can generate a BibTeX entry by clicking on "Cite this repository" on the repository's main page. CFF files have also been adopted by [Zenodo](https://zenodo.org) to provide the metadata of your deposition.
+- `CODE_OF_CONDUCT.md`: A code of conduct file from [Contributor Covenant](https://www.contributor-covenant.org).

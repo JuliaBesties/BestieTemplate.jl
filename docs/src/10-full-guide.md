@@ -1,6 +1,7 @@
 # [Full guide](@id full_guide)
 
 Welcome to **full usage guide** of BestieTemplate.
+This goes in depth into the details
 
 ```@contents
 Pages = ["10-full-guide.md"]
@@ -20,32 +21,36 @@ The amount of options can be overwhelming, so we have different levels of "commi
 You **can** choose a simpler commitment level and update to use more later.
 Below, a brief explanation of the strategies:
 
-- **Minimalistic selection**: This will be the closest to a bare-bones package
-the BestieTemplate will provide. Since we incentivize the addition of best
-practices, we don't recommend this option, even for beginners.
-- **Light selection**: This will add a reasonable amount of items to your package, including automated testing and documentation. This is the minimum we recommend, and it includes many common things that you'll find in the Julia ecosystem.
-- **Moderate selection**: This starts to include some practices that are not always common in Julia, but we believe are great additions. This option is great for most people. In particular, for packages with a single developer, this is a great starting point.
-- **Robust selection**: Most options will be added to your package. This option is good for larger packages with already a few contributors, to allow better maintenance.
+- **Tiny selection**: Closest to a bare-bones package that BestieTemplate will provide. This is **NOT** recommended for a package.
+- **Light selection**: Good amount of items to your package, including automated testing and documentation. This is the minimum we recommend, and it includes many common things that you'll find in the Julia ecosystem.
+- **Moderate selection**: Includes some practices that are not always common in Julia, but we believe are good additions. This is our recommendation for more stability without sacrificing too much development speed.
+- **Robust selection**: Opinionated selection to help with larger packages and more developers. This option is good for larger packages with a few contributors already, to allow better maintenance.
+
+Depending on your selection, you may need to install some extra software or follow some specific steps.
+Whenever relevant, each section will start with information about which strategy it belongs to.
 
 Check the [Explanation](@ref explanation) page for more information.
 
-If you decide to gradually adopt, do this:
+If you decide to gradually adopt, we suggest this:
 
-1. Follow the relevant application section for [New](@ref new_package) or [Existing](@ref existing_package).
-1. Remember to select the "Minimum" optional questions.
-1. Follow the [Update section](@ref updating_package), change your answer from "Minimum" to one of the others.
+1. Follow the relevant application section for a [New](@ref new_package) or [Existing](@ref existing_package) package.
+1. Select the "Light" strategy.
+1. Follow the [Update section](@ref updating_package), change your answer from "Light" to one of the others, or add individual options following the section on [advanced and non-interactive answers](@ref advanced_options).
 
 ### Things to install
 
 #### EditorConfig
 
+_Part of the "Light" strategy._
+
 Install a plugin on your editor to use [EditorConfig](https://editorconfig.org).
-This will ensure that your editor is configured with important formatting settings.
+This will ensure that your editor had basic formatting information configured.
 
 #### pre-commit
 
+_Part of the "Moderate" strategy._
+
 We recommend using [https://pre-commit.com](https://pre-commit.com) to run linters and formatters.
-If you select the "recommended" options later on, you will need `pre-commit` installed.
 
 `pre-commit` is a python package, so there are a few ways to install.
 We like one of these two ways:
@@ -66,6 +71,8 @@ We like one of these two ways:
 
 #### JuliaFormatter
 
+_Passively part of the "Light" strategy, and required for the "Moderate" strategy._
+
 When using `pre-commit`, the Julia code is formatted using [JuliaFormatter.jl](https://github.com/domluna/JuliaFormatter.jl), so please install it globally first:
 
 ```julia-repl
@@ -74,7 +81,12 @@ pkg> activate
 pkg> add JuliaFormatter
 ```
 
+JuliaFormatter is also automatically run by VSCode, at the time of writing, if you are using the basic Julia plugin.
+
 #### ExplicitImports
+
+_Only available through the explicit use of the `data` argument `"CheckExplicitImports" => true`._
+_See_ [_Advanced options and non-interactive answers_](@ref advanced_options).
 
 When `CheckExplicitImports` is true, the code will be checked with [ExplicitImports.jl](https://github.com/ericphanson/ExplicitImports.jl) for correct usage of using vs imports and public API usage.
 Like JuliaFormatter, ExplicitImports needs to be explicitly installed in your global environment.
@@ -164,9 +176,6 @@ Currently, we guess:
 - `PackageOwner` from the `repo` in `docs/make.jl`,
 - `JuliaMinVersion` from the `compat` section in `Project.toml`,
 - `JuliaIndentation` from the `indent` field in `.JuliaFormatter.toml`.
-
-!!! tip "Overwrite"
-    You will be asked whether to overwrite existing files or not. Since you are using `git`, you can try it out and reset if you don't like the result. So we recommend overwriting at this point.
 
 If you don't like the result, or want to override the answers, you can run the `apply` function with additional arguments, for instance:
 
@@ -262,6 +271,8 @@ If you haven't yet, create a repo on GitHub and push your code to it.
 
 ### Documentation
 
+_Part of the "Light" strategy._
+
 Go to your package setting on Github and find the "Actions" tab, the "General" link.
 On that page, find the "Workflow permissions" and change the selection to "Read and write permissions", and enable "Allow GitHub Actions can create and approve pull requests".
 This will allow the documentation workflow to work for development.
@@ -281,6 +292,8 @@ After circa 1 minute, you can check that the documentation was built properly.
 
 #### Documentation for releases
 
+_Part of the "Light" strategy._
+
 !!! info
     This section is only relevant when making your first release, but it might be better to get it out of the way now.
 
@@ -298,6 +311,8 @@ Follow the instruction in the terminal.
 
 ### Enable Codecov for code coverage
 
+_Part of the "Light" strategy._
+
 If you don't have a Codecov account, go to <https://codecov.io> and create one now.
 After creating an account and logging in, you will see your main page with a list of your packages.
 Select the one that you are creating, it will open a configuration page.
@@ -314,9 +329,11 @@ The next time that the tests are run, the coverage page will be updated, and the
 
 ### Add key for Copier.yml workflow
 
+Only available through the explicit use of the `data` argument `"AddCopierCI" => true`.
+See [Advanced options and non-interactive answers](@ref advanced_options).
+
 !!! warning "Copier.yml is work in progress"
     This option is not selected by default because it is a work in progress.
-    If you want to use it, you have to pass the key `"AddCopierCI" => true` to the `data` argument of `generate` or `apply`, or select "Ask me" when deciding how to answer the optional questions.
 
 You can reapply the template in the future. This is normally a manual job, specially because normally there are conflicts.
 That being said, we are experimenting with having a workflow that automatically checks whether there are updates to the template and reapplies it.
@@ -335,6 +352,8 @@ If you decide to use, here are the steps to set it up:
 1. Create a "New repository secret" named `COPIER_PAT`.
 
 ### CITATION.cff and Zenodo deposition
+
+_Part of the "Robust" strategy._
 
 Update your `CITATION.cff` file with correct information.
 You can use [cffinit](https://citation-file-format.github.io/cff-initializer-javascript/#/) to generate it easily.

@@ -65,6 +65,7 @@ License:
     - GPL-3.0
     - MIT
     - MPL-2.0
+    - nothing
   default: MIT
   description: |
     Multiple choice question to select a License.

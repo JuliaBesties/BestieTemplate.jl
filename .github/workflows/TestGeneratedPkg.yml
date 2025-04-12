@@ -23,7 +23,7 @@ on:
 jobs:
   test-generated-pkg:
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         version:
           - "lts"
@@ -110,4 +110,6 @@ jobs:
           git add .
           git commit -m "First commit"
           # Failures here can be due to whitespace management in Jinja
+          SKIP=no-commit-to-branch pre-commit run -a || true
+          # There shouldn't be any more failures after the initial fix
           SKIP=no-commit-to-branch pre-commit run -a

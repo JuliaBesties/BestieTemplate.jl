@@ -22,11 +22,15 @@ and this project adheres to [Semantic Versioning].
 - New question: `AddTestCI` to make `.github/workflows/`'s `Test.yml`, `TestOnPRs`, and `ReusableTest.yml` optional.
 - New question: `AddLychee` to make `.lychee.toml` optional.
 - New question: `AddFormatterAndLinterConfigFiles` to include configuration files for linters and formatters.
+- New function: `new_pkg_quick`, for a non-interactive way to create a new package.
+- Functions `generate` and `apply` have new methods accepting `:local` and `:online`.
 
 ### Changed
 
 - Reworks the strategy system to use `StrategyLevel`.
   - Introduces the levels Minimalistic, Light, Moderate, and Robust.
+- Rename `Minimalistic` to `Tiny`.
+- Badges on the template's README.md are better separated according to the options.
 
 ## [0.15.0] - 2025-02-21
 

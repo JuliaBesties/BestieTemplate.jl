@@ -32,12 +32,12 @@ _subdirectory: template
 _message_after_copy: |
   All went well on copier's side. Going back to BestieTemplate.
 
-  DEBUGGING:
-  - AddFormatterAndLinterConfigFiles: {{ AddFormatterAndLinterConfigFiles }}
-  - DefaultForLight: {{ DefaultForLight }}
-  - DefaultForModerate: {{ DefaultForModerate }}
-  - DefaultForRobust: {{ DefaultForRobust }}
-  - WhenForLight: {{ WhenForLight }}
-  - WhenForModerate: {{ WhenForModerate }}
-  - WhenForRobust: {{ WhenForRobust }}
-  - StrategyLevel: {{ StrategyLevel }}
+# Keeping this here because it's useful for debugging:
+# - AddFormatterAndLinterConfigFiles: {{ AddFormatterAndLinterConfigFiles }}
+# - DefaultForLight: {{ DefaultForLight }}
+# - DefaultForModerate: {{ DefaultForModerate }}
+# - DefaultForRobust: {{ DefaultForRobust }}
+# - WhenForLight: {{ WhenForLight }}
+# - WhenForModerate: {{ WhenForModerate }}
+# - WhenForRobust: {{ WhenForRobust }}
+# - StrategyLevel: {{ StrategyLevel }}

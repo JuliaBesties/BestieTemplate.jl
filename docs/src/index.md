@@ -8,6 +8,8 @@ CurrentModule = BestieTemplate
 
 Welcome to the documentation of [BestieTemplate.jl](https://github.com/JuliaBesties/BestieTemplate.jl). This package provides a template in the [copier](https://copier.readthedocs.io) engine for a Julia package. Furthermore, it provides a wrapper around convenience calls to that package.
 
+TL;DR: [Quick start guide](@ref quick_guide)
+
 The main features of this package/template are:
 
 - It provides a curated (opinionated) list of tools and best practices for Julia package development;
@@ -18,7 +20,7 @@ The main features of this package/template are:
 ## Using
 
 To fully benefit from the template, there are some steps to be done **before** and **after** you generate your package.
-Check the [full guide](@ref full_guide) for more details.
+Check the [full guide](@ref full_guide) for more details, or the [quick guide](@ref quick_guide) if you're a bit impatient.
 
 However, if you kinda know what you need to do, this is the TL;DR:
 

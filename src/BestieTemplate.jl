@@ -24,12 +24,15 @@ module BestieTemplate
 
 using Compat: @compat
 using Markdown: @md_str
+using Random: MersenneTwister
 using TOML: TOML
+using UUIDs: UUIDs
 using YAML: YAML
 
 include("Copier.jl")
 include("api.jl")
 include("debug/Debug.jl")
+include("friendly.jl")
 include("guess.jl")
 
 end

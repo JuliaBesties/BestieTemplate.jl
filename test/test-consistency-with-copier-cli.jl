@@ -16,7 +16,7 @@
     @testset "Compare recopied project vs copier CLI baseline" begin
       _with_tmp_dir() do dir_bestie
         run(
-          `copier copy --vcs-ref HEAD --defaults --quiet $(C.args.copier.minimalistic) $(C.template_path) .`,
+          `copier copy --vcs-ref HEAD --defaults --quiet $(C.args.copier.tiny) $(C.template_path) .`,
         )
         BestieTemplate.Copier.recopy(
           dir_bestie,
@@ -33,7 +33,7 @@
 
     @testset "Compare updated project vs copier CLI baseline" begin
       _with_tmp_dir() do dir_bestie
-        run(`copier copy --defaults --quiet $(C.args.copier.minimalistic) $(C.template_path) .`)
+        run(`copier copy --defaults --quiet $(C.args.copier.tiny) $(C.template_path) .`)
         _git_setup()
         BestieTemplate.Copier.update(
           dir_bestie,
@@ -80,7 +80,7 @@ end
   _with_tmp_dir() do dir_copier
     _basic_new_pkg("NewPkg")
     run(
-      `copier copy --defaults --overwrite --quiet --vcs-ref HEAD $(C.args.copier.minimalistic) $(C.template_path) NewPkg`,
+      `copier copy --defaults --overwrite --quiet --vcs-ref HEAD $(C.args.copier.tiny) $(C.template_path) NewPkg`,
     )
     _fix_project_toml("NewPkg")
 
@@ -89,7 +89,7 @@ end
       BestieTemplate.apply(
         C.template_path,
         joinpath(dir_bestie, "NewPkg"),
-        C.args.bestie.minimalistic;
+        C.args.bestie.tiny;
         defaults = true,
         overwrite = true,
         quiet = true,
@@ -103,12 +103,12 @@ end
 
 @testset "Compare BestieTemplate.update vs copier CLI update" begin
   _with_tmp_dir() do dir_copier
-    run(`copier copy --defaults --quiet $(C.args.copier.minimalistic) $(C.template_url) .`)
+    run(`copier copy --defaults --quiet $(C.args.copier.tiny) $(C.template_url) .`)
     _git_setup()
     run(`copier update --defaults --quiet $(C.args.copier.robust) .`)
 
     _with_tmp_dir() do dir_bestie
-      BestieTemplate.generate(dir_bestie, C.args.bestie.minimalistic; defaults = true, quiet = true)
+      BestieTemplate.generate(dir_bestie, C.args.bestie.tiny; defaults = true, quiet = true)
       _git_setup()
       BestieTemplate.update(C.args.bestie.robust; defaults = true, quiet = true)
 

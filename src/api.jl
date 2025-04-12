@@ -51,16 +51,21 @@ end
 
 """
     generate(dst_path[, data]; kwargs...)
-    generate(src_path, dst_path[, data]; true, kwargs...)
+    generate(local_or_online, dst_path[, data]; kwargs...)
+    generate(src_path, dst_path[, data]; kwargs...)
 
 Generates a new project at the path `dst_path` using the template.
 If the `dst_path` already exists, this will throw an error, unless `dst_path = "."`.
 For existing packages, use `BestieTemplate.apply` instead.
 
 Runs the `copy` command of [copier](https://github.com/copier-org/copier) with the BestieTemplate template.
-If `src_path` is not informed, the GitHub URL of BestieTemplate.jl is used.
+
+`local_or_online` can be either `:local` or `:online`. If it is `:online`, the GitHub URL of BestieTemplate.jl is used. Otherwise, the `pkgdir(BestieTemplate)` is used.
+
+If `src_path` is informed an URL or a path to a compatible template is expected.
 
 The `data` argument is a dictionary of answers (values) to questions (keys) that can be used to bypass some of the interactive questions.
+See <https://juliabesties.github.io/BestieTemplate.jl/stable/30-questions/> for a list all questions.
 
 ## Keyword arguments
 
@@ -69,7 +74,12 @@ The `data` argument is a dictionary of answers (values) to questions (keys) that
 
 The other keyword arguments are passed directly to the internal [`Copier.copy`](@ref).
 """
-function generate(src_path, dst_path, data::Dict = Dict(); kwargs...)
+function generate(
+  src_path::AbstractString,
+  dst_path::AbstractString,
+  data::Dict = Dict();
+  kwargs...,
+)
   quiet = get(kwargs, :quiet, false)
 
   if dst_path != "." && isdir(dst_path) && length(readdir(dst_path)) > 0
@@ -82,40 +92,73 @@ function generate(src_path, dst_path, data::Dict = Dict(); kwargs...)
   package_name = data["PackageName"]
   bestie_version = data["_commit"]
 
-  quiet || println("""Your package $package_name.jl has been created successfully! 🎉
+  has_precommit = isfile(joinpath(dst_path, ".pre-commit-config.yaml"))
 
-  Next steps: Create git repository and push to Github.
+  pre_commit_messages = if has_precommit
+    (
+      first_part = """\$ pre-commit run -a     # Try to fix possible pre-commit issues (failures are possible)
+        \$ git add .""",
+      second_part = "\$ pre-commit install    # Future commits can't be directly to main unless you use -n",
+    )
+  else
+    (first_part = "", second_part = "")
+  end
 
-  \$ exit()                # Exit the Julia REPL
-  \$ cd $dst_path
-  \$ git init
-  \$ git add .
-  \$ pre-commit run -a     # Try to fix possible pre-commit issues (failures are possible)
-  \$ git add .
-  \$ git commit -m "Generate repo with BestieTemplate $bestie_version"
-  \$ pre-commit install    # Future commits can't be directly to main unless you use -n
+  if !quiet
+    println("""Your package $package_name.jl has been created successfully! 🎉
 
-  Create a repo on GitHub and push your code to it.
+    Next steps: Create git repository and push to Github.
 
-  Read the full guide: https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-full-guide
-  """)
+    julia> exit()  # Exit the Julia REPL
+    \$ cd $dst_path
+    \$ git init
+    \$ git add .""")
+    if has_precommit
+      println(
+        """\$ pre-commit run -a     # Try to fix possible pre-commit issues (failures are possible)
+        \$ git add .""",
+      )
+    end
+    println("\$ git commit -m \"Generate repo with BestieTemplate $bestie_version\"")
+    if has_precommit
+      println(
+        "\$ pre-commit install    # Future commits can't be directly to main unless you use -n",
+      )
+    end
+    println("""\nCreate a repo on GitHub and push your code to it.
+
+    Read the full guide: https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-full-guide
+    """)
+  end
 
   return nothing
 end
 
-function generate(dst_path, data::Dict = Dict(); kwargs...)
-  generate("https://github.com/JuliaBesties/BestieTemplate.jl", dst_path, data; kwargs...)
+function generate(dst_path::AbstractString, data::Dict = Dict(); kwargs...)
+  generate(:local, dst_path, data; kwargs...)
+end
+
+function generate(local_or_online::Symbol, dst_path::AbstractString, data::Dict; kwargs...)
+  @assert local_or_online in (:local, :online)
+  src_path = if local_or_online == :local
+    pkgdir(BestieTemplate)
+  else
+    "https://github.com/JuliaBesties/BestieTemplate.jl"
+  end
+
+  generate(src_path, dst_path, data; kwargs...)
 end
 
 """
     apply(dst_path[, data]; kwargs...)
-    apply(src_path, dst_path[, data]; true, kwargs...)
+    apply(local_or_online, dst_path[, data]; kwargs...)
+    apply(src_path, dst_path[, data]; kwargs...)
 
 Applies the template to an existing project at path ``dst_path``.
 If the `dst_path` does not exist, this will throw an error.
 For new packages, use `BestieTemplate.generate` instead.
 
-Runs the `copy` command of [copier](https://github.com/copier-org/copier) with the BestieTemplate template.
+Runs the `copy` command of [copier](https://github.com/copier-org/copier) with the BestieTemplate template, with `overwrite = true`.
 If `src_path` is not informed, the GitHub URL of BestieTemplate.jl is used.
 
 The `data` argument is a dictionary of answers (values) to questions (keys) that can be used to bypass some of the interactive questions.
@@ -129,8 +172,8 @@ The `data` argument is a dictionary of answers (values) to questions (keys) that
 The other keyword arguments are passed directly to the internal [`Copier.copy`](@ref).
 """
 function apply(
-  src_path,
-  dst_path,
+  src_path::AbstractString,
+  dst_path::AbstractString,
   data::Dict = Dict();
   warn_existing_pkg = true,
   guess = true,
@@ -165,7 +208,7 @@ function apply(
   end
   data = merge(existing_data, data)
 
-  _copy(src_path, dst_path, data; kwargs...)
+  _copy(src_path, dst_path, data; overwrite = true, kwargs...)
 
   data = YAML.load_file(joinpath(dst_path, ".copier-answers.yml"))
   package_name = data["PackageName"]
@@ -195,8 +238,19 @@ function apply(
   return nothing
 end
 
-function apply(dst_path, data::Dict = Dict(); kwargs...)
-  apply("https://github.com/JuliaBesties/BestieTemplate.jl", dst_path, data; kwargs...)
+function apply(dst_path::AbstractString, data::Dict = Dict(); kwargs...)
+  apply(:local, dst_path, data; kwargs...)
+end
+
+function apply(local_or_online::Symbol, dst_path::AbstractString, data::Dict = Dict(); kwargs...)
+  @assert local_or_online in (:local, :online)
+  src_path = if local_or_online == :local
+    pkgdir(BestieTemplate)
+  else
+    "https://github.com/JuliaBesties/BestieTemplate.jl"
+  end
+
+  apply(src_path, dst_path, data; kwargs...)
 end
 
 """
