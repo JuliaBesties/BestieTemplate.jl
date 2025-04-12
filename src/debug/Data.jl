@@ -11,7 +11,7 @@ using UUIDs: uuid4
 const strategies = let
   deprecated = Dict()
 
-  minimalistic = merge(
+  tiny = merge(
     deprecated,
     Dict(
       "Authors" => "Bestie Template <bestie@fake.nl> and contributors",
@@ -29,7 +29,7 @@ const strategies = let
   )
 
   light = merge(
-    minimalistic,
+    tiny,
     Dict(
       "AddCompatHelperCI" => true,
       "AddDocs" => true,
@@ -77,7 +77,7 @@ const strategies = let
     ),
   )
 
-  (; deprecated, minimalistic, light, moderate, robust)
+  (; deprecated, tiny, light, moderate, robust)
 end
 
 end

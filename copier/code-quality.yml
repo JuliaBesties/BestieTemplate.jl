@@ -18,9 +18,9 @@ AddFormatterAndLinterConfigFiles:
     Strategy: Light
 
 AddPrecommit:
-  when: "{{ AddFormatterAndLinterConfigFiles and WhenForRobust }}"
+  when: "{{ AddFormatterAndLinterConfigFiles and WhenForModerate }}"
   type: bool
-  default: "{{ DefaultForRobust }}"
+  default: "{{ DefaultForModerate }}"
   help: Pre-commit (Whether to add pre-commit.org. It runs before every commit fixing your formatting and preventing bad practices)
   description: |
     Pre-commit runs several "hooks" whenever you make a commit. These hooks mostly fall into these categories:
@@ -29,18 +29,18 @@ AddPrecommit:
     - Quality of Life checks: Prevents commits if you have `.rej` files, if you are on the main branch, if you forget a git merge marker, etc.
     Many pre-commit hooks are also available as editor plugins, and could be run continually in your editor, although we don't have a list for that (yet).
 
-    Strategy: Robust
+    Strategy: Moderate
 
 AutoIncludeTests:
-  when: "{{ WhenForRobust }}"
+  when: "{{ WhenForModerate }}"
   type: bool
-  default: "{{ DefaultForRobust }}"
+  default: "{{ DefaultForModerate }}"
   help: Auto-include test files named `test-<name>.jl` (Incentivizes splitting your tests and better naming them, and helps avoiding forgetting to include the tests manually)
   description: |
     This write a `runtests.jl` file that automatically recursively includes all `test-*.jl` files in the `test` folder inside `@testset`s.
     This incentivizes separating the tests and makes sure that you don't forget to include them.
 
-    Strategy: Robust
+    Strategy: Moderate
 
 JuliaIndentation:
   when: "{{ AddFormatterAndLinterConfigFiles and WhenForLight }}"

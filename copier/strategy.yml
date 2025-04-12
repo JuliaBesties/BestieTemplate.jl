@@ -1,17 +1,17 @@
 StrategyLevel:
   type: int
-  default: 2
+  default: 1
   help: "Which level of selection would you like? (How many default to yes)"
   choices:
-    Robust selection (Daring selection for larger projects): 3
-    Moderate selection (Good for starters and smaller projects): 2
+    Tiny selection (No to all additions): 0
     Light selection (Short selection with most common items): 1
-    Minimalistic selection (No to all additions): 0
+    Moderate selection (New things useful for growing projects): 2
+    Robust selection (Nice selection for larger projects): 3
 
 StrategyLevelName:
   when: false
   type: str
-  default: "{% if StrategyLevel == 0 %}Minimalistic{% elif StrategyLevel == 1 %}Light{% elif StrategyLevel == 2 %}Moderate{% elif StrategyLevel == 3 %}Robust{% endif %}"
+  default: "{% if StrategyLevel == 0 %}Tiny{% elif StrategyLevel == 1 %}Light{% elif StrategyLevel == 2 %}Moderate{% elif StrategyLevel == 3 %}Robust{% endif %}"
 
 StrategyConfirmIncluded:
   type: bool
@@ -32,8 +32,8 @@ StrategyReviewExcluded:
 # If 'StrategyLevel = 3', then light, moderate, and robust questions default to 'true' and only advanced to 'false'
 # There is no option to default 'true' for advanced questions
 
-# DefaultForMinimalistic does not exist, because there are no "minimal"
-# question, i.e., if it's minimal, there is no question whether it should be
+# DefaultForTiny does not exist, because there are no "tiny"
+# question, i.e., if it's tiny, there is no question whether it should be
 # included.
 
 DefaultForLight:

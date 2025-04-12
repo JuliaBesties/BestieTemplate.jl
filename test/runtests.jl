@@ -17,6 +17,7 @@ using Logging
 using Pkg
 using PythonCall
 using Test
+using TOML
 using YAML
 
 include("utils.jl")

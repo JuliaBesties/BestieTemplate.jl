@@ -1,16 +1,25 @@
 # {{ PackageName }}
 
+{% if AddDocsCI -%}
 [![Stable Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://{{ PackageOwner }}.github.io/{{ PackageName }}.jl/stable)
 [![In development documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://{{ PackageOwner }}.github.io/{{ PackageName }}.jl/dev)
-[![Build Status](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/workflows/Test/badge.svg)](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/actions)
+{% endif -%}
+{% if AddTestCI -%}
 [![Test workflow status](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/actions/workflows/Test.yml/badge.svg?branch=main)](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/actions/workflows/Test.yml?query=branch%3Amain)
+[![Coverage](https://codecov.io/gh/{{ PackageOwner }}/{{ PackageName }}.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/{{ PackageOwner }}/{{ PackageName }}.jl)
+{% endif -%}
+{% if AddLintCI -%}
 [![Lint workflow Status](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/actions/workflows/Lint.yml/badge.svg?branch=main)](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/actions/workflows/Lint.yml?query=branch%3Amain)
+{% endif -%}
+{% if AddDocsCI -%}
 [![Docs workflow Status](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/actions/workflows/Docs.yml/badge.svg?branch=main)](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/actions/workflows/Docs.yml?query=branch%3Amain)
+{% endif -%}
 {% if UseCirrusCI -%}
 [![Build Status](https://api.cirrus-ci.com/github/{{ PackageOwner }}/{{ PackageName }}.jl.svg)](https://cirrus-ci.com/github/{{ PackageOwner }}/{{ PackageName }}.jl)
 {% endif -%}
-[![Coverage](https://codecov.io/gh/{{ PackageOwner }}/{{ PackageName }}.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/{{ PackageOwner }}/{{ PackageName }}.jl)
+{% if AddCitationCFF -%}
 [![DOI](https://zenodo.org/badge/DOI/FIXME)](https://doi.org/FIXME)
+{% endif -%}
 {% if AddCodeOfConduct -%}
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 {% endif -%}
@@ -19,10 +28,12 @@
 {% endif -%}
 [![BestieTemplate](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/JuliaBesties/BestieTemplate.jl/main/docs/src/assets/badge.json)](https://github.com/JuliaBesties/BestieTemplate.jl)
 
+{% if AddCitationCFF -%}
 ## How to Cite
 
 If you use {{ PackageName }}.jl in your work, please cite using the reference given in [CITATION.cff](https://github.com/{{ PackageOwner }}/{{ PackageName }}.jl/blob/main/CITATION.cff).
 
+{% endif -%}
 {% if AddContributionDocs -%}
 ## Contributing
 

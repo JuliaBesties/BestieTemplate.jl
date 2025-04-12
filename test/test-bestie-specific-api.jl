@@ -196,6 +196,18 @@ end
   end
 end
 
+@testset "Test quick pkg creation" begin
+  _with_tmp_dir() do dir
+    BestieTemplate.new_pkg_quick("NewPkg.jl", "JuliaBesties", "JuliaBesties maintainers", :tiny)
+
+    filename = joinpath("NewPkg.jl", "Project.toml")
+    @test isfile(filename)
+
+    toml = TOML.parsefile(filename)
+    @test toml["authors"] == ["JuliaBesties maintainers"]
+  end
+end
+
 # Don't run for branch main or tags
 if get(ENV, "BESTIE_SKIP_UPDATE_TEST", "no") != "yes" &&
    chomp(read(`git branch --show-current`, String)) != "main" &&
