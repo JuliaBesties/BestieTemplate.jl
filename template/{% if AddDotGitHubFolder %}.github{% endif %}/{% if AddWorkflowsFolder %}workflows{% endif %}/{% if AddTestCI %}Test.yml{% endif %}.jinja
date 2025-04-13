@@ -28,10 +28,10 @@ jobs:
           - ubuntu-latest
           {% if AddMacToCI -%}
           - macOS-latest
-          {% endif -%}
+          {% endif %}
           {% if AddWinToCI -%}
           - windows-latest
-        {% endif -%}
+          {% endif %}
         arch:
           - x64
         allow_failure: [false]
