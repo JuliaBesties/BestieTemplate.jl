@@ -13,7 +13,6 @@ repos:
       - id: check-json
       - id: check-toml
       - id: check-yaml
-      - id: end-of-file-fixer
       - id: file-contents-sorter
         files: .JuliaFormatter.toml
         args: [--unique]
@@ -23,6 +22,7 @@ repos:
       - id: pretty-format-json
         args: [--autofix, --indent={{ ConfigIndentation }}]
       - id: trailing-whitespace
+      - id: end-of-file-fixer
       - id: check-merge-conflict
         args: [--assume-in-merge]
   - repo: https://github.com/igorshubovych/markdownlint-cli
