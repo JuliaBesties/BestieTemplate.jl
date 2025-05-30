@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.16.0] - 2025-05-30
+
+BREAKING NOTICE:
+
+- This version had a major refactor of the strategies. You will have to reevaluate which strategy to follow in an update. Here is a simple guide:
+  - `Tiny`: Only used for bare-bones package;
+  - `Light`: Closest to the most common Julia experience (now the default);
+  - `Moderate`: Adds best practices, but keeps it reasonable for solo devs;
+  - `Robust`: Adds best practices for larger packages and communities.
+
 ### Added
 
 - New question: `AddCitationCFF` to make the CITATION.CFF optional.
@@ -471,7 +481,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.15.0...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.16.0...HEAD
+[0.16.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.16.0
 [0.15.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.15.0
 [0.14.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.14.1
 [0.14.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.14.0
