@@ -9,6 +9,9 @@ const JULIA_LTS_VERSION = "1.10"
         authors,
         strategy::Symbol,
         extra_data = Dict();
+        license = "MIT",
+        template_source = :local,
+        use_latest = false,
         kwargs...;
     )
 
@@ -20,12 +23,12 @@ generate a package using the "Tiny" strategy.
 ## Arguments
 
 - `pkg_destination`: Path to the folder where the package will be created.
-   Examples: "NewPkg.jl", ".", "~/.julia/dev/NewPkg.jl"
+   Examples: `"NewPkg.jl"`, `"."`, `"~/.julia/dev/NewPkg.jl"`
 - `package_owner`: GitHub username or organization that owns the package (This
-   will be used for URLs). Examples: "JuliaBesties", "username"
+   will be used for URLs). Examples: `"JuliaBesties"`, `"username"`
 - `authors`: Package authors separated by commas (We recommend the form "NAME
-   <EMAIL>", but this can be ignored). Examples: "JuliaBesties maintainers",
-   "Alice <alice@alice.com>, Bob <bob@bob.nl>"
+   <EMAIL>", but this can be ignored). Examples: `"JuliaBesties maintainers"`,
+   `"Alice <alice@alice.com>, Bob <bob@bob.nl>"`
 - `strategy::Symbol`: Which strategy to use. Values: `:tiny`, `:light`, `:moderate`, and `:robust`
 - `extra_data`: Dictionary with extra data to be added to the answers file.
    Default: `Dict()`. Examples: `Dict("AddDocs" => true)`. See the
@@ -33,8 +36,10 @@ generate a package using the "Tiny" strategy.
 
 ## Keyword arguments
 
-- `license`: Which license to add. Default: `MIT`. Choices: "Apache-2.0", "GPL-3.0", "MIT", "MPL-2.0", "nothing".
+- `license`: Which license to add. Default: `MIT`. Choices: `"Apache-2.0"`, `"GPL-3.0"`, `"MIT"`, `"MPL-2.0"`, `"nothing"`.
 - `template_source::Symbol`: Source of the template, either `:local` or `:online`. `:local` uses the path of the BestieTemplate package, and `:online` uses the GitHub URL. Default: `:local`.
+- `use_latest::Bool`: Whether to use the latest commit of the template
+  (otherwise use the last release). Default: `false`.
 - Additional keyword arguments are passed directly to `generate`.
 """
 function new_pkg_quick(

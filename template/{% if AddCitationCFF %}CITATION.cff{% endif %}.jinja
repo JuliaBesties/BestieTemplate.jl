@@ -7,7 +7,7 @@ message: >-
 type: software
 authors:
 {%- for author in Authors.split(',') %}
-  {% set name = author | regex_search('^\\s*([^\s].*[^\s])\\s*<.*>.*$', '\\1') -%}
+  {% set name = author | regex_search('^\\s*([^\s][^<>]*[^\s])(?:\\s*<.*>.*)?$', '\\1') -%}
   {%- if name and name | length > 0 -%}
   - given-names: {{ name | first }}
   {%- set email = author | regex_search('.*<(.*)>.*', '\\1') -%}
