@@ -89,7 +89,7 @@ function generate(
   end
 
   _copy(src_path, dst_path, data; kwargs...)
-  if change_permissions
+  if change_permissions && dst_path != "."
     change_project_permissions(dst_path)
   end
 
@@ -224,7 +224,7 @@ function apply(
   data = merge(existing_data, data)
 
   _copy(src_path, dst_path, data; overwrite = true, kwargs...)
-  if change_permissions
+  if change_permissions && dst_path != "."
     change_project_permissions(dst_path)
   end
 
