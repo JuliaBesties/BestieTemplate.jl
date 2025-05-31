@@ -71,6 +71,7 @@ See <https://juliabesties.github.io/BestieTemplate.jl/stable/30-questions/> for 
 
 - `warn_existing_pkg::Boolean = true`: Whether to check if you actually meant `update`. If you run `generate` and the `dst_path` contains a `.copier-answers.yml`, it means that the copy was already made, so you might have means `update` instead. When `true`, a warning is shown and execution is stopped.
 - `quiet::Boolean = false`: Whether to print greetings, info, and other messages. This keyword is also used by copier.
+- `change_permissions::Boolean = false`: Whether to change the permissions of the generated project.
 
 The other keyword arguments are passed directly to the internal [`Copier.copy`](@ref).
 """
@@ -78,6 +79,7 @@ function generate(
   src_path::AbstractString,
   dst_path::AbstractString,
   data::Dict = Dict();
+  change_permissions = false,
   kwargs...,
 )
   quiet = get(kwargs, :quiet, false)
@@ -87,6 +89,9 @@ function generate(
   end
 
   _copy(src_path, dst_path, data; kwargs...)
+  if change_permissions
+    change_project_permissions(dst_path)
+  end
 
   data = YAML.load_file(joinpath(dst_path, ".copier-answers.yml"))
   package_name = data["PackageName"]
@@ -125,6 +130,11 @@ function generate(
         "\$ pre-commit install    # Future commits can't be directly to main unless you use -n",
       )
     end
+    if !change_permissions && !contains("http")(src_path)
+      println(
+        "\$ chmod -R u+w $dst_path    # You might have permission issues when copying locally. This should fix it",
+      )
+    end
     println("""\nCreate a repo on GitHub and push your code to it.
 
     Read the full guide: https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-full-guide
@@ -135,18 +145,21 @@ function generate(
 end
 
 function generate(dst_path::AbstractString, data::Dict = Dict(); kwargs...)
-  generate(:local, dst_path, data; kwargs...)
+  # The `:local` mode will
+  generate(:local, dst_path, data; change_permissions = true, kwargs...)
 end
 
 function generate(local_or_online::Symbol, dst_path::AbstractString, data::Dict; kwargs...)
   @assert local_or_online in (:local, :online)
+  change_permissions = false
   src_path = if local_or_online == :local
+    change_permissions = true
     pkgdir(BestieTemplate)
   else
     "https://github.com/JuliaBesties/BestieTemplate.jl"
   end
 
-  generate(src_path, dst_path, data; kwargs...)
+  generate(src_path, dst_path, data; change_permissions, kwargs...)
 end
 
 """
@@ -168,6 +181,7 @@ The `data` argument is a dictionary of answers (values) to questions (keys) that
 - `guess:Bool = true`: Whether to try to guess some of the data from the package itself.
 - `warn_existing_pkg::Bool = true`: Whether to check if you actually meant `update`. If you run `apply` and the `dst_path` contains a `.copier-answers.yml`, it means that the copy was already made, so you might have means `update` instead. When `true`, a warning is shown and execution is stopped.
 - `quiet::Bool = false`: Whether to print greetings, info, and other messages. This keyword is also used by copier.
+- `change_permissions::Boolean = false`: Whether to change the permissions of the destination project.
 
 The other keyword arguments are passed directly to the internal [`Copier.copy`](@ref).
 """
@@ -177,6 +191,7 @@ function apply(
   data::Dict = Dict();
   warn_existing_pkg = true,
   guess = true,
+  change_permissions = false,
   kwargs...,
 )
   quiet = get(kwargs, :quiet, false)
@@ -209,6 +224,9 @@ function apply(
   data = merge(existing_data, data)
 
   _copy(src_path, dst_path, data; overwrite = true, kwargs...)
+  if change_permissions
+    change_project_permissions(dst_path)
+  end
 
   data = YAML.load_file(joinpath(dst_path, ".copier-answers.yml"))
   package_name = data["PackageName"]
@@ -239,18 +257,20 @@ function apply(
 end
 
 function apply(dst_path::AbstractString, data::Dict = Dict(); kwargs...)
-  apply(:local, dst_path, data; kwargs...)
+  apply(:local, dst_path, data; change_permissions = true, kwargs...)
 end
 
 function apply(local_or_online::Symbol, dst_path::AbstractString, data::Dict = Dict(); kwargs...)
   @assert local_or_online in (:local, :online)
+  change_permissions = false
   src_path = if local_or_online == :local
+    change_permissions = true
     pkgdir(BestieTemplate)
   else
     "https://github.com/JuliaBesties/BestieTemplate.jl"
   end
 
-  apply(src_path, dst_path, data; kwargs...)
+  apply(src_path, dst_path, data; change_permissions = change_permissions, kwargs...)
 end
 
 """

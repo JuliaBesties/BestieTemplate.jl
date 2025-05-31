@@ -59,8 +59,10 @@ function new_pkg_quick(
     error("Unknown strategy: $strategy")
   end
 
+  change_permissions = false
   # Ensure valid template source
   template_path = if template_source == :local
+    change_permissions = true
     pkgdir(BestieTemplate)
   elseif template_source == :online
     "https://github.com/JuliaBesties/BestieTemplate.jl"
@@ -93,6 +95,7 @@ function new_pkg_quick(
     data;
     defaults = true,
     quiet = true,
+    change_permissions = change_permissions,
     kwargs...,
     extra_args...,
   )

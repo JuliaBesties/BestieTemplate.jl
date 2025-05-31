@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Fixed
+
+- When generating from a local copy, change permissions of the resulting project to prevent it being read-only (#532).
+
 ## [0.16.0] - 2025-05-30
 
 BREAKING NOTICE:

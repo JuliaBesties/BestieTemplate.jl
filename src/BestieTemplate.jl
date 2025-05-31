@@ -30,6 +30,7 @@ using UUIDs: UUIDs
 using YAML: YAML
 
 include("Copier.jl")
+include("utils.jl")
 include("api.jl")
 include("debug/Debug.jl")
 include("friendly.jl")
