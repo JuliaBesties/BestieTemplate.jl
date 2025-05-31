@@ -95,7 +95,7 @@ function generate(
 
   data = YAML.load_file(joinpath(dst_path, ".copier-answers.yml"))
   package_name = data["PackageName"]
-  bestie_version = data["_commit"]
+  bestie_version = get(data, "_commit", ":local version")
 
   has_precommit = isfile(joinpath(dst_path, ".pre-commit-config.yaml"))
 
@@ -230,7 +230,7 @@ function apply(
 
   data = YAML.load_file(joinpath(dst_path, ".copier-answers.yml"))
   package_name = data["PackageName"]
-  bestie_version = data["_commit"]
+  bestie_version = get(data, "_commit", ":local version")
 
   quiet || println("""BestieTemplate was applied to $package_name.jl! 🎉
 

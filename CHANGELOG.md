@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Fixed
+
+- Error `key "_commit" not found` (#534)
+
 ## [0.16.1] - 2025-05-31
 
 ### Fixed
