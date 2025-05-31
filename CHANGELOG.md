@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.16.1] - 2025-05-31
+
 ### Fixed
 
 - When generating from a local copy, change permissions of the resulting project to prevent it being read-only (#532).
@@ -485,7 +487,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.16.0...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.16.1...HEAD
+[0.16.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.16.1
 [0.16.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.16.0
 [0.15.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.15.0
 [0.14.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.14.1
