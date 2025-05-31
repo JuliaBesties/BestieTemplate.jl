@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.16.2] - 2025-05-31
+
 ### Fixed
 
 - Error `key "_commit" not found` (#534)
@@ -491,7 +493,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.16.1...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.16.2...HEAD
+[0.16.2]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.16.2
 [0.16.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.16.1
 [0.16.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.16.0
 [0.15.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.15.0
