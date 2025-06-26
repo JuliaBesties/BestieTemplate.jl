@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- Automatic list of docs pages should now include subsections from folders (#536)
+
 ## [0.16.2] - 2025-05-31
 
 ### Fixed
