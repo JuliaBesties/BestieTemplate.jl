@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Quick start guide/How-to&#39;s · BestieTemplate.jl</title><meta name="title" content="Quick start guide/How-to&#39;s · BestieTemplate.jl"/><meta property="og:title" content="Quick start guide/How-to&#39;s · BestieTemplate.jl"/><meta property="twitter:title" content="Quick start guide/How-to&#39;s · BestieTemplate.jl"/><meta name="description" content="Documentation for BestieTemplate.jl."/><meta property="og:description" content="Documentation for BestieTemplate.jl."/><meta property="twitter:description" content="Documentation for BestieTemplate.jl."/><meta property="og:url" content="https://JuliaBesties.github.io/BestieTemplate.jl/10-guides/05-quick-guide/"/><meta property="twitter:url" content="https://JuliaBesties.github.io/BestieTemplate.jl/10-guides/05-quick-guide/"/><link rel="canonical" href="https://JuliaBesties.github.io/BestieTemplate.jl/10-guides/05-quick-guide/"/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img src="../../assets/logo.png" alt="BestieTemplate.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">BestieTemplate.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">BestieTemplate - Your best practices friend</a></li><li><span class="tocitem">Guides</span><ul><li class="is-active"><a class="tocitem" href>Quick start guide/How-to&#39;s</a><ul class="internal"><li><a class="tocitem" href="#Interactive/Wizard-experience"><span>Interactive/Wizard experience</span></a></li><li><a class="tocitem" href="#Quick-Tiny-package"><span>Quick Tiny package</span></a></li><li><a class="tocitem" href="#Quick-Light-package"><span>Quick Light package</span></a></li><li><a class="tocitem" href="#Quick-Moderate-package"><span>Quick Moderate package</span></a></li><li><a class="tocitem" href="#Quick-Robust-package"><span>Quick Robust package</span></a></li><li><a class="tocitem" href="#Apply-to-an-existing-package"><span>Apply to an existing package</span></a></li><li><a class="tocitem" href="#quick_new_pkg_with_data"><span>Change details with <code>new_pkg_quick</code></span></a></li></ul></li><li><a class="tocitem" href="../10-full-guide/">Full guide</a></li></ul></li><li><a class="tocitem" href="../../20-explanation/">Explanation</a></li><li><a class="tocitem" href="../../25-advanced-options/">Advanced options and non-interactive answers</a></li><li><a class="tocitem" href="../../30-questions/">Questions</a></li><li><a class="tocitem" href="../../90-contributing/">Contributing guidelines</a></li><li><a class="tocitem" href="../../91-developer/">Developer docs</a></li><li><a class="tocitem" href="../../95-reference/">Reference</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Guides</a></li><li class="is-active"><a href>Quick start guide/How-to&#39;s</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Quick start guide/How-to&#39;s</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/JuliaBesties/BestieTemplate.jl/blob/main/docs/src/10-guides/05-quick-guide.md#" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="quick_guide"><a class="docs-heading-anchor" href="#quick_guide">Quick start guide/How-to&#39;s</a><a id="quick_guide-1"></a><a class="docs-heading-anchor-permalink" href="#quick_guide" title="Permalink"></a></h1><p>To create a new package using the template, use either <a href="../../95-reference/#BestieTemplate.generate"><code>BestieTemplate.generate</code></a> or <a href="../../95-reference/#BestieTemplate.new_pkg_quick"><code>BestieTemplate.new_pkg_quick</code></a>.</p><p>To apply a template to an existing package, use either <a href="../../95-reference/#BestieTemplate.apply"><code>BestieTemplate.apply</code></a>.</p><p>In this page we have gathered short examples, focused on some use cases.</p><p>For a more in-depth guide, check the <a href="../10-full-guide/#full_guide">Full guide</a></p><h2 id="Interactive/Wizard-experience"><a class="docs-heading-anchor" href="#Interactive/Wizard-experience">Interactive/Wizard experience</a><a id="Interactive/Wizard-experience-1"></a><a class="docs-heading-anchor-permalink" href="#Interactive/Wizard-experience" title="Permalink"></a></h2><pre><code class="language-julia hljs">using BestieTemplate: generate
+
+root_dir = mktempdir()
+
+
+pkg_destination = joinpath(root_dir, &quot;NewPkg.jl&quot;)
+generate(
+    # :local or :online,
+    pkg_destination, # full path to the package
+    # Dict(&quot;Question&quot; =&gt; Answer), # to manually set answers
+    # defautls = true,
+    # quiet = true,
+    # use_latest = true,
+)
+# Answer a bunch of questions</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">/home/runner/work/BestieTemplate.jl/BestieTemplate.jl/docs/.CondaPkg/.pixi/envs/default/lib/python3.12/site-packages/copier/_vcs.py:183: ShallowCloneWarning: The repository &#39;/home/runner/work/BestieTemplate.jl/BestieTemplate.jl&#39; is a shallow clone, this might lead to unexpected failure or unusually high resource consumption.
+  warn(</code></pre><h2 id="Quick-Tiny-package"><a class="docs-heading-anchor" href="#Quick-Tiny-package">Quick Tiny package</a><a id="Quick-Tiny-package-1"></a><a class="docs-heading-anchor-permalink" href="#Quick-Tiny-package" title="Permalink"></a></h2><p>A minimalist package.</p><pre><code class="language-julia hljs">using BestieTemplate: new_pkg_quick
+
+root_dir = mktempdir()
+
+pkg_destination = joinpath(root_dir, &quot;TinyPackage.jl&quot;)
+package_owner = &quot;JuliaBesties&quot;
+authors = &quot;JuliaBesties maintainers&quot;
+new_pkg_quick(
+    pkg_destination,
+    package_owner,
+    authors,
+    :tiny,
+)
+
+# Resulting folder:</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">- TinyPackage.jl/
+  - .copier-answers.yml
+  - .gitignore
+  - LICENSE
+  - Project.toml
+  - README.md
+  - src/
+    - TinyPackage.jl
+  - test/
+    - Project.toml
+    - runtests.jl</code></pre><h2 id="Quick-Light-package"><a class="docs-heading-anchor" href="#Quick-Light-package">Quick Light package</a><a id="Quick-Light-package-1"></a><a class="docs-heading-anchor-permalink" href="#Quick-Light-package" title="Permalink"></a></h2><p>The common niceties: documentation, CI, <code>.JuliaFormatter.toml</code> and other config files that you might want to use (but won&#39;t affect you if you don&#39;t).</p><pre><code class="language-julia hljs">using BestieTemplate
+
+pkg_destination = joinpath(root_dir, &quot;LightPackage.jl&quot;)
+package_owner = &quot;JuliaBesties&quot;
+authors = &quot;JuliaBesties maintainers&quot;
+new_pkg_quick(
+    pkg_destination,
+    package_owner,
+    authors,
+    :light,
+)
+
+# Resulting folder:</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Everything from the level above plus:
+
+- LightPackage.jl/
+  - .JuliaFormatter.toml
+  - .editorconfig
+  - .lychee.toml
+  - .markdownlint.json
+  - .yamlfmt.yml
+  - .yamllint.yml
+  - .github/
+    - PULL_REQUEST_TEMPLATE.md
+    - workflows/
+      - CompatHelper.yml
+      - Docs.yml
+      - ReusableTest.yml
+      - TagBot.yml
+      - Test.yml
+      - TestOnPRs.yml
+  - docs/
+    - Project.toml
+    - make.jl
+    - src/
+      - 95-reference.md
+      - index.md</code></pre><h2 id="Quick-Moderate-package"><a class="docs-heading-anchor" href="#Quick-Moderate-package">Quick Moderate package</a><a id="Quick-Moderate-package-1"></a><a class="docs-heading-anchor-permalink" href="#Quick-Moderate-package" title="Permalink"></a></h2><p>Opinionated suggestions for more stable packages without sacrificing too much development speed.</p><pre><code class="language-julia hljs">using BestieTemplate
+
+pkg_destination = joinpath(root_dir, &quot;ModeratePackage.jl&quot;)
+package_owner = &quot;JuliaBesties&quot;
+authors = &quot;JuliaBesties maintainers&quot;
+new_pkg_quick(
+    pkg_destination,
+    package_owner,
+    authors,
+    :moderate,
+)
+
+# Resulting folder:</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Everything from the level above plus:
+
+- ModeratePackage.jl/
+  - .pre-commit-config.yaml
+  - .github/
+    - dependabot.yml
+    - workflows/
+      - Lint.yml
+      - PreCommitUpdate.yml
+  - test/
+    - test-basic-test.jl</code></pre><h2 id="Quick-Robust-package"><a class="docs-heading-anchor" href="#Quick-Robust-package">Quick Robust package</a><a id="Quick-Robust-package-1"></a><a class="docs-heading-anchor-permalink" href="#Quick-Robust-package" title="Permalink"></a></h2><p>Opinionated selection to help with larger packages and more developers.</p><pre><code class="language-julia hljs">using BestieTemplate
+
+pkg_destination = joinpath(root_dir, &quot;RobustPackage.jl&quot;)
+package_owner = &quot;JuliaBesties&quot;
+authors = &quot;JuliaBesties maintainers&quot;
+new_pkg_quick(
+    pkg_destination,
+    package_owner,
+    authors,
+    :robust,
+)
+
+# Resulting folder:</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Everything from the level above plus:
+
+- RobustPackage.jl/
+  - .all-contributorsrc
+  - CITATION.cff
+  - CODE_OF_CONDUCT.md
+  - .github/
+    - ISSUE_TEMPLATE/
+      - 10-bug-report.yml
+      - 20-feature-request.yml
+      - 30-usage.yml
+      - 99-general.yml
+      - config.yml
+  - docs/
+    - src/
+      - 90-contributing.md
+      - 91-developer.md</code></pre><h2 id="Apply-to-an-existing-package"><a class="docs-heading-anchor" href="#Apply-to-an-existing-package">Apply to an existing package</a><a id="Apply-to-an-existing-package-1"></a><a class="docs-heading-anchor-permalink" href="#Apply-to-an-existing-package" title="Permalink"></a></h2><p>Here is an example of applying the template to an existing package.</p><p>This is the existing package:</p><pre><code class="language-julia hljs">pkg_destination = joinpath(root_dir, &quot;ExistingPackage.jl&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Dict{String, Any} with 3 entries:
+  &quot;PackageOwner&quot; =&gt; &quot;JuliaBesties&quot;
+  &quot;Authors&quot;      =&gt; &quot;JuliaBesties maintainers&quot;
+  &quot;AddPrecommit&quot; =&gt; true</code></pre><p>Now we apply the template.</p><pre><code class="language-julia hljs">using BestieTemplate: apply
+apply(
+    # :local or :online,
+    pkg_destination, # full path to the package
+    # Dict(&quot;Question&quot; =&gt; Answer), # to manually set answers
+    # defautls = true,
+    # quiet = true,
+    # use_latest = true,
+)
+
+# You will be asked questions. For instance, if we only select to add pre-commit, this would be the result:</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">- ExistingPackage.jl/
+  - .JuliaFormatter.toml
+  - .copier-answers.yml
+  - .editorconfig
+  - .gitignore
+  - .lychee.toml
+  - .markdownlint.json
+  - .pre-commit-config.yaml
+  - .yamlfmt.yml
+  - .yamllint.yml
+  - LICENSE
+  - Project.toml
+  - README.md
+  - .github/
+    - PULL_REQUEST_TEMPLATE.md
+    - workflows/
+      - CompatHelper.yml
+      - Docs.yml
+      - PreCommitUpdate.yml
+      - ReusableTest.yml
+      - TagBot.yml
+      - Test.yml
+      - TestOnPRs.yml
+  - docs/
+    - Project.toml
+    - make.jl
+    - src/
+      - 95-reference.md
+      - index.md
+  - src/
+    - ExistingPackage.jl
+  - test/
+    - Project.toml
+    - runtests.jl</code></pre><h2 id="quick_new_pkg_with_data"><a class="docs-heading-anchor" href="#quick_new_pkg_with_data">Change details with <code>new_pkg_quick</code></a><a id="quick_new_pkg_with_data-1"></a><a class="docs-heading-anchor-permalink" href="#quick_new_pkg_with_data" title="Permalink"></a></h2><p>For more details on the hidden options see the [Advanced options and non-interactive answers](@ref advanced_options section.</p><pre><code class="language-julia hljs">using BestieTemplate: new_pkg_quick
+
+pkg_destination = joinpath(root_dir, &quot;TinyPackage.jl&quot;)
+package_owner = &quot;JuliaBesties&quot;
+authors = &quot;JuliaBesties maintainers&quot;
+
+# Explicitly setting options
+extra_data = Dict(
+    &quot;JuliaMinVersion&quot; =&gt; &quot;1.0&quot;,   # From the essential questions that `:tiny` autocompletes
+    &quot;AddDocs&quot; =&gt; true,            # From the :light strategy
+    &quot;AddLintCI&quot; =&gt; true,          # From the :moderate strategy
+    &quot;AddAllcontributors&quot; =&gt; true, # From the :robust strategy
+    &quot;AddCirrusCI&quot; =&gt; true,        # From the hidden optionss
+)
+new_pkg_quick(
+    pkg_destination,
+    package_owner,
+    authors,
+    :tiny,
+    extra_data,
+)
+
+# Resulting folder: (Notice the new files in comparison to :tiny</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">- TinyPackage.jl/
+  - .all-contributorsrc
+  - .copier-answers.yml
+  - .gitignore
+  - LICENSE
+  - Project.toml
+  - README.md
+  - .github/
+    - workflows/
+      - Lint.yml
+  - docs/
+    - Project.toml
+    - make.jl
+    - src/
+      - 95-reference.md
+      - index.md
+  - src/
+    - TinyPackage.jl
+  - test/
+    - Project.toml
+    - runtests.jl</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« BestieTemplate - Your best practices friend</a><a class="docs-footer-nextpage" href="../10-full-guide/">Full guide »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.13.0 on <span class="colophon-date" title="Thursday 26 June 2025 14:43">Thursday 26 June 2025</span>. Using Julia version 1.11.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
