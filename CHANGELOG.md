@@ -16,6 +16,7 @@ BREAKING NOTICE:
 
 - Automatic list of docs pages should now include subsections from folders (#536)
 - New question: `AddPrecommitUpdateCI` to make the pre-commit autoupdate CI optional (#503)
+- Configuration for Codecov, `codecov.yml`, was added to the template (#494)
 
 ### Changed
 
