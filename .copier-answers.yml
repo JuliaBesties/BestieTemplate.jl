@@ -1,12 +1,31 @@
 # Changes here will be overwritten by Copier
+AddAllcontributors: true
+AddCitationCFF: true
+AddCodeOfConduct: true
+AddCompatHelperCI: true
+AddContributionDocs: true
 AddCopierCI: false
-AnswerStrategy: recommended-ask
+AddDependabot: true
+AddDocs: true
+AddDocsCI: true
+AddFormatterAndLinterConfigFiles: true
+AddGitHubPRTemplate: true
+AddGitHubTemplates: true
+AddLintCI: true
+AddLychee: true
+AddMacToCI: true
+AddPrecommit: true
+AddTagBotCI: true
+AddTestCI: true
+AddWinToCI: true
 Authors: Abel Soares Siqueira <abel.s.siqueira@gmail.com> and contributors
+AutoIncludeTests: true
 CheckExplicitImports: true
 CodeOfConductContact: abel.s.siqueira@gmail.com
 ConfigIndentation: 2
 ExplicitImportsChecklist: exclude_all_qualified_accesses_are_public
 JuliaIndentation: 2
+JuliaMinCIVersion: '1.6'
 JuliaMinVersion: '1.6'
 License: MPL-2.0
 LicenseCopyrightHolders: Abel Soares Siqueira
@@ -15,6 +34,9 @@ PackageName: BestieTemplate
 PackageOwner: JuliaBesties
 PackageUUID: e5d671a7-4186-4f1a-bf88-c19b630da94f
 RunJuliaNightlyOnCI: false
+StrategyConfirmIncluded: true
+StrategyLevel: 3
+StrategyReviewExcluded: true
 UseCirrusCI: false
-_commit: v0.13.0-10-g7edad95
+_commit: v0.16.2
 _src_path: https://github.com/JuliaBesties/BestieTemplate.jl
