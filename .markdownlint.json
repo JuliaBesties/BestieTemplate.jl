@@ -7,6 +7,9 @@
     "line_length": 1000,
     "tables": false
   },
+  "MD024": {
+    "siblings_only": true
+  },
   "MD033": false,
   "MD041": false,
   "default": true
