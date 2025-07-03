@@ -42,6 +42,17 @@ AddTagBotCI:
 
     Strategy: Light
 
+AddPrecommitUpdateCI:
+  when: "{{ WhenForAdvanced and AddPrecommit }}"
+  type: bool
+  default: "{{ DefaultForAdvanced }}"
+  help: Add pre-commit update period checks (Runs pre-commit autoupdate and creates a PR of the result)
+  description: |
+    Add PrecommitUpdate.yml workflow to automatically run pre-commit autoupdate.
+    It is usually not necessary to have updates this frequently, so this is part of the advanced strategy.
+
+    Strategy: Advanced
+
 JuliaMinCIVersion:
   when: "{{ AddTestCI and WhenForLight }}"
   type: str
