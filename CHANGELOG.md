@@ -9,9 +9,18 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+BREAKING NOTICE:
+
+- The pre-commit autoupdate CI is no longer part of the `Precommit` question, and defaults to `false`. To keep the workflow, add `"AddPrecommitUpdateCI" => true` to your data argument, or ask to "Review all excluded items" in the interactive mode.
+
 ### Added
 
 - Automatic list of docs pages should now include subsections from folders (#536)
+- New question: `AddPrecommitUpdateCI` to make the pre-commit autoupdate CI optional (#503)
+
+### Changed
+
+- The pre-commit autoupdate CI is no longer part of the `Precommit` question, and defaults to `false` (advanced) (#503)
 
 ## [0.16.2] - 2025-05-31
 
