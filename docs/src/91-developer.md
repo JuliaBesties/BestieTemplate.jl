@@ -175,6 +175,21 @@ We try to keep a linear history in this repo, so it is important to keep your br
 - When necessary, add a body with details.
 - If there are breaking changes, add the information to the commit message.
 
+### AI Coding Assistant Attribution
+
+We use and accepts pull requests with AI coding assistants to help with development, but we expect the committers to understand and be responsible for the code that they introduce.
+All commits that receive AI assistance should be signed off with:
+
+```plaintextt
+Co-authored-by: MODEL NAME (FULL MODEL VERSION) <EMAIL>
+```
+
+For example:
+
+```plaintextt
+Co-authored-by: Claude Code (claude-sonnet-4-20250514) <noreply@anthropic.com>
+```
+
 ### Before creating a pull request
 
 !!! tip "Atomic git commits"

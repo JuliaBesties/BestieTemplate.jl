@@ -81,6 +81,21 @@ If you would like to get involved in the BestieTemplate growth, please check our
 
 If your interest is in developing the package, check the [development guide](docs/src/91-developer.md) as well.
 
+### AI Coding Assistant Attribution
+
+We use and accepts pull requests with AI coding assistants to help with development, but we expect the committers to understand and be responsible for the code that they introduce.
+All commits that receive AI assistance should be signed off with:
+
+```plaintextt
+Co-authored-by: MODEL NAME (FULL MODEL VERSION) <EMAIL>
+```
+
+For example:
+
+```plaintextt
+Co-authored-by: Claude Code (claude-sonnet-4-20250514) <noreply@anthropic.com>
+```
+
 ## References
 
 Here is a list of links/repos that include content that we have used for inspiration, or used directly.
