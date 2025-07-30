@@ -1,56 +1,66 @@
-@testset "Testing copy, recopy and rebase" begin
+@testitem "Compare copied project vs copier CLI baseline" setup = [Common] begin
   _with_tmp_dir() do dir_copier
     run(`copier copy --vcs-ref HEAD --quiet $(C.args.copier.robust) $(C.template_path) .`)
     _git_setup()
     _full_precommit()
 
-    @testset "Compare copied project vs copier CLI baseline" begin
-      _with_tmp_dir() do dir_bestie
-        BestieTemplate.Copier.copy(dir_bestie, C.args.bestie.robust; quiet = true, vcs_ref = "HEAD")
-        _git_setup()
-        _full_precommit()
-        _test_diff_dir(dir_bestie, dir_copier)
-      end
-    end
-
-    @testset "Compare recopied project vs copier CLI baseline" begin
-      _with_tmp_dir() do dir_bestie
-        run(
-          `copier copy --vcs-ref HEAD --defaults --quiet $(C.args.copier.tiny) $(C.template_path) .`,
-        )
-        BestieTemplate.Copier.recopy(
-          dir_bestie,
-          C.args.bestie.robust;
-          quiet = true,
-          overwrite = true,
-          vcs_ref = "HEAD",
-        )
-        _git_setup()
-        _full_precommit()
-        _test_diff_dir(dir_bestie, dir_copier)
-      end
-    end
-
-    @testset "Compare updated project vs copier CLI baseline" begin
-      _with_tmp_dir() do dir_bestie
-        run(`copier copy --defaults --quiet $(C.args.copier.tiny) $(C.template_path) .`)
-        _git_setup()
-        BestieTemplate.Copier.update(
-          dir_bestie,
-          C.args.bestie.robust;
-          overwrite = true,
-          quiet = true,
-          vcs_ref = "HEAD",
-        )
-        _git_setup()
-        _full_precommit()
-        _test_diff_dir(dir_bestie, dir_copier)
-      end
+    _with_tmp_dir() do dir_bestie
+      BestieTemplate.Copier.copy(dir_bestie, C.args.bestie.robust; quiet = true, vcs_ref = "HEAD")
+      _git_setup()
+      _full_precommit()
+      _test_diff_dir(dir_bestie, dir_copier)
     end
   end
 end
 
-@testset "Compare BestieTemplate.generate vs copier CLI on HEAD" begin
+@testitem "Compare recopied project vs copier CLI baseline" setup = [Common] begin
+  _with_tmp_dir() do dir_copier
+    run(`copier copy --vcs-ref HEAD --quiet $(C.args.copier.robust) $(C.template_path) .`)
+    _git_setup()
+    _full_precommit()
+
+    _with_tmp_dir() do dir_bestie
+      run(
+        `copier copy --vcs-ref HEAD --defaults --quiet $(C.args.copier.tiny) $(C.template_path) .`,
+      )
+      BestieTemplate.Copier.recopy(
+        dir_bestie,
+        C.args.bestie.robust;
+        quiet = true,
+        overwrite = true,
+        vcs_ref = "HEAD",
+      )
+      _git_setup()
+      _full_precommit()
+      _test_diff_dir(dir_bestie, dir_copier)
+    end
+  end
+end
+
+@testitem "Compare updated project vs copier CLI baseline" setup = [Common] begin
+  _with_tmp_dir() do dir_copier
+    run(`copier copy --vcs-ref HEAD --quiet $(C.args.copier.robust) $(C.template_path) .`)
+    _git_setup()
+    _full_precommit()
+
+    _with_tmp_dir() do dir_bestie
+      run(`copier copy --defaults --quiet $(C.args.copier.tiny) $(C.template_path) .`)
+      _git_setup()
+      BestieTemplate.Copier.update(
+        dir_bestie,
+        C.args.bestie.robust;
+        overwrite = true,
+        quiet = true,
+        vcs_ref = "HEAD",
+      )
+      _git_setup()
+      _full_precommit()
+      _test_diff_dir(dir_bestie, dir_copier)
+    end
+  end
+end
+
+@testitem "Compare BestieTemplate.generate vs copier CLI on HEAD" setup = [Common] begin
   _with_tmp_dir() do dir_copier
     run(`copier copy --vcs-ref HEAD --quiet $(C.args.copier.robust) $(C.template_path) .`)
 
@@ -67,7 +77,7 @@ end
   end
 end
 
-@testset "Compare BestieTemplate.apply vs copier CLI copy on existing project" begin
+@testitem "Compare BestieTemplate.apply vs copier CLI copy on existing project" setup = [Common] begin
   function _fix_project_toml(dir)
     filename = joinpath(dir, "Project.toml")
     project_toml = replace(read(filename, String), r"uuid = .*" => "uuid = \"123\"")
@@ -101,7 +111,7 @@ end
   end
 end
 
-@testset "Compare BestieTemplate.update vs copier CLI update" begin
+@testitem "Compare BestieTemplate.update vs copier CLI update" setup = [Common] begin
   _with_tmp_dir() do dir_copier
     run(`copier copy --defaults --quiet $(C.args.copier.tiny) $(C.template_url) .`)
     _git_setup()

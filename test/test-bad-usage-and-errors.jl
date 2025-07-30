@@ -1,5 +1,5 @@
 
-@testset "Test that BestieTemplate.generate warns and exits for existing copy" begin
+@testitem "Test that BestieTemplate.generate warns and exits for existing copy" setup = [Common] begin
   _with_tmp_dir() do dir_copier
     run(`copier copy --vcs-ref HEAD --quiet $(C.args.copier.robust) $(C.template_path) .`)
     _git_setup()
@@ -9,40 +9,42 @@
   end
 end
 
-@testset "Test that generate fails for existing non-empty paths" begin
+@testitem "Test that generate fails if dst_path exists and is non-empty" setup = [Common] begin
   _with_tmp_dir() do dir
-    @testset "It fails if the dst_path exists and is non-empty" begin
-      mkdir("some_folder1")
-      open(joinpath("some_folder1", "README.md"), "w") do io
-        println(io, "Hi")
-      end
-      @test_throws Exception BestieTemplate.generate("some_folder1")
+    mkdir("some_folder1")
+    open(joinpath("some_folder1", "README.md"), "w") do io
+      println(io, "Hi")
     end
+    @test_throws Exception BestieTemplate.generate("some_folder1")
+  end
+end
 
-    @testset "It works if the dst_path is ." begin
-      mkdir("some_folder2")
-      cd("some_folder2") do
-        # Should not throw
-        BestieTemplate.generate(
-          C.template_path,
-          ".",
-          C.args.bestie.robust;
-          quiet = true,
-          vcs_ref = "HEAD",
-        )
-      end
-    end
-
-    @testset "It works if the dst_path exists but is empty" begin
-      mkdir("some_folder3")
+@testitem "Test that generate works if dst_path is ." setup = [Common] begin
+  _with_tmp_dir() do dir
+    mkdir("some_folder2")
+    cd("some_folder2") do
       # Should not throw
       BestieTemplate.generate(
         C.template_path,
-        "some_folder3",
+        ".",
         C.args.bestie.robust;
         quiet = true,
         vcs_ref = "HEAD",
       )
     end
+  end
+end
+
+@testitem "Test that generate works if dst_path exists but is empty" setup = [Common] begin
+  _with_tmp_dir() do dir
+    mkdir("some_folder3")
+    # Should not throw
+    BestieTemplate.generate(
+      C.template_path,
+      "some_folder3",
+      C.args.bestie.robust;
+      quiet = true,
+      vcs_ref = "HEAD",
+    )
   end
 end
