@@ -68,6 +68,36 @@ pkg> activate .
 pkg> test
 ```
 
+### CLI Test Runner
+
+The repository includes a CLI test runner for more flexible testing with TestItems:
+
+```bash
+# Run all tests
+julia --project=test test/runtests.jl
+
+# Run with verbose output
+julia --project=test test/runtests.jl --verbose
+
+# Filter tests by tags (run only fast tests)
+julia --project=test test/runtests.jl --tags fast
+
+# Exclude slow tests
+julia --project=test test/runtests.jl --exclude slow
+
+# Run tests from specific files
+julia --project=test test/runtests.jl --file test-corner-cases.jl
+
+# Run tests matching name pattern
+julia --project=test test/runtests.jl --name "some test"
+
+# Show available tags
+julia --project=test test/runtests.jl --list-tags
+
+# Show help
+julia --project=test test/runtests.jl --help
+```
+
 ### Testing local changes to the template
 
 We have created tools to help test and debug changes to the template.
