@@ -1,6 +1,5 @@
 # TODO: This should be split better
 @testsnippet Common begin
-  # Can't use mktempdir on GitHub actions willy nilly (at least on Mac)
   if get(ENV, "CI", "nothing") == "nothing"
     # This is only useful for testing offline. It creates a local env to avoid redownloading things.
     ENV["JULIA_CONDAPKG_ENV"] = joinpath(@__DIR__, "conda-env")

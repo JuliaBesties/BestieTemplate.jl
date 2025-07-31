@@ -43,6 +43,7 @@ Julia wrapper around Python Copier template engine for generating Julia package 
 
 **Testing**: `julia --project=. -e "using Pkg; Pkg.test()"`
 **Testing via the TestItemRunner**: `julia --project=test test/runtests.jl`
+**Filtered Testing**: `julia --project=test test/runtests.jl --tags fast --exclude slow`
 **Linting**: `pre-commit run -a` (setup: `pre-commit install`)
 **Docs**: `julia --project=docs -e "using LiveServer; servedocs()"`
 
@@ -52,12 +53,22 @@ Julia wrapper around Python Copier template engine for generating Julia package 
 
 We use testitems (<https://www.julia-vscode.org/docs/stable/userguide/testitems/>)
 
-- `runtests.jl`: Main test runner
+- `runtests.jl`: CLI test runner with filtering capabilities
 - `test-bestie-specific-api.jl`: BestieTemplate-specific functionality
 - `test-consistency-with-copier-cli.jl`: Copier CLI compatibility
 - `test-corner-cases.jl`: Edge cases and error conditions
 - `test-bad-usage-and-errors.jl`: Error handling validation
 - `utils.jl`: Test utilities and helpers
+
+The test runner supports filtering by:
+
+- `--tags tag1,tag2`: Run tests with ALL specified tags
+- `--exclude tag1,tag2`: Skip tests with ANY specified tags
+- `--file filename`: Run tests from files containing substring
+- `--name testname`: Run tests whose name contains substring
+- `--pattern text`: Run tests with name/filename containing substring
+- `--list-tags`: Show available tags
+- `--help`: Show usage help
 
 ### Template Testing
 
