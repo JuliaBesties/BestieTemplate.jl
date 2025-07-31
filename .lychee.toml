@@ -2,7 +2,8 @@ exclude = [
   "@ref",
   "@cite",
   "^https://github.com/.*/releases/tag/v.*$",
-  "^https://github.com/.*/compare/v.*HEAD$"
+  "^https://github.com/.*/compare/v.*HEAD$",
+  "https://allcontributors.org" # link broken because project might be abandoned
 ]
 
 exclude_path = [
