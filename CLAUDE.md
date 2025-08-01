@@ -115,3 +115,75 @@ GitHub Actions workflows in `.github/workflows/`:
 ## Dependencies
 
 Requires Python Copier backend. Tests use local conda environment in `test/conda-env/` to avoid redownloading dependencies. Python dependencies managed via `CondaPkg.toml`.
+
+## Testing Architecture Patterns
+
+### TestItems Organization
+
+- **Strategy-per-testitem**: Create focused testitems for each major component/strategy rather than nested loops
+- **Shared testsnippets**: Use `@testsnippet` for per-test setup (runs each time, variables directly accessible)
+- **Shared testmodules**: Use `@testmodule` for one-time expensive operations like data loading/computation (runs once, accessed via module prefix)
+- **Combined approach**: Use both when needed - testmodules for shared expensive operations, testsnippets for per-test variables
+- **Comprehensive validation**: Each testitem should test multiple aspects (files, dependencies, behavior) in one place
+
+Reference: [TestItems.jl Documentation](https://www.julia-vscode.org/docs/stable/userguide/testitems/)
+
+### CLI Filtering
+
+- **Semantic tags**: Use descriptive tags like `:test_strategy`, `:integration` for easy filtering
+- **Development workflow**: `julia --project=test test/runtests.jl --tags specific_feature` during development
+- **Add new tags to TAGS_DATA**: Update `test/runtests.jl` when introducing new tag categories
+
+### Test Data Management
+
+- **Extend debug data**: Add new strategies to `src/debug/Data.jl` for consistent test scenarios
+- **Random functions**: Add `_random(::Val{:NewOption})` functions to `test/utils.jl` for new template options
+- **Integration validation**: Use `act` to test generated packages in CI workflows
+
+### Pattern Examples
+
+**@testsnippet (per-test setup):**
+
+```julia
+@testsnippet TestData begin
+  sample_input = generate_random_data()  # Fresh data each test
+  expected_result = process(sample_input)
+end
+
+@testitem "Feature X works" setup=[Common, TestData] begin
+  @test my_function(sample_input) == expected_result
+end
+```
+
+**@testmodule (one-time expensive operations):**
+
+```julia
+@testmodule SharedAssets begin
+  const REFERENCE_DATA = load_large_file("reference.json")  # Load once
+  const COMPUTED_BASELINE = expensive_calculation()          # Compute once
+end
+
+@testitem "Feature Y validates correctly" setup=[Common, SharedAssets] begin
+  @test validate_against(result, SharedAssets.REFERENCE_DATA)
+end
+```
+
+**Combined approach:**
+
+```julia
+@testmodule ExpensiveSetup begin
+  const DATASET = load_dataset()  # One-time I/O
+end
+
+@testsnippet PerTestData begin
+  test_case = generate_test_case()  # Fresh per test
+end
+
+@testitem "Processing works" setup=[ExpensiveSetup, PerTestData] begin
+  @test process(ExpensiveSetup.DATASET, test_case) == expected_output
+end
+```
+
+## Code Development Tips
+
+- When testing new tests, use the CLI approach to filter only the relevant files to test.

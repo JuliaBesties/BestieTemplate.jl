@@ -9,11 +9,16 @@ and this project adheres to [Semantic Versioning].
 
 BREAKING NOTICE:
 
+- The `AutoIncludeTests` question has been replaced with a new `TestingStrategy` question offering 4 different testing approaches. When updating existing packages, you will need to manually select the equivalent option:
+  - `AutoIncludeTests: false` → `TestingStrategy: "basic"` (simple @testset approach)
+  - `AutoIncludeTests: true` → `TestingStrategy: "basic_auto_discover"` (auto-discovers test-*.jl files)
+  - New options: `"testitem_cli"` (TestItems with full CLI runner) and `"testitem_basic"` (simple TestItems usage)
 - The pre-commit autoupdate CI is no longer part of the `Precommit` question, and defaults to `false`. To keep the workflow, add `"AddPrecommitUpdateCI" => true` to your data argument, or ask to "Review all excluded items" in the interactive mode.
 - The default markdownlint configuration now accepts duplicate headers when the headers are on different levels. This improves the experience of some CHANGELOG formats. To revert this locally change `siblings_only` to false in `.markdownlint.json` (i.e., `"MD024": { "siblings_only": false }`). In that case, CHANGELOG will fail to pass this rule, but you can manually add `<!-- markdownlint-disable MD024 -->` in the beginning of the file to skip it.
 
 ### Added
 
+- New question: `TestingStrategy` offering 4 testing approaches: basic @testset, TestItems with CLI runner, simple TestItems usage, and auto-discovering test files
 - Automatic list of docs pages should now include subsections from folders (#536)
 - New question: `AddPrecommitUpdateCI` to make the pre-commit autoupdate CI optional (#503)
 - Configuration for Codecov, `codecov.yml`, was added to the template (#494)
@@ -22,6 +27,10 @@ BREAKING NOTICE:
 
 - The pre-commit autoupdate CI is no longer part of the `Precommit` question, and defaults to `false` (advanced) (#503)
 - The default markdownlint configuration (in `.markdownlist.json`) now has `MD024.siblings_only = true` (#505)
+
+### Removed
+
+- `AutoIncludeTests` question has been replaced by the more comprehensive `TestingStrategy` question
 
 ## [0.16.2] - 2025-05-31
 

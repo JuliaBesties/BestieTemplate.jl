@@ -43,7 +43,7 @@ This is an internal function, if BestieTemplate's main API is not sufficient, op
 """
 function recopy(dst_path, data::Dict = Dict(); kwargs...)
   copier = PythonCall.pyimport("copier")
-  copier.run_recopy(dst_path, data; kwargs...)
+  copier.run_recopy(dst_path; data = data, kwargs...)
 end
 
 """

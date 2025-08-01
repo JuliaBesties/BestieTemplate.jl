@@ -11,6 +11,14 @@ using UUIDs: uuid4
 const strategies = let
   deprecated = Dict()
 
+  # TODO: I don't remember if this is required to be a comprehensive definition
+  # of all answers of tiny, or if default values can/should be skipped. This
+  # was not a roadblock until TestingStrategy was introduced, because
+  # TestingStrategy has different default values depending on the Strategy
+  # used. In other words, TestingStrategy is the only option that appears
+  # explicitly in more than one strategy (except for StrategyLevel itself).
+  # I feel like explicitly defining TestingStrategy in both places is the
+  # correct solution. The recopy test was affected by this.
   tiny = merge(
     deprecated,
     Dict(
@@ -25,6 +33,7 @@ const strategies = let
       "StrategyConfirmIncluded" => true,
       "StrategyLevel" => 0,
       "StrategyReviewExcluded" => false,
+      "TestingStrategy" => "basic",
     ),
   )
 
@@ -43,6 +52,7 @@ const strategies = let
       "JuliaIndentation" => 4,
       "MarkdownIndentation" => 2,
       "StrategyLevel" => 1,
+      "TestingStrategy" => "testitem_basic",
     ),
   )
 
@@ -68,7 +78,6 @@ const strategies = let
       "AddPrecommit" => true,
       "AddPrecommitUpdateCI" => true, # actually part of advanced
       "AddWinToCI" => true,
-      "AutoIncludeTests" => true,
       "CheckExplicitImports" => true, # actually part of advanced
       "CodeOfConductContact" => split(moderate["Authors"], ",")[1],
       "ExplicitImportsChecklist" => "all", # actually part of advanced

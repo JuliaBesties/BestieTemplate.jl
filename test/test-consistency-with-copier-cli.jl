@@ -23,6 +23,10 @@ end
       run(
         `copier copy --vcs-ref HEAD --defaults --quiet $(C.args.copier.tiny) $(C.template_path) .`,
       )
+      # Due to https://github.com/copier-org/copier/issues/1867 we need to remote test/Project.toml
+      # before replacing it by something else.
+      rm(joinpath(dir_bestie, "test", "Project.toml"))
+
       BestieTemplate.Copier.recopy(
         dir_bestie,
         C.args.bestie.robust;
@@ -45,6 +49,8 @@ end
 
     _with_tmp_dir() do dir_bestie
       run(`copier copy --defaults --quiet $(C.args.copier.tiny) $(C.template_path) .`)
+      # I guess the issue above also affects updates?
+      rm(joinpath(dir_bestie, "test", "Project.toml"))
       _git_setup()
       BestieTemplate.Copier.update(
         dir_bestie,
