@@ -14,3 +14,4 @@ env
 node_modules
 test/CondaPkg.toml
 test/conda-env
+.claude

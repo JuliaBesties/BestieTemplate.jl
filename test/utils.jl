@@ -3,7 +3,6 @@
   if get(ENV, "CI", "nothing") == "nothing"
     # This is only useful for testing offline. It creates a local env to avoid redownloading things.
     ENV["JULIA_CONDAPKG_ENV"] = joinpath(@__DIR__, "conda-env")
-    @info ENV["JULIA_CONDAPKG_ENV"]
     if isdir(ENV["JULIA_CONDAPKG_ENV"])
       ENV["JULIA_CONDAPKG_OFFLINE"] = true
     end
@@ -98,9 +97,18 @@
           file2 = replace(file1, dir1 => dir2)
           lines1 = readlines(file1)
           lines2 = readlines(file2)
+          equal = true
           for (line1, line2) in zip(lines1, lines2)
             ignore(line1) && continue
             @test line1 == line2
+            if line1 != line2
+              equal = false
+            end
+          end
+          if !equal
+            @warn "Different files on test:"
+            @warn "File1:" lines1
+            @warn "File2:" lines2
           end
         end
       end
@@ -123,6 +131,8 @@
   _random(::Val{:AddFormatterAndLinterConfigFiles}, value::Bool) = true
   _random(::Val{:StrategyConfirmIncluded}, value::Bool) = true
   _random(::Val{:StrategyReviewExcluded}, value::Bool) = true
+  _random(::Val{:TestingStrategy}, value) =
+    rand(["basic", "testitem_cli", "testitem_basic", "basic_auto_discover"])
 
   """
   Constants used in the tests

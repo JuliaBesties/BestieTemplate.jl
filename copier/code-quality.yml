@@ -31,16 +31,28 @@ AddPrecommit:
 
     Strategy: Moderate
 
-AutoIncludeTests:
-  when: "{{ WhenForModerate }}"
-  type: bool
-  default: "{{ DefaultForModerate }}"
-  help: Auto-include test files named `test-<name>.jl` (Incentivizes splitting your tests and better naming them, and helps avoiding forgetting to include the tests manually)
+TestingStrategy:
+  when: "{{ WhenForLight }}"
+  type: str
+  default: "{% if DefaultForLight %}testitem_basic{% else %}basic{% endif %}"
+  choices:
+    Basic @testset approach with single test file: basic
+    TestItems with full CLI runner and filtering: testitem_cli
+    Simple TestItems usage with @run_package_tests: testitem_basic
+    Auto-discovers and includes test-*.jl files: basic_auto_discover
+  help: Testing approach and framework (Choose your testing strategy and framework)
   description: |
-    This write a `runtests.jl` file that automatically recursively includes all `test-*.jl` files in the `test` folder inside `@testset`s.
-    This incentivizes separating the tests and makes sure that you don't forget to include them.
+    Determines the testing approach and infrastructure generated for your package.
 
-    Strategy: Moderate
+    The **basic** option generates a simple @testset-based test with a single test file, suitable for small packages.
+
+    The **testitem_cli** option provides the most advanced testing setup using TestItems.jl with a full command-line interface that supports filtering by tags, file names, and test patterns. This is ideal for larger projects with complex test suites.
+
+    The **testitem_basic** option uses TestItems.jl with simple @run_package_tests, providing better test organization than basic @testset without the CLI complexity.
+
+    The **basic_auto_discover** option automatically discovers and includes all test-*.jl files in @testsets, encouraging test file organization while maintaining the traditional @testset approach.
+
+    Strategy: Light
 
 JuliaIndentation:
   when: "{{ AddFormatterAndLinterConfigFiles and WhenForLight }}"

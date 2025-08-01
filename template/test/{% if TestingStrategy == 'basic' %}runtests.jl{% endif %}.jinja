@@ -1,0 +1,6 @@
+using {{ PackageName }}
+using Test
+
+@testset "{{ PackageName }}.jl" begin
+    @test {{ PackageName }}.hello_world() == "Hello, World!"
+end

@@ -41,8 +41,7 @@ function _list_available_tags()
   return
 end
 
-const TAGS_DATA = Dict(
-  # TODO: Make sure every test has some of these tags
+const TAGS_DATA = Dict( # The tags below are a suggestion
   # Test Type (What kind of test?)
   :integration => "End-to-end tests with real datasets and full workflows",
   :unit => "Single component or function tests",
@@ -53,7 +52,6 @@ const TAGS_DATA = Dict(
   :slow => "Resource-intensive tests requiring significant time or memory",
 
   # Features (What features are being tested?)
-  :test_strategy => "Tests for TestingStrategy functionality",
 )
 
 function main()
