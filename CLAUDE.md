@@ -70,6 +70,38 @@ The test runner supports filtering by:
 - `--list-tags`: Show available tags
 - `--help`: Show usage help
 
+### Tag-Based Test Filtering Examples
+
+The test suite uses a comprehensive tag system for efficient filtering during development:
+
+**Available tag categories:**
+
+- **Test Types**: `:unit`, `:integration`, `:validation`
+- **Complexity**: `:fast`, `:slow`
+- **Feature Areas**: `:guessing`, `:template_application`, `:copier_compatibility`, `:license_handling`, `:error_handling`, `:package_creation`, `:update_workflow`, `:test_strategy`
+- **Characteristics**: `:file_io`, `:git_operations`, `:python_integration`, `:randomized`
+
+**Common development workflows:**
+
+```bash
+# Quick development iteration (fast tests only)
+julia --project=test test/runtests.jl --tags fast --exclude slow,python_integration
+
+# Focus on specific functionality
+julia --project=test test/runtests.jl --tags guessing,unit --exclude slow
+julia --project=test test/runtests.jl --tags error_handling
+julia --project=test test/runtests.jl --tags license_handling
+
+# Test specific file with relevant filters
+julia --project=test test/runtests.jl --file bestie-specific --tags fast --exclude randomized
+
+# CI-friendly: exclude slow tests for faster feedback
+julia --project=test test/runtests.jl --exclude slow,python_integration
+
+# Comprehensive but focused: test core functionality
+julia --project=test test/runtests.jl --tags unit,fast --exclude python_integration
+```
+
 ### Template Testing
 
 Note: It might out of date, so it is better to avoid until reviewed.
