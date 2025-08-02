@@ -38,92 +38,58 @@ jobs:
           - "light"
           - "moderate"
           - "robust"
+    uses: ./.github/workflows/ReusableTestGeneratedPkg.yml
+    with:
+      julia_version: ${{ matrix.version }}
+      os: ${{ matrix.os }}
+      arch: ${{ matrix.arch }}
+      strategy_level: ${{ matrix.strategy_level }}
+      enable_docs: true
+      allow_failure: ${{ matrix.allow_failure }}
 
-    name: Test generated package with strategy ${{ matrix.strategy_level }} on Julia ${{ matrix.version }} - ${{ github.event_name }}
-    runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.allow_failure }}
+  test-testing-strategies:
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - "lts"
+        os:
+          - ubuntu-latest
+        arch:
+          - x64
+        testing_strategy:
+          - "basic"
+          - "testitem_cli"
+          - "testitem_basic"
+          - "basic_auto_discover"
+    uses: ./.github/workflows/ReusableTestGeneratedPkg.yml
+    with:
+      julia_version: ${{ matrix.version }}
+      os: ${{ matrix.os }}
+      arch: ${{ matrix.arch }}
+      strategy_level: "moderate"
+      testing_strategy: ${{ matrix.testing_strategy }}
+      enable_docs: false
 
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: julia-actions/setup-julia@v2
-        with:
-          version: ${{ matrix.version }}
-          arch: ${{ matrix.arch }}
-      - name: Use Julia cache
-        uses: julia-actions/cache@v2
-      - name: Build the package
-        uses: julia-actions/julia-buildpkg@v1
-      # Needed for pre-commit
-      - name: Install JuliaFormatter.jl
-        if: ${{ matrix.strategy_level == 'moderate' || matrix.strategy_level == 'robust' }}
-        run: julia -e 'using Pkg; pkg"add JuliaFormatter"'
-      - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
-        if: ${{ matrix.strategy_level == 'moderate' || matrix.strategy_level == 'robust' }}
-        run: touch requirements.txt
-      - name: Setup Python
-        if: ${{ matrix.strategy_level == 'moderate' || matrix.strategy_level == 'robust' }}
-        uses: actions/setup-python@v5
-        with:
-          cache: "pip"
-          python-version: "3.11"
-      - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
-        if: ${{ matrix.strategy_level == 'moderate' || matrix.strategy_level == 'robust' }}
-        run: rm requirements.txt
-      - name: Cache pre-commit
-        if: ${{ matrix.strategy_level == 'moderate' || matrix.strategy_level == 'robust' }}
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pre-commit
-          key: ${{ runner.os }}-pre-commit-${{ hashFiles('**/.pre-commit-config.yaml') }}
-      - name: Install pre-commit
-        if: ${{ matrix.strategy_level == 'moderate' || matrix.strategy_level == 'robust' }}
-        run: pip install pre-commit
-
-      # Actual tests
-      - name: Create a package using the template with default values
-        env:
-          STRATEGY: ${{ matrix.strategy_level }}
-        run: |
-          julia --project=. --eval '
-            using BestieTemplate: new_pkg_quick
-
-            pkg_destination = joinpath("tmp", "Guldasta.jl")
-            package_owner = "Bagicha"
-            authors = "Mali <mali@bagicha.site>"
-            new_pkg_quick(
-                pkg_destination,
-                package_owner,
-                authors,
-                Symbol(ENV["STRATEGY"]),
-                template_source = :local,
-                use_latest = true,
-            )
-          '
-      - name: Run the tests in the generated package
-        run: |
-          julia --project=tmp/Guldasta.jl --eval 'using Pkg; Pkg.test()'
-      - name: Build the docs of the generated package
-        if: ${{ matrix.strategy_level != 'tiny' }}
-        run: |
-          julia --project=tmp/Guldasta.jl/docs --eval 'using Pkg; pkg"dev tmp/Guldasta.jl"' \
-            -L tmp/Guldasta.jl/docs/make.jl
-      - name: Check that the docs wre properly generated
-        if: ${{ matrix.strategy_level != 'tiny' }}
-        run: |
-          ./.github/scripts/check-docs.bash tmp/Guldasta.jl
-      - name: Check that all pre-commit checks pass
-        if: ${{ matrix.strategy_level == 'moderate' || matrix.strategy_level == 'robust' }}
-        shell: bash {0} # The default shell uses -e which checks intermediary failures
-        run: |
-          cd tmp/Guldasta.jl
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub action"
-          git init
-          git add .
-          git commit -m "First commit"
-          # Failures here can be due to whitespace management in Jinja
-          SKIP=no-commit-to-branch pre-commit run -a || true
-          # There shouldn't be any more failures after the initial fix
-          SKIP=no-commit-to-branch pre-commit run -a
+  test-key-interactions:
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - "lts"
+        os:
+          - ubuntu-latest
+        arch:
+          - x64
+        combination:
+          - {strategy_level: "robust", testing_strategy: "basic"}
+          - {strategy_level: "tiny", testing_strategy: "testitem_cli"}
+          - {strategy_level: "moderate", testing_strategy: "basic_auto_discover"}
+    uses: ./.github/workflows/ReusableTestGeneratedPkg.yml
+    with:
+      julia_version: ${{ matrix.version }}
+      os: ${{ matrix.os }}
+      arch: ${{ matrix.arch }}
+      strategy_level: ${{ matrix.combination.strategy_level }}
+      testing_strategy: ${{ matrix.combination.testing_strategy }}
+      enable_docs: false

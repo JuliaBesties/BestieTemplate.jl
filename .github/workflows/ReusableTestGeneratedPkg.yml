@@ -1,0 +1,146 @@
+name: Reusable test generated package
+
+on:
+  workflow_call:
+    inputs:
+      julia_version:
+        required: true
+        type: string
+      os:
+        required: false
+        type: string
+        default: ubuntu-latest
+      arch:
+        required: false
+        type: string
+        default: x64
+      strategy_level:
+        required: true
+        type: string # tiny, light, moderate, robust
+      testing_strategy:
+        required: false
+        type: string
+        default: "" # "", basic, testitem_cli, testitem_basic, basic_auto_discover
+      enable_docs:
+        required: false
+        type: boolean
+        default: true
+      allow_failure:
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  test-generated-pkg:
+    name: Test ${{ inputs.strategy_level }}${{ inputs.testing_strategy != '' && format('+{0}', inputs.testing_strategy) || '' }} on Julia ${{ inputs.julia_version }} - ${{ github.event_name }}
+    runs-on: ${{ inputs.os }}
+    continue-on-error: ${{ inputs.allow_failure }}
+    env:
+      NEEDS_PRECOMMIT: ${{ inputs.strategy_level == 'moderate' || inputs.strategy_level == 'robust' }}
+      NEEDS_DOCS: ${{ inputs.enable_docs && inputs.strategy_level != 'tiny' }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: ${{ inputs.julia_version }}
+          arch: ${{ inputs.arch }}
+      - name: Use Julia cache
+        uses: julia-actions/cache@v2
+      - name: Build the package
+        uses: julia-actions/julia-buildpkg@v1
+
+      # Needed for pre-commit
+      - name: Install JuliaFormatter.jl
+        if: ${{ env.NEEDS_PRECOMMIT == 'true' }}
+        run: julia -e 'using Pkg; pkg"add JuliaFormatter"'
+      - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
+        if: ${{ env.NEEDS_PRECOMMIT == 'true' }}
+        run: touch requirements.txt
+      - name: Setup Python
+        if: ${{ env.NEEDS_PRECOMMIT == 'true' }}
+        uses: actions/setup-python@v5
+        with:
+          cache: "pip"
+          python-version: "3.11"
+      - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
+        if: ${{ env.NEEDS_PRECOMMIT == 'true' }}
+        run: rm requirements.txt
+      - name: Cache pre-commit
+        if: ${{ env.NEEDS_PRECOMMIT == 'true' }}
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit
+          key: ${{ runner.os }}-pre-commit-${{ hashFiles('**/.pre-commit-config.yaml') }}
+      - name: Install pre-commit
+        if: ${{ env.NEEDS_PRECOMMIT == 'true' }}
+        run: pip install pre-commit
+
+      # Actual tests
+      - name: Create a package using the template
+        env:
+          STRATEGY_LEVEL: ${{ inputs.strategy_level }}
+          TESTING_STRATEGY: ${{ inputs.testing_strategy }}
+        run: |
+          julia --project=. --eval '
+            using BestieTemplate: BestieTemplate, new_pkg_quick
+
+            pkg_destination = joinpath("tmp", "Guldasta.jl")
+            package_owner = "Bagicha"
+            authors = "Mali <mali@bagicha.site>"
+
+            data = Dict()
+            if ENV["TESTING_STRATEGY"] != ""
+              data["TestingStrategy"] = ENV["TESTING_STRATEGY"]
+            end
+
+            # Override TestingStrategy if provided
+            new_pkg_quick(
+                pkg_destination,
+                package_owner,
+                authors,
+                Symbol(ENV["STRATEGY_LEVEL"]),
+                data,
+                template_source = :local,
+                use_latest = true,
+            )
+          '
+
+      - name: Run the tests in the generated package (normal way)
+        run: |
+          julia --project=tmp/Guldasta.jl --eval 'using Pkg; Pkg.test()'
+
+      - name: Run the tests via the TestItem CLI
+        if: ${{ inputs.testing_strategy == 'testitem_cli' }}
+        run: |
+          cd tmp/Guldasta.jl
+          julia --project=test -e 'using Pkg; Pkg.instantiate()'
+          julia --project=test test/runtests.jl --verbose
+
+      - name: Build the docs of the generated package
+        if: ${{ env.NEEDS_DOCS == 'true' }}
+        run: |
+          julia --project=tmp/Guldasta.jl/docs --eval 'using Pkg; pkg"dev tmp/Guldasta.jl"' \
+            -L tmp/Guldasta.jl/docs/make.jl
+
+      - name: Check that the docs were properly generated
+        if: ${{ env.NEEDS_DOCS == 'true' }}
+        run: |
+          ./.github/scripts/check-docs.bash tmp/Guldasta.jl
+
+      - name: Check that all pre-commit checks pass
+        if: ${{ env.NEEDS_PRECOMMIT == 'true' }}
+        shell: bash {0} # The default shell uses -e which checks intermediary failures
+        run: |
+          cd tmp/Guldasta.jl
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub action"
+          git init
+          git add .
+          git commit -m "First commit"
+          # Failures here can be due to whitespace management in Jinja
+          SKIP=no-commit-to-branch pre-commit run -a || true
+          # There shouldn't be any more failures after the initial fix
+          SKIP=no-commit-to-branch pre-commit run -a
