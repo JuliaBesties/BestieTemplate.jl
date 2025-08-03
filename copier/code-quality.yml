@@ -44,13 +44,13 @@ TestingStrategy:
   description: |
     Determines the testing approach and infrastructure generated for your package.
 
-    The **basic** option generates a simple @testset-based test with a single test file, suitable for small packages.
+    The `basic` option generates a simple @testset-based test with a single test file, suitable for small packages.
 
-    The **testitem_cli** option provides the most advanced testing setup using TestItems.jl with a full command-line interface that supports filtering by tags, file names, and test patterns. This is ideal for larger projects with complex test suites.
+    The `testitem_cli` option provides the most advanced testing setup using TestItems.jl with a full command-line interface that supports filtering by tags, file names, and test patterns. This is ideal for larger projects with complex test suites.
 
-    The **testitem_basic** option uses TestItems.jl with simple @run_package_tests, providing better test organization than basic @testset without the CLI complexity.
+    The `testitem_basic` option uses TestItems.jl with simple @run_package_tests, providing better test organization than basic @testset without the CLI complexity.
 
-    The **basic_auto_discover** option automatically discovers and includes all test-*.jl files in @testsets, encouraging test file organization while maintaining the traditional @testset approach.
+    The `basic_auto_discover` option automatically discovers and includes all test-*.jl files in @testsets, encouraging test file organization while maintaining the traditional @testset approach.
 
     Strategy: Light
 
