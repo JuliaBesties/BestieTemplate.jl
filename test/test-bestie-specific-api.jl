@@ -1,5 +1,5 @@
-@testitem "Test automatic guessing of data - using random data" setup = [Common] begin
-  src_data = copy(C.args.bestie.robust)
+@testsnippet ApiTestHelpers begin
+  # Expected guessable data keys
   guessable_answers = Set([
     "Authors",
     "JuliaMinVersion",
@@ -9,216 +9,203 @@
     "PackageUUID",
   ])
 
-  for _ in 1:10
+  # Helper to test incomplete guessing scenarios - keeps complex setup/verification logic
+  function test_incomplete_guessing(setup_action, missing_keys, debug_messages = [])
+    src_data = copy(TestConstants.args.bestie.robust)
+    expected_keys = setdiff(guessable_answers, missing_keys)
+
+    _with_tmp_dir() do dir
+      # Generate project normally first
+      _generate_test_package(".", src_data)
+
+      # Apply the setup action (e.g., remove files)
+      setup_action()
+
+      # Test guessing with debug logs
+      if !isempty(debug_messages)
+        @test_logs debug_messages... min_level=Logging.Debug BestieTemplate._read_data_from_existing_path(
+          ".",
+        )
+      else
+        BestieTemplate._read_data_from_existing_path(".")
+      end
+
+      # Verify expected data
+      guessed_data = BestieTemplate._read_data_from_existing_path(".")
+      for (key, value) in guessed_data
+        @test value == src_data[key]
+      end
+      @test Set(keys(guessed_data)) == expected_keys
+    end
+  end
+end
+
+@testmodule GuessTestData begin
+  # Pre-generated random test data for consistent testing
+  const RANDOM_TEST_ITERATIONS = 10
+  const INVALID_PACKAGE_NAMES = ["Bad.jl", "0Bad", "bad"]
+end
+
+@testitem "Automatic data guessing works with random inputs" tags =
+  [:unit, :fast, :guessing, :randomized, :file_io] setup =
+  [TestConstants, Common, ApiTestHelpers, GuessTestData] begin
+  src_data = copy(TestConstants.args.bestie.robust)
+
+  for _ in 1:GuessTestData.RANDOM_TEST_ITERATIONS
+    # Randomize all data fields
     for (key, value) in src_data
       src_data[key] = _random(Val(Symbol(key)), value)
     end
 
+    # Test data guessing functionality
     _with_tmp_dir() do dir
-      BestieTemplate.generate(C.template_path, ".", src_data; quiet = true, vcs_ref = "HEAD")
+      _generate_test_package(".", src_data)
 
       # Test that guesses are correct
-      data = BestieTemplate._read_data_from_existing_path(".")
-      for (key, value) in data
+      guessed_data = BestieTemplate._read_data_from_existing_path(".")
+      for (key, value) in guessed_data
         @test value == src_data[key]
       end
-      # All keys were guessed
-      @test Set(keys(data)) == guessable_answers
+      # Test that expected keys were guessed
+      @test Set(keys(guessed_data)) == guessable_answers
+    end
 
-      # Test that keyword guess=false ignores the guessed data
+    # Test that keyword guess=false ignores the guessed data
+    _with_tmp_dir() do dir
+      _generate_test_package(".", TestConstants.args.bestie.robust)
       rm(".copier-answers.yml")
       _git_setup()
-      BestieTemplate.apply(
-        C.template_path,
-        ".",
-        C.args.bestie.robust;
-        guess = false,
-        overwrite = true,
-        quiet = true,
-        vcs_ref = "HEAD",
-      )
+      _apply_test_template(".", TestConstants.args.bestie.robust; guess = false)
+
       answers = YAML.load_file(".copier-answers.yml")
-      data = BestieTemplate._read_data_from_existing_path(".")
-      for (key, value) in data
-        @test answers[key] == C.args.bestie.robust[key]
+      guessed_data = BestieTemplate._read_data_from_existing_path(".")
+      for (key, value) in guessed_data
+        @test answers[key] == TestConstants.args.bestie.robust[key]
       end
     end
   end
 end
 
-@testitem "Test incomplete guesses - missing or incomplete Project.toml" setup = [Common] begin
-  src_data = copy(C.args.bestie.robust)
-  guessable_answers = Set([
-    "Authors",
-    "JuliaMinVersion",
-    "JuliaIndentation",
-    "PackageName",
-    "PackageOwner",
-    "PackageUUID",
-  ])
+@testitem "Incomplete guessing handles missing Project.toml" tags =
+  [:unit, :fast, :guessing, :file_io] setup = [TestConstants, Common, ApiTestHelpers] begin
+  # Test missing Project.toml file
+  missing_keys = ["Authors", "JuliaMinVersion", "PackageName", "PackageUUID"]
+  test_incomplete_guessing(() -> rm("Project.toml"), missing_keys, [(:debug, "No Project.toml")])
 
-  _with_tmp_dir() do dir
-    BestieTemplate.generate(C.template_path, ".", src_data; quiet = true, vcs_ref = "HEAD")
-    rm("Project.toml")
-    @test_logs (:debug, "No Project.toml") min_level = Logging.Debug BestieTemplate._read_data_from_existing_path(
-      ".",
-    )
-    data = BestieTemplate._read_data_from_existing_path(".")
-    for (key, value) in data
-      @test value == src_data[key]
-    end
-    missing_keys = ["Authors", "JuliaMinVersion", "PackageName", "PackageUUID"]
-    @test Set(keys(data)) == setdiff(guessable_answers, missing_keys)
-
-    # Add empty Project.toml
-    touch("Project.toml")
-    @test_logs (:debug, "No key name in TOML") (:debug, "No key uuid in TOML") (
-      :debug,
-      "No authors information",
-    ) (:debug, "No compat information") min_level = Logging.Debug BestieTemplate._read_data_from_existing_path(
-      ".",
-    )
-  end
+  # Test empty Project.toml file
+  test_incomplete_guessing(
+    () -> (rm("Project.toml"); touch("Project.toml")),
+    missing_keys,
+    [
+      (:debug, "No key name in TOML"),
+      (:debug, "No key uuid in TOML"),
+      (:debug, "No authors information"),
+      (:debug, "No compat information"),
+    ],
+  )
 end
 
-@testitem "Test incomplete guesses - missing or incomplete docs/make.jl" setup = [Common] begin
-  src_data = copy(C.args.bestie.robust)
-  guessable_answers = Set([
-    "Authors",
-    "JuliaMinVersion",
-    "JuliaIndentation",
-    "PackageName",
-    "PackageOwner",
-    "PackageUUID",
-  ])
+@testitem "Incomplete guessing handles missing docs/make.jl" tags =
+  [:unit, :fast, :guessing, :file_io] setup = [TestConstants, Common, ApiTestHelpers] begin
+  # Test missing docs/make.jl file
+  missing_keys = ["PackageOwner"]
+  test_incomplete_guessing(
+    () -> rm("docs/make.jl"),
+    missing_keys,
+    [(:debug, "No file docs/make.jl")],
+  )
 
-  _with_tmp_dir() do dir
-    BestieTemplate.generate(C.template_path, ".", src_data; quiet = true, vcs_ref = "HEAD")
-    rm("docs/make.jl")
-    @test_logs (:debug, "No file docs/make.jl") min_level = Logging.Debug BestieTemplate._read_data_from_existing_path(
-      ".",
-    )
-    data = BestieTemplate._read_data_from_existing_path(".")
-    for (key, value) in data
-      @test value == src_data[key]
-    end
-    missing_keys = ["PackageOwner"]
-    @test Set(keys(data)) == setdiff(guessable_answers, missing_keys)
-
-    # Add empty docs/make.jl
-    touch("docs/make.jl")
-    @test_logs (:debug, "No match for repo regex") min_level = Logging.Debug BestieTemplate._read_data_from_existing_path(
-      ".",
-    )
-  end
+  # Test empty docs/make.jl file
+  test_incomplete_guessing(
+    () -> (rm("docs/make.jl"); touch("docs/make.jl")),
+    missing_keys,
+    [(:debug, "No match for repo regex")],
+  )
 end
 
-@testitem "Test incomplete guesses - missing or incomplete .JuliaFormatter.toml" setup = [Common] begin
-  src_data = copy(C.args.bestie.robust)
-  guessable_answers = Set([
-    "Authors",
-    "JuliaMinVersion",
-    "JuliaIndentation",
-    "PackageName",
-    "PackageOwner",
-    "PackageUUID",
-  ])
+@testitem "Incomplete guessing handles missing .JuliaFormatter.toml" tags =
+  [:unit, :fast, :guessing, :file_io] setup = [TestConstants, Common, ApiTestHelpers] begin
+  # Test missing .JuliaFormatter.toml file
+  missing_keys = ["JuliaIndentation"]
+  test_incomplete_guessing(
+    () -> rm(".JuliaFormatter.toml"),
+    missing_keys,
+    [(:debug, "No file .JuliaFormatter.toml")],
+  )
 
-  _with_tmp_dir() do dir
-    BestieTemplate.generate(C.template_path, ".", src_data; quiet = true, vcs_ref = "HEAD")
-    rm(".JuliaFormatter.toml")
-    @test_logs (:debug, "No file .JuliaFormatter.toml") min_level = Logging.Debug BestieTemplate._read_data_from_existing_path(
-      ".",
-    )
-    data = BestieTemplate._read_data_from_existing_path(".")
-    for (key, value) in data
-      @test value == src_data[key]
-    end
-    missing_keys = ["JuliaIndentation"]
-    @test Set(keys(data)) == setdiff(guessable_answers, missing_keys)
-
-    # Add empty .JuliaFormatter.toml
-    touch(".JuliaFormatter.toml")
-    @test_logs (:debug, "No indent found in .JuliaFormatter.toml") min_level = Logging.Debug BestieTemplate._read_data_from_existing_path(
-      ".",
-    )
-  end
+  # Test empty .JuliaFormatter.toml file
+  test_incomplete_guessing(
+    () -> (rm(".JuliaFormatter.toml"); touch(".JuliaFormatter.toml")),
+    missing_keys,
+    [(:debug, "No indent found in .JuliaFormatter.toml")],
+  )
 end
 
-@testitem "Test applying the template on an existing project" setup = [Common] begin
+@testitem "Template application works on existing projects" tags =
+  [:unit, :fast, :template_application, :file_io, :git_operations] setup =
+  [TestConstants, Common, ApiTestHelpers] begin
   _with_tmp_dir() do dir_existing
     _basic_new_pkg("NewPkg")
-    BestieTemplate.apply(
-      C.template_path,
-      "NewPkg/",
-      Dict("Authors" => "T. Esther", "PackageOwner" => "test");
-      defaults = true,
-      overwrite = true,
-      quiet = true,
-      vcs_ref = "HEAD",
+    _apply_test_template("NewPkg/", Dict("Authors" => "T. Esther", "PackageOwner" => "test"))
+
+    _validate_copier_answers(
+      Dict("PackageName" => "NewPkg", "Authors" => "T. Esther", "PackageOwner" => "test"),
+      "NewPkg/.copier-answers.yml",
     )
-    answers = YAML.load_file("NewPkg/.copier-answers.yml")
-    @test answers["PackageName"] == "NewPkg"
-    @test answers["Authors"] == "T. Esther"
-    @test answers["PackageOwner"] == "test"
   end
 end
 
-@testitem "Test automatic guessing the package name from the path" setup = [Common] begin
+@testitem "Package name guessing works from directory path" tags =
+  [:unit, :fast, :guessing, :file_io] setup = [TestConstants, Common, ApiTestHelpers] begin
   _with_tmp_dir() do dir_path_is_dir
-    data = Dict(key => value for (key, value) in C.args.bestie.robust if key != "PackageName")
+    # Test automatic guessing from path
+    data = _create_test_data(:robust; modifications = Dict("PackageName" => nothing))
+    delete!(data, "PackageName")  # Remove PackageName to test path guessing
     mkdir("some_folder")
-    BestieTemplate.generate(
-      C.template_path,
-      "some_folder/SomePackage1.jl",
-      data;
-      quiet = true,
-      vcs_ref = "HEAD",
+    _generate_test_package("some_folder/SomePackage1.jl", data)
+    _validate_copier_answers(
+      Dict("PackageName" => "SomePackage1"),
+      "some_folder/SomePackage1.jl/.copier-answers.yml",
     )
-    answers = YAML.load_file("some_folder/SomePackage1.jl/.copier-answers.yml")
-    @test answers["PackageName"] == "SomePackage1"
-    BestieTemplate.generate(
-      C.template_path,
-      "some_folder/SomePackage2.jl",
-      merge(data, Dict("PackageName" => "OtherName"));
-      quiet = true,
-      vcs_ref = "HEAD",
+
+    # Test explicit name overrides path guessing
+    data_with_name = _create_test_data(:robust; modifications = Dict("PackageName" => "OtherName"))
+    _generate_test_package("some_folder/SomePackage2.jl", data_with_name)
+    _validate_copier_answers(
+      Dict("PackageName" => "OtherName"),
+      "some_folder/SomePackage2.jl/.copier-answers.yml",
     )
-    answers = YAML.load_file("some_folder/SomePackage2.jl/.copier-answers.yml")
-    @test answers["PackageName"] == "OtherName"
   end
 end
 
-@testitem "Test that bad PackageName gets flagged" setup = [Common] begin
-  _with_tmp_dir() do dir
-    for name in ["Bad.jl", "0Bad", "bad"]
-      data = copy(C.args.bestie.robust)
-      data["PackageName"] = name
-      @test_throws PythonCall.Core.PyException BestieTemplate.generate(
-        C.template_path,
-        ".",
-        data,
-        quiet = true,
-        vcs_ref = "HEAD",
-      )
+@testitem "Invalid package names are properly rejected" tags =
+  [:unit, :fast, :error_handling, :validation] setup =
+  [TestConstants, Common, ApiTestHelpers, GuessTestData] begin
+  for name in GuessTestData.INVALID_PACKAGE_NAMES
+    _with_tmp_dir() do dir
+      data = _create_test_data(:robust; modifications = Dict("PackageName" => name))
+      @test_throws PythonCall.Core.PyException _generate_test_package(".", data)
     end
   end
 end
 
-@testitem "Test input validation of apply - dst_path does not exist" setup = [Common] begin
+@testitem "Apply validation rejects non-existent destination" tags =
+  [:unit, :fast, :error_handling, :validation] setup = [TestConstants, Common, ApiTestHelpers] begin
   _with_tmp_dir() do dir
     @test_throws Exception BestieTemplate.apply("some_folder1", quiet = true)
   end
 end
 
-@testitem "Test input validation of apply - dst_path exists but no .git" setup = [Common] begin
+@testitem "Apply validation rejects destination without git" tags =
+  [:unit, :fast, :error_handling, :validation] setup = [TestConstants, Common, ApiTestHelpers] begin
   _with_tmp_dir() do dir
     mkdir("some_folder2")
     @test_throws Exception BestieTemplate.apply("some_folder2", quiet = true)
   end
 end
 
-@testitem "Test quick pkg creation" setup = [Common] begin
+@testitem "Quick package creation works correctly" tags =
+  [:unit, :fast, :package_creation, :file_io] setup = [TestConstants, Common, ApiTestHelpers] begin
   _with_tmp_dir() do dir
     BestieTemplate.new_pkg_quick("NewPkg.jl", "JuliaBesties", "JuliaBesties maintainers", :tiny)
 
@@ -234,7 +221,9 @@ end
 if get(ENV, "BESTIE_SKIP_UPDATE_TEST", "no") != "yes" &&
    chomp(read(`git branch --show-current`, String)) != "main" &&
    get(ENV, "GITHUB_REF_TYPE", "nothing") != "tag"
-  @testitem "Test updating from main to HEAD vs generate in HEAD" setup = [Common] begin
+  @testitem "Update workflow produces same result as direct generation" tags =
+    [:integration, :slow, :update_workflow, :git_operations, :file_io] setup =
+    [TestConstants, Common, ApiTestHelpers] begin
     _with_tmp_dir() do dir
       common_args = (defaults = true, quiet = true)
 
@@ -242,16 +231,21 @@ if get(ENV, "BESTIE_SKIP_UPDATE_TEST", "no") != "yes" &&
       cd("gen_then_up") do
         # Generate the release version
         BestieTemplate.generate(
-          C.template_path,
+          TestConstants.template_path,
           ".",
-          C.args.bestie.robust;
+          TestConstants.args.bestie.robust;
           vcs_ref = "main",
           common_args...,
         )
         _git_setup()
         _full_precommit()
         # Update using the HEAD version
-        BestieTemplate.update(".", C.args.bestie.robust; vcs_ref = "HEAD", common_args...)
+        BestieTemplate.update(
+          ".",
+          TestConstants.args.bestie.robust;
+          vcs_ref = "HEAD",
+          common_args...,
+        )
         _full_precommit()
       end
 
@@ -259,9 +253,9 @@ if get(ENV, "BESTIE_SKIP_UPDATE_TEST", "no") != "yes" &&
       cd("gen_direct") do
         # Generate directly in the HEAD version
         BestieTemplate.generate(
-          C.template_path,
+          TestConstants.template_path,
           ".",
-          C.args.bestie.robust;
+          TestConstants.args.bestie.robust;
           vcs_ref = "HEAD",
           common_args...,
         )

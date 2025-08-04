@@ -37,14 +37,14 @@
   end
 
   # Common test logic for a specific strategy
-  function test_strategy_complete(strategy)
+  function test_strategy_complete(strategy, base_data, template_path)
     _with_tmp_dir() do dir
       # Create test data with specific strategy
-      test_data = merge(C.args.bestie.tiny, Dict("TestingStrategy" => strategy))
+      test_data = merge(base_data, Dict("TestingStrategy" => strategy))
 
       # Generate package
       BestieTemplate.generate(
-        C.template_path,
+        template_path,
         ".",
         test_data;
         defaults = true,
@@ -78,8 +78,9 @@
 end
 
 @testitem "TestingStrategy basic works correctly" tags = [:unit, :fast, :test_strategy] setup =
-  [Common, StrategyTestHelpers] begin
-  runtests_content, has_test_file = test_strategy_complete("basic")
+  [TestConstants, Common, StrategyTestHelpers] begin
+  runtests_content, has_test_file =
+    test_strategy_complete("basic", TestConstants.args.bestie.tiny, TestConstants.template_path)
 
   # Strategy-specific validations
   @test contains(runtests_content, "@testset")
@@ -92,8 +93,12 @@ end
 end
 
 @testitem "TestingStrategy testitem_cli works correctly" tags = [:unit, :fast, :test_strategy] setup =
-  [Common, StrategyTestHelpers] begin
-  runtests_content, has_test_file = test_strategy_complete("testitem_cli")
+  [TestConstants, Common, StrategyTestHelpers] begin
+  runtests_content, has_test_file = test_strategy_complete(
+    "testitem_cli",
+    TestConstants.args.bestie.tiny,
+    TestConstants.template_path,
+  )
 
   # Strategy-specific validations
   @test contains(runtests_content, "@run_package_tests")
@@ -106,8 +111,12 @@ end
 end
 
 @testitem "TestingStrategy testitem_basic works correctly" tags = [:unit, :fast, :test_strategy] setup =
-  [Common, StrategyTestHelpers] begin
-  runtests_content, has_test_file = test_strategy_complete("testitem_basic")
+  [TestConstants, Common, StrategyTestHelpers] begin
+  runtests_content, has_test_file = test_strategy_complete(
+    "testitem_basic",
+    TestConstants.args.bestie.tiny,
+    TestConstants.template_path,
+  )
 
   # Strategy-specific validations
   @test contains(runtests_content, "@run_package_tests")
@@ -120,8 +129,12 @@ end
 end
 
 @testitem "TestingStrategy basic_auto_discover works correctly" tags =
-  [:unit, :fast, :test_strategy] setup = [Common, StrategyTestHelpers] begin
-  runtests_content, has_test_file = test_strategy_complete("basic_auto_discover")
+  [:unit, :fast, :test_strategy] setup = [TestConstants, Common, StrategyTestHelpers] begin
+  runtests_content, has_test_file = test_strategy_complete(
+    "basic_auto_discover",
+    TestConstants.args.bestie.tiny,
+    TestConstants.template_path,
+  )
 
   # Strategy-specific validations
   @test contains(runtests_content, "@testset")
@@ -134,18 +147,18 @@ end
 end
 
 @testitem "TestingStrategy defaults work correctly" tags = [:unit, :fast, :test_strategy] setup =
-  [Common, StrategyTestHelpers] begin
+  [TestConstants, Common, StrategyTestHelpers] begin
   # Test each strategy level uses correct default
   strategy_levels = ["tiny", "light", "moderate", "robust"]
 
   for level in strategy_levels
     _with_tmp_dir() do dir
       # Use the predefined debug data (which contains TestingStrategy defaults)
-      test_data = getfield(C.args.bestie, Symbol(level))
+      test_data = getfield(TestConstants.args.bestie, Symbol(level))
 
       # Generate package using default data
       BestieTemplate.generate(
-        C.template_path,
+        TestConstants.template_path,
         ".",
         test_data;
         defaults = true,
@@ -168,10 +181,10 @@ end
   # Test that explicit TestingStrategy overrides defaults
   _with_tmp_dir() do dir
     # Use tiny data but override with testitem_cli
-    test_data = merge(C.args.bestie.tiny, Dict("TestingStrategy" => "testitem_cli"))
+    test_data = merge(TestConstants.args.bestie.tiny, Dict("TestingStrategy" => "testitem_cli"))
 
     BestieTemplate.generate(
-      C.template_path,
+      TestConstants.template_path,
       ".",
       test_data;
       defaults = true,
