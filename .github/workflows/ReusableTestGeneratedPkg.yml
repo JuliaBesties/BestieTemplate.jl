@@ -61,7 +61,7 @@ jobs:
         run: touch requirements.txt
       - name: Setup Python
         if: ${{ env.NEEDS_PRECOMMIT == 'true' }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           cache: "pip"
           python-version: "3.11"
