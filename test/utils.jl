@@ -1,5 +1,30 @@
-# TODO: This should be split better
+# Test constants and expensive one-time computations
+@testmodule TestConstants begin
+  using BestieTemplate.Debug.Data: Data
+
+  "Transforms the dict 'k => v' into copier args '-d k=v'"
+  _bestie_args_to_copier_args(dict) = vcat([["-d"; "$k=$v"] for (k, v) in dict]...)
+
+  "Arguments for the different calls"
+  const args = (
+    bestie = Data.strategies,
+    copier = NamedTuple(
+      key => _bestie_args_to_copier_args(value) for (key, value) in pairs(Data.strategies)
+    ),
+  )
+
+  const template_path = joinpath(@__DIR__, "..")
+  const template_url = "https://github.com/JuliaBesties/BestieTemplate.jl"
+
+  const lowercase_letters = 'a':'z'
+  const uppercase_letters = 'A':'Z'
+  const letters = lowercase_letters ∪ uppercase_letters
+  const digits = '0':'9'
+  const hex = digits ∪ ('a':'f')
+end
+
 @testsnippet Common begin
+  # === ENVIRONMENT SETUP ===
   if get(ENV, "CI", "nothing") == "nothing"
     # This is only useful for testing offline. It creates a local env to avoid redownloading things.
     ENV["JULIA_CONDAPKG_ENV"] = joinpath(@__DIR__, "conda-env")
@@ -13,6 +38,7 @@
     run(`git reset --hard HEAD`)
   end
 
+  # === IMPORTS ===
   using BestieTemplate
   using Logging
   using Pkg
@@ -21,6 +47,10 @@
   using TOML
   using YAML
 
+  # === CONSTANTS ACCESS ===
+  # Note: Tests access TestConstants directly (testmodules cannot be aliased in testsnippets)
+
+  # === GIT OPERATIONS ===
   function _git_setup()
     run(`git init -q`)
     run(`git add .`)
@@ -50,6 +80,7 @@
     run(`git commit -q -m "git add . and pre-commit run -a"`)
   end
 
+  # === DIRECTORY & FILE OPERATIONS ===
   function _with_tmp_dir(f, args...; kwargs...)
     # Can't use mktempdir on GitHub actions willy nilly (at least on Mac)
     tmpdir = get(ENV, "TMPDIR", mktempdir())
@@ -74,6 +105,17 @@
     end
   end
 
+  """
+  Create a non-empty directory with content (for error testing)
+  """
+  function _create_non_empty_dir(dirname, filename = "README.md", content = "Hi")
+    mkdir(dirname)
+    open(joinpath(dirname, filename), "w") do io
+      println(io, content)
+    end
+  end
+
+  # === TESTING & VALIDATION UTILITIES ===
   function _test_diff_dir(dir1, dir2)
     ignore(line) = startswith("_commit")(line) || startswith("_src_path")(line)
     @testset "$(basename(dir1)) vs $(basename(dir2))" begin
@@ -115,16 +157,30 @@
     end
   end
 
-  _random(::Val{T}, value) where {T} = rand(C.letters, length(value)) |> join
+  """
+  Validate copier answers file against expected data
+  """
+  function _validate_copier_answers(expected_data, file_path = ".copier-answers.yml")
+    answers = YAML.load_file(file_path)
+    for (key, expected_value) in expected_data
+      @test answers[key] == expected_value
+    end
+    return answers
+  end
+
+  # === RANDOM DATA GENERATION ===
+  _random(::Val{T}, value) where {T} = rand(TestConstants.letters, length(value)) |> join
   _random(::Val{T}, value::Bool) where {T} = rand(Bool)
-  _random(::Val{:PackageName}, value) = return "Pkg" * join(rand(C.letters, length(value) - 3))
+  _random(::Val{:PackageName}, value) =
+    return "Pkg" * join(rand(TestConstants.letters, length(value) - 3))
   _random(::Val{:StrategyLevel}, value) = rand(0:3)
   _random(::Val{:License}, value) = rand(["Apache-2.0", "GPL-3.0", "MIT", "MPL-2.0"])
   _random(::Val{:Indentation}, value) = rand(2:8)
   _random(::Val{:JuliaIndentation}, value) = rand(2:8)
   _random(::Val{:MarkdownIndentation}, value) = rand(2:8)
   _random(::Val{:ConfigIndentation}, value) = rand(2:8)
-  _random(::Val{:PackageUUID}, value) = [x in C.hex ? rand(C.hex) : x for x in value] |> join
+  _random(::Val{:PackageUUID}, value) =
+    [x in TestConstants.hex ? rand(TestConstants.hex) : x for x in value] |> join
   _random(::Val{:JuliaMinVersion}, value) = "1.$(rand(0:20))"
   _random(::Val{:JuliaMinCIVersion}, value) = rand() < 0.2 ? "lts" : "1.$(rand(0:20))"
   _random(::Val{:AddDocs}, value::Bool) = true
@@ -134,33 +190,54 @@
   _random(::Val{:TestingStrategy}, value) =
     rand(["basic", "testitem_cli", "testitem_basic", "basic_auto_discover"])
 
+  # === DATA CREATION UTILITIES ===
   """
-  Constants used in the tests
+  Create test data with optional modifications
   """
-  module C
+  function _create_test_data(base = :robust; modifications = Dict())
+    base_data = getfield(TestConstants.args.bestie, base)
+    return merge(copy(base_data), modifications)
+  end
 
-  using BestieTemplate.Debug.Data: Data
-
-  "Transforms the dict 'k => v' into copier args '-d k=v'"
-  _bestie_args_to_copier_args(dict) = vcat([["-d"; "$k=$v"] for (k, v) in dict]...)
-
-  "Arguments for the different calls"
-  _bestie_args =
-    args = (
-      bestie = Data.strategies,
-      copier = NamedTuple(
-        key => _bestie_args_to_copier_args(value) for (key, value) in pairs(Data.strategies)
-      ),
+  # === BESTIETEMPLATE OPERATIONS ===
+  """
+  Generate a test package with standard defaults
+  """
+  function _generate_test_package(
+    destination = ".",
+    data = TestConstants.args.bestie.robust;
+    kwargs...,
+  )
+    defaults = (; quiet = true, vcs_ref = "HEAD")
+    BestieTemplate.generate(
+      TestConstants.template_path,
+      destination,
+      data;
+      merge(defaults, kwargs)...,
     )
+  end
 
-  template_path = joinpath(@__DIR__, "..")
-  template_url = "https://github.com/JuliaBesties/BestieTemplate.jl"
+  """
+  Apply template with standard defaults
+  """
+  function _apply_test_template(destination, data = Dict(); kwargs...)
+    defaults = (; defaults = true, overwrite = true, quiet = true, vcs_ref = "HEAD")
+    BestieTemplate.apply(TestConstants.template_path, destination, data; merge(defaults, kwargs)...)
+  end
 
-  lowercase_letters = 'a':'z'
-  uppercase_letters = 'A':'Z'
-  letters = lowercase_letters ∪ uppercase_letters
-  digits = '0':'9'
-  hex = digits ∪ ('a':'f')
-
+  """
+  Generate package with git setup and optional precommit
+  """
+  function _generate_with_git_setup(
+    destination = ".",
+    data = TestConstants.args.bestie.robust;
+    run_precommit = true,
+    kwargs...,
+  )
+    _generate_test_package(destination, data; kwargs...)
+    _git_setup()
+    if run_precommit
+      _full_precommit()
+    end
   end
 end
