@@ -62,13 +62,9 @@ pre-commit run -a
 
 ### Link checking locally
 
-We use `lychee` for link checking in CI. You can run it locally to avoid waiting for CI:
+We use `lychee` for link checking in CI. You can run it locally to avoid waiting for CI. First, [install lychee](https://github.com/lycheeverse/lychee?tab=readme-ov-file#installation), then run against the repository root using the project config:
 
 ```bash
-# Install lychee
-# https://github.com/lycheeverse/lychee?tab=readme-ov-file#installation
-
-# Run against the repository root using the project config
 lychee --no-progress --config lychee.toml .
 ```
 
