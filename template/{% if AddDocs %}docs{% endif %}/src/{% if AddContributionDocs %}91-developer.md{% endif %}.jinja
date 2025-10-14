@@ -60,6 +60,18 @@ pre-commit run -a
 **Now, you can only commit if all the pre-commit tests pass**.
 {%- endif %}
 
+### Link checking locally
+
+We use `lychee` for link checking in CI. You can run it locally to avoid waiting for CI:
+
+```bash
+# Install lychee
+# https://github.com/lycheeverse/lychee?tab=readme-ov-file#installation
+
+# Run against the repository root using the project config
+lychee --no-progress --config lychee.toml .
+```
+
 ## Testing
 
 As with most Julia packages, you can just open Julia in the repository folder, activate the environment, and run `test`:
