@@ -88,6 +88,7 @@ This also doesn't explain where each file came from or why they are here. You ca
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/datejada"><img src="https://avatars.githubusercontent.com/u/12887482?v=4?s=100" width="100px;" alt="Diego Alejandro Tejada Arango"/><br /><sub><b>Diego Alejandro Tejada Arango</b></sub></a><br /><a href="#ideas-datejada" title="Ideas, Planning, & Feedback">🤔</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/hz-xiaxz"><img src="https://avatars.githubusercontent.com/u/114814844?v=4?s=100" width="100px;" alt="LeoXia"/><br /><sub><b>LeoXia</b></sub></a><br /><a href="#code-hz-xiaxz" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/langestefan"><img src="https://avatars.githubusercontent.com/u/37669773?v=4?s=100" width="100px;" alt="Stefan de Lange"/><br /><sub><b>Stefan de Lange</b></sub></a><br /><a href="#code-langestefan" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/mmikhasenko"><img src="https://avatars.githubusercontent.com/u/22725744?v=4?s=100" width="100px;" alt="Misha Mikhasenko"/><br /><sub><b>Misha Mikhasenko</b></sub></a><br /><a href="#code-mmikhasenko" title="Code">💻</a> <a href="#doc-mmikhasenko" title="Documentation">📖</a> <a href="#bug-mmikhasenko" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
