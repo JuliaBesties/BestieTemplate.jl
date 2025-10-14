@@ -198,6 +198,17 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "mmikhasenko",
+      "name": "Misha Mikhasenko",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22725744?v=4",
+      "profile": "https://github.com/mmikhasenko",
+      "contributions": [
+        "code",
+        "doc",
+        "bug"
+      ]
     }
   ]
 }
