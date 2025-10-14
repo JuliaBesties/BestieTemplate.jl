@@ -3,7 +3,7 @@ exclude = [
   "@cite",
   "^https://github.com/.*/releases/tag/v.*$",
   "^https://github.com/.*/compare/v.*HEAD$",
-  "https://allcontributors.org" # link broken because project might be abandoned
+  "^https://blog.esciencecenter.nl" # certificate error, hopefully fixed soon
 ]
 
 exclude_path = [
