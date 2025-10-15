@@ -1,50 +1,44 @@
-
-@testitem "Test that BestieTemplate.generate warns and exits for existing copy" setup = [Common] begin
+@testitem "BestieTemplate.apply warns for existing copier projects" tags =
+  [:unit, :fast, :error_handling, :python_integration] setup = [TestConstants, Common] begin
   _with_tmp_dir() do dir_copier
-    run(`copier copy --vcs-ref HEAD --quiet $(C.args.copier.robust) $(C.template_path) .`)
+    # Set up existing copier project
+    run(
+      `copier copy --vcs-ref HEAD --quiet $(TestConstants.args.copier.robust) $(TestConstants.template_path) .`,
+    )
     _git_setup()
 
+    # Test that apply warns when used on existing copier project
     @test_logs (:warn,) BestieTemplate.apply("."; quiet = true)
     @test_logs (:warn,) BestieTemplate.apply(dir_copier; quiet = true)
   end
 end
 
-@testitem "Test that generate fails if dst_path exists and is non-empty" setup = [Common] begin
+@testitem "Generate fails for non-empty destination directory" tags =
+  [:unit, :fast, :error_handling, :validation] setup = [TestConstants, Common] begin
   _with_tmp_dir() do dir
-    mkdir("some_folder1")
-    open(joinpath("some_folder1", "README.md"), "w") do io
-      println(io, "Hi")
-    end
+    # Create non-empty directory
+    _create_non_empty_dir("some_folder1")
+
     @test_throws Exception BestieTemplate.generate("some_folder1")
   end
 end
 
-@testitem "Test that generate works if dst_path is ." setup = [Common] begin
+@testitem "Generate succeeds when destination is current directory" tags =
+  [:unit, :fast, :validation, :file_io] setup = [TestConstants, Common] begin
   _with_tmp_dir() do dir
     mkdir("some_folder2")
     cd("some_folder2") do
       # Should not throw
-      BestieTemplate.generate(
-        C.template_path,
-        ".",
-        C.args.bestie.robust;
-        quiet = true,
-        vcs_ref = "HEAD",
-      )
+      _generate_test_package(".", TestConstants.args.bestie.robust)
     end
   end
 end
 
-@testitem "Test that generate works if dst_path exists but is empty" setup = [Common] begin
+@testitem "Generate succeeds for empty destination directory" tags =
+  [:unit, :fast, :validation, :file_io] setup = [TestConstants, Common] begin
   _with_tmp_dir() do dir
     mkdir("some_folder3")
     # Should not throw
-    BestieTemplate.generate(
-      C.template_path,
-      "some_folder3",
-      C.args.bestie.robust;
-      quiet = true,
-      vcs_ref = "HEAD",
-    )
+    _generate_test_package("some_folder3", TestConstants.args.bestie.robust)
   end
 end
