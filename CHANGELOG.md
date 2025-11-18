@@ -28,6 +28,10 @@ BREAKING NOTICE:
 - The pre-commit autoupdate CI is no longer part of the `Precommit` question, and defaults to `false` (advanced) (#503)
 - The default markdownlint configuration (in `.markdownlist.json`) now has `MD024.siblings_only = true` (#505)
 
+### Fixed
+
+- Validate that Authors is not empty (#563)
+
 ### Removed
 
 - `AutoIncludeTests` question has been replaced by the more comprehensive `TestingStrategy` question
