@@ -39,6 +39,7 @@ Authors:
   type: str
   help: Package authors separated by commas (We recommend the form NAME <EMAIL>, but this can be ignored)
   placeholder: NAME <EMAIL>,NAME <EMAIL>
+  validator: "{% if Authors | length == 0 %}Can't be empty{% endif %}"
   description: |
     The authors of the package in a single line, separated by commas. The actual content is not verified.
     We recommend using the format `NAME <EMAIL>` for each author, so that it is consistent with most uses of author. However, that is not necessary.
