@@ -37,14 +37,14 @@
   end
 
   # Common test logic for a specific strategy
-  function test_strategy_complete(strategy, base_data, template_path)
+  function test_strategy_complete(strategy)
     _with_tmp_dir() do dir
       # Create test data with specific strategy
-      test_data = merge(base_data, Dict("TestingStrategy" => strategy))
+      test_data = merge(TestConstants.args.bestie.tiny, Dict("TestingStrategy" => strategy))
 
       # Generate package
       BestieTemplate.generate(
-        template_path,
+        TestConstants.template_path,
         ".",
         test_data;
         defaults = true,
@@ -79,8 +79,7 @@ end
 
 @testitem "TestingStrategy basic works correctly" tags = [:unit, :fast, :test_strategy] setup =
   [TestConstants, Common, StrategyTestHelpers] begin
-  runtests_content, has_test_file =
-    test_strategy_complete("basic", TestConstants.args.bestie.tiny, TestConstants.template_path)
+  runtests_content, has_test_file = test_strategy_complete("basic")
 
   # Strategy-specific validations
   @test contains(runtests_content, "@testset")
@@ -94,11 +93,7 @@ end
 
 @testitem "TestingStrategy testitem_cli works correctly" tags = [:unit, :fast, :test_strategy] setup =
   [TestConstants, Common, StrategyTestHelpers] begin
-  runtests_content, has_test_file = test_strategy_complete(
-    "testitem_cli",
-    TestConstants.args.bestie.tiny,
-    TestConstants.template_path,
-  )
+  runtests_content, has_test_file = test_strategy_complete("testitem_cli")
 
   # Strategy-specific validations
   @test contains(runtests_content, "@run_package_tests")
@@ -112,11 +107,7 @@ end
 
 @testitem "TestingStrategy testitem_basic works correctly" tags = [:unit, :fast, :test_strategy] setup =
   [TestConstants, Common, StrategyTestHelpers] begin
-  runtests_content, has_test_file = test_strategy_complete(
-    "testitem_basic",
-    TestConstants.args.bestie.tiny,
-    TestConstants.template_path,
-  )
+  runtests_content, has_test_file = test_strategy_complete("testitem_basic")
 
   # Strategy-specific validations
   @test contains(runtests_content, "@run_package_tests")
@@ -130,11 +121,7 @@ end
 
 @testitem "TestingStrategy basic_auto_discover works correctly" tags =
   [:unit, :fast, :test_strategy] setup = [TestConstants, Common, StrategyTestHelpers] begin
-  runtests_content, has_test_file = test_strategy_complete(
-    "basic_auto_discover",
-    TestConstants.args.bestie.tiny,
-    TestConstants.template_path,
-  )
+  runtests_content, has_test_file = test_strategy_complete("basic_auto_discover")
 
   # Strategy-specific validations
   @test contains(runtests_content, "@testset")
