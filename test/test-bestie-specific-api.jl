@@ -155,7 +155,7 @@ end
   [:unit, :fast, :guessing, :file_io] setup = [TestConstants, Common, ApiTestHelpers] begin
   _with_tmp_dir() do dir_path_is_dir
     # Test automatic guessing from path
-    data = _create_test_data(:robust; modifications = Dict("PackageName" => nothing))
+    data = _create_test_data(:robust)
     delete!(data, "PackageName")  # Remove PackageName to test path guessing
     mkdir("some_folder")
     _generate_test_package("some_folder/SomePackage1.jl", data)
