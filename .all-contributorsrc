@@ -209,6 +209,15 @@
         "doc",
         "bug"
       ]
+    },
+    {
+      "login": "krsteffen",
+      "name": "Kyle Robert Steffen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31858760?v=4",
+      "profile": "https://github.com/krsteffen",
+      "contributions": [
+        "bug"
+      ]
     }
   ]
 }
