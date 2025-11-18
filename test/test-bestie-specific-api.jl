@@ -10,7 +10,7 @@
   ])
 
   # Helper to test incomplete guessing scenarios - keeps complex setup/verification logic
-  function test_incomplete_guessing(setup_action, missing_keys, debug_messages = [])
+  function test_incomplete_guessing(setup_action, missing_keys, debug_messages)
     src_data = copy(TestConstants.args.bestie.robust)
     expected_keys = setdiff(guessable_answers, missing_keys)
 
@@ -22,13 +22,9 @@
       setup_action()
 
       # Test guessing with debug logs
-      if !isempty(debug_messages)
-        @test_logs debug_messages... min_level = Logging.Debug BestieTemplate._read_data_from_existing_path(
-          ".",
-        )
-      else
-        BestieTemplate._read_data_from_existing_path(".")
-      end
+      @test_logs debug_messages... min_level = Logging.Debug BestieTemplate._read_data_from_existing_path(
+        ".",
+      )
 
       # Verify expected data
       guessed_data = BestieTemplate._read_data_from_existing_path(".")
