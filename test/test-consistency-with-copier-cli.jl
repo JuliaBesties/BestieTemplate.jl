@@ -1,5 +1,7 @@
 @testsnippet CliComparisonHelpers begin
   # Function to get common CLI args (accessed from test items with TestConstants)
+  # Instead of a function, this could be directly defined as common_cli_args,
+  # but it makes it clearer where it comes from
   function get_common_cli_args()
     return (
       template_path = TestConstants.template_path,
