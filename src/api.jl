@@ -88,7 +88,16 @@ function generate(
     error("$dst_path already exists. For existing packages, use `BestieTemplate.apply` instead.")
   end
 
-  _copy(src_path, dst_path, data; kwargs...)
+  try
+    _copy(src_path, dst_path, data; kwargs...)
+  catch ex
+    if isa(ex, PyException)
+      @error "Error generating project: $(ex.v)"
+      return
+    else
+      rethrow(ex)
+    end
+  end
   if change_permissions && dst_path != "."
     change_project_permissions(dst_path)
   end
@@ -223,7 +232,16 @@ function apply(
   end
   data = merge(existing_data, data)
 
-  _copy(src_path, dst_path, data; overwrite = true, kwargs...)
+  try
+    _copy(src_path, dst_path, data; overwrite = true, kwargs...)
+  catch ex
+    if isa(ex, PyException)
+      @error "Error applying template: $(ex.v)"
+      return
+    else
+      rethrow(ex)
+    end
+  end
   if change_permissions && dst_path != "."
     change_project_permissions(dst_path)
   end
@@ -286,7 +304,16 @@ The `data` argument is a dictionary of answers (values) to questions (keys) that
 The keyword arguments are passed directly to the internal [`Copier.update`](@ref).
 """
 function update(dst_path, data::Dict = Dict(); kwargs...)
-  Copier.update(dst_path, data; overwrite = true, kwargs...)
+  try
+    Copier.update(dst_path, data; overwrite = true, kwargs...)
+  catch ex
+    if isa(ex, PyException)
+      @error "Error updating: $(ex.v)"
+      return
+    else
+      rethrow(ex)
+    end
+  end
 end
 
 function update(data::Dict = Dict(); kwargs...)

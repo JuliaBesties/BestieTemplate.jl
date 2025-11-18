@@ -27,6 +27,7 @@ BREAKING NOTICE:
 
 - The pre-commit autoupdate CI is no longer part of the `Precommit` question, and defaults to `false` (advanced) (#503)
 - The default markdownlint configuration (in `.markdownlist.json`) now has `MD024.siblings_only = true` (#505)
+- Treat exception raised in Python to write a nice error message instead of letting is pass through (#560)
 
 ### Fixed
 

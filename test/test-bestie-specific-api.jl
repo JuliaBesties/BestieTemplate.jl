@@ -194,7 +194,10 @@ end
     for name in ["Bad.jl", "0Bad", "bad"]
       data = copy(C.args.bestie.robust)
       data["PackageName"] = name
-      @test_throws PythonCall.Core.PyException BestieTemplate.generate(
+      @test_logs (
+        :error,
+        "Error generating project: Validation error for question 'PackageName': Must start with a capital letter, and use letters or numbers only",
+      ) match_mode = :any BestieTemplate.generate(
         C.template_path,
         ".",
         data,
