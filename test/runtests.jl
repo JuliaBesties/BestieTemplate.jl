@@ -52,8 +52,21 @@ const TAGS_DATA = Dict(
   :fast => "Quick tests suitable for frequent execution",
   :slow => "Resource-intensive tests requiring significant time or memory",
 
-  # Features (What features are being tested?)
+  # Feature Areas (What functionality is being tested?)
   :test_strategy => "Tests for TestingStrategy functionality",
+  :guessing => "Automatic data guessing functionality",
+  :template_application => "Template application and generation",
+  :copier_compatibility => "Compatibility with copier CLI",
+  :license_handling => "License file creation and handling",
+  :error_handling => "Error conditions and validation",
+  :package_creation => "Package generation workflows",
+  :update_workflow => "Template update functionality",
+
+  # Test Characteristics (What capabilities/dependencies are required?)
+  :file_io => "Tests involving file system operations",
+  :git_operations => "Tests requiring git setup/operations",
+  :python_integration => "Tests involving Python/copier integration",
+  :randomized => "Tests using randomized inputs",
 )
 
 function main()
