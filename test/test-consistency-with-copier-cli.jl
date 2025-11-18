@@ -1,20 +1,4 @@
 @testsnippet CliComparisonHelpers begin
-  # Function to get common CLI args (accessed from test items with TestConstants)
-  # Instead of a function, this could be directly defined as common_cli_args,
-  # but it makes it clearer where it comes from
-  function get_common_cli_args()
-    return (
-      template_path = TestConstants.template_path,
-      template_url = TestConstants.template_url,
-      robust_bestie = TestConstants.args.bestie.robust,
-      robust_copier = TestConstants.args.copier.robust,
-      tiny_bestie = TestConstants.args.bestie.tiny,
-      tiny_copier = TestConstants.args.copier.tiny,
-      quiet = true,
-      vcs_ref = "HEAD",
-    )
-  end
-
   # Helper to create copier CLI baseline with git setup and precommit
   function create_copier_baseline(copier_args, template_path)
     run(`copier copy --vcs-ref HEAD --quiet $copier_args $template_path .`)
@@ -45,16 +29,15 @@ end
 @testitem "Copier.copy produces same result as copier CLI copy" tags =
   [:integration, :slow, :copier_compatibility, :python_integration, :git_operations] setup =
   [TestConstants, Common, CliComparisonHelpers] begin
-  common_cli_args = get_common_cli_args()
   _with_tmp_dir() do dir_copier
-    create_copier_baseline(common_cli_args.robust_copier, common_cli_args.template_path)
+    create_copier_baseline(TestConstants.args.copier.robust, TestConstants.template_path)
 
     _with_tmp_dir() do dir_bestie
       BestieTemplate.Copier.copy(
         dir_bestie,
-        common_cli_args.robust_bestie;
-        quiet = common_cli_args.quiet,
-        vcs_ref = common_cli_args.vcs_ref,
+        TestConstants.args.bestie.robust;
+        quiet = true,
+        vcs_ref = "HEAD",
       )
       _git_setup()
       _full_precommit()
@@ -66,22 +49,21 @@ end
 @testitem "Copier.recopy produces same result as copier CLI baseline" tags =
   [:integration, :slow, :copier_compatibility, :python_integration, :git_operations] setup =
   [TestConstants, Common, CliComparisonHelpers] begin
-  common_cli_args = get_common_cli_args()
   _with_tmp_dir() do dir_copier
-    create_copier_baseline(common_cli_args.robust_copier, common_cli_args.template_path)
+    create_copier_baseline(TestConstants.args.copier.robust, TestConstants.template_path)
 
     _with_tmp_dir() do dir_bestie
       run(
-        `copier copy --vcs-ref HEAD --defaults --quiet $(common_cli_args.tiny_copier) $(common_cli_args.template_path) .`,
+        `copier copy --vcs-ref HEAD --defaults --quiet $(TestConstants.args.copier.tiny) $(TestConstants.template_path) .`,
       )
       apply_copier_workaround(dir_bestie)
 
       BestieTemplate.Copier.recopy(
         dir_bestie,
-        common_cli_args.robust_bestie;
-        quiet = common_cli_args.quiet,
+        TestConstants.args.bestie.robust;
+        quiet = true,
         overwrite = true,
-        vcs_ref = common_cli_args.vcs_ref,
+        vcs_ref = "HEAD",
       )
       _git_setup()
       _full_precommit()
@@ -93,22 +75,21 @@ end
 @testitem "Copier.update produces same result as copier CLI update" tags =
   [:integration, :slow, :copier_compatibility, :python_integration, :git_operations] setup =
   [TestConstants, Common, CliComparisonHelpers] begin
-  common_cli_args = get_common_cli_args()
   _with_tmp_dir() do dir_copier
-    create_copier_baseline(common_cli_args.robust_copier, common_cli_args.template_path)
+    create_copier_baseline(TestConstants.args.copier.robust, TestConstants.template_path)
 
     _with_tmp_dir() do dir_bestie
       run(
-        `copier copy --defaults --quiet $(common_cli_args.tiny_copier) $(common_cli_args.template_path) .`,
+        `copier copy --defaults --quiet $(TestConstants.args.copier.tiny) $(TestConstants.template_path) .`,
       )
       apply_copier_workaround(dir_bestie)
       _git_setup()
       BestieTemplate.Copier.update(
         dir_bestie,
-        common_cli_args.robust_bestie;
+        TestConstants.args.bestie.robust;
         overwrite = true,
-        quiet = common_cli_args.quiet,
-        vcs_ref = common_cli_args.vcs_ref,
+        quiet = true,
+        vcs_ref = "HEAD",
       )
       _git_setup()
       _full_precommit()
@@ -120,19 +101,18 @@ end
 @testitem "BestieTemplate.generate produces same result as copier CLI" tags =
   [:integration, :slow, :copier_compatibility, :python_integration] setup =
   [TestConstants, Common, CliComparisonHelpers] begin
-  common_cli_args = get_common_cli_args()
   _with_tmp_dir() do dir_copier
     run(
-      `copier copy --vcs-ref HEAD --quiet $(common_cli_args.robust_copier) $(common_cli_args.template_path) .`,
+      `copier copy --vcs-ref HEAD --quiet $(TestConstants.args.copier.robust) $(TestConstants.template_path) .`,
     )
 
     _with_tmp_dir() do dir_bestie
       BestieTemplate.generate(
-        common_cli_args.template_path,
+        TestConstants.template_path,
         dir_bestie,
-        common_cli_args.robust_bestie;
-        quiet = common_cli_args.quiet,
-        vcs_ref = common_cli_args.vcs_ref,
+        TestConstants.args.bestie.robust;
+        quiet = true,
+        vcs_ref = "HEAD",
       )
       _test_diff_dir(dir_bestie, dir_copier)
     end
@@ -142,24 +122,23 @@ end
 @testitem "BestieTemplate.apply produces same result as copier CLI on existing project" tags =
   [:integration, :slow, :copier_compatibility, :python_integration, :git_operations] setup =
   [TestConstants, Common, CliComparisonHelpers] begin
-  common_cli_args = get_common_cli_args()
   _with_tmp_dir() do dir_copier
     _basic_new_pkg("NewPkg")
     run(
-      `copier copy --defaults --overwrite --quiet --vcs-ref HEAD $(common_cli_args.tiny_copier) $(common_cli_args.template_path) NewPkg`,
+      `copier copy --defaults --overwrite --quiet --vcs-ref HEAD $(TestConstants.args.copier.tiny) $(TestConstants.template_path) NewPkg`,
     )
     fix_project_toml_uuid("NewPkg")
 
     _with_tmp_dir() do dir_bestie
       _basic_new_pkg("NewPkg")
       BestieTemplate.apply(
-        common_cli_args.template_path,
+        TestConstants.template_path,
         joinpath(dir_bestie, "NewPkg"),
-        common_cli_args.tiny_bestie;
+        TestConstants.args.bestie.tiny;
         defaults = true,
         overwrite = true,
-        quiet = common_cli_args.quiet,
-        vcs_ref = common_cli_args.vcs_ref,
+        quiet = true,
+        vcs_ref = "HEAD",
       )
       fix_project_toml_uuid("NewPkg")
       _test_diff_dir(joinpath(dir_bestie, "NewPkg"), joinpath(dir_copier, "NewPkg"))
@@ -170,23 +149,22 @@ end
 @testitem "BestieTemplate.update produces same result as copier CLI update" tags =
   [:integration, :slow, :copier_compatibility, :python_integration, :git_operations] setup =
   [TestConstants, Common, CliComparisonHelpers] begin
-  common_cli_args = get_common_cli_args()
   _with_tmp_dir() do dir_copier
     run(
-      `copier copy --defaults --quiet $(common_cli_args.tiny_copier) $(common_cli_args.template_url) .`,
+      `copier copy --defaults --quiet $(TestConstants.args.copier.tiny) $(TestConstants.template_url) .`,
     )
     _git_setup()
-    run(`copier update --defaults --quiet $(common_cli_args.robust_copier) .`)
+    run(`copier update --defaults --quiet $(TestConstants.args.copier.robust) .`)
 
     _with_tmp_dir() do dir_bestie
       BestieTemplate.generate(
         dir_bestie,
-        common_cli_args.tiny_bestie;
+        TestConstants.args.bestie.tiny;
         defaults = true,
         quiet = true,
       )
       _git_setup()
-      BestieTemplate.update(common_cli_args.robust_bestie; defaults = true, quiet = true)
+      BestieTemplate.update(TestConstants.args.bestie.robust; defaults = true, quiet = true)
 
       _test_diff_dir(dir_bestie, dir_copier)
     end
