@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.17.0] - 2025-11-18
+
 BREAKING NOTICE:
 
 - The `AutoIncludeTests` question has been replaced with a new `TestingStrategy` question offering 4 different testing approaches. When updating existing packages, you will need to manually select the equivalent option:
@@ -521,7 +523,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.16.2...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.17.0...HEAD
+[0.17.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.17.0
 [0.16.2]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.16.2
 [0.16.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.16.1
 [0.16.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.16.0
