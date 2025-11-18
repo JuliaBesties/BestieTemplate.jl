@@ -141,6 +141,9 @@ This also doesn't explain where each file came from or why they are here. You ca
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/mmikhasenko"><img src="https://avatars.githubusercontent.com/u/22725744?v=4?s=100" width="100px;" alt="Misha Mikhasenko"/><br /><sub><b>Misha Mikhasenko</b></sub></a><br /><a href="#code-mmikhasenko" title="Code">💻</a> <a href="#doc-mmikhasenko" title="Documentation">📖</a> <a href="#bug-mmikhasenko" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/krsteffen"><img src="https://avatars.githubusercontent.com/u/31858760?v=4?s=100" width="100px;" alt="Kyle Robert Steffen"/><br /><sub><b>Kyle Robert Steffen</b></sub></a><br /><a href="#bug-krsteffen" title="Bug reports">🐛</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/BSchilperoort"><img src="https://avatars.githubusercontent.com/u/12114825?v=4?s=100" width="100px;" alt="Bart Schilperoort"/><br /><sub><b>Bart Schilperoort</b></sub></a><br /><a href="#bug-BSchilperoort" title="Bug reports">🐛</a></td>
+    </tr>
   </tbody>
 </table>
 
