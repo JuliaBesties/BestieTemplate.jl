@@ -40,7 +40,7 @@ jobs:
       NEEDS_DOCS: ${{ inputs.enable_docs && inputs.strategy_level != 'tiny' }}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: julia-actions/setup-julia@v2
