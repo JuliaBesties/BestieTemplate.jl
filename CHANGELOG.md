@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- Added `[workspace]` section to `Project.toml`, see the [Pkg docs](https://pkgdocs.julialang.org/dev/toml-files/#Workspaces) for details. 
+
 ## [0.17.0] - 2025-11-18
 
 BREAKING NOTICE:
