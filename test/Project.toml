@@ -1,4 +1,5 @@
 [deps]
+BestieTemplate = "e5d671a7-4186-4f1a-bf88-c19b630da94f"
 JuliaFormatter = "98e50ef6-434e-11e9-1051-2b60c6c9e899"
 Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
@@ -7,3 +8,6 @@ TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 TestItemRunner = "f8b46487-2199-4994-9208-9a1283c18c0a"
 YAML = "ddb6d928-2868-570f-bddf-ab3f9cf99eb6"
+
+[sources]
+BestieTemplate = {path = ".."}
