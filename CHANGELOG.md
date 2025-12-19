@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.17.1] - 2025-12-19
+
 ### Added
 
 - Added `[workspace]` section to `Project.toml` with `test` and possibly `docs`. Also adds `[sources]` in the corresponding folders. See the [Pkg docs](https://pkgdocs.julialang.org/dev/toml-files/#Workspaces) for details. (#559)
@@ -527,7 +529,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.17.0...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.17.1...HEAD
+[0.17.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.17.1
 [0.17.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.17.0
 [0.16.2]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.16.2
 [0.16.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.16.1
