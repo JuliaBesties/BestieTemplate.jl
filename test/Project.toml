@@ -11,3 +11,6 @@ YAML = "ddb6d928-2868-570f-bddf-ab3f9cf99eb6"
 
 [sources]
 BestieTemplate = {path = ".."}
+
+[compat]
+PythonCall = "0.9.31"
