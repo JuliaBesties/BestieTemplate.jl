@@ -9,8 +9,9 @@ and this project adheres to [Semantic Versioning].
 
 ### Changed
 
-- Update actions/checkout versions to 6 (#567)
-- Update actions/cache versions to 5 (#571)
+- Update action `actions/checkout` version to 6 (#567)
+- Update action `actions/cache` version to 5 (#571)
+- Update action `peter-evans/create-pull-request` version to 8 (#570)
 
 ## [0.17.1] - 2025-12-19
 

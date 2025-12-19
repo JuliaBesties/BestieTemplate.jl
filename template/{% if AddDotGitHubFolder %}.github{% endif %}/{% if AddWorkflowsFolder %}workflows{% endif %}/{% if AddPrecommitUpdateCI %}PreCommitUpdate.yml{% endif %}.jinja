@@ -27,7 +27,7 @@ jobs:
           pre-commit autoupdate || true
       - name: Create Pull Request
         id: cpr
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: "chore: :robot: pre-commit update"
           title: "[AUTO] pre-commit update"
