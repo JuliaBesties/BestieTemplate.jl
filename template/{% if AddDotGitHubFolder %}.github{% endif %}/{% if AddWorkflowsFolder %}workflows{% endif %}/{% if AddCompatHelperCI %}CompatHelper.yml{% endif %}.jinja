@@ -25,7 +25,7 @@ jobs:
           arch: {% raw %}${{ runner.arch }}{% endraw %}
         if: steps.julia_in_path.outcome != 'success'
       - name: Use Julia cache
-        uses: julia-actions/cache@v2
+        uses: julia-actions/cache@v5
       - name: "Add the General registry via Git"
         run: |
           import Pkg
