@@ -5,7 +5,9 @@ LiveServer = "16fef848-5104-11e9-1b77-fb7a48bbb589"
 YAML = "ddb6d928-2868-570f-bddf-ab3f9cf99eb6"
 
 [sources]
-BestieTemplate = {path = ".."}
+BestieTemplate = { path = ".." }
 
 [compat]
 Documenter = "1"
+LiveServer = "1"
+YAML = "0.4"

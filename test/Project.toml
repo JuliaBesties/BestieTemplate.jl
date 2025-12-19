@@ -10,4 +10,14 @@ TestItemRunner = "f8b46487-2199-4994-9208-9a1283c18c0a"
 YAML = "ddb6d928-2868-570f-bddf-ab3f9cf99eb6"
 
 [sources]
-BestieTemplate = {path = ".."}
+BestieTemplate = { path = ".." }
+
+[compat]
+JuliaFormatter = "2"
+Logging = "1"
+PythonCall = "0.9"
+TestItemRunner = "1"
+YAML = "0.4"
+Pkg = "1"
+TOML = "1"
+Test = "1"
