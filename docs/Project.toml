@@ -9,3 +9,4 @@ BestieTemplate = {path = ".."}
 
 [compat]
 Documenter = "1"
+LiveServer = "1.5.0"
