@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning].
 ### Changed
 
 - Update actions/checkout versions to 6 (#567)
+- Update actions/cache versions to 5 (#571)
 
 ## [0.17.1] - 2025-12-19
 

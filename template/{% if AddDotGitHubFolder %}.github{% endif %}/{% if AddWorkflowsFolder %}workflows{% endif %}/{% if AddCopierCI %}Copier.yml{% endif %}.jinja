@@ -16,7 +16,7 @@ jobs:
         with:
           version: "1"
       - name: Use Julia cache
-        uses: julia-actions/cache@v2
+        uses: julia-actions/cache@v5
       - name: Install JuliaFormatter.jl
         run: julia -e 'using Pkg; pkg"add JuliaFormatter"'
       - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807

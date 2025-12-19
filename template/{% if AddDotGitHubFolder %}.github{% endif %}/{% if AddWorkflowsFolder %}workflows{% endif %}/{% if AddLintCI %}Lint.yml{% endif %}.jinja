@@ -29,7 +29,7 @@ jobs:
         with:
           version: "1"
       - name: Use Julia cache
-        uses: julia-actions/cache@v2
+        uses: julia-actions/cache@v5
       {% if CheckExplicitImports -%}
       - name: Build package (required for ExplicitImports)
         uses: julia-actions/julia-buildpkg@v1
@@ -49,7 +49,7 @@ jobs:
       - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
         run: rm requirements.txt
       - name: Cache pre-commit
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/pre-commit
           key: {% raw %}${{ runner.os }}-pre-commit-${{ hashFiles('**/.pre-commit-config.yaml') }}{% endraw %}
