@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning].
 
 ### Added
 
-- Added `[workspace]` section to `Project.toml`, see the [Pkg docs](https://pkgdocs.julialang.org/dev/toml-files/#Workspaces) for details.
+- Added `[workspace]` section to `Project.toml` with `test` and possibly `docs`. Also adds `[sources]` in the corresponding folders. See the [Pkg docs](https://pkgdocs.julialang.org/dev/toml-files/#Workspaces) for details. (#559)
 
 ## [0.17.0] - 2025-11-18
 
