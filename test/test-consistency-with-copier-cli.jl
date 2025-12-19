@@ -19,9 +19,13 @@
   function apply_copier_workaround(dir)
     # Due to https://github.com/copier-org/copier/issues/1867 we need to remove test/Project.toml
     # before replacing it by something else.
+    # Now, it also applies to Project.toml and docs/Project.toml
+    project_path = joinpath(dir, "Project.toml")
     test_project_path = joinpath(dir, "test", "Project.toml")
-    if isfile(test_project_path)
-      rm(test_project_path)
+    for project_file in (project_path, test_project_path)
+      if isfile(project_file)
+        rm(project_file)
+      end
     end
   end
 end
