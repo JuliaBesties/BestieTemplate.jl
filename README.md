@@ -65,7 +65,7 @@ please note that `"YourPackage.jl"` can either be a fresh new package or an exis
 <!-- agg https://asciinema.org/a/... docs/src/assets/demo.gif --speed 2.5 --cols 80 --rows 20 --font-family "JuliaMono" -->
 [![asciicast](docs/src/assets/demo.gif)](https://asciinema.org/a/611189)
 
-If you like what you see, check the [full usage guide](https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-full-guide/).
+If you like what you see, check the [full usage guide](https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-guides/10-full-guide/).
 
 ## Users and Examples
 

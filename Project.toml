@@ -3,6 +3,9 @@ uuid = "e5d671a7-4186-4f1a-bf88-c19b630da94f"
 authors = ["Abel Soares Siqueira <abel.s.siqueira@gmail.com> and contributors"]
 version = "0.17.0"
 
+[workspace]
+projects = ["test", "docs"]
+
 [deps]
 Compat = "34da2185-b29b-5c13-b0c7-acf172513d20"
 CondaPkg = "992eb4ea-22a4-4c89-a5bb-47a3300528ab"

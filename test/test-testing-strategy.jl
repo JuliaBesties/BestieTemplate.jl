@@ -61,6 +61,9 @@
       @test haskey(project_toml, "deps")
       actual_deps = Set(keys(project_toml["deps"]))
       expected = expected_deps[strategy]
+      # The package name is also expected now because of the sources section
+      push!(expected, test_data["PackageName"])
+
       @test actual_deps == expected
       @test "Test" in actual_deps  # Always present
 
