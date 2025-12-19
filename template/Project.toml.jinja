@@ -15,5 +15,8 @@ authors = [
 {%- endif %}
 version = "0.1.0"
 
+[workspace]
+projects = ["test"{%- if AddDocs %}, "docs"{% endif -%}]
+
 [compat]
 julia = "{{ JuliaMinVersion }}"
