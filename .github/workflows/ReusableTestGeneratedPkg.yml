@@ -125,17 +125,17 @@ jobs:
         # the following check is meant to break when that happens to force
         # it to be fixed
       - name: FIXME after lts is not 1.10
-        if: ${{ inputs.julia_package == 'lts' }}
+        if: ${{ inputs.julia_version == 'lts' }}
         run: |
           julia --eval '@assert VERSION < v"1.11"'
 
       - name: Build the docs of the generated package
-        if: ${{ env.NEEDS_DOCS == 'true' && inputs.julia_package == 'lts' }}
+        if: ${{ env.NEEDS_DOCS == 'true' && inputs.julia_version == 'lts' }}
         run: |
           julia --project=tmp/Guldasta.jl/docs --eval 'using Pkg; pkg"dev tmp/Guldasta.jl"' \
             -L tmp/Guldasta.jl/docs/make.jl
       - name: Build the docs of the generated package
-        if: ${{ env.NEEDS_DOCS == 'true' && inputs.julia_package != 'lts' }}
+        if: ${{ env.NEEDS_DOCS == 'true' && inputs.julia_version != 'lts' }}
         run: |
           julia --project=tmp/Guldasta.jl/docs tmp/Guldasta.jl/docs/make.jl
 
