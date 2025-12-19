@@ -46,7 +46,7 @@ jobs:
       {% endif -%}
       - name: Create Pull Request
         id: cpr
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           token: {% raw %}${{ secrets.COPIER_PAT }}{% endraw %}
           commit-message: ":robot: BestieTemplate.jl update"
