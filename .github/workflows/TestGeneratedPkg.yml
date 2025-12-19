@@ -52,7 +52,7 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - "lts"
+          - "1" # with the introduction of workspaces and sources, testitem does not interact well with LTS
         os:
           - ubuntu-latest
         arch:
@@ -76,7 +76,7 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - "lts"
+          - "1" # with the introduction of workspaces and sources, testitem does not interact well with LTS
         os:
           - ubuntu-latest
         arch:
