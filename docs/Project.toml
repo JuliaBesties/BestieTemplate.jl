@@ -8,4 +8,5 @@ YAML = "ddb6d928-2868-570f-bddf-ab3f9cf99eb6"
 BestieTemplate = {path = ".."}
 
 [compat]
+BestieTemplate = "0.17.1"
 Documenter = "1"
