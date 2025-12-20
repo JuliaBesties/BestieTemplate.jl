@@ -21,10 +21,9 @@ AddDocsCI:
     Strategy: Light
 
 AddCompatHelperCI:
-  when: "{{ WhenForLight }}"
+  when: false
   type: bool
-  default: "{{ DefaultForLight }}"
-  help: Add CompatHelper workflow (Add CompatHelper.yml to automatically update the compat section of Project.toml)
+  default: "{{ JuliaCompatAutoUpdate == 'compathelper' }}"
   description: |
     Whether to add the CompatHelper.yml workflow that runs periodically to
     automatically update the compat section of the Project.toml file.

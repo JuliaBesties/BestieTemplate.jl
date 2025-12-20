@@ -189,6 +189,8 @@ end
   _random(::Val{:StrategyReviewExcluded}, value::Bool) = true
   _random(::Val{:TestingStrategy}, value) =
     rand(["basic", "testitem_cli", "testitem_basic", "basic_auto_discover"])
+  _random(::Val{:GitHubActionVersionAutoUpdate}, value) = rand(["none", "dependabot"])
+  _random(::Val{:JuliaCompatAutoUpdate}, value) = rand(["none", "dependabot", "compathelper"])
 
   # === DATA CREATION UTILITIES ===
   """

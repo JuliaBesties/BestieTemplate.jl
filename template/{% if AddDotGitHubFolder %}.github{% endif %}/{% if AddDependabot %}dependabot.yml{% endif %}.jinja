@@ -1,7 +1,18 @@
 # https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 version: 2
 updates:
+{%- if GitHubActionVersionAutoUpdate == 'dependabot' %}
   - package-ecosystem: "github-actions"
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+{%- endif %}
+{%- if JuliaCompatAutoUpdate == 'dependabot' %}
+  - package-ecosystem: "julia"
+    directories:
+      - "/"
+      - "/docs"
+      - "/test"
+    schedule:
+      interval: "weekly"
+{% endif %}
