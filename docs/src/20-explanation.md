@@ -231,7 +231,7 @@ Most workflows are added in the "Light" strategy, but each strategy will have ad
 
 We have a few workflows, with plans to expand in the future:
 
-- `CompatHelper.yml`: Should be well known by now. It checks that your Project.toml compat entries are up-to-date.
+- `CompatHelper.yml`: Should be well known by now. It checks that your Project.toml compat entries are up-to-date. (Note: Dependabot now supports Julia and can replace CompatHelper. Both options are available in the template).
 - `Copier.yml`: This will periodically check the template for updates. If there are updates, this action creates a pull request updating your repo.
 - `Docs.yml`: Build the docs. Only runs when relevant files change.
 - `Lint.yml`: Run the linter and formatter through the command `pre-commit run -a`.

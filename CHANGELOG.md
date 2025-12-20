@@ -7,11 +7,34 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+BREAKING NOTICE:
+
+- The questions `AddDependabot` and `AddCompatHelperCI` have been removed in favour of
+`GitHubActionVersionAutoUpdate` and `JuliaCompatAutoUpdate`. Since dependabot now officially supports Julia (<https://github.blog/changelog/2025-12-16-dependabot-version-updates-now-support-julia/>), the default suggestions for managing Julia compat updates is dependabot. The equivalence is the following:
+  - `AddDependabot = false` -> `GitHubActionVersionAutoUpdate = 'none'`
+  - `AddDependabot = true` -> `GitHubActionVersionAutoUpdate = 'dependabot'`
+  - `AddCompatHelperCI = false` -> `JuliaCompatAutoUpdate = 'none'`
+  - `AddCompatHelperCI = true` -> `JuliaCompatAutoUpdate = 'compathelper'`
+  When using defaults, the results are as follow:
+  - For the "Tiny" strategy, both are unselected
+  - For the "Light" strategy, dependabot is used for Julia compat updates
+  - For other strategies, dependabot is used for both Julia compat and GitHub actions updates.
+
+### Added
+
+- New question: `GitHubActionVersionAutoUpdate`, to control whether to use dependabot to automatically update GitHub action versions (#561)
+- New question: `JuliaCompatAutoUpdate`, to control whether to use dependabot or CompatHelper to automatically update Julia compat versions (#561)
+
 ### Changed
 
 - Update action `actions/checkout` version to 6 (#567)
 - Update action `actions/cache` version to 5 (#571)
 - Update action `peter-evans/create-pull-request` version to 8 (#570)
+
+### Removed
+
+- The question `AddDependabot` is not asked anymore. Instead, it is now implicitly defined by `GitHubActionVersionAutoUpdate` and `JuliaCompatAutoUpdate` (#561)
+- The question `AddCompatHelperCI` is not asked anymore. Instead, it is now implicitly defined by `JuliaCompatAutoUpdate` (#561)
 
 ## [0.17.1] - 2025-12-19
 

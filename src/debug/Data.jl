@@ -23,6 +23,8 @@ const strategies = let
     deprecated,
     Dict(
       "Authors" => "Bestie Template <bestie@fake.nl> and contributors",
+      "GitHubActionVersionAutoUpdate" => "none",
+      "JuliaCompatAutoUpdate" => "none",
       "JuliaMinCIVersion" => "lts",
       "JuliaMinVersion" => "1.10",
       "License" => "MIT",
@@ -40,7 +42,6 @@ const strategies = let
   light = merge(
     tiny,
     Dict(
-      "AddCompatHelperCI" => true,
       "AddDocs" => true,
       "AddDocsCI" => true,
       "AddFormatterAndLinterConfigFiles" => true,
@@ -49,6 +50,7 @@ const strategies = let
       "AddTagBotCI" => true,
       "AddTestCI" => true,
       "ConfigIndentation" => 2,
+      "JuliaCompatAutoUpdate" => "dependabot",
       "JuliaIndentation" => 4,
       "MarkdownIndentation" => 2,
       "StrategyLevel" => 1,
@@ -60,8 +62,8 @@ const strategies = let
     light,
     Dict(
       "AddCitationCFF" => true,
-      "AddDependabot" => true,
       "AddLintCI" => true,
+      "GitHubActionVersionAutoUpdate" => "dependabot",
       "StrategyLevel" => 2,
     ),
   )

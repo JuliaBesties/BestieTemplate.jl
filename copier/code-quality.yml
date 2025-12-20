@@ -34,7 +34,7 @@ AddPrecommit:
 TestingStrategy:
   when: "{{ WhenForLight }}"
   type: str
-  default: "{% if DefaultForLight %}testitem_basic{% else %}basic{% endif %}"
+  default: "{% if StrategyLevel > 0 %}testitem_basic{% else %}basic{% endif %}"
   choices:
     Basic @testset approach with single test file: basic
     TestItems with full CLI runner and filtering: testitem_cli
@@ -154,17 +154,45 @@ ExplicitImportsChecklist:
 
     Strategy: Advanced
 
-AddDependabot:
+GitHubActionVersionAutoUpdate:
   when: "{{ WhenForModerate }}"
-  type: bool
-  default: "{{ DefaultForModerate }}"
-  help: Add Dependabot (Whether to add dependabot.yml, which runs periodically to update your GitHub actions versions)
+  type: str
+  default: "{% if StrategyLevel > 1 %}dependabot{% else %}none{% endif %}"
+  help: Autoupdate GitHub Actions versions? (periodically receive PRs updating your workflows)
+  choices:
+    Don't update automatically: none
+    Dependabot: dependabot
   description: |
-    Adds dependabot.yml (https://docs.github.com/en/code-security/dependabot),
-    which runs on GitHub repos periodically to make automated updates to your
-    GitHub actions.
+    Automatically receive updates to versions of GitHub actions.
+
+    "Dependabot" adds `.github/dependabot.yml`.
 
     Strategy: Moderate
+
+JuliaCompatAutoUpdate:
+  when: "{{ WhenForLight }}"
+  type: str
+  default: "{% if StrategyLevel > 0 %}dependabot{% else %}none{% endif %}"
+  help: Autoupdate Project.toml compat? (periodically receive PRs updating your compat sections)
+  choices:
+    Don't update automatically: none
+    Dependabot: dependabot
+    CompatHelper: compathelper
+  description: |
+    Automatically receive updates to Julia's Project.toml compat section.
+
+    "Dependabot" adds `.github/dependabot.yml`. They officially support Julia since 16/Dec/2025
+    (https://github.blog/changelog/2025-12-16-dependabot-version-updates-now-support-julia/).
+
+    "CompatHelper" adds `.github/workflows/CompatHelper.yml`. This is a
+    traditional approach in the Julia community.
+
+    Strategy: Moderate
+
+AddDependabot:
+  when: false
+  type: bool
+  default: "{{ GitHubActionVersionAutoUpdate == 'dependabot' or JuliaCompatAutoUpdate == 'dependabot' }}"
 
 AddLychee:
   when: "{{ WhenForLight }}"
