@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.18.0] - 2025-12-21
+
 BREAKING NOTICE:
 
 - The questions `AddDependabot` and `AddCompatHelperCI` have been removed in favour of
@@ -558,7 +560,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.17.1...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.18.0...HEAD
+[0.18.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.0
 [0.17.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.17.1
 [0.17.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.17.0
 [0.16.2]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.16.2
