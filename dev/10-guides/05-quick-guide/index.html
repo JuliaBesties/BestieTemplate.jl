@@ -40,8 +40,7 @@ new_pkg_quick(
     - TinyPackage.jl
   - test/
     - Project.toml
-    - runtests.jl
-    - test-basic-test.jl</code></pre><h2 id="Quick-Light-package"><a class="docs-heading-anchor" href="#Quick-Light-package">Quick Light package</a><a id="Quick-Light-package-1"></a><a class="docs-heading-anchor-permalink" href="#Quick-Light-package" title="Permalink"></a></h2><p>The common niceties: documentation, CI, <code>.JuliaFormatter.toml</code> and other config files that you might want to use (but won&#39;t affect you if you don&#39;t).</p><pre><code class="language-julia hljs">using BestieTemplate
+    - runtests.jl</code></pre><h2 id="Quick-Light-package"><a class="docs-heading-anchor" href="#Quick-Light-package">Quick Light package</a><a id="Quick-Light-package-1"></a><a class="docs-heading-anchor-permalink" href="#Quick-Light-package" title="Permalink"></a></h2><p>The common niceties: documentation, CI, <code>.JuliaFormatter.toml</code> and other config files that you might want to use (but won&#39;t affect you if you don&#39;t).</p><pre><code class="language-julia hljs">using BestieTemplate
 
 pkg_destination = joinpath(root_dir, &quot;LightPackage.jl&quot;)
 package_owner = &quot;JuliaBesties&quot;
@@ -65,8 +64,8 @@ new_pkg_quick(
   - codecov.yml
   - .github/
     - PULL_REQUEST_TEMPLATE.md
+    - dependabot.yml
     - workflows/
-      - CompatHelper.yml
       - Docs.yml
       - ReusableTest.yml
       - TagBot.yml
@@ -77,7 +76,9 @@ new_pkg_quick(
     - make.jl
     - src/
       - 95-reference.md
-      - index.md</code></pre><h2 id="Quick-Moderate-package"><a class="docs-heading-anchor" href="#Quick-Moderate-package">Quick Moderate package</a><a id="Quick-Moderate-package-1"></a><a class="docs-heading-anchor-permalink" href="#Quick-Moderate-package" title="Permalink"></a></h2><p>Opinionated suggestions for more stable packages without sacrificing too much development speed.</p><pre><code class="language-julia hljs">using BestieTemplate
+      - index.md
+  - test/
+    - test-basic-test.jl</code></pre><h2 id="Quick-Moderate-package"><a class="docs-heading-anchor" href="#Quick-Moderate-package">Quick Moderate package</a><a id="Quick-Moderate-package-1"></a><a class="docs-heading-anchor-permalink" href="#Quick-Moderate-package" title="Permalink"></a></h2><p>Opinionated suggestions for more stable packages without sacrificing too much development speed.</p><pre><code class="language-julia hljs">using BestieTemplate
 
 pkg_destination = joinpath(root_dir, &quot;ModeratePackage.jl&quot;)
 package_owner = &quot;JuliaBesties&quot;
@@ -94,7 +95,6 @@ new_pkg_quick(
 - ModeratePackage.jl/
   - .pre-commit-config.yaml
   - .github/
-    - dependabot.yml
     - workflows/
       - Lint.yml</code></pre><h2 id="Quick-Robust-package"><a class="docs-heading-anchor" href="#Quick-Robust-package">Quick Robust package</a><a id="Quick-Robust-package-1"></a><a class="docs-heading-anchor-permalink" href="#Quick-Robust-package" title="Permalink"></a></h2><p>Opinionated selection to help with larger packages and more developers.</p><pre><code class="language-julia hljs">using BestieTemplate
 
@@ -153,8 +153,8 @@ apply(
   - codecov.yml
   - .github/
     - PULL_REQUEST_TEMPLATE.md
+    - dependabot.yml
     - workflows/
-      - CompatHelper.yml
       - Docs.yml
       - ReusableTest.yml
       - TagBot.yml
@@ -213,5 +213,4 @@ new_pkg_quick(
     - TinyPackage.jl
   - test/
     - Project.toml
-    - runtests.jl
-    - test-basic-test.jl</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« BestieTemplate - Your best practices friend</a><a class="docs-footer-nextpage" href="../10-full-guide/">Full guide »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Friday 19 December 2025 23:06">Friday 19 December 2025</span>. Using Julia version 1.12.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+    - runtests.jl</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« BestieTemplate - Your best practices friend</a><a class="docs-footer-nextpage" href="../10-full-guide/">Full guide »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Sunday 21 December 2025 12:23">Sunday 21 December 2025</span>. Using Julia version 1.12.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
