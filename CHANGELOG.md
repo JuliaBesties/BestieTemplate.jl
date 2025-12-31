@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.18.1] - 2025-12-31
+
 ### Fixed
 
 - `julia-actions/cache` version has wrongly updated together with `actions/cache`.
@@ -564,7 +566,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.18.0...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.18.1...HEAD
+[0.18.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.1
 [0.18.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.0
 [0.17.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.17.1
 [0.17.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.17.0
