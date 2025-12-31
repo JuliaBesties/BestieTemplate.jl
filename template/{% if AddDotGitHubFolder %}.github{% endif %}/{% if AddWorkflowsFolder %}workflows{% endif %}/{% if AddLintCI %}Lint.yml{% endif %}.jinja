@@ -29,7 +29,7 @@ jobs:
         with:
           version: "1"
       - name: Use Julia cache
-        uses: julia-actions/cache@v5
+        uses: julia-actions/cache@v2
       {% if CheckExplicitImports -%}
       - name: Build package (required for ExplicitImports)
         uses: julia-actions/julia-buildpkg@v1

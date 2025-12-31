@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Fixed
+
+- `julia-actions/cache` version has wrongly updated together with `actions/cache`.
+
 ## [0.18.0] - 2025-12-21
 
 BREAKING NOTICE:
