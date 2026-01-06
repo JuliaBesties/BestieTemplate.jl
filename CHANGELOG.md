@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Fixed
+
+- Dependabot now ignores the package itself (#583)
+
 ## [0.18.1] - 2025-12-31
 
 ### Fixed
