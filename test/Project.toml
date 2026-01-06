@@ -15,8 +15,7 @@ BestieTemplate = { path = ".." }
 [compat]
 JuliaFormatter = "2"
 Logging = "1"
-PythonCall = "0.9"
-TestItemRunner = "1"
+# TestItemRunner = "1" # Testing dependabot
 YAML = "0.4"
 Pkg = "1"
 TOML = "1"

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning].
 ### Fixed
 
 - Dependabot now ignores the package itself (#583)
+- Dependabot runs only on root, because `[workspace]` should handle the rest (#583)
 
 ## [0.18.1] - 2025-12-31
 
