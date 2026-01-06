@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.18.2] - 2026-01-06
+
 ### Fixed
 
 - Dependabot now ignores the package itself (#583)
@@ -571,7 +573,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.18.1...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.18.2...HEAD
+[0.18.2]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.2
 [0.18.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.1
 [0.18.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.0
 [0.17.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.17.1
