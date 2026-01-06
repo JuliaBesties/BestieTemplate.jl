@@ -1,3 +1,5 @@
+fail_fast: true
+
 repos:
   - repo: local
     hooks:
@@ -42,13 +44,13 @@ repos:
     rev: v1.35.1
     hooks:
       - id: yamllint
+  - repo: https://github.com/domluna/JuliaFormatter.jl
+    rev: v2.0.0
+    hooks:
+      - id: julia-formatter
   - repo: https://github.com/ericphanson/ExplicitImports.jl
     rev: v1.10.1
     hooks:
       - id: explicit-imports
         name: ExplicitImports checks
         args: [--print, --checklist, exclude_all_qualified_accesses_are_public]
-  - repo: https://github.com/domluna/JuliaFormatter.jl
-    rev: v2.0.0
-    hooks:
-      - id: julia-formatter
