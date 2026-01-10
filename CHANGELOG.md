@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.18.3] - 2026-01-10
+
 ### Fixed
 
 - `new_pkg_quick` defaults to using `:online` as template_source (#589)
@@ -577,7 +579,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.18.2...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.18.3...HEAD
+[0.18.3]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.3
 [0.18.2]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.2
 [0.18.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.1
 [0.18.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.0
