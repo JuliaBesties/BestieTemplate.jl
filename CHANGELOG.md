@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Fixed
+
+- `new_pkg_quick` defaults to using `:online` as template_source (#589)
+
 ## [0.18.2] - 2026-01-06
 
 ### Fixed

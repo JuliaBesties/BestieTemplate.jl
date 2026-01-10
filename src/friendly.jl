@@ -10,7 +10,8 @@ const JULIA_LTS_VERSION = "1.10"
         strategy::Symbol,
         extra_data = Dict();
         license = "MIT",
-        template_source = :local,
+        local_template_path = pkgdir(BestieTemplate),
+        template_source = :online,
         use_latest = false,
         kwargs...;
     )
@@ -37,7 +38,8 @@ generate a package using the "Tiny" strategy.
 ## Keyword arguments
 
 - `license`: Which license to add. Default: `MIT`. Choices: `"Apache-2.0"`, `"GPL-3.0"`, `"MIT"`, `"MPL-2.0"`, `"nothing"`.
-- `template_source::Symbol`: Source of the template, either `:local` or `:online`. `:local` uses the path of the BestieTemplate package, and `:online` uses the GitHub URL. Default: `:local`.
+- `local_template_path`: Template path to use when `template_source = :local`. Default: `pkgdir(BestieTemplate)`
+- `template_source::Symbol`: Source of the template, either `:local` or `:online`. `:local` uses the path of the BestieTemplate package as given by the keyword `local_template_path`, and `:online` uses the GitHub URL. Notice that using `:local` will freeze the version to a folder, so manual update is necessary. Default: `:online`.
 - `use_latest::Bool`: Whether to use the latest commit of the template
   (otherwise use the last release). Default: `false`.
 - Additional keyword arguments are passed directly to `generate`.
@@ -49,7 +51,8 @@ function new_pkg_quick(
   strategy::Symbol,
   extra_data = Dict();
   license = "MIT",
-  template_source::Symbol = :local,
+  local_template_path = pkgdir(BestieTemplate),
+  template_source::Symbol = :online,
   use_latest::Bool = false,
   kwargs...,
 )
@@ -63,7 +66,10 @@ function new_pkg_quick(
   # Ensure valid template source
   template_path = if template_source == :local
     change_permissions = true
-    pkgdir(BestieTemplate)
+    if !isdir(joinpath(local_template_path, ".git"))
+      @warn "Local path $local_template_path is not tracked with .git, updates won't be possible without manual intervention"
+    end
+    local_template_path
   elseif template_source == :online
     "https://github.com/JuliaBesties/BestieTemplate.jl"
   else
