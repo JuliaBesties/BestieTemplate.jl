@@ -25,6 +25,10 @@ on:
         required: false
         type: boolean
         default: true
+      run_link_checker:
+        required: false
+        type: boolean
+        default: true
       allow_failure:
         required: false
         type: boolean
@@ -38,6 +42,7 @@ jobs:
     env:
       NEEDS_PRECOMMIT: ${{ inputs.strategy_level == 'moderate' || inputs.strategy_level == 'robust' }}
       NEEDS_DOCS: ${{ inputs.enable_docs && inputs.strategy_level != 'tiny' }}
+      NEEDS_LYCHEE: ${{ inputs.run_link_checker && inputs.strategy_level != 'tiny' }}
 
     steps:
       - uses: actions/checkout@v6
@@ -158,3 +163,16 @@ jobs:
           SKIP=no-commit-to-branch pre-commit run -a || true
           # There shouldn't be any more failures after the initial fix
           SKIP=no-commit-to-branch pre-commit run -a
+
+      - name: Fix tmp/Guldasta.jl/.lychee.toml
+        if: ${{ env.NEEDS_LYCHEE == 'true' }}
+        run: |
+          sed -i 's/@ref",/@ref", "agicha",/g' tmp/Guldasta.jl/.lychee.toml
+
+      - name: Check that all links are correct
+        if: ${{ env.NEEDS_LYCHEE == 'true' }}
+        uses: lycheeverse/lychee-action@v2
+        with:
+          fail: true
+          args: --config '.lychee.toml' .
+          workingDirectory: tmp/Guldasta.jl

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Fixed
+
+- Add eScience Center's blog website to the lychee ignore section (#556)
+
 ## [0.18.3] - 2026-01-10
 
 ### Fixed

@@ -45,6 +45,7 @@ jobs:
       arch: ${{ matrix.arch }}
       strategy_level: ${{ matrix.strategy_level }}
       enable_docs: true
+      run_link_checker: true
       allow_failure: ${{ matrix.allow_failure }}
 
   test-testing-strategies:
@@ -70,6 +71,7 @@ jobs:
       strategy_level: "moderate"
       testing_strategy: ${{ matrix.testing_strategy }}
       enable_docs: false
+      run_link_checker: false
 
   test-key-interactions:
     strategy:
@@ -93,3 +95,4 @@ jobs:
       strategy_level: ${{ matrix.combination.strategy_level }}
       testing_strategy: ${{ matrix.combination.testing_strategy }}
       enable_docs: false
+      run_link_checker: false
