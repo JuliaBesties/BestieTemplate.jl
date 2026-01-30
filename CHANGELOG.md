@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.18.4] - 2026-01-30
+
 ### Fixed
 
 - Add eScience Center's blog website to the lychee ignore section (#556)
@@ -583,7 +585,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.18.3...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.18.4...HEAD
+[0.18.4]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.4
 [0.18.3]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.3
 [0.18.2]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.2
 [0.18.1]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.1
