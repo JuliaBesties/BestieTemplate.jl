@@ -4,6 +4,7 @@ exclude = [
   "^https://github.com/.*/releases/tag/v.*$",
   "^https://doi.org/FIXME$",
   "^https://{{ PackageOwner }}.github.io/{{ PackageName }}.jl/stable$",
+{% if AddContributionDocs %}  "^https://blog.esciencecenter.nl", # due to a certificate error (cf. #556){% endif %}
   "zenodo.org/badge/DOI/FIXME$"
 ]
 
