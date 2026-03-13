@@ -53,7 +53,7 @@ jobs:
           version: ${{ inputs.julia_version }}
           arch: ${{ inputs.arch }}
       - name: Use Julia cache
-        uses: julia-actions/cache@v2
+        uses: julia-actions/cache@v3
       - name: Build the package
         uses: julia-actions/julia-buildpkg@v1
 
