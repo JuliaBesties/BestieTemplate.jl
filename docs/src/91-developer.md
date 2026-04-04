@@ -106,6 +106,13 @@ julia --project=test test/runtests.jl --list-tags
 julia --project=test test/runtests.jl --help
 ```
 
+### julia-mcp (Testing with AI agents)
+
+[julia-mcp](https://github.com/aplavin/julia-mcp) provides a persistent Julia REPL session as an MCP server.
+When working with an AI agent (e.g., Claude Code), configure it to use julia-mcp so that the agent can run tests directly without Julia startup and recompilation overhead on every call.
+
+Install and configure it following the instructions in the [julia-mcp repository](https://github.com/aplavin/julia-mcp). Once set up, the agent can load `TestItemRunner` once and then run filtered tests iteratively — much faster than spawning a new Julia process each time.
+
 ### Testing local changes to the template
 
 We have created tools to help test and debug changes to the template.

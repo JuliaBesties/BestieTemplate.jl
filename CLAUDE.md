@@ -45,6 +45,18 @@ Julia wrapper around Python Copier template engine for generating Julia package 
 **Testing via the TestItemRunner**: `julia --project=test test/runtests.jl`
 **Filtered Testing**: `julia --project=test test/runtests.jl --tags fast --exclude slow`
 **Linting**: `pre-commit run -a` (setup: `pre-commit install`)
+
+### Testing via julia-mcp
+
+When julia-mcp is available, prefer it over CLI — the Julia session stays alive between calls, avoiding recompilation.
+Use `<full path>/test` as `env_path`. Load `TestItemRunner` once per session with `using TestItemRunner`, then run filtered tests:
+
+- By filename: `@run_package_tests verbose=false filter=ti->contains(ti.filename, "bad-usage")`
+- By tags (all must match): `@run_package_tests verbose=false filter=ti->all(t in ti.tags for t in [:fast, :unit])`
+- Exclude tags: `@run_package_tests verbose=false filter=ti->!any(t in ti.tags for t in [:slow])`
+- By test name: `@run_package_tests verbose=false filter=ti->contains(ti.name, "error")`
+- Combined: `@run_package_tests verbose=false filter=ti->(:fast in ti.tags && !(:slow in ti.tags))`
+
 **Docs**: `julia --project=docs -e "using LiveServer; servedocs()"`
 
 ## Testing Strategy
