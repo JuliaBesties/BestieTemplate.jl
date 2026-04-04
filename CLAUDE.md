@@ -144,6 +144,15 @@ GitHub Actions workflows in `.github/workflows/`:
 - `TagBot.yml`: Automated tagging
 - `PreCommitUpdate.yml`: Pre-commit hook updates
 
+## CHANGELOG
+
+Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). New entries go under `## [Unreleased]`.
+
+- Sections: `### Added`, `### Changed`, `### Fixed`, `### Removed`, `### Deprecated`
+- Each entry is a `-` bullet, optionally ending with `(#issue_number)`
+- Use concise, user-facing language (what changed for the user, not implementation details)
+- Reference-style links at the bottom: `[unreleased]` compare link and `[version]` release links
+
 ## Dependencies
 
 Requires Python Copier backend. Tests use local conda environment in `test/conda-env/` to avoid redownloading dependencies. Python dependencies managed via `CondaPkg.toml`.

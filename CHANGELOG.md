@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- New function: `only(feature, dst_path, data; kwargs...)` for selectively regenerating specific template files on existing packages. Supported features: `:testitem_cli`, `:pre_commit`, `:pre_commit_with_config`, `:pre_commit_without_config`, `:lint_action` (#546)
+
 ## [0.18.4] - 2026-01-30
 
 ### Fixed
