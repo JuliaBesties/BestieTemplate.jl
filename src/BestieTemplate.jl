@@ -24,7 +24,7 @@ module BestieTemplate
 
 using Compat: @compat
 using Markdown: @md_str
-using PythonCall: PyException
+using PythonCall: PyException, pylist
 using Random: MersenneTwister
 using TOML: TOML
 using UUIDs: UUIDs
