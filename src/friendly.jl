@@ -136,9 +136,9 @@ See [`only`](@ref) for details.
 """
 only_testitem_cli(args...; kwargs...) = only(:testitem_cli, args...; kwargs...)
 
-# Feature specs for `only`: return (forced_data, included_files, required_fields)
+# Feature specs for `only`: return (forced_data, included_files, required_fields, requires_answers)
 _only_spec(::Val{:testitem_cli}) =
-  (Dict("TestingStrategy" => "testitem_cli"), ["test/runtests.jl"], String[])
+  (Dict("TestingStrategy" => "testitem_cli"), ["test/runtests.jl"], String[], false)
 _only_spec(::Val{:pre_commit}) = _only_spec(Val(:pre_commit_with_config))
 _only_spec(::Val{:pre_commit_with_config}) = (
   Dict("AddPrecommit" => true, "AddFormatterAndLinterConfigFiles" => true),
@@ -151,12 +151,16 @@ _only_spec(::Val{:pre_commit_with_config}) = (
     ".markdownlint.json",
   ],
   String[],
+  false,
 )
 _only_spec(::Val{:pre_commit_without_config}) = (
   Dict("AddPrecommit" => true, "AddFormatterAndLinterConfigFiles" => true),
   [".pre-commit-config.yaml"],
   String[],
+  false,
 )
+_only_spec(::Val{:lint_action}) =
+  (Dict("AddLintCI" => true), [".github/workflows/Lint.yml"], String[], true)
 
 """
     only(feature::Symbol[, dst_path, data]; kwargs...)
@@ -173,6 +177,7 @@ exists, it is updated; otherwise no answers file is created.
 - `:pre_commit_with_config` — regenerates `.pre-commit-config.yaml` and formatter/linter config files
 - `:pre_commit_without_config` — regenerates only `.pre-commit-config.yaml`
 - `:pre_commit` — alias for `:pre_commit_with_config`
+- `:lint_action` — regenerates `.github/workflows/Lint.yml` (requires `.copier-answers.yml`)
 
 ## Arguments
 
@@ -198,10 +203,15 @@ function only(
   use_latest::Bool = false,
   kwargs...,
 )
-  forced_data, included_files, required_fields = _only_spec(Val(feature))
+  forced_data, included_files, required_fields, requires_answers = _only_spec(Val(feature))
 
   answers_path = joinpath(dst_path, ".copier-answers.yml")
   has_answers = isfile(answers_path)
+
+  if requires_answers && !has_answers
+    error("""Feature :$feature requires `.copier-answers.yml` to determine template options.
+          Run `BestieTemplate.apply` first to create it.""")
+  end
 
   base_data = if has_answers
     d = YAML.load_file(answers_path)

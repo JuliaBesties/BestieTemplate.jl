@@ -224,3 +224,36 @@ end
     @test !isfile(".JuliaFormatter.toml")
   end
 end
+
+@testitem "only(:lint_action) generates Lint.yml workflow" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [TestConstants, Common] begin
+  _with_tmp_dir() do dir
+    _generate_test_package(".", TestConstants.args.bestie.tiny; defaults = true)
+
+    lint_path = joinpath(".github", "workflows", "Lint.yml")
+    @test !isfile(lint_path)
+
+    BestieTemplate.only(
+      :lint_action,
+      ".";
+      template_source = :local,
+      local_template_path = TestConstants.template_path,
+    )
+
+    @test isfile(lint_path)
+  end
+end
+
+@testitem "only(:lint_action) errors without .copier-answers.yml" tags =
+  [:unit, :fast, :error_handling] setup = [TestConstants, Common] begin
+  _with_tmp_dir() do dir
+    mkdir("src")
+    @test_throws Exception BestieTemplate.only(
+      :lint_action,
+      ".";
+      template_source = :local,
+      local_template_path = TestConstants.template_path,
+    )
+  end
+end
