@@ -161,6 +161,16 @@ _only_spec(::Val{:pre_commit_without_config}) = (
 )
 _only_spec(::Val{:lint_action}) =
   (Dict("AddLintCI" => true), [".github/workflows/Lint.yml"], String[], true)
+_only_spec(::Val{:dependabot}) = (
+  Dict(
+    "AddDependabot" => true,
+    "GitHubActionVersionAutoUpdate" => "dependabot",
+    "JuliaCompatAutoUpdate" => "dependabot",
+  ),
+  [".github/dependabot.yml"],
+  ["PackageName"],
+  false,
+)
 
 """
     only(feature::Symbol[, dst_path, data]; kwargs...)
@@ -178,6 +188,7 @@ exists, it is updated; otherwise no answers file is created.
 - `:pre_commit_without_config` — regenerates only `.pre-commit-config.yaml`
 - `:pre_commit` — alias for `:pre_commit_with_config`
 - `:lint_action` — regenerates `.github/workflows/Lint.yml` (requires `.copier-answers.yml`)
+- `:dependabot` — regenerates `.github/dependabot.yml` (requires `PackageName`)
 
 ## Arguments
 

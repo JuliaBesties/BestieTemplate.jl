@@ -257,3 +257,57 @@ end
     )
   end
 end
+
+@testitem "only(:dependabot) generates dependabot.yml" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [TestConstants, Common] begin
+  _with_tmp_dir() do dir
+    _generate_test_package(".", TestConstants.args.bestie.tiny; defaults = true)
+
+    dependabot_path = joinpath(".github", "dependabot.yml")
+    @test !isfile(dependabot_path)
+
+    BestieTemplate.only(
+      :dependabot,
+      ".";
+      template_source = :local,
+      local_template_path = TestConstants.template_path,
+    )
+
+    @test isfile(dependabot_path)
+    content = read(dependabot_path, String)
+    @test contains(content, "FakePkg")
+  end
+end
+
+@testitem "only(:dependabot) works without .copier-answers.yml when PackageName is guessable" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [TestConstants, Common] begin
+  _with_tmp_dir() do dir
+    _generate_test_package(".", TestConstants.args.bestie.tiny; defaults = true)
+    rm(".copier-answers.yml")
+
+    BestieTemplate.only(
+      :dependabot,
+      ".";
+      template_source = :local,
+      local_template_path = TestConstants.template_path,
+    )
+
+    @test isfile(joinpath(".github", "dependabot.yml"))
+    @test !isfile(".copier-answers.yml")
+  end
+end
+
+@testitem "only(:dependabot) errors when PackageName is not guessable" tags =
+  [:unit, :fast, :error_handling] setup = [TestConstants, Common] begin
+  _with_tmp_dir() do dir
+    mkdir("src")
+    @test_throws Exception BestieTemplate.only(
+      :dependabot,
+      ".";
+      template_source = :local,
+      local_template_path = TestConstants.template_path,
+    )
+  end
+end
