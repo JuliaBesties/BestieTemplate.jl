@@ -139,6 +139,24 @@ only_testitem_cli(args...; kwargs...) = only(:testitem_cli, args...; kwargs...)
 # Feature specs for `only`: return (forced_data, included_files, required_fields)
 _only_spec(::Val{:testitem_cli}) =
   (Dict("TestingStrategy" => "testitem_cli"), ["test/runtests.jl"], String[])
+_only_spec(::Val{:pre_commit}) = _only_spec(Val(:pre_commit_with_config))
+_only_spec(::Val{:pre_commit_with_config}) = (
+  Dict("AddPrecommit" => true, "AddFormatterAndLinterConfigFiles" => true),
+  [
+    ".pre-commit-config.yaml",
+    ".JuliaFormatter.toml",
+    ".editorconfig",
+    ".yamlfmt.yml",
+    ".yamllint.yml",
+    ".markdownlint.json",
+  ],
+  String[],
+)
+_only_spec(::Val{:pre_commit_without_config}) = (
+  Dict("AddPrecommit" => true, "AddFormatterAndLinterConfigFiles" => true),
+  [".pre-commit-config.yaml"],
+  String[],
+)
 
 """
     only(feature::Symbol[, dst_path, data]; kwargs...)
@@ -152,6 +170,9 @@ exists, it is updated; otherwise no answers file is created.
 ## Supported features
 
 - `:testitem_cli` — regenerates `test/runtests.jl` with the `testitem_cli` testing strategy
+- `:pre_commit_with_config` — regenerates `.pre-commit-config.yaml` and formatter/linter config files
+- `:pre_commit_without_config` — regenerates only `.pre-commit-config.yaml`
+- `:pre_commit` — alias for `:pre_commit_with_config`
 
 ## Arguments
 

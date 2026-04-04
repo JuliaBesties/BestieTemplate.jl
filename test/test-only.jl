@@ -178,3 +178,49 @@ end
     @test succeeded
   end
 end
+
+@testitem "only(:pre_commit) generates pre-commit config and linter files" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [TestConstants, Common] begin
+  _with_tmp_dir() do dir
+    # Generate a tiny package (no pre-commit)
+    _generate_test_package(".", TestConstants.args.bestie.tiny; defaults = true)
+
+    @test !isfile(".pre-commit-config.yaml")
+    @test !isfile(".JuliaFormatter.toml")
+
+    BestieTemplate.only(
+      :pre_commit,
+      ".";
+      template_source = :local,
+      local_template_path = TestConstants.template_path,
+    )
+
+    @test isfile(".pre-commit-config.yaml")
+    @test isfile(".JuliaFormatter.toml")
+    @test isfile(".editorconfig")
+    @test isfile(".yamlfmt.yml")
+    @test isfile(".yamllint.yml")
+    @test isfile(".markdownlint.json")
+  end
+end
+
+@testitem "only(:pre_commit_without_config) generates only .pre-commit-config.yaml" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [TestConstants, Common] begin
+  _with_tmp_dir() do dir
+    _generate_test_package(".", TestConstants.args.bestie.tiny; defaults = true)
+
+    @test !isfile(".pre-commit-config.yaml")
+
+    BestieTemplate.only(
+      :pre_commit_without_config,
+      ".";
+      template_source = :local,
+      local_template_path = TestConstants.template_path,
+    )
+
+    @test isfile(".pre-commit-config.yaml")
+    @test !isfile(".JuliaFormatter.toml")
+  end
+end
