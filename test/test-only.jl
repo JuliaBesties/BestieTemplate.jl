@@ -22,7 +22,11 @@
     @test !contains(runtests_before, "parse_arguments")
 
     # Switch to testitem_cli
-    BestieTemplate.only_testitem_cli("."; local_template_path = TestConstants.template_path)
+    BestieTemplate.only_testitem_cli(
+      ".";
+      template_source = :local,
+      local_template_path = TestConstants.template_path,
+    )
 
     # Verify test/runtests.jl now has testitem_cli content
     runtests_after = read(runtests_path, String)
@@ -53,7 +57,12 @@ end
     runtests_before = read(runtests_path, String)
     @test !contains(runtests_before, "TAGS_DATA")
 
-    BestieTemplate.only(:testitem_cli, "."; local_template_path = TestConstants.template_path)
+    BestieTemplate.only(
+      :testitem_cli,
+      ".";
+      template_source = :local,
+      local_template_path = TestConstants.template_path,
+    )
 
     runtests_after = read(runtests_path, String)
     @test contains(runtests_after, "TAGS_DATA")
@@ -69,7 +78,11 @@ end
     _generate_test_package(".", TestConstants.args.bestie.light; defaults = true)
     rm(".copier-answers.yml")
 
-    BestieTemplate.only_testitem_cli("."; local_template_path = TestConstants.template_path)
+    BestieTemplate.only_testitem_cli(
+      ".";
+      template_source = :local,
+      local_template_path = TestConstants.template_path,
+    )
 
     # .copier-answers.yml should NOT be created when it didn't exist before
     @test !isfile(".copier-answers.yml")
@@ -88,6 +101,7 @@ end
       :testitem_cli,
       ".",
       Dict("PackageOwner" => custom_owner);
+      template_source = :local,
       local_template_path = TestConstants.template_path,
     )
 
@@ -109,6 +123,7 @@ end
       :testitem_cli,
       ".",
       Dict("PackageName" => "RescuePkg", "PackageOwner" => "rescuer", "Authors" => "Test Author");
+      template_source = :local,
       local_template_path = TestConstants.template_path,
     )
 
@@ -128,7 +143,11 @@ end
     write(joinpath("test", "runtests.jl"), "using Test")
 
     # testitem_cli requires no fields, so this should work with placeholders
-    BestieTemplate.only_testitem_cli("."; local_template_path = TestConstants.template_path)
+    BestieTemplate.only_testitem_cli(
+      ".";
+      template_source = :local,
+      local_template_path = TestConstants.template_path,
+    )
     @test contains(read(joinpath("test", "runtests.jl"), String), "TAGS_DATA")
     @test !isfile(".copier-answers.yml")
   end
@@ -146,7 +165,12 @@ end
     write(joinpath("test", "runtests.jl"), "using Test")
 
     succeeded = try
-      BestieTemplate.only(:testitem_cli, "."; local_template_path = TestConstants.template_path)
+      BestieTemplate.only(
+        :testitem_cli,
+        ".";
+        template_source = :local,
+        local_template_path = TestConstants.template_path,
+      )
       true
     catch
       false

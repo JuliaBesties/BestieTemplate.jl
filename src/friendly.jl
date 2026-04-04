@@ -2,6 +2,44 @@
 
 const JULIA_LTS_VERSION = "1.10"
 
+const _ONLINE_TEMPLATE_URL = "https://github.com/JuliaBesties/BestieTemplate.jl"
+
+const _TEMPLATE_KWARGS_DOCS = """
+- `local_template_path`: Template path to use when `template_source = :local`. Default: `pkgdir(BestieTemplate)`.
+- `template_source::Symbol`: Source of the template, either `:local` or `:online`. `:local` uses the path of the BestieTemplate package as given by the keyword `local_template_path`, and `:online` uses the GitHub URL. Notice that using `:local` will freeze the version to a folder, so manual update is necessary.
+- `use_latest::Bool`: Whether to use the latest commit of the template (otherwise use the last release). Default: `false`."""
+
+"""
+    _resolve_template(; template_source, local_template_path, use_latest) -> (path, change_permissions, extra_args)
+
+Resolve the template path and extra arguments from user-friendly keywords.
+"""
+function _resolve_template(;
+  template_source::Symbol = :local,
+  local_template_path = pkgdir(BestieTemplate),
+  use_latest::Bool = false,
+)
+  change_permissions = false
+  template_path = if template_source == :local
+    change_permissions = true
+    if !isdir(joinpath(local_template_path, ".git"))
+      @warn "Local path $local_template_path is not tracked with .git, updates won't be possible without manual intervention"
+    end
+    local_template_path
+  elseif template_source == :online
+    _ONLINE_TEMPLATE_URL
+  else
+    error("Unknown template source: $template_source")
+  end
+
+  extra_args = Dict{Symbol, Any}()
+  if use_latest
+    extra_args[:vcs_ref] = "HEAD"
+  end
+
+  return template_path, change_permissions, extra_args
+end
+
 """
     new_pkg_quick(
         pkg_destination,
@@ -38,10 +76,7 @@ generate a package using the "Tiny" strategy.
 ## Keyword arguments
 
 - `license`: Which license to add. Default: `MIT`. Choices: `"Apache-2.0"`, `"GPL-3.0"`, `"MIT"`, `"MPL-2.0"`, `"nothing"`.
-- `local_template_path`: Template path to use when `template_source = :local`. Default: `pkgdir(BestieTemplate)`
-- `template_source::Symbol`: Source of the template, either `:local` or `:online`. `:local` uses the path of the BestieTemplate package as given by the keyword `local_template_path`, and `:online` uses the GitHub URL. Notice that using `:local` will freeze the version to a folder, so manual update is necessary. Default: `:online`.
-- `use_latest::Bool`: Whether to use the latest commit of the template
-  (otherwise use the last release). Default: `false`.
+$_TEMPLATE_KWARGS_DOCS
 - Additional keyword arguments are passed directly to `generate`.
 """
 function new_pkg_quick(
@@ -62,19 +97,8 @@ function new_pkg_quick(
     error("Unknown strategy: $strategy")
   end
 
-  change_permissions = false
-  # Ensure valid template source
-  template_path = if template_source == :local
-    change_permissions = true
-    if !isdir(joinpath(local_template_path, ".git"))
-      @warn "Local path $local_template_path is not tracked with .git, updates won't be possible without manual intervention"
-    end
-    local_template_path
-  elseif template_source == :online
-    "https://github.com/JuliaBesties/BestieTemplate.jl"
-  else
-    error("Unknown template source: $template_source")
-  end
+  template_path, change_permissions, extra_args =
+    _resolve_template(; template_source, local_template_path, use_latest)
 
   # Merge data, ensuring explicit arguments override implicit ones
   data = merge(
@@ -90,11 +114,6 @@ function new_pkg_quick(
     extra_data,
   )
 
-  extra_args = Dict{Symbol, Any}()
-  if use_latest
-    extra_args[:vcs_ref] = "HEAD"
-  end
-
   generate(
     template_path,
     pkg_destination,
@@ -107,10 +126,12 @@ function new_pkg_quick(
   )
 end
 
-"""
-    only_testitem_cli(dst_path[, data]; kwargs...)
+# TODO: Automatically list supported features (after at least 3 features have been implemented)
 
-Convenience alias for `only(:testitem_cli, dst_path, data; kwargs...)`.
+"""
+    only_testitem_cli(args..., kwargs...)
+
+Convenience alias for `only(:testitem_cli, args...; kwargs...)`.
 See [`only`](@ref) for details.
 """
 only_testitem_cli(args...; kwargs...) = only(:testitem_cli, args...; kwargs...)
@@ -120,7 +141,7 @@ _only_spec(::Val{:testitem_cli}) =
   (Dict("TestingStrategy" => "testitem_cli"), ["test/runtests.jl"], String[])
 
 """
-    only(feature::Symbol, dst_path[, data]; kwargs...)
+    only(feature::Symbol[, dst_path, data]; kwargs...)
 
 Selectively regenerate specific template files for an existing package.
 
@@ -135,13 +156,13 @@ exists, it is updated; otherwise no answers file is created.
 ## Arguments
 
 - `feature::Symbol`: Which feature to apply.
-- `dst_path`: Path to the existing package.
+- `dst_path`: Path to the existing package. Default: ".".
 - `data`: Optional dictionary of additional data to merge. Default: `Dict()`.
 
 ## Keyword arguments
 
-- `local_template_path`: Template path. Default: `pkgdir(BestieTemplate)`.
-- Additional keyword arguments are passed to `Copier.copy` (e.g. `vcs_ref`).
+$_TEMPLATE_KWARGS_DOCS
+- Additional keyword arguments are passed to `Copier.copy`.
 
 ## Merge priority
 
@@ -151,7 +172,9 @@ function only(
   feature::Symbol,
   dst_path::AbstractString,
   data::Dict = Dict();
+  template_source::Symbol = :online,
   local_template_path = pkgdir(BestieTemplate),
+  use_latest::Bool = false,
   kwargs...,
 )
   forced_data, included_files, required_fields = _only_spec(Val(feature))
@@ -194,15 +217,19 @@ function only(
     push!(excluded, "!.copier-answers.yml")
   end
 
-  copier_defaults =
-    Dict{Symbol, Any}(:defaults => true, :overwrite => true, :quiet => true, :vcs_ref => "HEAD")
+  template_path, _, extra_args =
+    _resolve_template(; template_source, local_template_path, use_latest)
+
+  copier_defaults = Dict{Symbol, Any}(:defaults => true, :overwrite => true, :quiet => true)
   Copier.copy(
-    local_template_path,
+    template_path,
     abspath(dst_path),
     merged_data;
-    merge(copier_defaults, Dict{Symbol, Any}(kwargs))...,
+    merge(copier_defaults, extra_args, Dict{Symbol, Any}(kwargs))...,
     # pylist required: PythonCall auto-converts simple types (Bool, String)
     # but NOT Julia Vector{String} when passed as kwargs to Python functions.
     exclude = pylist(excluded),
   )
+
+  return nothing
 end
