@@ -1,4 +1,4 @@
-@compat public new_pkg_quick, only_testitem_cli, only
+@compat public new_pkg_quick, add_feature
 
 const JULIA_LTS_VERSION = "1.10"
 
@@ -128,19 +128,11 @@ end
 
 # TODO: Automatically list supported features (after at least 3 features have been implemented)
 
-"""
-    only_testitem_cli(args..., kwargs...)
-
-Convenience alias for `only(:testitem_cli, args...; kwargs...)`.
-See [`only`](@ref) for details.
-"""
-only_testitem_cli(args...; kwargs...) = only(:testitem_cli, args...; kwargs...)
-
-# Feature specs for `only`: return (forced_data, included_files, required_fields, requires_answers)
-_only_spec(::Val{:testitem_cli}) =
+# Feature specs for `add_feature`: return (forced_data, included_files, required_fields, requires_answers)
+_add_feature(::Val{:testitem_cli}) =
   (Dict("TestingStrategy" => "testitem_cli"), ["test/runtests.jl"], String[], false)
-_only_spec(::Val{:pre_commit}) = _only_spec(Val(:pre_commit_with_config))
-_only_spec(::Val{:pre_commit_with_config}) = (
+_add_feature(::Val{:pre_commit}) = _add_feature(Val(:pre_commit_with_config))
+_add_feature(::Val{:pre_commit_with_config}) = (
   Dict("AddPrecommit" => true, "AddFormatterAndLinterConfigFiles" => true),
   [
     ".pre-commit-config.yaml",
@@ -153,15 +145,15 @@ _only_spec(::Val{:pre_commit_with_config}) = (
   String[],
   false,
 )
-_only_spec(::Val{:pre_commit_without_config}) = (
+_add_feature(::Val{:pre_commit_without_config}) = (
   Dict("AddPrecommit" => true, "AddFormatterAndLinterConfigFiles" => true),
   [".pre-commit-config.yaml"],
   String[],
   false,
 )
-_only_spec(::Val{:lint_action}) =
+_add_feature(::Val{:lint_action}) =
   (Dict("AddLintCI" => true), [".github/workflows/Lint.yml"], String[], true)
-_only_spec(::Val{:dependabot}) = (
+_add_feature(::Val{:dependabot}) = (
   Dict(
     "AddDependabot" => true,
     "GitHubActionVersionAutoUpdate" => "dependabot",
@@ -173,9 +165,9 @@ _only_spec(::Val{:dependabot}) = (
 )
 
 """
-    only(feature::Symbol[, dst_path, data]; kwargs...)
+    add_feature(feature::Symbol[, dst_path, data]; kwargs...)
 
-Selectively regenerate specific template files for an existing package.
+Add or regenerate a specific feature's template files for an existing package.
 
 Reads `.copier-answers.yml` (if present) and guesses data from the package,
 then applies only the files relevant to `feature`. If `.copier-answers.yml`
@@ -205,7 +197,7 @@ $_TEMPLATE_KWARGS_DOCS
 
 `feature-specific forced data > data > guessed > copier_answers`
 """
-function only(
+function add_feature(
   feature::Symbol,
   dst_path::AbstractString,
   data::Dict = Dict();
@@ -214,7 +206,7 @@ function only(
   use_latest::Bool = false,
   kwargs...,
 )
-  forced_data, included_files, required_fields, requires_answers = _only_spec(Val(feature))
+  forced_data, included_files, required_fields, requires_answers = _add_feature(Val(feature))
 
   answers_path = joinpath(dst_path, ".copier-answers.yml")
   has_answers = isfile(answers_path)
