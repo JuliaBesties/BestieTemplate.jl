@@ -2,9 +2,7 @@
 
 const JULIA_LTS_VERSION = "1.10"
 
-const _ONLINE_TEMPLATE_URL = "https://github.com/JuliaBesties/BestieTemplate.jl"
-
-const _TEMPLATE_KWARGS_DOCS = """
+const TEMPLATE_KWARGS_DOCS = """
 - `local_template_path`: Template path to use when `template_source = :local`. Default: `pkgdir(BestieTemplate)`.
 - `template_source::Symbol`: Source of the template, either `:local` or `:online`. `:local` uses the path of the BestieTemplate package as given by the keyword `local_template_path`, and `:online` uses the GitHub URL. Notice that using `:local` will freeze the version to a folder, so manual update is necessary.
 - `use_latest::Bool`: Whether to use the latest commit of the template (otherwise use the last release). Default: `false`."""
@@ -27,7 +25,7 @@ function _resolve_template(;
     end
     local_template_path
   elseif template_source == :online
-    _ONLINE_TEMPLATE_URL
+    "https://github.com/JuliaBesties/BestieTemplate.jl"
   else
     error("Unknown template source: $template_source")
   end
@@ -76,7 +74,7 @@ generate a package using the "Tiny" strategy.
 ## Keyword arguments
 
 - `license`: Which license to add. Default: `MIT`. Choices: `"Apache-2.0"`, `"GPL-3.0"`, `"MIT"`, `"MPL-2.0"`, `"nothing"`.
-$_TEMPLATE_KWARGS_DOCS
+$TEMPLATE_KWARGS_DOCS
 - Additional keyword arguments are passed directly to `generate`.
 """
 function new_pkg_quick(
@@ -190,7 +188,7 @@ exists, it is updated; otherwise no answers file is created.
 
 ## Keyword arguments
 
-$_TEMPLATE_KWARGS_DOCS
+$TEMPLATE_KWARGS_DOCS
 - Additional keyword arguments are passed to `Copier.copy`.
 
 ## Merge priority
