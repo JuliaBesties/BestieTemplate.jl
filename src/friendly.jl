@@ -199,7 +199,7 @@ $_TEMPLATE_KWARGS_DOCS
 """
 function add_feature(
   feature::Symbol,
-  dst_path::AbstractString,
+  dst_path::AbstractString = ".",
   data::Dict = Dict();
   template_source::Symbol = :online,
   local_template_path = pkgdir(BestieTemplate),
