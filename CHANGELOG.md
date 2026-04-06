@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.18.5] - 2026-04-06
+
 ### Added
 
 - New function: `add_feature(feature, dst_path, data; kwargs...)` for selectively regenerating specific template files on existing packages. Supported features: `:testitem_cli`, `:pre_commit`, `:pre_commit_with_config`, `:pre_commit_without_config`, `:lint_action`, `:dependabot` (#546)
@@ -589,7 +591,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.18.4...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.18.5...HEAD
+[0.18.5]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.5
 [0.18.4]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.4
 [0.18.3]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.3
 [0.18.2]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.2
