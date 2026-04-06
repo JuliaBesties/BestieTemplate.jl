@@ -1,11 +1,124 @@
-@testitem "only_testitem_cli updates runtests.jl to testitem_cli" tags =
-  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
-  [TestConstants, Common] begin
-  _with_tmp_dir() do dir
-    # Generate a tiny package (TestingStrategy = "basic")
-    _generate_test_package(".", TestConstants.args.bestie.tiny; defaults = true)
+@testsnippet OnlyHelpers begin
+  using BestieTemplate
+  using BestieTemplate.Debug.Data: Data
+  using Test
 
-    # Snapshot all files (skip .git internals)
+  # Computed independently — no dependency on TestConstants
+  _only_template_path = joinpath(@__DIR__, "..")
+
+  function _only_generate_pkg(strategy::Symbol = :tiny; kwargs...)
+    defaults = (; quiet = true, vcs_ref = "HEAD", defaults = true)
+    BestieTemplate.generate(
+      _only_template_path,
+      ".",
+      Data.strategies[strategy];
+      merge(defaults, kwargs)...,
+    )
+  end
+
+  """
+  Call `BestieTemplate.only` using the local template (avoids repeating kwargs in every test).
+  """
+  function _only_local(feature::Symbol, data::Dict = Dict(); kwargs...)
+    BestieTemplate.only(
+      feature,
+      ".",
+      data;
+      template_source = :local,
+      local_template_path = _only_template_path,
+      kwargs...,
+    )
+  end
+
+  """
+  Happy-path pattern: generate a tiny package, assert `expected_files` are absent,
+  call `only(:feature)`, then assert they exist. Optionally check file contents and
+  assert `unexpected_files` are absent.
+  """
+  function _test_happy_path(
+    feature::Symbol,
+    expected_files::Vector{String};
+    unexpected_files::Vector{String} = String[],
+    content_checks::Dict{String, Vector{String}} = Dict{String, Vector{String}}(),
+  )
+    _only_generate_pkg()
+    for f in expected_files
+      @test !isfile(f)
+    end
+    _only_local(feature)
+    for f in expected_files
+      @test isfile(f)
+    end
+    for f in unexpected_files
+      @test !isfile(f)
+    end
+    for (f, patterns) in content_checks
+      content = read(f, String)
+      for p in patterns
+        @test contains(content, p)
+      end
+    end
+  end
+
+  """
+  Without-answers pattern: generate a package, delete `.copier-answers.yml`, call
+  `only(:feature)`, then assert `expected_file` was written and `.copier-answers.yml`
+  was NOT created.
+
+  Use this for any feature with `requires_answers = false`.
+  """
+  function _test_works_without_answers(
+    feature::Symbol,
+    expected_file::String;
+    generate_strategy::Symbol = :tiny,
+    expected_content::Union{String, Nothing} = nothing,
+  )
+    _only_generate_pkg(generate_strategy)
+    rm(".copier-answers.yml")
+    _only_local(feature)
+    @test isfile(expected_file)
+    @test !isfile(".copier-answers.yml")
+    if !isnothing(expected_content)
+      @test contains(read(expected_file, String), expected_content)
+    end
+  end
+
+  """
+  Bare-project pattern: create a minimal src/test tree, call `only(:feature)`, then
+  assert `expected_file` was written and `.copier-answers.yml` was NOT created.
+
+  Use this for features with `required_fields = []` and `requires_answers = false`.
+  """
+  function _test_works_on_bare_project(feature::Symbol, expected_file::String)
+    mkdir("src")
+    mkdir("test")
+    write(joinpath("test", "runtests.jl"), "using Test")
+    _only_local(feature)
+    @test isfile(expected_file)
+    @test !isfile(".copier-answers.yml")
+  end
+
+  """
+  Error pattern: create a bare src dir (no guessable data, no answers), assert that
+  `only(:feature)` throws. Use this for features with `required_fields` that cannot be
+  guessed, or with `requires_answers = true`.
+  """
+  function _test_errors_without_data(feature::Symbol)
+    mkdir("src")
+    @test_throws Exception _only_local(feature)
+  end
+
+  """
+  Preservation pattern: snapshot the current directory, call `only(:feature)`, then
+  assert that all files NOT in `changed_files` are unchanged and no unexpected new files
+  were created. Tests the core `only()` invariant: targeted regeneration leaves unrelated
+  files untouched. One test covering this mechanism is sufficient — not needed per feature.
+  """
+  function _test_does_not_affect_other_files(
+    feature::Symbol,
+    changed_files::Vector{String},
+    data::Dict = Dict(),
+  )
     snapshot = Dict{String, Vector{UInt8}}()
     for (root, _, files) in walkdir(".")
       contains(root, ".git") && continue
@@ -15,299 +128,240 @@
       end
     end
 
-    # Verify basic strategy initially (no testitem_cli markers)
-    runtests_path = joinpath("test", "runtests.jl")
-    runtests_before = String(snapshot[runtests_path])
-    @test !contains(runtests_before, "TAGS_DATA")
-    @test !contains(runtests_before, "parse_arguments")
+    _only_local(feature, data)
 
-    # Switch to testitem_cli
-    BestieTemplate.only_testitem_cli(
-      ".";
-      template_source = :local,
-      local_template_path = TestConstants.template_path,
-    )
-
-    # Verify test/runtests.jl now has testitem_cli content
-    runtests_after = read(runtests_path, String)
-    @test runtests_after != runtests_before
-    @test contains(runtests_after, "TAGS_DATA")
-    @test contains(runtests_after, "parse_arguments")
-
-    # Verify .copier-answers.yml was updated with testitem_cli strategy
-    _validate_copier_answers(Dict("TestingStrategy" => "testitem_cli"))
-
-    # Verify no other files changed (copier always rewrites .copier-answers.yml)
     answers_path = ".copier-answers.yml"
+    allowed = Set(push!(copy(changed_files), answers_path))
     for (path, old_content) in snapshot
-      path in (runtests_path, answers_path) && continue
+      path in allowed && continue
       @test isfile(path)
       @test read(path) == old_content
+    end
+    after_files = Set(
+      relpath(joinpath(root, file)) for (root, _, files) in walkdir(".") for
+      file in files if !contains(root, ".git")
+    )
+    @test issubset(after_files, union(Set(keys(snapshot)), allowed))
+  end
+
+  """
+  Data-override pattern: generate a tiny package, call `only(:feature, custom_data)`,
+  read `output_file`, assert it contains `expected` and optionally does NOT contain
+  `unexpected`.
+
+  Use this for features with `required_fields` — verifies the `data` argument takes
+  priority over guessed and answers values (the escape hatch when auto-resolution fails).
+  """
+  function _test_explicit_data_override(
+    feature::Symbol,
+    custom_data::Dict,
+    output_file::String,
+    expected::String;
+    unexpected::Union{String, Nothing} = nothing,
+  )
+    _only_generate_pkg()
+    _only_local(feature, custom_data)
+    content = read(output_file, String)
+    @test contains(content, expected)
+    if !isnothing(unexpected)
+      @test !contains(content, unexpected)
     end
   end
 end
 
-@testitem "only(:testitem_cli, ...) works via generic API" tags =
+@testitem "only(:testitem_cli) upgrades runtests.jl and preserves other files" tags =
   [:integration, :slow, :template_application, :file_io, :python_integration] setup =
-  [TestConstants, Common] begin
+  [Common, OnlyHelpers] begin
   _with_tmp_dir() do dir
-    _generate_test_package(".", TestConstants.args.bestie.tiny; defaults = true)
-
+    _only_generate_pkg()
     runtests_path = joinpath("test", "runtests.jl")
-    runtests_before = read(runtests_path, String)
-    @test !contains(runtests_before, "TAGS_DATA")
+    @test !contains(read(runtests_path, String), "TAGS_DATA")
+    # Verifies the preservation invariant: only the target file and .copier-answers.yml change
+    _test_does_not_affect_other_files(:testitem_cli, [runtests_path])
+    @test contains(read(runtests_path, String), "TAGS_DATA")
+    @test contains(read(runtests_path, String), "parse_arguments")
+    _validate_copier_answers(Dict("TestingStrategy" => "testitem_cli"))
+  end
+end
 
-    BestieTemplate.only(
+@testitem "only(:testitem_cli) upgrades runtests.jl" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [Common, OnlyHelpers] begin
+  _with_tmp_dir() do dir
+    runtests_path = joinpath("test", "runtests.jl")
+    _only_generate_pkg()
+    @test !contains(read(runtests_path, String), "TAGS_DATA")
+    _only_local(:testitem_cli)
+    @test contains(read(runtests_path, String), "TAGS_DATA")
+    @test contains(read(runtests_path, String), "parse_arguments")
+  end
+end
+
+@testitem "only(:testitem_cli) works without .copier-answers.yml when data is guessable" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [Common, OnlyHelpers] begin
+  # Use light strategy so docs/make.jl exists and PackageOwner can be guessed
+  _with_tmp_dir() do dir
+    _test_works_without_answers(
       :testitem_cli,
-      ".";
-      template_source = :local,
-      local_template_path = TestConstants.template_path,
+      joinpath("test", "runtests.jl");
+      generate_strategy = :light,
+      expected_content = "TAGS_DATA",
     )
-
-    runtests_after = read(runtests_path, String)
-    @test contains(runtests_after, "TAGS_DATA")
-    @test contains(runtests_after, "parse_arguments")
   end
 end
 
-@testitem "only_testitem_cli works without .copier-answers.yml when data is guessable" tags =
+@testitem "only(:testitem_cli) data argument overrides guessed and answers values" tags =
   [:integration, :slow, :template_application, :file_io, :python_integration] setup =
-  [TestConstants, Common] begin
+  [Common, OnlyHelpers] begin
   _with_tmp_dir() do dir
-    # Use light strategy so docs/make.jl exists and PackageOwner can be guessed
-    _generate_test_package(".", TestConstants.args.bestie.light; defaults = true)
-    rm(".copier-answers.yml")
-
-    BestieTemplate.only_testitem_cli(
-      ".";
-      template_source = :local,
-      local_template_path = TestConstants.template_path,
-    )
-
-    # .copier-answers.yml should NOT be created when it didn't exist before
-    @test !isfile(".copier-answers.yml")
-    @test contains(read(joinpath("test", "runtests.jl"), String), "TAGS_DATA")
-  end
-end
-
-@testitem "only data argument overrides guessed and answers data" tags =
-  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
-  [TestConstants, Common] begin
-  _with_tmp_dir() do dir
-    _generate_test_package(".", TestConstants.args.bestie.tiny; defaults = true)
-
+    _only_generate_pkg()
     custom_owner = "CustomOwnerForTest"
-    BestieTemplate.only(
-      :testitem_cli,
-      ".",
-      Dict("PackageOwner" => custom_owner);
-      template_source = :local,
-      local_template_path = TestConstants.template_path,
-    )
-
+    _only_local(:testitem_cli, Dict("PackageOwner" => custom_owner))
     answers = _validate_copier_answers(Dict("TestingStrategy" => "testitem_cli"))
     @test answers["PackageOwner"] == custom_owner
   end
 end
 
-@testitem "only with explicit data rescues missing fields" tags =
+@testitem "only(:testitem_cli) succeeds with explicit data on a non-Bestie project" tags =
   [:integration, :slow, :template_application, :file_io, :python_integration] setup =
-  [TestConstants, Common] begin
+  [Common, OnlyHelpers] begin
   _with_tmp_dir() do dir
     mkdir("src")
     mkdir("test")
     write(joinpath("test", "runtests.jl"), "using Test")
-
-    # No Project.toml, no docs — but explicit data provides required fields
-    BestieTemplate.only(
+    _only_local(
       :testitem_cli,
-      ".",
-      Dict("PackageName" => "RescuePkg", "PackageOwner" => "rescuer", "Authors" => "Test Author");
-      template_source = :local,
-      local_template_path = TestConstants.template_path,
-    )
-
-    @test contains(read(joinpath("test", "runtests.jl"), String), "TAGS_DATA")
-    # No .copier-answers.yml should be created
-    @test !isfile(".copier-answers.yml")
-  end
-end
-
-# TODO: When a feature with required fields is added (e.g. :pre_commit), add an error test here
-@testitem "only_testitem_cli succeeds without data when feature has no required fields" tags =
-  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
-  [TestConstants, Common] begin
-  _with_tmp_dir() do dir
-    mkdir("src")
-    mkdir("test")
-    write(joinpath("test", "runtests.jl"), "using Test")
-
-    # testitem_cli requires no fields, so this should work with placeholders
-    BestieTemplate.only_testitem_cli(
-      ".";
-      template_source = :local,
-      local_template_path = TestConstants.template_path,
+      Dict("PackageName" => "RescuePkg", "PackageOwner" => "rescuer", "Authors" => "Test Author"),
     )
     @test contains(read(joinpath("test", "runtests.jl"), String), "TAGS_DATA")
     @test !isfile(".copier-answers.yml")
   end
 end
 
-@testitem "only works without required fields when feature files don't need them" tags =
+@testitem "only(:testitem_cli) succeeds on a bare project without explicit data" tags =
   [:integration, :slow, :template_application, :file_io, :python_integration] setup =
-  [TestConstants, Common] begin
-  # testitem_cli's test/runtests.jl doesn't reference PackageName/PackageOwner/Authors,
-  # so in principle it should work without them. Currently errors because the required
-  # fields check is unconditional. This test documents the desired future behavior.
+  [Common, OnlyHelpers] begin
   _with_tmp_dir() do dir
     mkdir("src")
     mkdir("test")
     write(joinpath("test", "runtests.jl"), "using Test")
-
-    succeeded = try
-      BestieTemplate.only(
-        :testitem_cli,
-        ".";
-        template_source = :local,
-        local_template_path = TestConstants.template_path,
-      )
-      true
-    catch
-      false
-    end
-    @test succeeded
+    # testitem_cli has no required_fields, so placeholders suffice
+    _only_local(:testitem_cli)
+    @test contains(read(joinpath("test", "runtests.jl"), String), "TAGS_DATA")
+    @test !isfile(".copier-answers.yml")
   end
 end
 
 @testitem "only(:pre_commit) generates pre-commit config and linter files" tags =
   [:integration, :slow, :template_application, :file_io, :python_integration] setup =
-  [TestConstants, Common] begin
+  [Common, OnlyHelpers] begin
   _with_tmp_dir() do dir
-    # Generate a tiny package (no pre-commit)
-    _generate_test_package(".", TestConstants.args.bestie.tiny; defaults = true)
-
-    @test !isfile(".pre-commit-config.yaml")
-    @test !isfile(".JuliaFormatter.toml")
-
-    BestieTemplate.only(
+    _test_happy_path(
       :pre_commit,
-      ".";
-      template_source = :local,
-      local_template_path = TestConstants.template_path,
+      [
+        ".pre-commit-config.yaml",
+        ".JuliaFormatter.toml",
+        ".editorconfig",
+        ".yamlfmt.yml",
+        ".yamllint.yml",
+        ".markdownlint.json",
+      ],
     )
+  end
+end
 
-    @test isfile(".pre-commit-config.yaml")
-    @test isfile(".JuliaFormatter.toml")
-    @test isfile(".editorconfig")
-    @test isfile(".yamlfmt.yml")
-    @test isfile(".yamllint.yml")
-    @test isfile(".markdownlint.json")
+@testitem "only(:pre_commit) works on a bare project" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [Common, OnlyHelpers] begin
+  _with_tmp_dir() do dir
+    _test_works_on_bare_project(:pre_commit, ".pre-commit-config.yaml")
   end
 end
 
 @testitem "only(:pre_commit_without_config) generates only .pre-commit-config.yaml" tags =
   [:integration, :slow, :template_application, :file_io, :python_integration] setup =
-  [TestConstants, Common] begin
+  [Common, OnlyHelpers] begin
   _with_tmp_dir() do dir
-    _generate_test_package(".", TestConstants.args.bestie.tiny; defaults = true)
-
-    @test !isfile(".pre-commit-config.yaml")
-
-    BestieTemplate.only(
+    _test_happy_path(
       :pre_commit_without_config,
-      ".";
-      template_source = :local,
-      local_template_path = TestConstants.template_path,
+      [".pre-commit-config.yaml"];
+      unexpected_files = [".JuliaFormatter.toml"],
     )
+  end
+end
 
-    @test isfile(".pre-commit-config.yaml")
-    @test !isfile(".JuliaFormatter.toml")
+@testitem "only(:pre_commit_without_config) works on a bare project" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [Common, OnlyHelpers] begin
+  _with_tmp_dir() do dir
+    _test_works_on_bare_project(:pre_commit_without_config, ".pre-commit-config.yaml")
   end
 end
 
 @testitem "only(:lint_action) generates Lint.yml workflow" tags =
   [:integration, :slow, :template_application, :file_io, :python_integration] setup =
-  [TestConstants, Common] begin
+  [Common, OnlyHelpers] begin
   _with_tmp_dir() do dir
-    _generate_test_package(".", TestConstants.args.bestie.tiny; defaults = true)
-
-    lint_path = joinpath(".github", "workflows", "Lint.yml")
-    @test !isfile(lint_path)
-
-    BestieTemplate.only(
-      :lint_action,
-      ".";
-      template_source = :local,
-      local_template_path = TestConstants.template_path,
-    )
-
-    @test isfile(lint_path)
+    _test_happy_path(:lint_action, [joinpath(".github", "workflows", "Lint.yml")])
   end
 end
 
-@testitem "only(:lint_action) errors without .copier-answers.yml" tags =
-  [:unit, :fast, :error_handling] setup = [TestConstants, Common] begin
+@testitem "only(:lint_action) errors without .copier-answers.yml when data is not guessable" tags =
+  [:unit, :fast, :error_handling] setup = [Common, OnlyHelpers] begin
   _with_tmp_dir() do dir
-    mkdir("src")
-    @test_throws Exception BestieTemplate.only(
-      :lint_action,
-      ".";
-      template_source = :local,
-      local_template_path = TestConstants.template_path,
-    )
+    _test_errors_without_data(:lint_action)
   end
 end
 
 @testitem "only(:dependabot) generates dependabot.yml" tags =
   [:integration, :slow, :template_application, :file_io, :python_integration] setup =
-  [TestConstants, Common] begin
+  [Common, OnlyHelpers] begin
   _with_tmp_dir() do dir
-    _generate_test_package(".", TestConstants.args.bestie.tiny; defaults = true)
-
-    dependabot_path = joinpath(".github", "dependabot.yml")
-    @test !isfile(dependabot_path)
-
-    BestieTemplate.only(
+    _test_happy_path(
       :dependabot,
-      ".";
-      template_source = :local,
-      local_template_path = TestConstants.template_path,
+      [joinpath(".github", "dependabot.yml")];
+      content_checks = Dict(joinpath(".github", "dependabot.yml") => ["FakePkg"]),
     )
-
-    @test isfile(dependabot_path)
-    content = read(dependabot_path, String)
-    @test contains(content, "FakePkg")
   end
 end
 
 @testitem "only(:dependabot) works without .copier-answers.yml when PackageName is guessable" tags =
   [:integration, :slow, :template_application, :file_io, :python_integration] setup =
-  [TestConstants, Common] begin
+  [Common, OnlyHelpers] begin
   _with_tmp_dir() do dir
-    _generate_test_package(".", TestConstants.args.bestie.tiny; defaults = true)
-    rm(".copier-answers.yml")
-
-    BestieTemplate.only(
-      :dependabot,
-      ".";
-      template_source = :local,
-      local_template_path = TestConstants.template_path,
-    )
-
-    @test isfile(joinpath(".github", "dependabot.yml"))
-    @test !isfile(".copier-answers.yml")
+    _test_works_without_answers(:dependabot, joinpath(".github", "dependabot.yml"))
   end
 end
 
 @testitem "only(:dependabot) errors when PackageName is not guessable" tags =
-  [:unit, :fast, :error_handling] setup = [TestConstants, Common] begin
+  [:unit, :fast, :error_handling] setup = [Common, OnlyHelpers] begin
   _with_tmp_dir() do dir
-    mkdir("src")
-    @test_throws Exception BestieTemplate.only(
+    _test_errors_without_data(:dependabot)
+  end
+end
+
+@testitem "only(:dependabot) uses explicit PackageName over guessed value" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [Common, OnlyHelpers] begin
+  # Tests the data merge priority: explicit data > guessed data > answers data.
+  # Any feature with required_fields should have a test like this — it verifies
+  # that callers can always satisfy required fields via the data argument, regardless
+  # of package state. This is the escape hatch when guessing fails.
+  _with_tmp_dir() do dir
+    _test_explicit_data_override(
       :dependabot,
-      ".";
-      template_source = :local,
-      local_template_path = TestConstants.template_path,
+      Dict("PackageName" => "ExplicitPkgName"),
+      joinpath(".github", "dependabot.yml"),
+      "ExplicitPkgName";
+      unexpected = "FakePkg",
     )
+  end
+end
+
+@testitem "only errors on unsupported feature symbol" tags = [:unit, :fast, :error_handling] setup =
+  [Common, OnlyHelpers] begin
+  _with_tmp_dir() do dir
+    _test_errors_without_data(:nonexistent_feature)
   end
 end
