@@ -131,10 +131,8 @@ _add_feature(::Val{:my_feature}) = (
 **Checklist to add a new feature:**
 
 1. Add a `_add_feature(::Val{:my_feature})` method in `src/friendly.jl`
-2. Ensure the template files in `template/` use the right conditional (e.g. `{% if MyFlag %}filename{% endif %}.jinja`)
-3. Define the question in `copier/*.yml` if it isn't already
-4. Optionally add a convenience alias: `my_feature(args...; kwargs...) = add_feature(:my_feature, args...; kwargs...)`
-5. Add tests in `test/test-only.jl` using the `AddFeatureHelpers` snippet helpers:
+2. Verify the `_add_feature` information (`included_files` template files in `template/` use the `forced_data` (e.g. `{% if MyFlag %}filename{% endif %}.jinja`; `required_fields` are indeed required`, etc.). Ask for clarification from the user if necessary.
+3. Add tests in `test/test-only.jl` using the `AddFeatureHelpers` snippet helpers:
    - `_test_happy_path`: feature generates expected file(s)
    - `_test_works_without_answers` (if `requires_answers = false`): works when data is guessable
    - `_test_works_on_bare_project` (if no `required_fields` and `requires_answers = false`): works on a minimal directory

@@ -190,10 +190,6 @@ exists, it is updated; otherwise no answers file is created.
 
 $TEMPLATE_KWARGS_DOCS
 - Additional keyword arguments are passed to `Copier.copy`.
-
-## Merge priority
-
-`feature-specific forced data > data > guessed > copier_answers`
 """
 function add_feature(
   feature::Symbol,
