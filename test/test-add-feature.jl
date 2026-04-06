@@ -3,7 +3,7 @@
   using BestieTemplate.Debug.Data: Data
   using Test
 
-  # Computed independently — no dependency on TestConstants
+  # Computed independently, no dependency on TestConstants
   _template_path = joinpath(@__DIR__, "..")
 
   function _generate_pkg(strategy::Symbol = :tiny; kwargs...)
@@ -112,7 +112,7 @@
   Preservation pattern: snapshot the current directory, call `add_feature(:feature)`, then
   assert that all files NOT in `changed_files` are unchanged and no unexpected new files
   were created. Tests the core `add_feature()` invariant: targeted regeneration leaves unrelated
-  files untouched. One test covering this mechanism is sufficient — not needed per feature.
+  files untouched. One test covering this mechanism is sufficient; not needed per feature.
   """
   function _test_does_not_affect_other_files(
     feature::Symbol,
@@ -149,7 +149,7 @@
   read `output_file`, assert it contains `expected` and optionally does NOT contain
   `unexpected`.
 
-  Use this for features with `required_fields` — verifies the `data` argument takes
+  Use this for features with `required_fields`. Verifies the `data` argument takes
   priority over guessed and answers values (the escape hatch when auto-resolution fails).
   """
   function _test_explicit_data_override(
@@ -345,7 +345,7 @@ end
   [:integration, :slow, :template_application, :file_io, :python_integration] setup =
   [Common, AddFeatureHelpers] begin
   # Tests the data merge priority: explicit data > guessed data > answers data.
-  # Any feature with required_fields should have a test like this — it verifies
+  # Any feature with required_fields should have a test like this. It verifies
   # that callers can always satisfy required fields via the data argument, regardless
   # of package state. This is the escape hatch when guessing fails.
   _with_tmp_dir() do dir

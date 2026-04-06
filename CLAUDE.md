@@ -48,7 +48,7 @@ Julia wrapper around Python Copier template engine for generating Julia package 
 
 ### Testing via julia-mcp
 
-When julia-mcp is available, prefer it over CLI — the Julia session stays alive between calls, avoiding recompilation.
+When julia-mcp is available, prefer it over CLI. The Julia session stays alive between calls, avoiding recompilation.
 Use `<full path>/test` as `env_path`. Load `TestItemRunner` once per session with `using TestItemRunner`, then run filtered tests:
 
 - By filename: `@run_package_tests verbose=false filter=ti->contains(ti.filename, "bad-usage")`

@@ -173,12 +173,12 @@ exists, it is updated; otherwise no answers file is created.
 
 ## Supported features
 
-- `:testitem_cli` — regenerates `test/runtests.jl` with the `testitem_cli` testing strategy
-- `:pre_commit_with_config` — regenerates `.pre-commit-config.yaml` and formatter/linter config files
-- `:pre_commit_without_config` — regenerates only `.pre-commit-config.yaml`
-- `:pre_commit` — alias for `:pre_commit_with_config`
-- `:lint_action` — regenerates `.github/workflows/Lint.yml` (requires `.copier-answers.yml`)
-- `:dependabot` — regenerates `.github/dependabot.yml` (requires `PackageName`)
+- `:testitem_cli` - regenerates `test/runtests.jl` with the `testitem_cli` testing strategy
+- `:pre_commit_with_config` - regenerates `.pre-commit-config.yaml` and formatter/linter config files
+- `:pre_commit_without_config` - regenerates only `.pre-commit-config.yaml`
+- `:pre_commit` - alias for `:pre_commit_with_config`
+- `:lint_action` - regenerates `.github/workflows/Lint.yml` (requires `.copier-answers.yml`)
+- `:dependabot` - regenerates `.github/dependabot.yml` (requires `PackageName`)
 
 ## Arguments
 
