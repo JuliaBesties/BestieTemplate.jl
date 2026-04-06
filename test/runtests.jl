@@ -67,6 +67,9 @@ const TAGS_DATA = Dict(
   :git_operations => "Tests requiring git setup/operations",
   :python_integration => "Tests involving Python/copier integration",
   :randomized => "Tests using randomized inputs",
+
+  # Development / diagnostic
+  :diagnostic => "Temporary diagnostic tests for verifying specific behaviors",
 )
 
 function main()
