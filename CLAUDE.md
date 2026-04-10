@@ -82,6 +82,118 @@ Required tests for each new feature (helpers in `AddFeatureHelpers` snippet in `
 - `_test_errors_without_data`: errors when required data is missing
 - `_test_explicit_data_override` (for features with `required_fields`): verifies `data` arg takes priority over guessed/answers values
 
+## Adding a new Copier question
+
+### Step 1: Define the question in the appropriate `copier/*.yml` file
+
+Choose the file by domain:
+
+- `constants.yml`: Computed values never shown to the user (`when: false`)
+- `essential.yml`: Required info asked before strategy (PackageName, Authors, etc.)
+- `strategy.yml`: Strategy selection and derived variables
+- `code-quality.yml`: Formatters, linters, testing configuration
+- `community.yml`: Documentation, contribution guides, code of conduct
+- `ci.yml`: CI/CD workflows
+
+Question definition fields:
+
+```yaml
+AddMyFeature:
+  when: "{{ WhenForLight }}"         # When to ask (use WhenFor{Light,Moderate,Robust,Advanced})
+  type: bool                         # bool, str, or int
+  default: "{{ DefaultForLight }}"   # Use DefaultFor* to match strategy level
+  help: Add my feature (Brief description shown in interactive prompt)
+  description: |                     # Longer text for documentation (auto-included in docs)
+    What this feature does and why you'd want it.
+
+    Strategy: Light
+```
+
+Additional fields (use when needed):
+
+- `choices:` - Map of `"Display name": value` for discrete options (str type)
+- `validator:` - Jinja2 template returning empty string if valid, error message if invalid
+- `placeholder:` - Hint text for input fields (rarely needed)
+
+Naming conventions:
+
+- **PascalCase** for all question names
+- `Add*` for boolean feature toggles (e.g., `AddDocs`, `AddPrecommit`)
+- `Check*`, `Run*`, `Use*` for specific behaviors
+- No prefix for basic info (e.g., `PackageName`, `License`)
+
+### Step 2: Use the question in template files
+
+**Conditional file inclusion** (in filenames):
+
+```text
+template/{% if AddMyFeature %}path/to/file.ext{% endif %}.jinja
+```
+
+**Variable substitution** (in file content):
+
+```jinja
+setting = {{ MyValue }}
+```
+
+**Conditional blocks** (in file content):
+
+```jinja
+{% if AddMyFeature -%}
+Content only present when feature is enabled.
+{% endif -%}
+```
+
+**Dependent questions** (only asked if parent is enabled):
+
+```yaml
+AddSubFeature:
+  when: "{{ AddMyFeature and WhenForModerate }}"
+  type: bool
+  default: "{{ DefaultForModerate }}"
+```
+
+### Step 3: Add test data to `src/debug/Data.jl`
+
+Add the question's default value to the appropriate strategy level(s). Each level merges from the previous, so add it at the lowest level where it becomes `true`/relevant:
+
+```julia
+light = merge(
+  tiny,
+  Dict(
+    "AddMyFeature" => true,
+    # ...
+  ),
+)
+```
+
+### Step 4: Add random test value to `test/utils.jl`
+
+For questions with non-trivial types, add a `_random` method:
+
+```julia
+_random(::Val{:MyChoiceQuestion}, value) = rand(["option1", "option2", "option3"])
+```
+
+Bool and str questions with no choices are handled by existing fallbacks.
+
+### Step 5: Add test coverage
+
+Test that the feature generates (or omits) the expected files/content across strategies. Follow existing patterns in `test/test-*.jl`. At minimum, verify:
+
+- Files are created when the question is enabled
+- Files are absent when the question is disabled
+- Content substitution is correct
+
+### Strategy system reference
+
+The strategy system controls defaults and whether questions are asked:
+
+- **StrategyLevel**: 0=Tiny, 1=Light, 2=Moderate, 3=Robust
+- `DefaultFor{Light,Moderate,Robust,Advanced}`: `true` if `StrategyLevel` >= that level's threshold
+- `WhenFor{Light,Moderate,Robust,Advanced}`: controls whether the question is shown, based on strategy level and the user's `StrategyConfirmIncluded`/`StrategyReviewExcluded` choices
+- Questions default to their `DefaultFor*` value without being asked unless the user opts to confirm/review
+
 ## Testing Strategy
 
 ### Unit Tests (test/)
