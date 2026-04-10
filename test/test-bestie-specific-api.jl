@@ -55,7 +55,9 @@ end
 
     # Test data guessing functionality
     _with_tmp_dir() do dir
-      _generate_test_package(".", src_data)
+      # defaults=false: ensures test data covers all copier questions; a missing key
+      # will cause copier to prompt and fail, catching incomplete Data.jl updates.
+      _generate_test_package(".", src_data; defaults = false)
 
       # Test that guesses are correct
       guessed_data = BestieTemplate._read_data_from_existing_path(".")
