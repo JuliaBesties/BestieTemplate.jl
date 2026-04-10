@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- New question: `AddChangelog` to add a CHANGELOG.md file following the Keep a Changelog format (#541)
+
 ## [0.18.5] - 2026-04-06
 
 ### Added
