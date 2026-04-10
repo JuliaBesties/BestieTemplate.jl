@@ -210,12 +210,12 @@ end
     data = TestConstants.args.bestie.robust;
     kwargs...,
   )
-    defaults = (; quiet = true, vcs_ref = "HEAD")
+    base_kwargs = (; defaults = true, quiet = true, vcs_ref = "HEAD")
     BestieTemplate.generate(
       TestConstants.template_path,
       destination,
       data;
-      merge(defaults, kwargs)...,
+      merge(base_kwargs, kwargs)...,
     )
   end
 
