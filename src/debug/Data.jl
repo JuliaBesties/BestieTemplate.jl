@@ -72,6 +72,7 @@ const strategies = let
     moderate,
     Dict(
       "AddAllcontributors" => true,
+      "AddChangelog" => true,
       "AddCodeOfConduct" => true,
       "AddContributionDocs" => true,
       "AddCopierCI" => false,

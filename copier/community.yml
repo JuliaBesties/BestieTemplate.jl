@@ -8,6 +8,17 @@ AddDocs:
 
     Strategy: Light
 
+AddChangelog:
+  when: "{{ WhenForRobust }}"
+  type: bool
+  default: "{{ DefaultForRobust }}"
+  help: Add CHANGELOG.md file (Track notable changes using Keep a Changelog format)
+  description: |
+    Whether to add a CHANGELOG.md file following the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
+    This file is useful for tracking notable changes across releases and communicating them to users.
+
+    Strategy: Robust
+
 AddCitationCFF:
   when: "{{ WhenForRobust }}"
   type: bool
