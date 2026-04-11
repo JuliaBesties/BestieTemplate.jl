@@ -214,7 +214,7 @@ function add_feature(
   end
 
   base_data = if has_answers
-    d = YAML.load_file(answers_path)
+    d = _load_copier_answers(answers_path)
     Dict(k => v for (k, v) in d if !startswith(k, "_"))
   else
     Dict()

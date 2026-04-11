@@ -361,3 +361,17 @@ end
   [Common, AddFeatureHelpers] begin
   _test_errors_without_data(:nonexistent_feature)
 end
+
+@testitem "add_feature handles .copier-answers.yml with a float-like _commit" tags =
+  [:integration, :slow, :error_handling, :file_io] setup = [Common, AddFeatureHelpers] begin
+  # Regression for the float-like `_commit` quirk handled by `_load_copier_answers`
+  # (see its docstring). Generates a package, overwrites `_commit` with a git
+  # short SHA that YAML parses as a float, and checks `add_feature` still works.
+  _with_tmp_dir() do _
+    _generate_pkg()
+    answers = read(".copier-answers.yml", String)
+    write(".copier-answers.yml", replace(answers, r"_commit: .*" => "_commit: 64e3774"))
+    _add_feature_local(:pre_commit)
+    @test isfile(".pre-commit-config.yaml")
+  end
+end
