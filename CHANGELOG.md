@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning].
 - New question: `AddChangelog` to add a CHANGELOG.md file following the Keep a Changelog format (#541)
 - `add_feature(:changelog)` to add a `CHANGELOG.md` to an existing package (#541)
 
+### Fixed
+
+- Reading `.copier-answers.yml` no longer crashes when `_commit` is a git short SHA that matches YAML's float pattern (e.g. `64e3774`) (#601)
+
 ## [0.18.5] - 2026-04-06
 
 ### Added

@@ -102,7 +102,7 @@ function generate(
     change_project_permissions(dst_path)
   end
 
-  data = YAML.load_file(joinpath(dst_path, ".copier-answers.yml"))
+  data = _load_copier_answers(joinpath(dst_path, ".copier-answers.yml"))
   package_name = data["PackageName"]
   bestie_version = get(data, "_commit", ":local version")
 
@@ -246,7 +246,7 @@ function apply(
     change_project_permissions(dst_path)
   end
 
-  data = YAML.load_file(joinpath(dst_path, ".copier-answers.yml"))
+  data = _load_copier_answers(joinpath(dst_path, ".copier-answers.yml"))
   package_name = data["PackageName"]
   bestie_version = get(data, "_commit", ":local version")
 
