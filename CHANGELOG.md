@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.18.6] - 2026-04-11
+
 ### Added
 
 - New question: `AddChangelog` to add a CHANGELOG.md file following the Keep a Changelog format (#541)
@@ -600,7 +602,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.18.5...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.18.6...HEAD
+[0.18.6]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.6
 [0.18.5]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.5
 [0.18.4]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.4
 [0.18.3]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.3
