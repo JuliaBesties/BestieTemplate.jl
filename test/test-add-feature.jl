@@ -18,6 +18,7 @@
 
   """
   Call `BestieTemplate.add_feature` using the local template (avoids repeating kwargs in every test).
+  Uses `use_latest = true` so tests run against the working tree, not the latest tagged release.
   """
   function _add_feature_local(feature::Symbol, data::Dict = Dict(); kwargs...)
     BestieTemplate.add_feature(
@@ -26,6 +27,7 @@
       data;
       template_source = :local,
       local_template_path = _template_path,
+      use_latest = true,
       kwargs...,
     )
   end
@@ -310,6 +312,47 @@ end
     Dict("PackageName" => "ExplicitPkgName"),
     joinpath(".github", "dependabot.yml"),
     "ExplicitPkgName";
+    unexpected = "FakePkg",
+  )
+end
+
+@testitem "add_feature(:changelog) generates CHANGELOG.md" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [Common, AddFeatureHelpers] begin
+  _test_happy_path(
+    :changelog,
+    ["CHANGELOG.md"];
+    content_checks = Dict(
+      "CHANGELOG.md" => ["Keep a Changelog", "Semantic Versioning", "## [Unreleased]"],
+    ),
+  )
+end
+
+@testitem "add_feature(:changelog) works without .copier-answers.yml when data is guessable" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [Common, AddFeatureHelpers] begin
+  # Use light strategy so docs/make.jl exists and PackageOwner can be guessed
+  _test_works_without_answers_by_guessing(
+    :changelog,
+    "CHANGELOG.md";
+    generate_strategy = :light,
+    expected_content = "Keep a Changelog",
+  )
+end
+
+@testitem "add_feature(:changelog) errors when required fields are not guessable" tags =
+  [:unit, :fast, :error_handling] setup = [Common, AddFeatureHelpers] begin
+  _test_errors_without_data(:changelog)
+end
+
+@testitem "add_feature(:changelog) uses explicit data over guessed values" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [Common, AddFeatureHelpers] begin
+  _test_explicit_data_override(
+    :changelog,
+    Dict("PackageOwner" => "ExplicitOwner", "PackageName" => "ExplicitPkg"),
+    "CHANGELOG.md",
+    "ExplicitOwner/ExplicitPkg.jl";
     unexpected = "FakePkg",
   )
 end

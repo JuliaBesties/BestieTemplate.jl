@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning].
 ### Added
 
 - New question: `AddChangelog` to add a CHANGELOG.md file following the Keep a Changelog format (#541)
+- `add_feature(:changelog)` to add a `CHANGELOG.md` to an existing package (#541)
 
 ## [0.18.5] - 2026-04-06
 

@@ -161,6 +161,8 @@ _add_feature(::Val{:dependabot}) = (
   ["PackageName"],
   false,
 )
+_add_feature(::Val{:changelog}) =
+  (Dict("AddChangelog" => true), ["CHANGELOG.md"], ["PackageOwner", "PackageName"], false)
 
 """
     add_feature(feature::Symbol[, dst_path, data]; kwargs...)
@@ -179,6 +181,7 @@ exists, it is updated; otherwise no answers file is created.
 - `:pre_commit` - alias for `:pre_commit_with_config`
 - `:lint_action` - regenerates `.github/workflows/Lint.yml` (requires `.copier-answers.yml`)
 - `:dependabot` - regenerates `.github/dependabot.yml` (requires `PackageName`)
+- `:changelog` - regenerates `CHANGELOG.md` (requires `PackageOwner` and `PackageName`)
 
 ## Arguments
 
