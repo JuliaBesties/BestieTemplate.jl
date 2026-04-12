@@ -155,6 +155,10 @@ AddSubFeature:
   default: "{{ DefaultForModerate }}"
 ```
 
+**`_skip_if_exists`** (in `copier.yml`): If the generated file is meant to be edited by users after generation (e.g., CHANGELOG.md, LICENSE, CITATION.cff), add it to the `_skip_if_exists` list so `copier update` does not overwrite user changes.
+
+**Cross-file conditional blocks**: Check whether existing template files should reference the new question. For example, `AddChangelog` added a conditional section to `91-developer.md.jinja` with release instructions. Grep template files for related content that should be conditional on the new question.
+
 ### Step 3: Add test data to `src/debug/Data.jl`
 
 Add the question's default value to the appropriate strategy level(s). Each level merges from the previous, so add it at the lowest level where it becomes `true`/relevant:
@@ -181,11 +185,14 @@ Bool and str questions with no choices are handled by existing fallbacks.
 
 ### Step 5: Add test coverage
 
-Test that the feature generates (or omits) the expected files/content across strategies. Follow existing patterns in `test/test-*.jl`. At minimum, verify:
+**Question-level tests** go in a new file `test/test-<feature>.jl`. At minimum, verify:
 
 - Files are created when the question is enabled
 - Files are absent when the question is disabled
-- Content substitution is correct
+- Content substitution is correct (check key strings, variable values like PackageOwner)
+- Conditional blocks in other templates are present/absent as expected
+
+**`add_feature` tests** go in `test/test-add-feature.jl` (append to existing file). Use the standard helpers from `AddFeatureHelpers` - which ones to include depends on `requires_answers` and `required_fields` (see the `add_feature` section above).
 
 ### Strategy system reference
 
