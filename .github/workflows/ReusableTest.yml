@@ -54,7 +54,7 @@ jobs:
           if git --no-pager log main..HEAD | grep -q BESTIE_SKIP_UPDATE_TEST; then
             echo "BESTIE_SKIP_UPDATE_TEST=yes" >> $GITHUB_ENV
           fi
-      - uses: julia-actions/setup-julia@v2
+      - uses: julia-actions/setup-julia@v3
         with:
           version: ${{ inputs.version }}
           arch: ${{ inputs.arch }}
