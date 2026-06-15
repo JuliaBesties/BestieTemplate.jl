@@ -1,57 +1,45 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for AI agents working in this repository.
 
-If necessary, check the development documentation in `docs/src/91-developer.md`.
+This file holds the **agent-precise** facts: exact file paths, merge orders, and command recipes. For the *why* and the human contributor workflow (fork/clone, releases, building docs), see `docs/src/91-developer.md` — don't duplicate it here.
 
 ## Architecture
 
-Julia wrapper around Python Copier template engine for generating Julia package templates. Key components:
+Julia wrapper around the Python [Copier](https://copier.readthedocs.io) template engine, for generating and updating Julia package templates.
 
-### Source Structure
+**Source (`src/`)**
 
-- `src/BestieTemplate.jl`: Main module file
-- `src/api.jl`: Core API functions (`generate`, `apply`, `update`)
-- `src/Copier.jl`: Python integration via PythonCall
-- `src/debug/`: Template testing and debugging utilities
-  - `Debug.jl`: Main debug interface
-  - `Data.jl`: Test data management
-  - `helper.jl`: Debug helper functions
-- `src/friendly.jl`: User-friendly interface functions
-- `src/guess.jl`: Automatic configuration detection
-- `src/utils.jl`: Utility functions
+- `BestieTemplate.jl`: main module
+- `api.jl`: core API (`generate`, `apply`, `update`)
+- `friendly.jl`: user-facing helpers, including `add_feature`
+- `Copier.jl`: Python integration via PythonCall
+- `guess.jl`: auto-detect configuration from an existing repo
+- `utils.jl`: utilities
+- `debug/`: template testing/debugging (`Debug.jl`, `Data.jl`, `helper.jl`)
 
-### Configuration System
+**Configuration** — `copier.yml` is the entry point; modular question files live in `copier/`: `constants.yml`, `essential.yml`, `strategy.yml`, `ci.yml`, `code-quality.yml`, `community.yml`.
 
-- `copier.yml`: Main template configuration
-- `copier/`: Modular configuration files
-  - `constants.yml`: Template constants
-  - `essential.yml`: Essential questions
-  - `strategy.yml`: Generation strategies
-  - `ci.yml`: CI/CD options
-  - `code-quality.yml`: Quality assurance options
-  - `community.yml`: Community file options
+**Template (`template/`)** — Jinja2 files for generated packages.
 
-### Template Structure
+- Conditional file/dir inclusion via the filename: `{% if Condition %}filename{% endif %}.jinja`
+- Variable substitution in content: `{{ VariableName }}`
 
-- `template/`: Jinja2 template files for generated packages
-- Conditional file inclusion: `{% if Condition %}filename{% endif %}.jinja`
-- Variable substitution: `{{ VariableName }}`
-- Template includes GitHub workflows, docs, tests, and configuration files
+## Development commands
 
-## Development Commands
+- **Test (Pkg)**: `julia --project=. -e "using Pkg; Pkg.test()"`
+- **Test (CLI runner)**: `julia --project=test test/runtests.jl`
+- **Filtered**: `julia --project=test test/runtests.jl --tags fast --exclude slow` (also `--file`, `--name`, `--list-tags`, `--help`)
+- **Lint**: `pre-commit run -a`
+- **Docs**: `julia --project=docs -e "using LiveServer; servedocs()"`
 
-**Testing**: `julia --project=. -e "using Pkg; Pkg.test()"`
-**Testing via the TestItemRunner**: `julia --project=test test/runtests.jl`
-**Filtered Testing**: `julia --project=test test/runtests.jl --tags fast --exclude slow`
-**Linting**: `pre-commit run -a` (setup: `pre-commit install`)
+When iterating, filter to the relevant files/tags rather than running the full suite. Tag taxonomy and test-data conventions are documented in `docs/src/91-developer.md` ("Test organization and conventions").
 
 When on `main`, the `no-commit-to-branch` hook fails and `fail_fast: true` aborts all later hooks, so the lint checks silently don't run. Prefix with `SKIP` to run the real checks: `SKIP=no-commit-to-branch pre-commit run --files <changed files>`
 
 ### Testing via julia-mcp
 
-When julia-mcp is available, prefer it over CLI. The Julia session stays alive between calls, avoiding recompilation.
-Use `<full path>/test` as `env_path`. Load `TestItemRunner` once per session with `using TestItemRunner`, then run filtered tests:
+When julia-mcp is available, prefer it over the CLI — the Julia session stays alive between calls, avoiding recompilation. Use `<full path>/test` as `env_path`, load `TestItemRunner` once with `using TestItemRunner`, then run filtered tests:
 
 - By filename: `@run_package_tests verbose=false filter=ti->contains(ti.filename, "bad-usage")`
 - By tags (all must match): `@run_package_tests verbose=false filter=ti->all(t in ti.tags for t in [:fast, :unit])`
@@ -59,11 +47,9 @@ Use `<full path>/test` as `env_path`. Load `TestItemRunner` once per session wit
 - By test name: `@run_package_tests verbose=false filter=ti->contains(ti.name, "error")`
 - Combined: `@run_package_tests verbose=false filter=ti->(:fast in ti.tags && !(:slow in ti.tags))`
 
-**Docs**: `julia --project=docs -e "using LiveServer; servedocs()"`
-
 ## Adding a new `add_feature(:feature)`
 
-Each `add_feature(:feature)` is defined by a single `_add_feature` method in `src/friendly.jl`:
+Each feature is defined by a single `_add_feature` method in `src/friendly.jl`:
 
 ```julia
 _add_feature(::Val{:my_feature}) = (
@@ -76,229 +62,85 @@ _add_feature(::Val{:my_feature}) = (
 
 Data merge order (later wins): answers file → guessed from repo → explicit `data` arg → `forced_data`.
 
-Required tests for each new feature (helpers in `AddFeatureHelpers` snippet in `test/test-only.jl`):
+Before writing tests, verify the method matches the template: the `included_files` are gated on the `forced_data` flag (e.g. `{% if MyFlag %}filename{% endif %}.jinja`), and the `required_fields` really are required. Ask the user if anything is ambiguous.
+
+Both the `AddFeatureHelpers` snippet and the tests live in `test/test-add-feature.jl`. Which helpers apply depends on `requires_answers` and `required_fields`:
 
 - `_test_happy_path`: feature generates expected file(s)
 - `_test_works_without_answers` (if `requires_answers = false`): works when data is guessable
 - `_test_works_on_bare_project` (if no `required_fields` and `requires_answers = false`): works on a minimal src/test directory
 - `_test_errors_without_data`: errors when required data is missing
-- `_test_explicit_data_override` (for features with `required_fields`): verifies `data` arg takes priority over guessed/answers values
+- `_test_explicit_data_override` (for features with `required_fields`): `data` arg beats guessed/answers values
 
 ## Adding a new Copier question
 
-### Step 1: Define the question in the appropriate `copier/*.yml` file
+### Step 1 — Define the question in a `copier/*.yml` file
 
-Choose the file by domain:
-
-- `constants.yml`: Computed values never shown to the user (`when: false`)
-- `essential.yml`: Required info asked before strategy (PackageName, Authors, etc.)
-- `strategy.yml`: Strategy selection and derived variables
-- `code-quality.yml`: Formatters, linters, testing configuration
-- `community.yml`: Documentation, contribution guides, code of conduct
-- `ci.yml`: CI/CD workflows
-
-Question definition fields:
+Pick the file by domain: `constants.yml` (computed, never shown — `when: false`), `essential.yml` (required, asked before strategy), `strategy.yml` (strategy selection/derived vars), `code-quality.yml`, `community.yml`, `ci.yml`.
 
 ```yaml
 AddMyFeature:
-  when: "{{ WhenForLight }}"         # When to ask (use WhenFor{Light,Moderate,Robust,Advanced})
+  when: "{{ WhenForLight }}"         # WhenFor{Light,Moderate,Robust,Advanced}
   type: bool                         # bool, str, or int
-  default: "{{ DefaultForLight }}"   # Use DefaultFor* to match strategy level
-  help: Add my feature (Brief description shown in interactive prompt)
-  description: |                     # Longer text for documentation (auto-included in docs)
+  default: "{{ DefaultForLight }}"   # DefaultFor* matches the strategy level
+  help: Add my feature (Brief description shown in the interactive prompt)
+  description: |                     # Longer text, auto-included in the Questions docs page
     What this feature does and why you'd want it.
 
     Strategy: Light
 ```
 
-Additional fields (use when needed):
+Optional fields when needed: `choices:` (map of `"Display name": value`, str type), `validator:` (Jinja2 returning empty string if valid), `placeholder:`.
 
-- `choices:` - Map of `"Display name": value` for discrete options (str type)
-- `validator:` - Jinja2 template returning empty string if valid, error message if invalid
-- `placeholder:` - Hint text for input fields (rarely needed)
+Naming: **PascalCase**; `Add*` for boolean toggles (`AddDocs`, `AddPrecommit`); `Check*`/`Run*`/`Use*` for behaviors; no prefix for basic info (`PackageName`, `License`).
 
-Naming conventions:
+Dependent questions key their `when` off the parent: `when: "{{ AddMyFeature and WhenForModerate }}"`.
 
-- **PascalCase** for all question names
-- `Add*` for boolean feature toggles (e.g., `AddDocs`, `AddPrecommit`)
-- `Check*`, `Run*`, `Use*` for specific behaviors
-- No prefix for basic info (e.g., `PackageName`, `License`)
-
-### Step 2: Use the question in template files
-
-**Conditional file inclusion** (in filenames):
+### Step 2 — Use the question in template files
 
 ```text
-template/{% if AddMyFeature %}path/to/file.ext{% endif %}.jinja
+template/{% if AddMyFeature %}path/to/file.ext{% endif %}.jinja   # conditional file/dir
 ```
-
-**Variable substitution** (in file content):
-
-```jinja
-setting = {{ MyValue }}
-```
-
-**Conditional blocks** (in file content):
 
 ```jinja
 {% if AddMyFeature -%}
-Content only present when feature is enabled.
+Content only present when the feature is enabled.
 {% endif -%}
 ```
 
-**Dependent questions** (only asked if parent is enabled):
+- **`_skip_if_exists`** (in `copier.yml`): if the generated file is meant to be user-edited after generation (CHANGELOG.md, LICENSE, CITATION.cff), add it here so `copier update` won't overwrite user changes.
+- **Cross-file references**: grep template files for related content that should become conditional on the new question (e.g. `AddChangelog` added a release section to `91-developer.md.jinja`).
 
-```yaml
-AddSubFeature:
-  when: "{{ AddMyFeature and WhenForModerate }}"
-  type: bool
-  default: "{{ DefaultForModerate }}"
-```
+### Step 3 — Add test data (`src/debug/Data.jl`)
 
-**`_skip_if_exists`** (in `copier.yml`): If the generated file is meant to be edited by users after generation (e.g., CHANGELOG.md, LICENSE, CITATION.cff), add it to the `_skip_if_exists` list so `copier update` does not overwrite user changes.
-
-**Cross-file conditional blocks**: Check whether existing template files should reference the new question. For example, `AddChangelog` added a conditional section to `91-developer.md.jinja` with release instructions. Grep template files for related content that should be conditional on the new question.
-
-### Step 3: Add test data to `src/debug/Data.jl`
-
-Add the question's default value to the appropriate strategy level(s). Each level merges from the previous, so add it at the lowest level where it becomes `true`/relevant:
+Add the default to the lowest strategy level where it becomes relevant (levels merge upward):
 
 ```julia
-light = merge(
-  tiny,
-  Dict(
-    "AddMyFeature" => true,
-    # ...
-  ),
-)
+light = merge(tiny, Dict("AddMyFeature" => true, #= ... =#))
 ```
 
-### Step 4: Add random test value to `test/utils.jl`
+### Step 4 — Add random test value (`test/utils.jl`)
 
-For questions with non-trivial types, add a `_random` method:
+Only for non-trivial types; bool/str-without-choices use existing fallbacks.
 
 ```julia
 _random(::Val{:MyChoiceQuestion}, value) = rand(["option1", "option2", "option3"])
 ```
 
-Bool and str questions with no choices are handled by existing fallbacks.
+### Step 5 — Add test coverage
 
-### Step 5: Add test coverage
-
-**Question-level tests** go in a new file `test/test-<feature>.jl`. At minimum, verify:
-
-- Files are created when the question is enabled
-- Files are absent when the question is disabled
-- Content substitution is correct (check key strings, variable values like PackageOwner)
-- Conditional blocks in other templates are present/absent as expected
-
-**`add_feature` tests** go in `test/test-add-feature.jl` (append to existing file). Use the standard helpers from `AddFeatureHelpers` - which ones to include depends on `requires_answers` and `required_fields` (see the `add_feature` section above).
+Question-level tests go in a new `test/test-<feature>.jl`. At minimum verify: file present when enabled, absent when disabled, content substitution correct (key strings, values like `PackageOwner`), and any conditional blocks in other templates present/absent as expected. Add `add_feature` coverage per the section above.
 
 ### Strategy system reference
 
-The strategy system controls defaults and whether questions are asked:
-
 - **StrategyLevel**: 0=Tiny, 1=Light, 2=Moderate, 3=Robust
-- `DefaultFor{Light,Moderate,Robust,Advanced}`: `true` if `StrategyLevel` >= that level's threshold
-- `WhenFor{Light,Moderate,Robust,Advanced}`: controls whether the question is shown, based on strategy level and the user's `StrategyConfirmIncluded`/`StrategyReviewExcluded` choices
-- Questions default to their `DefaultFor*` value without being asked unless the user opts to confirm/review
+- `DefaultFor{Light,Moderate,Robust,Advanced}`: `true` if `StrategyLevel >=` that level's threshold
+- `WhenFor{Light,Moderate,Robust,Advanced}`: whether the question is shown, based on the strategy level and the user's `StrategyConfirmIncluded`/`StrategyReviewExcluded` choices
+- Questions default to their `DefaultFor*` value without being asked, unless the user opts to confirm/review
 
-## Testing Strategy
+## Breaking changes to the update test
 
-### Unit Tests (test/)
-
-We use testitems (<https://www.julia-vscode.org/docs/stable/userguide/testitems/>)
-
-- `runtests.jl`: CLI test runner with filtering capabilities
-- `test-bestie-specific-api.jl`: BestieTemplate-specific functionality
-- `test-consistency-with-copier-cli.jl`: Copier CLI compatibility
-- `test-corner-cases.jl`: Edge cases and error conditions
-- `test-bad-usage-and-errors.jl`: Error handling validation
-- `utils.jl`: Test utilities and helpers
-
-The test runner supports filtering by:
-
-- `--tags tag1,tag2`: Run tests with ALL specified tags
-- `--exclude tag1,tag2`: Skip tests with ANY specified tags
-- `--file filename`: Run tests from files containing substring
-- `--name testname`: Run tests whose name contains substring
-- `--pattern text`: Run tests with name/filename containing substring
-- `--list-tags`: Show available tags
-- `--help`: Show usage help
-
-### Tag-Based Test Filtering Examples
-
-The test suite uses a comprehensive tag system for efficient filtering during development:
-
-**Available tag categories:**
-
-- **Test Types**: `:unit`, `:integration`, `:validation`
-- **Complexity**: `:fast`, `:slow`
-- **Feature Areas**: `:guessing`, `:template_application`, `:copier_compatibility`, `:license_handling`, `:error_handling`, `:package_creation`, `:update_workflow`, `:test_strategy`
-- **Characteristics**: `:file_io`, `:git_operations`, `:python_integration`, `:randomized`
-
-**Common development workflows:**
-
-```bash
-# Quick development iteration (fast tests only)
-julia --project=test test/runtests.jl --tags fast --exclude slow,python_integration
-
-# Focus on specific functionality
-julia --project=test test/runtests.jl --tags guessing,unit --exclude slow
-julia --project=test test/runtests.jl --tags error_handling
-julia --project=test test/runtests.jl --tags license_handling
-
-# Test specific file with relevant filters
-julia --project=test test/runtests.jl --file bestie-specific --tags fast --exclude randomized
-
-# CI-friendly: exclude slow tests for faster feedback
-julia --project=test test/runtests.jl --exclude slow,python_integration
-
-# Comprehensive but focused: test core functionality
-julia --project=test test/runtests.jl --tags unit,fast --exclude python_integration
-```
-
-### Template Testing
-
-Note: It might out of date, so it is better to avoid until reviewed.
-
-```julia
-julia --project=.
-using BestieTemplate
-Dbg = BestieTemplate.Debug
-cd(mktempdir())
-Dbg.dbg_generate()  # minimum strategy
-Dbg.dbg_generate(data_choice = :rec)  # recommended strategy
-```
-
-## Template Modification
-
-- **Add questions**: Edit `copier.yml` or files in `copier/` directory
-- **Template files**: Use Jinja2 syntax in `template/` directory
-- **Conditional files**: Name with `{% if Condition %}filename{% endif %}.jinja`
-- **Skip existing files**: Configured in `_skip_if_exists` in `copier.yml`
-- **Breaking changes**: Set `BESTIE_SKIP_UPDATE_TEST=yes` to skip compatibility test
-
-## Quality Assurance
-
-- **Pre-commit hooks**: `.pre-commit-config.yaml` (Julia formatting, YAML linting, etc.)
-- **Julia formatting**: `.JuliaFormatter.toml` configuration
-- **Markdown linting**: `.markdownlint.json`
-- **YAML formatting**: `.yamlfmt.yml` and `.yamllint.yml`
-- **Link checking**: `.lychee.toml` for documentation links
-
-## CI/CD Workflows
-
-GitHub Actions workflows in `.github/workflows/`:
-
-- `Test.yml`: Main test suite across Julia versions
-- `TestOnPRs.yml`: PR-specific testing
-- `TestGeneratedPkg.yml`: Test generated package functionality
-- `Lint.yml`: Code quality checks
-- `Docs.yml`: Documentation building
-- `CompatHelper.yml`: Dependency updates
-- `TagBot.yml`: Automated tagging
-- `PreCommitUpdate.yml`: Pre-commit hook updates
+The test "Test updating from main to HEAD vs generate in HEAD" (`test/test-bestie-specific-api.jl`) checks that existing users can update cleanly. Some changes unavoidably break it (e.g. an LTS bump that `Project.toml`'s `_skip_if_exists` prevents updating). To skip it: set `ENV["BESTIE_SKIP_UPDATE_TEST"] = "yes"` locally, include `BESTIE_SKIP_UPDATE_TEST` anywhere in the commit message, and add a breaking notice to the CHANGELOG. Full deprecation procedure for removing a question is in `docs/src/91-developer.md`.
 
 ## CHANGELOG
 
@@ -306,81 +148,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). New entries go
 
 - Sections: `### Added`, `### Changed`, `### Fixed`, `### Removed`, `### Deprecated`
 - Each entry is a `-` bullet, optionally ending with `(#issue_number)`
-- Use concise, user-facing language (what changed for the user, not implementation details)
+- Concise, user-facing language (what changed for the user, not implementation details)
 - Reference-style links at the bottom: `[unreleased]` compare link and `[version]` release links
 
 ## Dependencies
 
-Requires Python Copier backend. Tests use local conda environment in `test/conda-env/` to avoid redownloading dependencies. Python dependencies managed via `CondaPkg.toml`.
-
-## Testing Architecture Patterns
-
-### TestItems Organization
-
-- **Strategy-per-testitem**: Create focused testitems for each major component/strategy rather than nested loops
-- **Shared testsnippets**: Use `@testsnippet` for per-test setup (runs each time, variables directly accessible)
-- **Shared testmodules**: Use `@testmodule` for one-time expensive operations like data loading/computation (runs once, accessed via module prefix)
-- **Combined approach**: Use both when needed - testmodules for shared expensive operations, testsnippets for per-test variables
-- **Comprehensive validation**: Each testitem should test multiple aspects (files, dependencies, behavior) in one place
-
-Reference: [TestItems.jl Documentation](https://www.julia-vscode.org/docs/stable/userguide/testitems/)
-
-### CLI Filtering
-
-- **Semantic tags**: Use descriptive tags like `:test_strategy`, `:integration` for easy filtering
-- **Development workflow**: `julia --project=test test/runtests.jl --tags specific_feature` during development
-- **Add new tags to TAGS_DATA**: Update `test/runtests.jl` when introducing new tag categories
-
-### Test Data Management
-
-- **Extend debug data**: Add new strategies to `src/debug/Data.jl` for consistent test scenarios
-- **Random functions**: Add `_random(::Val{:NewOption})` functions to `test/utils.jl` for new template options
-- **Integration validation**: Use `act` to test generated packages in CI workflows
-
-### Pattern Examples
-
-**@testsnippet (per-test setup):**
-
-```julia
-@testsnippet TestData begin
-  sample_input = generate_random_data()  # Fresh data each test
-  expected_result = process(sample_input)
-end
-
-@testitem "Feature X works" setup=[Common, TestData] begin
-  @test my_function(sample_input) == expected_result
-end
-```
-
-**@testmodule (one-time expensive operations):**
-
-```julia
-@testmodule SharedAssets begin
-  const REFERENCE_DATA = load_large_file("reference.json")  # Load once
-  const COMPUTED_BASELINE = expensive_calculation()          # Compute once
-end
-
-@testitem "Feature Y validates correctly" setup=[Common, SharedAssets] begin
-  @test validate_against(result, SharedAssets.REFERENCE_DATA)
-end
-```
-
-**Combined approach:**
-
-```julia
-@testmodule ExpensiveSetup begin
-  const DATASET = load_dataset()  # One-time I/O
-end
-
-@testsnippet PerTestData begin
-  test_case = generate_test_case()  # Fresh per test
-end
-
-@testitem "Processing works" setup=[ExpensiveSetup, PerTestData] begin
-  @test process(ExpensiveSetup.DATASET, test_case) == expected_output
-end
-```
-
-## Code Development Tips
-
-- When testing new tests, use the CLI approach to filter only the relevant files to test.
+Requires the Python Copier backend, managed via `CondaPkg.toml`. Tests use a local conda environment in `test/conda-env/` to avoid re-downloading.
