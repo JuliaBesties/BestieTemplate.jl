@@ -1,0 +1,21 @@
+# AGENTS.md
+
+Guidance for AI agents working in the {{ PackageName }}.jl repository.
+
+This is a bare-bones starting point. Expand it with project-specific paths,
+commands, and conventions as the package grows.
+
+## Overview
+
+{{ PackageName }}.jl is a Julia package. Source lives in `src/` and tests in `test/`.
+
+## Development commands
+
+- **Test**: `julia --project=. -e "using Pkg; Pkg.test()"`
+- **REPL with the project active**: `julia --project=.`
+
+## Conventions
+
+- Match the existing code style in `src/`.
+- Add or update tests in `test/` for any behavior change.
+- Keep public API changes documented.

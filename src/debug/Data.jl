@@ -71,6 +71,7 @@ const strategies = let
   robust = merge(
     moderate,
     Dict(
+      "AddAgentsMd" => true, # actually part of advanced
       "AddAllcontributors" => true,
       "AddChangelog" => true,
       "AddCodeOfConduct" => true,

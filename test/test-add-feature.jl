@@ -357,6 +357,39 @@ end
   )
 end
 
+@testitem "add_feature(:agents) generates AGENTS.md" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [Common, AddFeatureHelpers] begin
+  _test_happy_path(
+    :agents,
+    ["AGENTS.md"];
+    content_checks = Dict("AGENTS.md" => ["FakePkg", "Pkg.test()"]),
+  )
+end
+
+@testitem "add_feature(:agents) works without .copier-answers.yml when PackageName is guessable" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [Common, AddFeatureHelpers] begin
+  _test_works_without_answers_by_guessing(:agents, "AGENTS.md"; expected_content = "FakePkg")
+end
+
+@testitem "add_feature(:agents) errors when PackageName is not guessable" tags =
+  [:unit, :fast, :error_handling] setup = [Common, AddFeatureHelpers] begin
+  _test_errors_without_data(:agents)
+end
+
+@testitem "add_feature(:agents) uses explicit PackageName over guessed value" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [Common, AddFeatureHelpers] begin
+  _test_explicit_data_override(
+    :agents,
+    Dict("PackageName" => "ExplicitPkgName"),
+    "AGENTS.md",
+    "ExplicitPkgName";
+    unexpected = "FakePkg",
+  )
+end
+
 @testitem "add_feature errors on unsupported feature symbol" tags = [:unit, :fast, :error_handling] setup =
   [Common, AddFeatureHelpers] begin
   _test_errors_without_data(:nonexistent_feature)

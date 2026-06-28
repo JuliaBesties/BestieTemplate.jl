@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning].
 ### Added
 
 - Default lychee configuration now ignores all DocumenterCitations commands, including `@citet`, `@citet*`, `@Citet`, `@Citet*`, etc. (#606, #607)
+- New question: `AddAgentsMd` to add a bare-bones `AGENTS.md` file with guidance for AI coding agents
+- `add_feature(:agents)` to add an `AGENTS.md` to an existing package
 
 ### Fixed
 

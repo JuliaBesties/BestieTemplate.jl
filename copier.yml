@@ -27,6 +27,7 @@ _skip_if_exists:
   - CHANGELOG.md
   - CITATION.cff
   - LICENSE
+  - AGENTS.md
 
 _subdirectory: template
 
