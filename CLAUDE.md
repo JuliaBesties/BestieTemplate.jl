@@ -46,6 +46,8 @@ Julia wrapper around Python Copier template engine for generating Julia package 
 **Filtered Testing**: `julia --project=test test/runtests.jl --tags fast --exclude slow`
 **Linting**: `pre-commit run -a` (setup: `pre-commit install`)
 
+When on `main`, the `no-commit-to-branch` hook fails and `fail_fast: true` aborts all later hooks, so the lint checks silently don't run. Prefix with `SKIP` to run the real checks: `SKIP=no-commit-to-branch pre-commit run --files <changed files>`
+
 ### Testing via julia-mcp
 
 When julia-mcp is available, prefer it over CLI. The Julia session stays alive between calls, avoiding recompilation.
