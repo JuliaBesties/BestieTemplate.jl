@@ -35,7 +35,7 @@ Julia wrapper around the Python [Copier](https://copier.readthedocs.io) template
 
 When iterating, filter to the relevant files/tags rather than running the full suite. Tag taxonomy and test-data conventions are documented in `docs/src/91-developer.md` ("Test organization and conventions").
 
-When on `main`, the `no-commit-to-branch` hook fails and `fail_fast: true` aborts all later hooks, so the lint checks silently don't run. Prefix with `SKIP` to run the real checks: `SKIP=no-commit-to-branch pre-commit run --files <changed files>`
+Only when running pre-commit on `main`: the `no-commit-to-branch` hook fails and `fail_fast: true` aborts all later hooks, so the lint checks silently don't run. Prefix with `SKIP` to run the real checks: `SKIP=no-commit-to-branch pre-commit run --files <changed files>`. On any other branch, run pre-commit plainly — no `SKIP`.
 
 ### Testing via julia-mcp
 
@@ -67,8 +67,8 @@ Before writing tests, verify the method matches the template: the `included_file
 Both the `AddFeatureHelpers` snippet and the tests live in `test/test-add-feature.jl`. Which helpers apply depends on `requires_answers` and `required_fields`:
 
 - `_test_happy_path`: feature generates expected file(s)
-- `_test_works_without_answers` (if `requires_answers = false`): works when data is guessable
-- `_test_works_on_bare_project` (if no `required_fields` and `requires_answers = false`): works on a minimal src/test directory
+- `_test_works_without_answers_by_guessing` (if `requires_answers = false`): works when data is guessable
+- `_test_works_on_empty_folder` (if no `required_fields` and `requires_answers = false`): works on a minimal src/test directory
 - `_test_errors_without_data`: errors when required data is missing
 - `_test_explicit_data_override` (for features with `required_fields`): `data` arg beats guessed/answers values
 

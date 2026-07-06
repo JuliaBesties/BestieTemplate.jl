@@ -154,8 +154,8 @@ _add_feature(::Val{:my_feature}) = (
 2. Check that the method matches the template: the `included_files` in `template/` should be gated on the `forced_data` flag (e.g. `{% if MyFlag %}filename{% endif %}.jinja`), and the `required_fields` should be ones the feature genuinely cannot resolve on its own.
 3. Add tests in `test/test-add-feature.jl` using the `AddFeatureHelpers` snippet helpers (defined in the same file):
    - `_test_happy_path`: feature generates expected file(s)
-   - `_test_works_without_answers` (if `requires_answers = false`): works when data is guessable
-   - `_test_works_on_bare_project` (if no `required_fields` and `requires_answers = false`): works on a minimal src/test directory
+   - `_test_works_without_answers_by_guessing` (if `requires_answers = false`): works when data is guessable
+   - `_test_works_on_empty_folder` (if no `required_fields` and `requires_answers = false`): works on a minimal src/test directory
    - `_test_errors_without_data`: errors when required data is missing
    - `_test_explicit_data_override` (for features with `required_fields`): verifies `data` arg takes priority
 
