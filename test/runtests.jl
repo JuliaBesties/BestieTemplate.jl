@@ -1,5 +1,15 @@
 #!/usr/bin/env julia
 
+# Must be set before CondaPkg resolves (triggered when the first testitem loads
+# BestieTemplate). The same setup in the `Common` testsnippet runs too late under
+# `pkg> test`, which would silently build a second env at test/.CondaPkg.
+if get(ENV, "CI", "nothing") == "nothing"
+  ENV["JULIA_CONDAPKG_ENV"] = joinpath(@__DIR__, "conda-env")
+  if isdir(ENV["JULIA_CONDAPKG_ENV"])
+    ENV["JULIA_CONDAPKG_OFFLINE"] = true
+  end
+end
+
 using Pkg
 using TestItemRunner
 using TOML
@@ -231,10 +241,9 @@ function parse_arguments()
     return tag
   end
 
-  tag_transform(list_of_tags) =
-    map(split(list_of_tags, ",")) do tag
-      ensure_tag_existence(Symbol(tag))
-    end
+  tag_transform(list_of_tags) = map(split(list_of_tags, ",")) do tag
+    ensure_tag_existence(Symbol(tag))
+  end
 
   tags_filter = _parse_argument_with_value("--tags", tag_transform)
   exclude_filter = _parse_argument_with_value("--exclude", tag_transform)

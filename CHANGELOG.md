@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Fixed
+
+- Intermittent `OSError: [Errno 39] Directory not empty` no longer fails `generate`, `apply`, `update`, and `add_feature`; the error comes from Copier removing its temporary clone after the files were already created, so it is now safely ignored
+
 ## [0.18.6] - 2026-04-11
 
 ### Added

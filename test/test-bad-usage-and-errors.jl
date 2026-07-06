@@ -42,3 +42,42 @@ end
     _generate_test_package("some_folder3", TestConstants.args.bestie.robust)
   end
 end
+
+@testitem "Copier temp clone cleanup failure is ignored" tags =
+  [:unit, :fast, :error_handling, :python_integration] setup = [Common] begin
+  Copier = BestieTemplate.Copier
+
+  # Reproduces the OSError raised when Copier's cleanup of its temporary VCS
+  # clone loses the rmtree race (the copy itself has already succeeded).
+  function _cleanup_race_exception(filename)
+    try
+      PythonCall.pyexec("raise OSError(39, 'Directory not empty', '$filename')", @__MODULE__)
+      error("unreachable")
+    catch ex
+      return ex
+    end
+  end
+
+  ex = _cleanup_race_exception("/tmp/copier._vcs.clone.test123/.git/objects")
+  @test Copier._copier_tempdir_from_exception(ex) == "/tmp/copier._vcs.clone.test123"
+
+  # OSError outside a copier temp clone is not swallowed
+  ex_other = _cleanup_race_exception("/tmp/some-other-dir/.git/objects")
+  @test isnothing(Copier._copier_tempdir_from_exception(ex_other))
+  @test_throws PythonCall.PyException Copier._ignore_cleanup_race(() -> throw(ex_other))
+
+  # Non-Python exceptions are not swallowed
+  @test_throws ErrorException Copier._ignore_cleanup_race(() -> error("boom"))
+
+  # The race is swallowed and the leftover temporary clone is removed
+  mktempdir() do dir
+    clone_dir = joinpath(dir, "copier._vcs.clone.test456")
+    mkpath(joinpath(clone_dir, ".git", "objects"))
+    ex_race = _cleanup_race_exception(joinpath(clone_dir, ".git", "objects"))
+    @test isnothing(Copier._ignore_cleanup_race(() -> throw(ex_race)))
+    @test !isdir(clone_dir)
+  end
+
+  # Successful calls pass their value through
+  @test Copier._ignore_cleanup_race(() -> 42) == 42
+end
