@@ -9,11 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ### Added
 
-- Ignore all DocumenterCitations commands when checking links with lychee, including `@citet`, `@citet*`, `@Citet`, `@Citet*`, etc. (#607)
+- Default lychee configuration now ignores all DocumenterCitations commands, including `@citet`, `@citet*`, `@Citet`, `@Citet*`, etc. (#606, #607)
 
 ### Fixed
 
-- Missing citation styles from DocumenterCitations (#606)
 - Intermittent `OSError: [Errno 39] Directory not empty` no longer fails `generate`, `apply`, `update`, and `add_feature`; the error comes from Copier removing its temporary clone after the files were already created, so it is now safely ignored
 
 ## [0.18.6] - 2026-04-11
