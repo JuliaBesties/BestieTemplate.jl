@@ -1,6 +1,6 @@
 exclude = [
   "@ref",
-  "@cite",
+  "@[Cc]ite.*",
   "^https://github.com/.*/releases/tag/v.*$",
   "^https://github.com/.*/compare/v.*HEAD$",
   "^https://blog.esciencecenter.nl" # certificate error, hopefully fixed soon
