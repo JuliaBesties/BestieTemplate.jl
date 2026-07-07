@@ -143,6 +143,7 @@ This also doesn't explain where each file came from or why they are here. You ca
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/BSchilperoort"><img src="https://avatars.githubusercontent.com/u/12114825?v=4?s=100" width="100px;" alt="Bart Schilperoort"/><br /><sub><b>Bart Schilperoort</b></sub></a><br /><a href="#bug-BSchilperoort" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://black-holes.org"><img src="https://avatars.githubusercontent.com/u/1470769?v=4?s=100" width="100px;" alt="Mike Boyle"/><br /><sub><b>Mike Boyle</b></sub></a><br /><a href="#bug-moble" title="Bug reports">🐛</a> <a href="#code-moble" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
