@@ -227,6 +227,16 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "moble",
+      "name": "Mike Boyle",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1470769?v=4",
+      "profile": "http://black-holes.org",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ]
 }
