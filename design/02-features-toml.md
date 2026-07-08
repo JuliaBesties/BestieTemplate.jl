@@ -67,6 +67,6 @@ These rules are behavior, not schema — they are documented here because both i
 ## Migration plan (roadmap step 1)
 
 1. Create `features.toml` from the current `_add_feature` methods and the docstring descriptions in `src/friendly.jl`.
-2. Make `_add_feature` (or a replacement) read the TOML — Julia stdlib `TOML`, loaded from `pkgdir(BestieTemplate)` for `:local`, fetched at the ref for `:online`+`use_latest`.
+2. Make `_add_feature` (or a replacement) read the TOML — Julia stdlib `TOML`, loaded from `local_template_path` for `:local` (falling back to the bundled copy). For `:online` the Julia side keeps using the **bundled** registry for now — same behavior as the old compiled-in registry; fetching it at the pinned ref is deferred to the Python package (which needs the fetch logic anyway).
 3. The `add_feature` docstring's feature list becomes generated from (or at minimum cross-checked in tests against) the TOML, so docs can't drift either.
 4. Existing `test/test-add-feature.jl` passes unchanged — the migration is behavior-preserving by definition.

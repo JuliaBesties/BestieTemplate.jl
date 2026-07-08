@@ -124,46 +124,95 @@ function new_pkg_quick(
   )
 end
 
-# TODO: Automatically list supported features (after at least 3 features have been implemented)
+# The feature registry bundled with this copy of BestieTemplate.
+const BUNDLED_FEATURES_TOML = joinpath(dirname(@__DIR__), "features.toml")
+# The add_feature docstring is generated from the registry at precompile time
+Base.include_dependency(BUNDLED_FEATURES_TOML)
 
-# Feature specs for `add_feature`: return (forced_data, included_files, required_fields, requires_answers)
-_add_feature(::Val{:testitem_cli}) =
-  (Dict("TestingStrategy" => "testitem_cli"), ["test/runtests.jl"], String[], false)
-_add_feature(::Val{:pre_commit}) = _add_feature(Val(:pre_commit_with_config))
-_add_feature(::Val{:pre_commit_with_config}) = (
-  Dict("AddPrecommit" => true, "AddFormatterAndLinterConfigFiles" => true),
-  [
-    ".pre-commit-config.yaml",
-    ".JuliaFormatter.toml",
-    ".editorconfig",
-    ".yamlfmt.yml",
-    ".yamllint.yml",
-    ".markdownlint.json",
-  ],
-  String[],
-  false,
-)
-_add_feature(::Val{:pre_commit_without_config}) = (
-  Dict("AddPrecommit" => true, "AddFormatterAndLinterConfigFiles" => true),
-  [".pre-commit-config.yaml"],
-  String[],
-  false,
-)
-_add_feature(::Val{:lint_action}) =
-  (Dict("AddLintCI" => true), [".github/workflows/Lint.yml"], String[], true)
-_add_feature(::Val{:dependabot}) = (
-  Dict(
-    "AddDependabot" => true,
-    "GitHubActionVersionAutoUpdate" => "dependabot",
-    "JuliaCompatAutoUpdate" => "dependabot",
-  ),
-  [".github/dependabot.yml"],
-  ["PackageName"],
-  false,
-)
-_add_feature(::Val{:changelog}) =
-  (Dict("AddChangelog" => true), ["CHANGELOG.md"], ["PackageOwner", "PackageName"], false)
-_add_feature(::Val{:agents}) = (Dict("AddAgentsMd" => true), ["AGENTS.md"], ["PackageName"], false)
+"""
+    _load_features(registry_path = BUNDLED_FEATURES_TOML)
+
+Load the feature registry (`features.toml`) used by [`add_feature`](@ref).
+If `registry_path` does not exist (e.g. a frozen local template copy predating the
+registry), fall back to the bundled copy.
+"""
+function _load_features(registry_path::AbstractString = BUNDLED_FEATURES_TOML)
+  if !isfile(registry_path)
+    registry_path = BUNDLED_FEATURES_TOML
+  end
+  registry = TOML.parsefile(registry_path)
+  schema_version = get(registry, "schema_version", nothing)
+  if schema_version != 1
+    error(
+      """Unsupported features.toml schema_version: $schema_version (in $registry_path).
+      This version of BestieTemplate only supports schema_version 1. Try updating BestieTemplate.""",
+    )
+  end
+  return registry["features"]
+end
+
+"""
+    _feature_spec(features, feature::Symbol)
+
+Look up `feature` in the registry loaded by [`_load_features`](@ref), resolving aliases.
+"""
+function _feature_spec(features::Dict, feature::Symbol)
+  name = String(feature)
+  if !haskey(features, name)
+    supported = join(sort!([":$k" for k in keys(features)]), ", ")
+    error("Unknown feature :$feature. Supported features: $supported")
+  end
+  spec = features[name]
+  if haskey(spec, "alias_of")
+    target = spec["alias_of"]
+    if !haskey(features, target)
+      error("features.toml is malformed: :$name is an alias of unknown feature :$target")
+    end
+    spec = features[target]
+    if haskey(spec, "alias_of")
+      error(
+        "features.toml is malformed: alias chains are not supported (:$name -> :$target -> :$(spec["alias_of"]))",
+      )
+    end
+  end
+  return spec
+end
+
+"""
+    _features_docstring()
+
+Generate the supported-features list of the [`add_feature`](@ref) docstring from the
+bundled `features.toml`. A problem with the registry must not prevent the module from
+loading, so on error this degrades to a pointer to the file (the registry is validated
+by the test suite instead).
+"""
+function _features_docstring()
+  try
+    features = _load_features()
+    lines = String[]
+    for name in sort!(collect(keys(features)))
+      spec = features[name]
+      if haskey(spec, "alias_of")
+        push!(lines, "- `:$name`: Alias for `:$(spec["alias_of"])`.")
+        continue
+      end
+      line = "- `:$name`: $(spec["description"])."
+      requirements = String[]
+      if spec["requires_answers"]
+        push!(requirements, "`.copier-answers.yml`")
+      end
+      append!(requirements, ["`$field`" for field in spec["required_fields"]])
+      if !isempty(requirements)
+        line *= " Requires $(join(requirements, " and "))."
+      end
+      push!(lines, line)
+    end
+    return join(lines, "\n")
+  catch ex
+    @debug "Failed to generate the feature list from features.toml" exception = ex
+    return "See `features.toml` in the template repository for the list of features."
+  end
+end
 
 """
     add_feature(feature::Symbol[, dst_path, data]; kwargs...)
@@ -176,14 +225,11 @@ exists, it is updated; otherwise no answers file is created.
 
 ## Supported features
 
-- `:testitem_cli` - regenerates `test/runtests.jl` with the `testitem_cli` testing strategy
-- `:pre_commit_with_config` - regenerates `.pre-commit-config.yaml` and formatter/linter config files
-- `:pre_commit_without_config` - regenerates only `.pre-commit-config.yaml`
-- `:pre_commit` - alias for `:pre_commit_with_config`
-- `:lint_action` - regenerates `.github/workflows/Lint.yml` (requires `.copier-answers.yml`)
-- `:dependabot` - regenerates `.github/dependabot.yml` (requires `PackageName`)
-- `:changelog` - regenerates `CHANGELOG.md` (requires `PackageOwner` and `PackageName`)
-- `:agents` - adds `AGENTS.md` (requires `PackageName`; an existing `AGENTS.md` is kept unchanged)
+Features are defined in the `features.toml` registry shipped with the template
+(the list below is generated from the bundled copy; a custom `local_template_path`
+may provide its own registry):
+
+$(_features_docstring())
 
 ## Arguments
 
@@ -205,7 +251,13 @@ function add_feature(
   use_latest::Bool = false,
   kwargs...,
 )
-  forced_data, included_files, required_fields, requires_answers = _add_feature(Val(feature))
+  registry_root = template_source == :local ? local_template_path : pkgdir(BestieTemplate)
+  features = _load_features(joinpath(registry_root, "features.toml"))
+  spec = _feature_spec(features, feature)
+  forced_data = spec["forced_data"]
+  included_files = spec["included_files"]
+  required_fields = spec["required_fields"]
+  requires_answers = spec["requires_answers"]
 
   answers_path = joinpath(dst_path, ".copier-answers.yml")
   has_answers = isfile(answers_path)

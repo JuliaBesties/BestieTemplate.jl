@@ -395,6 +395,34 @@ end
   _test_errors_without_data(:nonexistent_feature)
 end
 
+@testitem "features.toml ships with the package and is well-formed" tags = [:unit, :fast] begin
+  using BestieTemplate
+
+  # The bundled registry is the fallback for every add_feature call (and the
+  # docstring is generated from it), so it must ship with the package.
+  registry_path = joinpath(pkgdir(BestieTemplate), "features.toml")
+  @test isfile(registry_path)
+
+  features = BestieTemplate._load_features(registry_path)
+  @test !isempty(features)
+  for (name, spec) in features
+    if haskey(spec, "alias_of")
+      # Aliases have exactly one key and point to a non-alias feature
+      @test collect(keys(spec)) == ["alias_of"]
+      @test haskey(features, spec["alias_of"])
+      @test !haskey(features[spec["alias_of"]], "alias_of")
+    else
+      for key in
+          ["description", "forced_data", "included_files", "required_fields", "requires_answers"]
+        @test haskey(spec, key)
+      end
+    end
+  end
+
+  # The docstring generator must produce the real list, not the error fallback
+  @test contains(BestieTemplate._features_docstring(), ":pre_commit")
+end
+
 @testitem "add_feature handles .copier-answers.yml with a float-like _commit" tags =
   [:integration, :slow, :error_handling, :file_io] setup = [Common, AddFeatureHelpers] begin
   # Regression for the float-like `_commit` quirk handled by `_load_copier_answers`

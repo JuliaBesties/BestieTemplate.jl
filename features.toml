@@ -1,0 +1,72 @@
+# Feature registry for `add_feature` — the single source of truth shared by the
+# Julia package and future non-Julia interfaces (see design/02-features-toml.md).
+#
+# Field semantics:
+# - description: one line, user-facing; the `add_feature` docstring list is generated from it
+# - forced_data: answers always applied, highest priority in the data merge order
+# - included_files: the only paths copier writes (everything else is excluded);
+#   must be gated in the template on the forced_data flag(s)
+# - required_fields: answer keys that must be resolvable or the operation errors
+# - requires_answers: true = `.copier-answers.yml` must exist in the destination
+# - alias_of: this feature is an alias of another entry (no other fields allowed)
+
+schema_version = 1
+
+[features.agents]
+description = "Adds `AGENTS.md` with guidance for AI coding agents; an existing `AGENTS.md` is kept unchanged"
+forced_data = { AddAgentsMd = true }
+included_files = ["AGENTS.md"]
+required_fields = ["PackageName"]
+requires_answers = false
+
+[features.changelog]
+description = "Adds `CHANGELOG.md` following the Keep a Changelog format"
+forced_data = { AddChangelog = true }
+included_files = ["CHANGELOG.md"]
+required_fields = ["PackageOwner", "PackageName"]
+requires_answers = false
+
+[features.dependabot]
+description = "Adds `.github/dependabot.yml` with auto-updates for GitHub Actions versions and Julia compat entries"
+forced_data = { AddDependabot = true, GitHubActionVersionAutoUpdate = "dependabot", JuliaCompatAutoUpdate = "dependabot" }
+included_files = [".github/dependabot.yml"]
+required_fields = ["PackageName"]
+requires_answers = false
+
+[features.lint_action]
+description = "Adds the `.github/workflows/Lint.yml` GitHub Actions workflow"
+forced_data = { AddLintCI = true }
+included_files = [".github/workflows/Lint.yml"]
+required_fields = []
+requires_answers = true
+
+[features.pre_commit]
+alias_of = "pre_commit_with_config"
+
+[features.pre_commit_with_config]
+description = "Adds `.pre-commit-config.yaml` and the formatter/linter configuration files"
+forced_data = { AddPrecommit = true, AddFormatterAndLinterConfigFiles = true }
+included_files = [
+  ".pre-commit-config.yaml",
+  ".JuliaFormatter.toml",
+  ".editorconfig",
+  ".yamlfmt.yml",
+  ".yamllint.yml",
+  ".markdownlint.json",
+]
+required_fields = []
+requires_answers = false
+
+[features.pre_commit_without_config]
+description = "Adds only `.pre-commit-config.yaml`, without the formatter/linter configuration files"
+forced_data = { AddPrecommit = true, AddFormatterAndLinterConfigFiles = true }
+included_files = [".pre-commit-config.yaml"]
+required_fields = []
+requires_answers = false
+
+[features.testitem_cli]
+description = "Updates `test/runtests.jl` to the `testitem_cli` testing strategy (filterable CLI test runner)"
+forced_data = { TestingStrategy = "testitem_cli" }
+included_files = ["test/runtests.jl"]
+required_fields = []
+requires_answers = false
