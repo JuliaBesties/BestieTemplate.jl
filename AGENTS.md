@@ -108,6 +108,7 @@ Content only present when the feature is enabled.
 {% endif -%}
 ```
 
+- **Aggregate folder flags** (in `copier/ci.yml`): if the new question gates a file under `template/.../workflows/`, add it to the `AddWorkflowsFolder` default expression; if it gates any other file under `template/.../.github/`, check `AddDotGitHubFolder`. These expressions must list exactly the flags that create files in those folders — flags that only alter the *content* of other files do not belong there.
 - **`_skip_if_exists`** (in `copier.yml`): if the generated file is meant to be user-edited after generation (CHANGELOG.md, LICENSE, CITATION.cff), add it here so `copier update` won't overwrite user changes.
 - **Cross-file references**: grep template files for related content that should become conditional on the new question (e.g. `AddChangelog` added a release section to `91-developer.md.jinja`).
 
