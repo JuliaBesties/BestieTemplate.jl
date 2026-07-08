@@ -158,6 +158,7 @@ Aliases are entries with a single `alias_of = "other_feature"` key.
    - `_test_works_on_empty_folder` (if no `required_fields` and `requires_answers = false`): works on a minimal src/test directory
    - `_test_errors_without_data`: errors when required data is missing
    - `_test_explicit_data_override` (for features with `required_fields`): verifies `data` arg takes priority
+4. Update the Python side, which shares the registry (see [The Python package](@ref python_package)): add the new name to the expected list in `test_feature_names` (`python/tests/test_registry.py`) — it pins the exact feature set on purpose, as a drift guard — and run `cd python && uv run pytest`.
 
 ### Testing local changes to the template
 
@@ -225,6 +226,46 @@ copier copy --vcs-ref HEAD /path/to/bestie/ pkg
 ```
 
 Of course, in this case you won't have the pre-filled data, so it isn't the preferred way for longer testing/debugging sessions.
+
+## [The Python package (`python/`)](@id python_package)
+
+The repository also hosts `bestie-template`, a Python package that exposes `add_feature` and `list_features` without requiring Julia (status: not yet published to PyPI; a CLI, HTTP API, and MCP server are planned). The working design documents live in `design/` at the repository root — start with `design/index.md` for the roadmap and rationale.
+
+### Layout and the one rule
+
+```text
+python/
+├── pyproject.toml            # hatchling; ruff config; pytest config
+├── hatch_build.py            # bundles ../features.toml into wheels/sdists
+├── src/copier_features/      # generic engine: works for ANY copier template with a features.toml
+└── src/bestie_template/      # Bestie branding: template URL, defaults, registry resolution
+```
+
+The one rule: **`copier_features` must never import or mention `bestie_template`** (or anything Bestie-specific). It is designed to be extractable as a standalone, template-agnostic tool one day, so branding stays in `bestie_template`, which only supplies overridable defaults. A test (`python/tests/test_generic_no_branding.py`) enforces this.
+
+### Development commands
+
+```bash
+cd python
+uv sync          # create .venv with the package (editable) + dev dependencies
+uv run pytest    # full suite: unit + integration (real copier runs on this checkout)
+uv build         # build sdist + wheel into dist/
+```
+
+Linting and formatting are handled by the repository-wide pre-commit setup (`ruff` and `ruff-format`; configuration in `python/pyproject.toml`). The `uv-lock` hook keeps `python/uv.lock` in sync with `pyproject.toml`.
+
+### One registry, two implementations
+
+Both `src/friendly.jl` and the Python package read the same `features.toml` at the repository root, so adding a feature there serves both — no Python code changes needed. Two things keep the implementations honest:
+
+- `python/tests/test_registry.py::TestRepoRegistry` pins the exact feature set and spot-checks specs, mirroring the Julia expectations in `test/test-add-feature.jl`. A registry change that forgets one side fails that side's CI.
+- The Python integration tests replay the Julia suite's golden expectations (empty-folder application, explicit-data override, the preservation invariant that unrelated files survive untouched) against the same local template.
+
+Installed wheels cannot rely on the repository, so `hatch_build.py` copies `features.toml` into the `bestie_template` package at build time (all build paths: wheel-from-checkout, sdist, wheel-from-sdist). In a checkout, the runtime falls back to the repo-root file — you never need to copy it manually.
+
+### CI
+
+`.github/workflows/TestPython.yml` runs the suite on the oldest and newest supported Python, builds and smoke-tests the wheel, and has a `copier-compat` canary (allowed to fail) against copier's pinned floor and latest release. It triggers on changes to `python/`, `features.toml`, `template/`, `copier/`, and `copier.yml` — template changes can break the Python integration tests, since they render the real template.
 
 ## Working on a new issue
 

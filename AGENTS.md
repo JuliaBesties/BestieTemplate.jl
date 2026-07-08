@@ -22,7 +22,11 @@ Julia wrapper around the Python [Copier](https://copier.readthedocs.io) template
 
 **Template (`template/`)** — Jinja2 files for generated packages.
 
-**Python package (`python/`)** — `bestie-template` (not yet published): `src/copier_features/` is a template-agnostic engine (must never reference Bestie — CI-enforced), `src/bestie_template/` adds Bestie defaults. Both are driven by the repo-root `features.toml` registry, shared with `src/friendly.jl`. Design docs and roadmap live in `design/`.
+**Python package (`python/`)** — `bestie-template` (not yet published): `src/copier_features/` is a template-agnostic engine (must never reference Bestie, not even in comments/docstrings — `tests/test_generic_no_branding.py` greps for it), `src/bestie_template/` adds Bestie defaults. Both are driven by the repo-root `features.toml` registry, shared with `src/friendly.jl`. Design docs and roadmap live in `design/`.
+
+- `copier_features/`: `registry.py` (Feature/Registry, parsing, fetching), `ops.py` (add_feature/list_features, exclude-list mechanics, the copier cleanup-race guard), `answers.py`, `errors.py`
+- `bestie_template/__init__.py`: TEMPLATE_URL, PLACEHOLDER_FIELDS, registry resolution (local dir → fetch at ref → bundled), wrapper API
+- Packaging: `hatch_build.py` bundles `../features.toml` into non-editable builds; do not add a copy of the registry under `python/`
 
 - Conditional file/dir inclusion via the filename: `{% if Condition %}filename{% endif %}.jinja`
 - Variable substitution in content: `{{ VariableName }}`
@@ -30,7 +34,7 @@ Julia wrapper around the Python [Copier](https://copier.readthedocs.io) template
 ## Development commands
 
 - **Test (Pkg)**: `julia --project=. -e "using Pkg; Pkg.test()"`
-- **Test (Python)**: `cd python && uv sync && uv run pytest`
+- **Test (Python)**: `cd python && uv sync && uv run pytest` (filter: `uv run pytest -k <pattern>`; skip the slow copier runs with `-m "not integration"`)
 - **Test (CLI runner)**: `julia --project=test test/runtests.jl`
 - **Filtered**: `julia --project=test test/runtests.jl --tags fast --exclude slow` (also `--file`, `--name`, `--list-tags`, `--help`)
 - **Lint**: `pre-commit run -a`
@@ -76,6 +80,8 @@ Both the `AddFeatureHelpers` snippet and the tests live in `test/test-add-featur
 - `_test_works_on_empty_folder` (if no `required_fields` and `requires_answers = false`): works on a minimal src/test directory
 - `_test_errors_without_data`: errors when required data is missing
 - `_test_explicit_data_override` (for features with `required_fields`): `data` arg beats guessed/answers values
+
+The Python side shares the registry, so a new feature needs no Python code — but `test_feature_names` in `python/tests/test_registry.py` pins the exact feature-name list as a drift guard: add the new name there (sorted) and run the Python tests.
 
 ## Adding a new Copier question
 
