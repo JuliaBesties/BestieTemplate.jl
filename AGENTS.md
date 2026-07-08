@@ -22,12 +22,15 @@ Julia wrapper around the Python [Copier](https://copier.readthedocs.io) template
 
 **Template (`template/`)** — Jinja2 files for generated packages.
 
+**Python package (`python/`)** — `bestie-template` (not yet published): `src/copier_features/` is a template-agnostic engine (must never reference Bestie — CI-enforced), `src/bestie_template/` adds Bestie defaults. Both are driven by the repo-root `features.toml` registry, shared with `src/friendly.jl`. Design docs and roadmap live in `design/`.
+
 - Conditional file/dir inclusion via the filename: `{% if Condition %}filename{% endif %}.jinja`
 - Variable substitution in content: `{{ VariableName }}`
 
 ## Development commands
 
 - **Test (Pkg)**: `julia --project=. -e "using Pkg; Pkg.test()"`
+- **Test (Python)**: `cd python && uv sync && uv run pytest`
 - **Test (CLI runner)**: `julia --project=test test/runtests.jl`
 - **Filtered**: `julia --project=test test/runtests.jl --tags fast --exclude slow` (also `--file`, `--name`, `--list-tags`, `--help`)
 - **Lint**: `pre-commit run -a`

@@ -50,6 +50,14 @@ Blocked on F1. The backend is trivial (FastAPI over L2 already exists by then); 
 
 Straightforward (same public copier surface) but out of MVP scope; add after the CLI stabilizes if demand appears.
 
+### F4 — Latest-release ref resolution for the default online path
+
+With no explicit `ref`, copier applies the template at its *latest release tag* while both implementations use the *bundled* registry (Python) or the package's compiled-in copy at `pkgdir` (Julia) — so a feature that exists in a newer registry than the release template can be offered and then fail to render. Fixing it properly means resolving the latest tag (e.g. `git ls-remote`) and fetching the registry at that tag. Deferred; the limitation is documented in `load_default_registry`'s docstring and [02-features-toml.md](02-features-toml.md). Review reference: Opus general finding 1 (2026-07-08).
+
+### F5 — Narrowing the `list_features` public schema
+
+`list_features` currently returns full `Feature` entries including `forced_data` and `included_files`. Since the `features.toml` schema is itself public and versioned (`schema_version`), this may be fine — but if the FastAPI/MCP schemas mirror it one-to-one, registry-schema evolution ripples into semver-bound frontend schemas. Decide before building the frontends (step 3+) whether they expose a narrow `FeatureInfo` (name, description, requirements) instead. Review reference: Opus general finding 2 (2026-07-08).
+
 ## Rejected
 
 ### R1 — Generic tool first

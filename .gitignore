@@ -15,3 +15,7 @@ node_modules
 test/CondaPkg.toml
 test/conda-env
 .claude
+__pycache__/
+.pytest_cache
+python/.venv
+python/dist

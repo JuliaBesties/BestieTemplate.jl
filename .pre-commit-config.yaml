@@ -44,6 +44,18 @@ repos:
     rev: v1.35.1
     hooks:
       - id: yamllint
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.20
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.11.28
+    hooks:
+      - id: uv-lock
+        args: [--project, python]
+        files: ^python/(pyproject\.toml|uv\.lock)$
   - repo: https://github.com/domluna/JuliaFormatter.jl
     rev: v2.0.0
     hooks:

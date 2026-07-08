@@ -35,7 +35,7 @@ Bestie's real product is `copier.yml` + `template/` — pure [Copier](https://co
 ## Roadmap / TODO
 
 1. [x] **`features.toml` at repo root** with the generic schema and `schema_version`; migrate feature definitions (including descriptions) out of `src/friendly.jl`; Julia's `_add_feature` reads the TOML (behavior-preserving — the existing `test/test-add-feature.jl` suite is the safety net).
-2. [ ] **Python package in `python/`**: `copier_features` (generic L1) + `bestie_template` (branding) + L2 `add_feature`/`list_features`; unit tests plus golden-dir integration tests mirroring `test/test-add-feature.jl`; CI check that the generic module never imports branding.
+2. [x] **Python package in `python/`**: `copier_features` (generic L1) + `bestie_template` (branding) + L2 `add_feature`/`list_features`; unit tests plus golden-dir integration tests mirroring `test/test-add-feature.jl`; CI check that the generic module never imports branding (`.github/workflows/TestPython.yml`).
 3. [ ] **CLI + PyPI**: typer CLI, trusted publishing (OIDC) on `py-v*` tags; `uvx` recipe in Bestie's docs.
 4. [ ] **FastAPI over L2** (`bestie serve`, localhost-only) — doubles as an executable contract test for L2's schemas.
 5. [ ] **MCP server (features-only) + SKILL**; add an "asking Bestie for features" section to the generated `AGENTS.md` template so every Bestie package becomes agent-upgradable.

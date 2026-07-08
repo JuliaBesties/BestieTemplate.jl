@@ -1,0 +1,79 @@
+name: TestPython
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "python/**"
+      - features.toml
+      - "template/**"
+      - copier.yml
+      - "copier/**"
+      - .github/workflows/TestPython.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "python/**"
+      - features.toml
+      - "template/**"
+      - copier.yml
+      - "copier/**"
+      - .github/workflows/TestPython.yml
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - "3.11"
+          - "3.13"
+    defaults:
+      run:
+        working-directory: python
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Integration tests run copier against this checkout; copier
+          # warns on (and may misbehave with) shallow template clones
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+      - name: Install package and dev dependencies
+        run: uv sync --python ${{ matrix.python-version }}
+      - name: Run tests
+        run: uv run pytest
+      - name: Build distributions and smoke-test the wheel
+        run: |
+          uv build
+          uv run --isolated --no-project --with dist/*.whl python -c "import bestie_template as bt; bt.bundled_registry_path(); assert bt.list_features(template='ignored://remote')"
+          rm -rf dist
+          uv build --wheel
+          uv run --isolated --no-project --with dist/*.whl python -c "import bestie_template as bt; bt.bundled_registry_path(); assert bt.list_features(template='ignored://remote')"
+
+  copier-compat:
+    # Early warning for breakage with other copier versions than the locked
+    # one: the pinned floor and the latest release (design/05)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        copier-spec:
+          - copier==9.14.*
+          - copier
+    defaults:
+      run:
+        working-directory: python
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync
+      - name: Override copier version
+        run: uv pip install --upgrade "${{ matrix.copier-spec }}"
+      - run: uv run --no-sync pytest
