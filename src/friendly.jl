@@ -183,7 +183,7 @@ exists, it is updated; otherwise no answers file is created.
 - `:lint_action` - regenerates `.github/workflows/Lint.yml` (requires `.copier-answers.yml`)
 - `:dependabot` - regenerates `.github/dependabot.yml` (requires `PackageName`)
 - `:changelog` - regenerates `CHANGELOG.md` (requires `PackageOwner` and `PackageName`)
-- `:agents` - regenerates `AGENTS.md` (requires `PackageName`)
+- `:agents` - adds `AGENTS.md` (requires `PackageName`; an existing `AGENTS.md` is kept unchanged)
 
 ## Arguments
 

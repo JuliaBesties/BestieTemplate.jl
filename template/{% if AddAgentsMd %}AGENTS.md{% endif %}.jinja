@@ -12,8 +12,22 @@ commands, and conventions as the package grows.
 ## Development commands
 
 - **Test**: `julia --project=. -e "using Pkg; Pkg.test()"`
+{% if TestingStrategy == 'testitem_cli' -%}
+- **Test with filtering**: `julia --project=test test/runtests.jl` (see `--help` for the filtering options)
+{% endif -%}
 - **REPL with the project active**: `julia --project=.`
+{% if TestingStrategy == 'testitem_cli' or TestingStrategy == 'testitem_basic' %}
+### Testing via julia-mcp
 
+When the [julia-mcp](https://github.com/aplavin/julia-mcp) server is available,
+prefer it over spawning new Julia processes — the session stays alive between
+calls, avoiding recompilation. Use `<full path>/test` as `env_path`, load the
+runner once with `using TestItemRunner`, then run filtered tests:
+
+- All tests: `@run_package_tests verbose=false`
+- By test name: `@run_package_tests verbose=false filter=ti->contains(ti.name, "some name")`
+- By filename: `@run_package_tests verbose=false filter=ti->contains(ti.filename, "some-file")`
+{% endif %}
 ## Conventions
 
 - Match the existing code style in `src/`.

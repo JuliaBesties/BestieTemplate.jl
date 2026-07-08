@@ -7,6 +7,9 @@
     content = read("AGENTS.md", String)
     @test contains(content, TestConstants.args.bestie.robust["PackageName"])
     @test contains(content, "Pkg.test()")
+    # robust uses TestingStrategy = testitem_basic, so the julia-mcp section is included
+    @test contains(content, "@run_package_tests")
+    @test !contains(content, "test/runtests.jl") # only for testitem_cli
   end
 end
 
