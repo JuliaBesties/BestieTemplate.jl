@@ -26,7 +26,7 @@ function _copy(src_path, dst_path, data; kwargs...)
 
   We suggest reading the **full guide**, and possibly other documentation pages:
 
-  `https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-full-guide`
+  `https://juliabesties.github.io/BestieTemplate.jl/stable/10-guides/10-full-guide/`
 
   If something does not work as you would expect or you need clarifications,
   please open an issue or discussion.
@@ -146,7 +146,7 @@ function generate(
     end
     println("""\nCreate a repo on GitHub and push your code to it.
 
-    Read the full guide: https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-full-guide
+    Read the full guide: https://juliabesties.github.io/BestieTemplate.jl/stable/10-guides/10-full-guide/
     """)
   end
 
@@ -268,7 +268,7 @@ function apply(
       \$ git push -u origin apply-bestie
 
       Go to GitHub and create a Pull Request from apply-bestie to main.
-      Continue on the full guide: https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-full-guide
+      Continue on the full guide: https://juliabesties.github.io/BestieTemplate.jl/stable/10-guides/10-full-guide/
       """)
 
   return nothing
