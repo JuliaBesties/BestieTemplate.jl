@@ -117,7 +117,8 @@ def add_feature(
         if missing:
             raise MissingRequiredFieldsError(
                 f"Cannot determine required fields for {name!r}: {', '.join(missing)}. "
-                "Pass them via the data argument."
+                "Pass them via the data argument.",
+                missing=tuple(missing),
             )
         resolved.append(feature)
 

@@ -258,6 +258,29 @@ Since `git` is mandatory, the changes will be left for you to review.
 
 If you need some help with undoing some of these changes, I recommend using a graphical interface to git.
 
+### [Adding individual features](@id adding_features)
+
+If you only want a specific feature (say, a `CHANGELOG.md` or the `dependabot` setup) without going through the full apply/update flow, use `add_feature`:
+
+```julia-repl
+julia> BestieTemplate.add_feature(:changelog, ".")
+```
+
+See the [`BestieTemplate.add_feature`](@ref) docstring for the list of available features.
+
+The same operation is available without Julia through the `bestie-template` Python package, so it also works from a plain shell or from AI coding agents.
+With [uv](https://docs.astral.sh/uv/) installed:
+
+```bash
+uvx --from bestie-template bestie list-features
+uvx --from bestie-template bestie add-feature changelog,dependabot
+```
+
+Run `bestie --help` for the options (`--data KEY=VALUE` to answer questions, `--ref` to pin a template version, and `--json` for machine-readable output).
+
+!!! note "Not yet on PyPI"
+    The first `bestie-template` release to PyPI is still pending; until then the Python CLI is only available from a checkout of this repository (`uv run --project python bestie ...`).
+
 ## Setting up your package
 
 There are various steps to setting up your package on GitHub. Some are important now, and some will be relevant when you try to make your first release.

@@ -50,9 +50,11 @@ jobs:
         run: |
           uv build
           uv run --isolated --no-project --with dist/*.whl python -c "import bestie_template as bt; bt.bundled_registry_path(); assert bt.list_features(template='ignored://remote')"
+          uv run --isolated --no-project --with dist/*.whl bestie list-features --json > /dev/null
           rm -rf dist
           uv build --wheel
           uv run --isolated --no-project --with dist/*.whl python -c "import bestie_template as bt; bt.bundled_registry_path(); assert bt.list_features(template='ignored://remote')"
+          uv run --isolated --no-project --with dist/*.whl bestie list-features --json > /dev/null
 
   copier-compat:
     # Early warning for breakage with other copier versions than the locked

@@ -1,0 +1,55 @@
+name: PublishPython
+
+# Publishes the bestie-template Python package to PyPI on py-vX.Y.Z tags
+# (design/05-releases-and-security.md). Auth is PyPI trusted publishing
+# (OIDC): no tokens in the repo. The `pypi` GitHub environment must be
+# configured to only allow py-v* tags (and, optionally, required reviewers).
+
+on:
+  push:
+    tags:
+      - "py-v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Check that the tag matches the project version
+        run: |
+          tag_version="${GITHUB_REF_NAME#py-v}"
+          project_version="$(python3 -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])")"
+          if [ "$tag_version" != "$project_version" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match pyproject.toml version $project_version" >&2
+            exit 1
+          fi
+      - name: Build sdist and wheel
+        run: uv build
+      - name: Smoke-test the wheel
+        run: |
+          uv run --isolated --no-project --with dist/*.whl bestie --version
+          uv run --isolated --no-project --with dist/*.whl bestie list-features --json > /dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: python/dist/
+          if-no-files-found: error
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/bestie-template
+    permissions:
+      id-token: write # OIDC token for PyPI trusted publishing
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1

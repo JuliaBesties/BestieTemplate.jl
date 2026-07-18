@@ -30,7 +30,15 @@ class UnknownFeatureError(CopierFeaturesError):
 
 
 class MissingRequiredFieldsError(CopierFeaturesError):
-    """Required answer fields could not be resolved."""
+    """Required answer fields could not be resolved.
+
+    `missing` carries the unresolved field names so frontends can suggest
+    how to pass them (e.g. the CLI's `-d FIELD=...` hint).
+    """
+
+    def __init__(self, message: str, missing: tuple[str, ...] = ()) -> None:
+        super().__init__(message)
+        self.missing = missing
 
 
 class AnswersFileRequiredError(CopierFeaturesError):

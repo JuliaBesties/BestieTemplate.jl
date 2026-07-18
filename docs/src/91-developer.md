@@ -229,7 +229,7 @@ Of course, in this case you won't have the pre-filled data, so it isn't the pref
 
 ## [The Python package (`python/`)](@id python_package)
 
-The repository also hosts `bestie-template`, a Python package that exposes `add_feature` and `list_features` without requiring Julia (status: not yet published to PyPI; a CLI, HTTP API, and MCP server are planned). The working design documents live in `design/` at the repository root — start with `design/index.md` for the roadmap and rationale.
+The repository also hosts `bestie-template`, a Python package that exposes `add_feature` and `list_features` without requiring Julia, plus a `bestie` CLI over them (status: not yet published to PyPI; an HTTP API and MCP server are planned). The working design documents live in `design/` at the repository root — start with `design/index.md` for the roadmap and rationale.
 
 ### Layout and the one rule
 
@@ -249,6 +249,7 @@ The one rule: **`copier_features` must never import or mention `bestie_template`
 cd python
 uv sync          # create .venv with the package (editable) + dev dependencies
 uv run pytest    # full suite: unit + integration (real copier runs on this checkout)
+uv run bestie    # the CLI (bestie_template/cli.py), running against this checkout
 uv build         # build sdist + wheel into dist/
 ```
 
@@ -265,7 +266,11 @@ Installed wheels cannot rely on the repository, so `hatch_build.py` copies `feat
 
 ### CI
 
-`.github/workflows/TestPython.yml` runs the suite on the oldest and newest supported Python, builds and smoke-tests the wheel, and has a `copier-compat` canary (allowed to fail) against copier's pinned floor and latest release. It triggers on changes to `python/`, `features.toml`, `template/`, `copier/`, and `copier.yml` — template changes can break the Python integration tests, since they render the real template.
+`.github/workflows/TestPython.yml` runs the suite on the oldest and newest supported Python, builds and smoke-tests the wheel (including the `bestie` entry point), and has a `copier-compat` canary (allowed to fail) against copier's pinned floor and latest release. It triggers on changes to `python/`, `features.toml`, `template/`, `copier/`, and `copier.yml` — template changes can break the Python integration tests, since they render the real template.
+
+### Releasing to PyPI
+
+Python releases are independent of template/Julia releases and use the `py-vX.Y.Z` tag namespace. Set `version` in `python/pyproject.toml`, tag the matching `py-vX.Y.Z`, and push the tag: `.github/workflows/PublishPython.yml` verifies the tag against the project version, builds, smoke-tests, and publishes to PyPI via trusted publishing (OIDC, no tokens; the `pypi` GitHub environment restricts which refs may publish). See `design/05-releases-and-security.md`.
 
 ## Working on a new issue
 

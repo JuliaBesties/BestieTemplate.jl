@@ -2,7 +2,17 @@
 
 Python interface to [BestieTemplate](https://github.com/JuliaBesties/BestieTemplate.jl): add template features to Julia packages without installing Julia.
 
-> **Status: early development, not yet on PyPI.** The library API (`add_feature`, `list_features`) is functional; the CLI, HTTP API, and MCP server are planned. See `../design/index.md` for the roadmap.
+> **Status: early development, not yet on PyPI.** The library API (`add_feature`, `list_features`) and the `bestie` CLI are functional; the HTTP API and MCP server are planned. See `../design/index.md` for the roadmap.
+
+Once published, no install step is needed beyond [uv](https://docs.astral.sh/uv/):
+
+```sh
+uvx --from bestie-template bestie list-features
+uvx --from bestie-template bestie add-feature agents,testitem_cli path/to/MyPackage.jl
+bestie add-feature agents -d PackageName=MyPkg --json   # answer questions; machine-readable output
+```
+
+The same operations as a library:
 
 ```python
 import bestie_template
@@ -21,4 +31,7 @@ The package has two layers (see `../design/03-generic-vs-branding.md`):
 ```sh
 uv sync          # create .venv with the package + dev dependencies
 uv run pytest    # unit + integration tests (integration runs real copier on the local checkout)
+uv run bestie    # the CLI, running against this checkout
 ```
+
+Releases are tagged `py-vX.Y.Z` and published to PyPI by `.github/workflows/PublishPython.yml` via trusted publishing (see `../design/05-releases-and-security.md`).
