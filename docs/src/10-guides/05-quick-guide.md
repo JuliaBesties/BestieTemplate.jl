@@ -248,7 +248,7 @@ extra_data = Dict(
     "AddDocs" => true,            # From the :light strategy
     "AddLintCI" => true,          # From the :moderate strategy
     "AddAllcontributors" => true, # From the :robust strategy
-    "AddCirrusCI" => true,        # From the hidden optionss
+    "AddPrecommitUpdateCI" => true, # From the hidden options
 )
 new_pkg_quick(
     pkg_destination,

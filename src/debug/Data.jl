@@ -87,7 +87,6 @@ const strategies = let
       "ExplicitImportsChecklist" => "all", # actually part of advanced
       "RunJuliaNightlyOnCI" => true,
       "StrategyLevel" => 3,
-      "UseCirrusCI" => false,
     ),
   )
 

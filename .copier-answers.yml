@@ -38,6 +38,5 @@ StrategyConfirmIncluded: true
 StrategyLevel: 3
 StrategyReviewExcluded: true
 TestingStrategy: testitem_cli
-UseCirrusCI: false
 _commit: v0.18.2
 _src_path: .
