@@ -115,17 +115,15 @@ Install and configure it following the instructions in the [julia-mcp repository
 
 ### Test organization and conventions
 
-The suite is built on [TestItems](https://www.julia-vscode.org/docs/stable/userguide/testitems/). A few conventions specific to this repository:
+We use [TestItems](https://www.julia-vscode.org/docs/stable/userguide/testitems/) for testing (self-promotion: [TestItems - Modern Julia testing; watching and rerunning; AI agent usage with julia-mcp](https://youtu.be/vr2P9t-EnuU)).
+A few conventions specific to this repository:
 
-- **One testitem per component/strategy.** Prefer a focused `@testitem` for each major component or strategy over deeply nested loops, and validate several aspects (files, dependencies, behaviour) within it.
-- **Shared setup.** Use `@testsnippet` for cheap per-test setup (re-runs each time) and `@testmodule` for expensive one-time work such as loading or generating reference data (runs once, accessed via the module prefix).
-- **Tags drive filtering.** Each testitem declares tags, e.g. `tags=[:unit, :fast]`. The categories currently in use:
+- We use `test-<descriptive-name>.jl` for the file names, and that's the main categorization level.
+- Prefer multiple `@testitem`s instead of a deep loop, if it makes the code more readable.
+- There are commonly used `@testsnippet`s and `@testmodule`s in `test/utils.jl`, and more specific `@testsnippet`s go inside their own file.
+- Tags are not heavily used, but it is still useful to have some of them. The ones that matter most are:
   - *Test type*: `:unit`, `:integration`, `:validation`
-  - *Cost*: `:fast`, `:slow`
-  - *Feature area*: `:guessing`, `:template_application`, `:copier_compatibility`, `:license_handling`, `:error_handling`, `:package_creation`, `:update_workflow`, `:test_strategy`
-  - *Characteristics*: `:file_io`, `:git_operations`, `:python_integration`, `:randomized`
-
-  When adding a new tag category, register it in `TAGS_DATA` in `test/runtests.jl` so `--list-tags` documents it.
+  - *Speed*: `:fast`, `:slow`
 
 #### Test data for the strategies
 
