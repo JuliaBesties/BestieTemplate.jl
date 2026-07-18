@@ -51,18 +51,23 @@ end
   # clone loses the rmtree race (the copy itself has already succeeded).
   function _cleanup_race_exception(filename)
     try
-      PythonCall.pyexec("raise OSError(39, 'Directory not empty', '$filename')", @__MODULE__)
+      PythonCall.pyexec(
+        "raise OSError(39, 'Directory not empty', filename)",
+        @__MODULE__,
+        (; filename),
+      )
       error("unreachable")
     catch ex
       return ex
     end
   end
 
-  ex = _cleanup_race_exception("/tmp/copier._vcs.clone.test123/.git/objects")
-  @test Copier._copier_tempdir_from_exception(ex) == "/tmp/copier._vcs.clone.test123"
+  fake_clone_dir = joinpath("tmp", "copier._vcs.clone.test123")
+  ex = _cleanup_race_exception(joinpath(fake_clone_dir, ".git", "objects"))
+  @test Copier._copier_tempdir_from_exception(ex) == fake_clone_dir
 
   # OSError outside a copier temp clone is not swallowed
-  ex_other = _cleanup_race_exception("/tmp/some-other-dir/.git/objects")
+  ex_other = _cleanup_race_exception(joinpath("tmp", "some-other-dir", ".git", "objects"))
   @test isnothing(Copier._copier_tempdir_from_exception(ex_other))
   @test_throws PythonCall.PyException Copier._ignore_cleanup_race(() -> throw(ex_other))
 
