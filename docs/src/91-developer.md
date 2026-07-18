@@ -113,6 +113,24 @@ When working with an AI agent (e.g., Claude Code), configure it to use julia-mcp
 
 Install and configure it following the instructions in the [julia-mcp repository](https://github.com/aplavin/julia-mcp). Once set up, the agent can load `TestItemRunner` once and then run filtered tests iteratively, much faster than spawning a new Julia process each time.
 
+### Test organization and conventions
+
+We use [TestItems](https://www.julia-vscode.org/docs/stable/userguide/testitems/) for testing (self-promotion: [TestItems - Modern Julia testing; watching and rerunning; AI agent usage with julia-mcp](https://youtu.be/vr2P9t-EnuU)).
+A few conventions specific to this repository:
+
+- We use `test-<descriptive-name>.jl` for the file names, and that's the main categorization level.
+- Prefer multiple `@testitem`s instead of a deep loop, if it makes the code more readable.
+- There are commonly used `@testsnippet`s and `@testmodule`s in `test/utils.jl`, and more specific `@testsnippet`s go inside their own file.
+- Tags are not heavily used, but it is still useful to have some of them. The ones that matter most are:
+  - *Test type*: `:unit`, `:integration`, `:validation`
+  - *Speed*: `:fast`, `:slow`
+
+#### Test data for the strategies
+
+Shared fixtures live in `src/debug/Data.jl`, which defines the answer data for each strategy level (`tiny`, `light`, `moderate`, `robust`). Each level merges from the previous, so a new question's default value goes at the lowest level where it becomes relevant.
+
+For questions with non-trivial types, add a `_random(::Val{:QuestionName}, value)` method in `test/utils.jl` so randomized tests can pick a valid value. Boolean and string questions without `choices` are covered by the existing fallbacks.
+
 ### Adding a new `add_feature(:feature)`
 
 `add_feature(:feature, path)` regenerates a specific subset of template files without re-running the full interactive setup. Each feature is defined by a single `_add_feature` method in `src/friendly.jl`:
@@ -130,12 +148,12 @@ _add_feature(::Val{:my_feature}) = (
 
 **Checklist to add a new feature:**
 
-1. Add a `_add_feature(::Val{:my_feature})` method in `src/friendly.jl`
-2. Verify the `_add_feature` information (`included_files` template files in `template/` use the `forced_data` (e.g. `{% if MyFlag %}filename{% endif %}.jinja`; `required_fields` are indeed required`, etc.). Ask for clarification from the user if necessary.
-3. Add tests in `test/test-only.jl` using the `AddFeatureHelpers` snippet helpers:
+1. Add a `_add_feature(::Val{:my_feature})` method in `src/friendly.jl`.
+2. Check that the method matches the template: the `included_files` in `template/` should be gated on the `forced_data` flag (e.g. `{% if MyFlag %}filename{% endif %}.jinja`), and the `required_fields` should be ones the feature genuinely cannot resolve on its own.
+3. Add tests in `test/test-add-feature.jl` using the `AddFeatureHelpers` snippet helpers (defined in the same file):
    - `_test_happy_path`: feature generates expected file(s)
-   - `_test_works_without_answers` (if `requires_answers = false`): works when data is guessable
-   - `_test_works_on_bare_project` (if no `required_fields` and `requires_answers = false`): works on a minimal directory
+   - `_test_works_without_answers_by_guessing` (if `requires_answers = false`): works when data is guessable
+   - `_test_works_on_empty_folder` (if no `required_fields` and `requires_answers = false`): works on a minimal src/test directory
    - `_test_errors_without_data`: errors when required data is missing
    - `_test_explicit_data_override` (for features with `required_fields`): verifies `data` arg takes priority
 

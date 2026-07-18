@@ -128,7 +128,11 @@ AddLintCI:
 
     Strategy: Moderate
 
-# Keep at end and update. This is to automatically delete the '.github/workflows' folder if there is nothing there
+# Keep at end. Deletes the '.github/workflows' folder when no workflow file is generated.
+# CHECKLIST when adding/removing a workflow question: this expression must list exactly the
+# flags that gate a file in 'template/.../workflows/' (check the filenames there).
+# Do NOT list flags that only alter content of other workflows (AddMacToCI, AddWinToCI,
+# RunJuliaNightlyOnCI) or that generate files elsewhere (UseCirrusCI -> root .cirrus.yml).
 AddWorkflowsFolder:
   when: false
   type: bool
