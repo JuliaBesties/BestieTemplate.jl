@@ -97,3 +97,14 @@ AddGitHubPRTemplate:
     developer to describe the pull request better.
 
     Strategy: Light
+
+AddAgentsMd:
+  when: "{{ WhenForAdvanced }}"
+  type: bool
+  default: "{{ DefaultForAdvanced }}"
+  help: Add AGENTS.md file (Bare-bones guidance file for AI coding agents)
+  description: |
+    Whether to add an [AGENTS.md](https://agents.md) file with bare-bones guidance for AI coding agents working in the repository.
+    The generated file is a minimal starting point that describes the package, how to run the tests, and a few basic conventions; you are expected to expand it as the project grows.
+
+    Strategy: Advanced

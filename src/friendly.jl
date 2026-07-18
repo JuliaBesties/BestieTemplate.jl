@@ -163,6 +163,7 @@ _add_feature(::Val{:dependabot}) = (
 )
 _add_feature(::Val{:changelog}) =
   (Dict("AddChangelog" => true), ["CHANGELOG.md"], ["PackageOwner", "PackageName"], false)
+_add_feature(::Val{:agents}) = (Dict("AddAgentsMd" => true), ["AGENTS.md"], ["PackageName"], false)
 
 """
     add_feature(feature::Symbol[, dst_path, data]; kwargs...)
@@ -182,6 +183,7 @@ exists, it is updated; otherwise no answers file is created.
 - `:lint_action` - regenerates `.github/workflows/Lint.yml` (requires `.copier-answers.yml`)
 - `:dependabot` - regenerates `.github/dependabot.yml` (requires `PackageName`)
 - `:changelog` - regenerates `CHANGELOG.md` (requires `PackageOwner` and `PackageName`)
+- `:agents` - adds `AGENTS.md` (requires `PackageName`; an existing `AGENTS.md` is kept unchanged)
 
 ## Arguments
 
