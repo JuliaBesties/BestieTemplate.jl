@@ -11,7 +11,7 @@ on:
       - "copier.yml"
       - "template/**"
       - ".github/workflows/*Test*"
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, labeled]
 
 concurrency:
   # Skip intermediate builds: always.
@@ -23,10 +23,24 @@ jobs:
   test:
     uses: ./.github/workflows/ReusableTest.yml
     with:
-      os: ubuntu-latest
+      os: ${{ matrix.os }}
       version: "1"
       arch: x64
       allow_failure: false
-      run_codecov: true
+      run_codecov: ${{ matrix.os == 'ubuntu-latest' }}
     secrets:
       codecov_token: ${{ secrets.CODECOV_TOKEN }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macOS-latest
+          - windows-latest
+        has_test_all_label:
+          - ${{ contains(github.event.pull_request.labels.*.name, 'pr-test-all') }}
+        exclude: # If there is no label (`false`), the other OSs are excluded. If there is label (`true`), exclude doesn't match anything
+          - has_test_all_label: false
+            os: macOS-latest
+          - has_test_all_label: false
+            os: windows-latest
