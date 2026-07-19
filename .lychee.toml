@@ -3,7 +3,8 @@ exclude = [
   "@[Cc]ite.*",
   "^https://github.com/.*/releases/tag/v.*$",
   "^https://github.com/.*/compare/v.*HEAD$",
-  "^https://blog.esciencecenter.nl" # certificate error, hopefully fixed soon
+  "^https://blog.esciencecenter.nl", # certificate error, hopefully fixed soon
+  "^https://asciinema.org/*",
 ]
 
 exclude_path = [
