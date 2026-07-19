@@ -10,3 +10,7 @@ exclude_path = [
   "docs/build",
   "test/conda-env"
 ]
+
+max_retries = 5
+retry_wait_time = 3
+timeout = 60
