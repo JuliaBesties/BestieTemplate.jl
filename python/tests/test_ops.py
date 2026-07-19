@@ -13,11 +13,25 @@ from copier_features.errors import (
 from copier_features.ops import build_exclude
 
 
+def _touch_included_files(kwargs: dict) -> None:
+    """Create the files a real copier run would render (the `!` entries)."""
+    for pattern in kwargs["exclude"]:
+        if pattern.startswith("!"):
+            path = Path(kwargs["dst_path"]) / pattern[1:]
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.touch()
+
+
 @pytest.fixture
 def copier_calls(monkeypatch):
     """Stub _run_copy, capturing the kwargs of each call."""
     calls: list[dict] = []
-    monkeypatch.setattr(ops, "_run_copy", lambda **kwargs: calls.append(kwargs))
+
+    def fake_run(**kwargs):
+        calls.append(kwargs)
+        _touch_included_files(kwargs)
+
+    monkeypatch.setattr(ops, "_run_copy", fake_run)
     return calls
 
 
@@ -106,6 +120,22 @@ class TestAddFeatureUnit:
         )
         assert copier_calls[0]["vcs_ref"] == "v0.99.0"
 
+    def test_feature_producing_no_files_errors(self, registry, tmp_path, monkeypatch):
+        # A template ref that predates the feature renders none of its files;
+        # that must be a typed error, never a silent success
+        from copier_features.errors import FeatureNotAppliedError
+
+        monkeypatch.setattr(ops, "_run_copy", lambda **kwargs: None)
+        with pytest.raises(FeatureNotAppliedError, match=r"'agents'.*AGENTS\.md"):
+            ops.add_feature(
+                ["agents"],
+                tmp_path,
+                template="tpl",
+                registry=registry,
+                data={"PackageName": "Pkg"},
+                ref="v0.0.1",
+            )
+
     def test_copier_failure_is_wrapped(self, registry, tmp_path, monkeypatch):
         def boom(**kwargs):
             raise RuntimeError("copier exploded")
@@ -142,6 +172,7 @@ class TestAddFeatureUnit:
 
         def fake_run(**kwargs):
             calls.append(kwargs)
+            _touch_included_files(kwargs)
             lines = [f"{key}: {value}" for key, value in sorted(kwargs["data"].items())]
             (tmp_path / ".copier-answers.yml").write_text("\n".join(lines) + "\n")
 

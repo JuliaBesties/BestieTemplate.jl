@@ -14,7 +14,12 @@ from pathlib import Path, PurePath
 from typing import Any
 
 from .answers import ANSWERS_FILENAME, load_answers
-from .errors import AnswersFileRequiredError, CopierRunError, MissingRequiredFieldsError
+from .errors import (
+    AnswersFileRequiredError,
+    CopierRunError,
+    FeatureNotAppliedError,
+    MissingRequiredFieldsError,
+)
 from .registry import Feature, Registry
 
 PLACEHOLDER_VALUE = "UNUSED"
@@ -141,6 +146,14 @@ def add_feature(
             )
         except Exception as exc:
             raise CopierRunError(f"copier failed while applying {name!r}: {exc}") from exc
+
+        if not any((dst_path / file).exists() for file in feature.included_files):
+            raise FeatureNotAppliedError(
+                f"Feature {name!r} produced none of its files "
+                f"({', '.join(feature.included_files)}). The rendered template ref "
+                f"({ref or 'the latest release'}) probably predates this feature; "
+                "pass a ref of a template version that includes it."
+            )
 
         if has_answers:
             # copier rewrote the answers file; make later features in this

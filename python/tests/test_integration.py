@@ -81,6 +81,18 @@ def test_explicit_data_beats_answers_and_answers_updated(tmp_path, template):
     assert "ExplicitPkgName" in (tmp_path / ".copier-answers.yml").read_text()
 
 
+def test_feature_absent_from_rendered_ref_errors(tmp_path, template):
+    # v0.18.6 predates the agents feature: the run writes nothing, which
+    # must surface as an error instead of a silent success
+    from copier_features.errors import FeatureNotAppliedError
+
+    with pytest.raises(FeatureNotAppliedError, match="agents"):
+        bestie_template.add_feature(
+            ["agents"], tmp_path, data={"PackageName": "FakePkg"}, template=template, ref="v0.18.6"
+        )
+    assert not (tmp_path / "AGENTS.md").exists()
+
+
 def test_missing_required_fields_errors(tmp_path, template):
     from copier_features.errors import MissingRequiredFieldsError
 

@@ -47,3 +47,10 @@ class AnswersFileRequiredError(CopierFeaturesError):
 
 class CopierRunError(CopierFeaturesError):
     """The underlying copier run failed."""
+
+
+class FeatureNotAppliedError(CopierFeaturesError):
+    """The copier run completed but produced none of the feature's files.
+
+    Happens when the rendered template ref predates the feature (the registry
+    knows features the template does not have yet)."""
