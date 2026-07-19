@@ -38,7 +38,7 @@ A clean diff means the feature applied, not that the package is done: a feature 
 ## Answering template questions
 
 - Answers are read from the package's `.copier-answers.yml` when it exists; anything unresolved must be passed as `-d KEY=VALUE` (repeatable).
-- On `Cannot determine required fields ...`, the missing keys are listed in the message (and in the `error.missing` array in `--json` mode). Re-run with `-d Key=value` for each; infer values from the repository (e.g. `PackageName` from `Project.toml`) and confirm guesses with the user.
+- On `Cannot determine required fields ...`, the missing keys are listed in the message (and in the `error.missing` array in `--json` mode). Re-run with `-d Key=value` for each. Where to find the usual values: `PackageName` is `name` in `Project.toml`; `PackageOwner` is the GitHub owner in `git remote -v`; `Authors` is `authors` in `Project.toml`. Confirm anything you had to guess with the user — a wrong value applies "successfully".
 - Features with `requires_answers: true` refuse to run without `.copier-answers.yml`. That file must not be created by hand — it means the package never applied the full template; suggest `BestieTemplate.apply` (Julia) instead.
 - The answers file is updated when present and never created.
 

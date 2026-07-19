@@ -65,7 +65,7 @@ required_fields = []
 requires_answers = false
 
 [features.testitem_cli]
-description = "Updates `test/runtests.jl` to the `testitem_cli` testing strategy (filterable CLI test runner)"
+description = "Updates `test/runtests.jl` to the `testitem_cli` testing strategy (filterable CLI test runner). Follow-up migration needed: existing tests must move to `@testitem` blocks and `test/Project.toml` must exist with the test dependencies (including `TestItemRunner`)"
 forced_data = { TestingStrategy = "testitem_cli" }
 included_files = ["test/runtests.jl"]
 required_fields = []
