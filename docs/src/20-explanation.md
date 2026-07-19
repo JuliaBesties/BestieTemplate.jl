@@ -155,7 +155,7 @@ This means that they will only be shown if you answer "yes" to the question "Do 
 
 The **loose** criteria to make something advanced, ans thus not default for any strategy, are:
 
-- It is a best practice, but for a niche audience (e.g., `.cirrus.yml` for testing on FreeBSD);
+- It is a best practice, but for a niche audience (e.g., checking for explicit imports);
 - It is potentially disruptive (e.g., testing on Nightly)
 
 To see how to pass an advanced option, head to [Advanced options](@ref).
@@ -250,6 +250,5 @@ These provide a starting point to your project management.
 
 ### Other files
 
-- `.cirrus.yml`: For [Cirrus CI](https://cirrus-ci.org), which we use solely for FreeBSD testing.
 - `CITATION.cff`: Instead of the more classic `.bib`, we use `.cff`, which serves a better purpose of providing the metadata of the package. CFF files have been adopted by GitHub, so you can generate a BibTeX entry by clicking on "Cite this repository" on the repository's main page. CFF files have also been adopted by [Zenodo](https://zenodo.org) to provide the metadata of your deposition.
 - `CODE_OF_CONDUCT.md`: A code of conduct file from [Contributor Covenant](https://www.contributor-covenant.org).

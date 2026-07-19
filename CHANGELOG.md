@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning].
 - New question: `AddAgentsMd` to add a bare-bones `AGENTS.md` file with guidance for AI coding agents
 - `add_feature(:agents)` to add an `AGENTS.md` to an existing package
 
+### Removed
+
+- Question `UseCirrusCI` and the `.cirrus.yml` template file, because Cirrus CI has shut down (#612). Existing `.cirrus.yml` files in generated packages are not deleted automatically and should be removed manually.
+
 ### Fixed
 
 - Intermittent `OSError: [Errno 39] Directory not empty` no longer fails `generate`, `apply`, `update`, and `add_feature`; the error comes from Copier removing its temporary clone after the files were already created, so it is now safely ignored

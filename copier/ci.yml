@@ -94,16 +94,6 @@ RunJuliaNightlyOnCI:
 
     Strategy: Advanced
 
-UseCirrusCI:
-  when: "{{ WhenForAdvanced }}"
-  type: bool
-  help: FreeBSD CI test with CirrusCI (Add CirrusCI to run the package tests on FreeBSD?)
-  default: "{{ DefaultForAdvanced }}"
-  description: |
-    Controls whether to add a `.cirrus.yml` to run tests on the Cirrus CI platform for the FreeBSD Operating System.
-
-    Strategy: Advanced
-
 AddCopierCI:
   when: "{{ WhenForAdvanced }}"
   type: bool
@@ -132,11 +122,11 @@ AddLintCI:
 # CHECKLIST when adding/removing a workflow question: this expression must list exactly the
 # flags that gate a file in 'template/.../workflows/' (check the filenames there).
 # Do NOT list flags that only alter content of other workflows (AddMacToCI, AddWinToCI,
-# RunJuliaNightlyOnCI) or that generate files elsewhere (UseCirrusCI -> root .cirrus.yml).
+# RunJuliaNightlyOnCI) or that generate files elsewhere.
 AddWorkflowsFolder:
   when: false
   type: bool
-  default: "{{ AddTestCI or AddDocsCI or AddCompatHelperCI or AddTagBotCI or AddMacToCI or UseCirrusCI or AddCopierCI or AddLintCI }}"
+  default: "{{ AddTestCI or AddDocsCI or AddCompatHelperCI or AddTagBotCI or AddMacToCI or AddCopierCI or AddLintCI }}"
 
 AddDotGitHubFolder:
   when: false
