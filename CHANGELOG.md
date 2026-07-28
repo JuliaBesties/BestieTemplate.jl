@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning].
 - New question: `AddAgentsMd` to add a bare-bones `AGENTS.md` file with guidance for AI coding agents
 - `add_feature(:agents)` to add an `AGENTS.md` to an existing package
 
+### Changed
+
+- The `add_feature` features are now defined in a `features.toml` registry at the repository root, shared with future non-Julia interfaces; the supported-features list in the `add_feature` docstring is generated from it
+
 ### Removed
 
 - Question `UseCirrusCI` and the `.cirrus.yml` template file, because Cirrus CI has shut down (#612). Existing `.cirrus.yml` files in generated packages are not deleted automatically and should be removed manually.
