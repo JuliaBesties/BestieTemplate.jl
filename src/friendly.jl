@@ -179,16 +179,17 @@ function _feature_spec(features::Dict, feature::Symbol)
 end
 
 """
-    _features_docstring()
+    _features_docstring(registry_path = BUNDLED_FEATURES_TOML)
 
-Generate the supported-features list of the [`add_feature`](@ref) docstring from the
-bundled `features.toml`. A problem with the registry must not prevent the module from
+Generate the supported-features list of the [`add_feature`](@ref) docstring from a
+`features.toml` registry, the bundled one by default. A problem with the registry must
+not prevent the module from
 loading, so on error this degrades to a pointer to the file (the registry is validated
 by the test suite instead).
 """
-function _features_docstring()
+function _features_docstring(registry_path::AbstractString = BUNDLED_FEATURES_TOML)
   try
-    features = _load_features()
+    features = _load_features(registry_path)
     lines = String[]
     for name in sort!(collect(keys(features)))
       spec = features[name]

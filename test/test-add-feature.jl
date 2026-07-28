@@ -423,6 +423,69 @@ end
   @test contains(BestieTemplate._features_docstring(), ":pre_commit")
 end
 
+@testitem "the features.toml loader rejects malformed registries" tags =
+  [:unit, :fast, :error_handling] begin
+  using BestieTemplate
+
+  # These paths only ever run for a registry that isn't the bundled one: a local
+  # template copy, or a future non-Julia interface shipping its own file.
+  function _write_registry(dir, contents)
+    path = joinpath(dir, "features.toml")
+    write(path, contents)
+    return path
+  end
+
+  mktempdir() do dir
+    # A missing registry falls back to the bundled copy instead of erroring, so
+    # that a local template predating features.toml still works.
+    features = BestieTemplate._load_features(joinpath(dir, "does-not-exist.toml"))
+    @test haskey(features, "pre_commit")
+
+    # A registry newer than this version of BestieTemplate must say so, not
+    # silently misinterpret fields it doesn't know about.
+    newer = _write_registry(dir, "schema_version = 2\n[features.foo]\n")
+    @test_throws "Unsupported features.toml schema_version: 2" BestieTemplate._load_features(newer)
+
+    missing_version = _write_registry(dir, "[features.foo]\n")
+    @test_throws "Unsupported features.toml schema_version: nothing" BestieTemplate._load_features(
+      missing_version,
+    )
+  end
+end
+
+@testitem "the features.toml loader rejects broken aliases" tags = [:unit, :fast, :error_handling] begin
+  using BestieTemplate
+
+  dangling = Dict("pre_commit" => Dict("alias_of" => "typo_in_the_target"))
+  @test_throws "alias of unknown feature :typo_in_the_target" BestieTemplate._feature_spec(
+    dangling,
+    :pre_commit,
+  )
+
+  chained = Dict(
+    "a" => Dict("alias_of" => "b"),
+    "b" => Dict("alias_of" => "c"),
+    "c" => Dict("description" => "the real one"),
+  )
+  @test_throws "alias chains are not supported" BestieTemplate._feature_spec(chained, :a)
+
+  @test_throws "Unknown feature :nope" BestieTemplate._feature_spec(chained, :nope)
+end
+
+@testitem "the add_feature docstring degrades instead of breaking module loading" tags =
+  [:unit, :fast, :error_handling] begin
+  using BestieTemplate
+
+  # The list is interpolated into the docstring at precompile time, so a broken
+  # registry must not take the whole module down with it.
+  mktempdir() do dir
+    broken = joinpath(dir, "features.toml")
+    write(broken, "schema_version = 99\n")
+    @test BestieTemplate._features_docstring(broken) ==
+          "See `features.toml` in the template repository for the list of features."
+  end
+end
+
 @testitem "add_feature handles .copier-answers.yml with a float-like _commit" tags =
   [:integration, :slow, :error_handling, :file_io] setup = [Common, AddFeatureHelpers] begin
   # Regression for the float-like `_commit` quirk handled by `_load_copier_answers`
