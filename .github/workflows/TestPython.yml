@@ -1,0 +1,28 @@
+name: TestPython
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The integration tests run copier against this checkout, and copier
+          # warns on shallow template clones
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync
+      - run: uv run pytest
+      - name: Build and smoke-test the wheel
+        run: |
+          uv build --wheel
+          uv run --isolated --no-project --with dist/*.whl bestie list-features --json > /dev/null
