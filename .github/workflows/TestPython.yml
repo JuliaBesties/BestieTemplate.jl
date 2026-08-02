@@ -30,7 +30,7 @@ jobs:
       run:
         working-directory: python
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # The integration tests run copier against this checkout, and copier
           # warns on shallow template clones
