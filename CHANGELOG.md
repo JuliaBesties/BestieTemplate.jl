@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.19.0] - 2026-08-02
+
+BREAKING NOTICE:
+
+- The question `UseCirrusCI` has been removed since Cirrus CI has shut down.
+- Workflow version in the template have been updated.
+
 ### Added
 
 - Default lychee configuration now ignores all DocumenterCitations commands, including `@citet`, `@citet*`, `@Citet`, `@Citet*`, etc. (#606, #607)
@@ -28,6 +35,7 @@ and this project adheres to [Semantic Versioning].
 
 - The test workflows no longer request `x64` Julia binaries explicitly, using the architecture of the runner instead. `julia-actions/setup-julia@v3` errors out when x86_64 binaries are requested on Apple Silicon macOS runners, which broke the macOS tests (#530)
 - Intermittent `OSError: [Errno 39] Directory not empty` no longer fails `generate`, `apply`, `update`, and `add_feature`; the error comes from Copier removing its temporary clone after the files were already created, so it is now safely ignored
+- Fix printed links to full guide in src/api.jl
 
 ## [0.18.6] - 2026-04-11
 
@@ -624,7 +632,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.18.6...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.19.0...HEAD
+[0.19.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.19.0
 [0.18.6]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.6
 [0.18.5]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.5
 [0.18.4]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.4
