@@ -1,0 +1,66 @@
+name: PublishPython
+
+# Publishes the bestie-template Python package to PyPI on py-vX.Y.Z tags. The
+# prefix keeps these tags distinct from TagBot's vX.Y.Z: the Julia and Python
+# packages are versioned independently and released on different cadences.
+#
+# Auth is PyPI trusted publishing (OIDC), so there are no tokens in the repo.
+# The `pypi` GitHub environment must exist and be restricted to py-v* tags.
+
+on:
+  push:
+    tags:
+      - "py-v*"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+      # PyPI uploads are immutable, so a mismatch has to fail before publishing
+      - name: Check that the tag matches the project version
+        run: |
+          tag_version="${GITHUB_REF_NAME#py-v}"
+          project_version="$(python3 -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])")"
+          if [ "$tag_version" != "$project_version" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match pyproject.toml version $project_version" >&2
+            exit 1
+          fi
+      # Builds the sdist, then the wheel from that sdist, which exercises both
+      - name: Build sdist and wheel
+        run: uv build
+      # --version proves the entry point and the installed metadata are sound;
+      # list-features proves hatch_build.py bundled the feature registry
+      - name: Smoke-test the wheel
+        run: |
+          uv run --isolated --no-project --with dist/*.whl bestie --version
+          uv run --isolated --no-project --with dist/*.whl bestie list-features --json > /dev/null
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: python/dist/
+          if-no-files-found: error
+
+  # Split from `build` so the OIDC token is only ever in scope for the upload,
+  # and so an environment reviewer approves an already-built, smoke-tested wheel
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/bestie-template
+    permissions:
+      id-token: write # OIDC token for PyPI trusted publishing
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
