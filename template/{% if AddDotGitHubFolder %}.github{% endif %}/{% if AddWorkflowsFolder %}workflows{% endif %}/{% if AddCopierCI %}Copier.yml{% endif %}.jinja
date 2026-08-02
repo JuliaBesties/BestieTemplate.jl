@@ -9,20 +9,20 @@ jobs:
   Copier:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           token: {% raw %}${{ secrets.COPIER_PAT }}{% endraw %}
       - uses: julia-actions/setup-julia@v3
         with:
           version: "1"
       - name: Use Julia cache
-        uses: julia-actions/cache@v2
+        uses: julia-actions/cache@v3
       - name: Install JuliaFormatter.jl
         run: julia -e 'using Pkg; pkg"add JuliaFormatter"'
       - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
         run: touch requirements.txt
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           cache: 'pip'
           python-version: "3.11"

@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning].
 
 - The workflows in the template now use `julia-actions/setup-julia@v3`
 - The `add_feature` features are now defined in a `features.toml` registry at the repository root, shared with future non-Julia interfaces; the supported-features list in the `add_feature` docstring is generated from it
+- Workflows now use `actions/checkout@v7` (was `v6`), `actions/cache@v6` (was `v5`), `actions/setup-python@v7` (was `v5`) and `julia-actions/cache@v3` (was `v2`)
 
 ### Removed
 
