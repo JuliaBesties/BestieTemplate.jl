@@ -237,6 +237,15 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "Numeryst",
+      "name": "Numeryst",
+      "avatar_url": "https://avatars.githubusercontent.com/u/131439268?v=4",
+      "profile": "https://www.youtube.com/@numeryst",
+      "contributions": [
+        "bug"
+      ]
     }
   ]
 }
