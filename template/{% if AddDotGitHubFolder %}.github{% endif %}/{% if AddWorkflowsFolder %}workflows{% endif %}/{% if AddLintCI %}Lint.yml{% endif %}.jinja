@@ -23,13 +23,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Setup Julia
         uses: julia-actions/setup-julia@v3
         with:
           version: "1"
       - name: Use Julia cache
-        uses: julia-actions/cache@v2
+        uses: julia-actions/cache@v3
       {% if CheckExplicitImports -%}
       - name: Build package (required for ExplicitImports)
         uses: julia-actions/julia-buildpkg@v1
@@ -42,14 +42,14 @@ jobs:
       - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
         run: touch requirements.txt
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           cache: "pip"
           python-version: "3.11"
       - name: Hack for setup-python cache # https://github.com/actions/setup-python/issues/807
         run: rm requirements.txt
       - name: Cache pre-commit
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.cache/pre-commit
           key: {% raw %}${{ runner.os }}-pre-commit-${{ hashFiles('**/.pre-commit-config.yaml') }}{% endraw %}
@@ -63,7 +63,7 @@ jobs:
     name: Link checker
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Link Checker
         id: lychee

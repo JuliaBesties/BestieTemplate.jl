@@ -35,13 +35,13 @@ jobs:
     continue-on-error: {% raw %}${{ inputs.allow_failure }}{% endraw %}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: julia-actions/setup-julia@v3
         with:
           version: {% raw %}${{ inputs.version }}{% endraw %}
           arch: {% raw %}${{ inputs.arch }}{% endraw %}
       - name: Use Julia cache
-        uses: julia-actions/cache@v2
+        uses: julia-actions/cache@v3
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
       - uses: julia-actions/julia-processcoverage@v1
