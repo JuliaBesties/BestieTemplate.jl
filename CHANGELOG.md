@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+### Added
+
+- New workflow `.github/workflows/PublishPython.yml`, publishing the `bestie-template` Python package to PyPI on `py-v*` tags via trusted publishing (no tokens)
+
+### Changed
+
+- The Python package `bestie-template` is now at version `0.1.0`, ready for its first PyPI release. Its version is independent of the Julia package's, since the two are released on different cadences
+- `python/pyproject.toml` now sets a one-week `exclude-newer` dependency cooldown
+
 ## [0.19.0] - 2026-08-02
 
 BREAKING NOTICE:

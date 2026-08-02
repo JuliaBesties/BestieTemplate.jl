@@ -163,7 +163,7 @@ Aliases are entries with a single `alias_of = "other_feature"` key.
 ### [The Python package (`python/`)](@id python_package)
 
 `python/` holds `bestie-template`, a port of `add_feature` and `list_features` that needs no Julia, plus a `bestie` CLI over them.
-It is experimental and not yet published to PyPI.
+It is experimental, and published to PyPI as [`bestie-template`](https://pypi.org/p/bestie-template) (see [Making a new Python release](@ref)).
 
 ```bash
 cd python
@@ -352,6 +352,24 @@ After that, you only need to wait and verify:
 - After the release is create, a "docs" GitHub action will start for the tag.
 - After it passes, a deploy action will run.
 - After that runs, the [stable docs](https://JuliaBesties.github.io/BestieTemplate.jl/stable) should be updated. Check them and look for the version number.
+
+## Making a new Python release
+
+The `bestie-template` Python package (see [The Python package (`python/`)](@ref python_package)) is released independently of the Julia package, using `py-vx.y.z` tags.
+Only release it when something under `python/` changes, or when a feature is added, renamed, or removed in `features.toml`.
+
+Release BestieTemplate.jl first and wait for the tag, because the wheel bakes in `features.toml` at build time but resolves the template's latest tag at run time. Otherwise the wheel can advertise a feature that the latest tag does not have, and `bestie add-feature` fails.
+
+- Create a branch `python-release-x.y.z`
+- Update `version` in `python/pyproject.toml`, then run `cd python && uv lock`
+- Add a `CHANGELOG.md` entry under "Unreleased", without renaming the section (the changelog tracks the whole repository)
+- Create a commit "Release py-vx.y.z", push, create a PR, wait for it to pass, merge the PR.
+- Tag the merged commit on `main` with `py-vx.y.z` and push the tag. Tag `main` and not the branch: PyPI uploads are immutable, and a squash-merged branch commit is not in the history of `main`.
+
+After that, you only need to wait and verify:
+
+- The tag triggers the `PublishPython` workflow, which checks the tag against the version, builds and smoke-tests the wheel, then waits on the `pypi` environment. Approve the deployment if it requires reviewers.
+- Check <https://pypi.org/p/bestie-template>, then verify with `uvx --from bestie-template==x.y.z bestie --version`.
 
 ## Additions to the templates
 
