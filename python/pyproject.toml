@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "bestie-template"
-version = "0.1.0"
+version = "0.1.1"
 description = "Python interface to the BestieTemplate copier template: add template features to Julia packages without Julia"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -21,9 +21,12 @@ classifiers = [
 ]
 dependencies = ["copier>=9.14,<10", "pyyaml>=6", "typer>=0.12"]
 
-# The entry point is the Typer instance itself, not a main() wrapper
+# The entry point is the Typer instance itself, not a main() wrapper.
+# `bestie-template` is an alias of `bestie` so that `uvx bestie-template` works
+# without `--from`: uvx runs the script whose name matches the package.
 [project.scripts]
 bestie = "bestie_template.cli:app"
+bestie-template = "bestie_template.cli:app"
 
 [project.urls]
 Repository = "https://github.com/JuliaBesties/BestieTemplate.jl"

@@ -268,14 +268,17 @@ julia> BestieTemplate.add_feature(:changelog, ".")
 
 See the [`BestieTemplate.add_feature`](@ref) docstring for the available features.
 
-The same operation is available without Julia, through the experimental `bestie-template` Python package, so it also works from a plain shell or from an AI coding agent.
-It is not on PyPI yet, so with [uv](https://docs.astral.sh/uv/) installed:
+The same operation is available without Julia, through the experimental [`bestie-template`](https://pypi.org/p/bestie-template) Python package, so it also works from a plain shell or from an AI coding agent.
+With [uv](https://docs.astral.sh/uv/) installed, no install step is needed:
 
 ```bash
-uvx --from 'git+https://github.com/JuliaBesties/BestieTemplate.jl@main#subdirectory=python' bestie list-features
+uvx --from bestie-template bestie list-features
 ```
 
 Replace `list-features` with `add-feature changelog,dependabot` to apply features, and see `bestie --help` for the options (`-d KEY=VALUE` to answer questions, `--ref` to pin a template version, `--json` for machine-readable output).
+
+For AI coding agents, this workflow is packaged as the [`bestie-features` skill](https://github.com/JuliaBesties/BestieTemplate.jl/blob/main/skills/bestie-features/SKILL.md), which teaches the agent the commands, the feature names and the follow-up work some features need.
+Install it with [`npx skills add JuliaBesties/BestieTemplate.jl`](https://www.skills.sh).
 
 ## Setting up your package
 

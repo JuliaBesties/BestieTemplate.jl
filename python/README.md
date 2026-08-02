@@ -2,13 +2,15 @@
 
 Python interface to [BestieTemplate](https://github.com/JuliaBesties/BestieTemplate.jl): add template features to an existing Julia package without installing Julia.
 
-> **Status: experimental, not yet on PyPI.**
+> **Status: experimental.**
 
 With [uv](https://docs.astral.sh/uv/), no install step is needed:
 
 ```sh
-uvx --from 'git+https://github.com/JuliaBesties/BestieTemplate.jl@main#subdirectory=python' bestie list-features
+uvx --from bestie-template bestie list-features
 ```
+
+The command is `bestie`, hence the `--from`. Since 0.1.1 the package also installs `bestie-template` as an alias, so `uvx bestie-template list-features` works too.
 
 The two commands (`bestie --help` for all options):
 

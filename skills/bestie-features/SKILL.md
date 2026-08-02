@@ -7,12 +7,13 @@ description: Add BestieTemplate features (AGENTS.md, changelog, dependabot, pre-
 
 `bestie add-feature` applies a named slice of the [BestieTemplate](https://github.com/JuliaBesties/BestieTemplate.jl) copier template to an existing package: only the feature's files are written, everything else is left untouched. Requires only [uv](https://docs.astral.sh/uv/) on the PATH.
 
-Until `bestie-template` is published to PyPI, `bestie` in the commands below stands for this full invocation:
+`bestie` in the commands below stands for this full invocation:
 
 ```sh
-uvx --from 'git+https://github.com/JuliaBesties/BestieTemplate.jl@main#subdirectory=python' bestie
+uvx --from bestie-template bestie
 ```
 
+(The `--from` is needed because the package is `bestie-template` and its command is `bestie`.)
 Inline the full invocation in every command — do not rely on a shell alias or variable, which won't survive when each command runs in a fresh shell.
 
 ## Workflow
@@ -48,4 +49,4 @@ Both commands accept `--json`. Failures print `{"error": "<message>"}` and exit 
 
 ## Version pinning
 
-`--ref vX.Y.Z` pins the template version; the default is the latest template release. An error saying the feature "produced none of its files" means the rendered template version predates it — pass a newer `--ref`. **Until the next template release, always pass `--ref main`** (the latest release predates several features, including `agents`).
+`--ref vX.Y.Z` pins the template version; the default is the latest template release, which is what you normally want. An error saying the feature "produced none of its files" means the rendered template version predates it — pass a newer `--ref`, or `--ref main` for a feature that has not made it into a release yet.
