@@ -9,9 +9,11 @@ exclude = [
 
 exclude_path = [
   "docs/build",
+  "docs/make.jl",
   "test/conda-env"
 ]
 
 max_retries = 5
 retry_wait_time = 3
 timeout = 60
+extensions = ["md", "jl", "cff"]
