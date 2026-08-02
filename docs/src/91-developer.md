@@ -158,6 +158,24 @@ Aliases are entries with a single `alias_of = "other_feature"` key.
    - `_test_works_on_empty_folder` (if no `required_fields` and `requires_answers = false`): works on a minimal src/test directory
    - `_test_errors_without_data`: errors when required data is missing
    - `_test_explicit_data_override` (for features with `required_fields`): verifies `data` arg takes priority
+4. Add the feature name to `test_feature_names` in `python/tests/test_features.py` (see [The Python package](@ref python_package)) and run `cd python && uv run pytest`.
+
+### [The Python package (`python/`)](@id python_package)
+
+`python/` holds `bestie-template`, a port of `add_feature` and `list_features` that needs no Julia, plus a `bestie` CLI over them.
+It is experimental and not yet published to PyPI.
+
+```bash
+cd python
+uv sync          # .venv with the package (editable) + dev dependencies
+uv run pytest    # unit tests, plus integration tests that run real copier on this checkout
+uv run bestie list-features
+```
+
+Both implementations read the same repo-root `features.toml`, so a new feature serves both without Python changes.
+`test_feature_names` pins the exact feature set on purpose: a registry change that forgets the other side fails there. Since an installed wheel has no repository around it, `hatch_build.py` copies `features.toml` into the package at build time — never add a second copy under `python/` by hand.
+
+Linting and formatting come from the repository-wide pre-commit setup (`ruff`, `ruff-format`; configured in `python/pyproject.toml`), and `.github/workflows/TestPython.yml` runs the suite and builds the wheel on CI.
 
 ### Testing local changes to the template
 
