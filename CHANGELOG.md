@@ -13,7 +13,10 @@ and this project adheres to [Semantic Versioning].
 
 ### Changed
 
-- The Python package `bestie-template` is now at version `0.1.0`, ready for its first PyPI release. Its version is independent of the Julia package's, since the two are released on different cadences
+- The Python package `bestie-template` is now at version `0.1.1`. Its version is independent of the Julia package's, since the two are released on different cadences
+- `bestie-template` installs a `bestie-template` command as an alias of `bestie`, so `uvx bestie-template ...` works without `--from`
+- The documentation, the `bestie-features` skill and `python/README.md` now install `bestie-template` from PyPI instead of from the git repository
+- The README and the full guide now mention the `bestie-features` agent skill and how to install it with `npx skills add JuliaBesties/BestieTemplate.jl`
 - `python/pyproject.toml` now sets a one-week `exclude-newer` dependency cooldown
 
 ## [0.19.0] - 2026-08-02

@@ -22,7 +22,7 @@ Julia wrapper around the Python [Copier](https://copier.readthedocs.io) template
 
 **Template (`template/`)** — Jinja2 files for generated packages.
 
-**Python package (`python/`)** — `bestie-template`, a port of `add_feature`/`list_features` that needs no Julia (experimental, unpublished; see issue #617). It reads the same repo-root `features.toml`, so a new feature needs no Python code — only the name added to `test_feature_names` in `python/tests/test_features.py`, which pins the feature set as a drift guard.
+**Python package (`python/`)** — `bestie-template`, a port of `add_feature`/`list_features` that needs no Julia (experimental; published to PyPI as `bestie-template`, see issue #617). It reads the same repo-root `features.toml`, so a new feature needs no Python code — only the name added to `test_feature_names` in `python/tests/test_features.py`, which pins the feature set as a drift guard.
 
 - Conditional file/dir inclusion via the filename: `{% if Condition %}filename{% endif %}.jinja`
 - Variable substitution in content: `{{ VariableName }}`

@@ -67,6 +67,24 @@ please note that `"YourPackage.jl"` can either be a fresh new package or an exis
 
 If you like what you see, check the [full usage guide](https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-guides/10-full-guide/).
 
+## Without Julia, or from an AI coding agent
+
+Individual features of the template (`AGENTS.md`, changelog, Dependabot, pre-commit, …) can be added to an existing package without installing Julia, using the experimental [`bestie-template`](https://pypi.org/p/bestie-template) Python package.
+With [uv](https://docs.astral.sh/uv/) installed, no install step is needed:
+
+```sh
+uvx --from bestie-template bestie list-features
+uvx --from bestie-template bestie add-feature changelog,dependabot path/to/MyPackage.jl
+```
+
+For AI coding agents, the same workflow is packaged as the [`bestie-features` skill](skills/bestie-features/SKILL.md), which is installable with
+
+```sh
+npx skills add JuliaBesties/BestieTemplate.jl
+```
+
+See [skills.sh](https://www.skills.sh) for what agent skills are and which agents support them.
+
 ## Users and Examples
 
 The following are users and examples of repos using this template, or other templates based on it.
