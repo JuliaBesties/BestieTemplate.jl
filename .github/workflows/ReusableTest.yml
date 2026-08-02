@@ -14,7 +14,8 @@ on:
       arch:
         required: false
         type: string
-        default: x64
+        # "default" means the architecture of the runner executing the job
+        default: default
       allow_failure:
         required: false
         type: boolean
@@ -29,7 +30,7 @@ on:
 
 jobs:
   test:
-    name: Julia ${{ inputs.version }} - ${{ inputs.os }} - ${{ inputs.arch }} - ${{ github.event_name }}
+    name: "Julia ${{ inputs.version }} - ${{ inputs.os }} - arch: ${{ inputs.arch }} - ${{ github.event_name }}"
     runs-on: ${{ inputs.os }}
     continue-on-error: ${{ inputs.allow_failure }}
 

@@ -33,24 +33,25 @@ jobs:
           - windows-latest
           {% endif %}
         arch:
-          - x64
+          # "default" means the architecture of the runner executing the job
+          - default
         allow_failure: [false]
         {%- if RunJuliaNightlyOnCI %}
         include:
           - version: "nightly"
             os: ubuntu-latest
-            arch: x64
+            arch: default
             allow_failure: true
           {% if AddMacToCI -%}
           - version: "nightly"
             os: macOS-latest
-            arch: x64
+            arch: default
             allow_failure: true
           {% endif -%}
           {% if AddWinToCI -%}
           - version: "nightly"
             os: windows-latest
-            arch: x64
+            arch: default
             allow_failure: true
           {%- endif -%}
           {%- endif %}

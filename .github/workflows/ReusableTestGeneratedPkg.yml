@@ -13,7 +13,8 @@ on:
       arch:
         required: false
         type: string
-        default: x64
+        # "default" means the architecture of the runner executing the job
+        default: default
       strategy_level:
         required: true
         type: string # tiny, light, moderate, robust
