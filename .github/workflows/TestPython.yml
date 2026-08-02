@@ -1,10 +1,26 @@
 name: TestPython
 
+# The template paths matter because the integration tests render the real
+# template. GitHub Actions does not support YAML anchors, hence the duplication.
 on:
   push:
     branches:
       - main
+    paths:
+      - "python/**"
+      - features.toml
+      - "template/**"
+      - "copier/**"
+      - copier.yml
+      - .github/workflows/TestPython.yml
   pull_request:
+    paths:
+      - "python/**"
+      - features.toml
+      - "template/**"
+      - "copier/**"
+      - copier.yml
+      - .github/workflows/TestPython.yml
   workflow_dispatch:
 
 jobs:

@@ -162,7 +162,8 @@ Aliases are entries with a single `alias_of = "other_feature"` key.
 
 ### [The Python package (`python/`)](@id python_package)
 
-`python/` holds `bestie-template`, a port of `add_feature` and `list_features` that needs no Julia, plus a `bestie` CLI over them. It is experimental and not yet published to PyPI; the motivation and roadmap live in [issue #617](https://github.com/JuliaBesties/BestieTemplate.jl/issues/617).
+`python/` holds `bestie-template`, a port of `add_feature` and `list_features` that needs no Julia, plus a `bestie` CLI over them.
+It is experimental and not yet published to PyPI.
 
 ```bash
 cd python
@@ -171,7 +172,8 @@ uv run pytest    # unit tests, plus integration tests that run real copier on th
 uv run bestie list-features
 ```
 
-Both implementations read the same repo-root `features.toml`, so a new feature serves both without Python changes. `test_feature_names` pins the exact feature set on purpose: a registry change that forgets the other side fails there. Since an installed wheel has no repository around it, `hatch_build.py` copies `features.toml` into the package at build time — never add a second copy under `python/` by hand.
+Both implementations read the same repo-root `features.toml`, so a new feature serves both without Python changes.
+`test_feature_names` pins the exact feature set on purpose: a registry change that forgets the other side fails there. Since an installed wheel has no repository around it, `hatch_build.py` copies `features.toml` into the package at build time — never add a second copy under `python/` by hand.
 
 Linting and formatting come from the repository-wide pre-commit setup (`ruff`, `ruff-format`; configured in `python/pyproject.toml`), and `.github/workflows/TestPython.yml` runs the suite and builds the wheel on CI.
 

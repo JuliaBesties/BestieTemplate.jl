@@ -59,6 +59,11 @@ class TestRegistry:
         assert {"name": "pre_commit", "alias_of": "pre_commit_with_config"} in features
 
 
+def test_license_matches_the_repo(repo_root):
+    """python/LICENSE must stay a verbatim copy: PEP 639 forbids ../ in license-files."""
+    assert (repo_root / "python" / "LICENSE").read_bytes() == (repo_root / "LICENSE").read_bytes()
+
+
 class TestAddFeature:
     """Mechanics, with the copier call stubbed out (see the copier_calls fixture)."""
 

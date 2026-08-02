@@ -2,7 +2,7 @@
 
 Python interface to [BestieTemplate](https://github.com/JuliaBesties/BestieTemplate.jl): add template features to an existing Julia package without installing Julia.
 
-> **Status: experimental, not yet on PyPI.** Roadmap: [#617](https://github.com/JuliaBesties/BestieTemplate.jl/issues/617).
+> **Status: experimental, not yet on PyPI.**
 
 With [uv](https://docs.astral.sh/uv/), no install step is needed:
 

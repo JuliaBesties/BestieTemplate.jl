@@ -2,101 +2,115 @@
 
 from __future__ import annotations
 
-import argparse
 import json
-import sys
-from importlib.metadata import version
+from importlib.metadata import version as _package_version
+from typing import Annotated
+
+import typer
 
 from . import TEMPLATE_URL, BestieError, add_feature, list_features
 
+app = typer.Typer(
+    help="Add BestieTemplate features to Julia packages, without installing Julia.",
+    no_args_is_help=True,
+    add_completion=False,
+    pretty_exceptions_enable=False,
+)
 
-def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        prog="bestie",
-        description="Add BestieTemplate features to Julia packages, without installing Julia.",
-    )
-    parser.add_argument("--version", action="version", version=version("bestie-template"))
-    commands = parser.add_subparsers(dest="command", required=True)
-
-    common = argparse.ArgumentParser(add_help=False)
-    common.add_argument(
-        "--json", action="store_true", dest="as_json", help="Emit machine-readable JSON."
-    )
-
-    add = commands.add_parser(
-        "add-feature", parents=[common], help="Apply template features to an existing package."
-    )
-    add.add_argument("features", help="Comma-separated feature names, applied in order.")
-    add.add_argument("path", nargs="?", default=".", help="Package directory (default: .).")
-    add.add_argument(
-        "-d",
-        "--data",
-        action="append",
-        default=[],
-        metavar="KEY=VALUE",
-        help="Answer a template question; repeatable.",
-    )
-    add.add_argument("--ref", help="Git ref of the template (default: its latest release).")
-    add.add_argument("--template", default=TEMPLATE_URL, help="Template URL or local path.")
-
-    commands.add_parser(
-        "list-features", parents=[common], help="List the features that add-feature can apply."
-    )
-    return parser
+JsonOption = Annotated[bool, typer.Option("--json", help="Emit machine-readable JSON.")]
 
 
-def main(argv: list[str] | None = None) -> int:
-    parser = build_parser()
-    args = parser.parse_args(argv)
-    try:
-        if args.command == "list-features":
-            _print_features(list_features(), args.as_json)
-        else:
-            _add_feature(parser, args)
-    except BestieError as exc:
-        if args.as_json:
-            print(json.dumps({"error": str(exc)}))
-        else:
-            print(f"Error: {exc}", file=sys.stderr)
-        return 1
-    return 0
+def _show_version(value: bool) -> None:
+    if value:
+        typer.echo(_package_version("bestie-template"))
+        raise typer.Exit()
 
 
-def _add_feature(parser: argparse.ArgumentParser, args: argparse.Namespace) -> None:
-    if args.features.rstrip().endswith(","):
+def _fail(exc: BestieError, as_json: bool) -> typer.Exit:
+    """Report a failed operation and stop with exit code 1."""
+    if as_json:
+        typer.echo(json.dumps({"error": str(exc)}))
+    else:
+        typer.echo(f"Error: {exc}", err=True)
+    return typer.Exit(code=1)
+
+
+@app.callback()
+def main(
+    version: Annotated[
+        bool,
+        typer.Option("--version", callback=_show_version, is_eager=True, help="Print the version."),
+    ] = False,
+) -> None:
+    pass
+
+
+@app.command("add-feature")
+def add_feature_command(
+    features: Annotated[
+        str, typer.Argument(help="Comma-separated feature names, applied in order.")
+    ],
+    path: Annotated[str, typer.Argument(help="Package directory.")] = ".",
+    data: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--data", "-d", metavar="KEY=VALUE", help="Answer a template question; repeatable."
+        ),
+    ] = None,
+    ref: Annotated[
+        str | None, typer.Option(help="Git ref of the template (default: its latest release).")
+    ] = None,
+    template: Annotated[str, typer.Option(help="Template URL or local path.")] = TEMPLATE_URL,
+    as_json: JsonOption = False,
+) -> None:
+    """Apply one or more template features to an existing package."""
+    if features.rstrip().endswith(","):
         # `bestie add-feature X, Y`: the shell splits on the space, so Y would
         # silently become the destination PATH
-        parser.error("FEATURES must be one comma-separated argument, without spaces")
-    names = [name for name in (part.strip() for part in args.features.split(",")) if name]
+        raise typer.BadParameter(
+            "must be one comma-separated argument, without spaces", param_hint="FEATURES"
+        )
+    names = [name for name in (part.strip() for part in features.split(",")) if name]
     if not names:
-        parser.error("no feature names given")
+        raise typer.BadParameter("no feature names given", param_hint="FEATURES")
 
-    data = {}
-    for pair in args.data:
+    values = {}
+    for pair in data or []:
         key, separator, value = pair.partition("=")
         if not key or not separator:
-            parser.error(f"--data expects KEY=VALUE, got {pair!r}")
-        data[key] = value
+            raise typer.BadParameter(f"expected KEY=VALUE, got {pair!r}", param_hint="--data")
+        values[key] = value
 
-    result = add_feature(names, args.path, data, ref=args.ref, template=args.template)
-    if args.as_json:
-        print(json.dumps(result))
-        return
-    print(f"Applied {len(result['applied'])} feature(s) to {result['dst']}:")
-    for applied in result["applied"]:
-        print(f"  {applied['name']}: {', '.join(applied['files'])}")
-    if result["answers_file_updated"]:
-        print("Updated .copier-answers.yml with the merged answers.")
-    else:
-        print("No .copier-answers.yml in the destination; none was created.")
+    try:
+        result = add_feature(names, path, values, ref=ref, template=template)
+    except BestieError as exc:
+        raise _fail(exc, as_json) from exc
 
-
-def _print_features(features: list[dict], as_json: bool) -> None:
     if as_json:
-        print(json.dumps(features))
+        typer.echo(json.dumps(result))
+        return
+    typer.echo(f"Applied {len(result['applied'])} feature(s) to {result['dst']}:")
+    for applied in result["applied"]:
+        typer.echo(f"  {applied['name']}: {', '.join(applied['files'])}")
+    if result["answers_file_updated"]:
+        typer.echo("Updated .copier-answers.yml with the merged answers.")
+    else:
+        typer.echo("No .copier-answers.yml in the destination; none was created.")
+
+
+@app.command("list-features")
+def list_features_command(as_json: JsonOption = False) -> None:
+    """List the features that add-feature can apply."""
+    try:
+        features = list_features()
+    except BestieError as exc:
+        raise _fail(exc, as_json) from exc
+
+    if as_json:
+        typer.echo(json.dumps(features))
         return
     width = max(len(feature["name"]) for feature in features)
     for feature in features:
         alias = feature.get("alias_of")
         text = f"alias of {alias}" if alias else feature["description"]
-        print(f"{feature['name']:<{width}}  {text}")
+        typer.echo(f"{feature['name']:<{width}}  {text}")
