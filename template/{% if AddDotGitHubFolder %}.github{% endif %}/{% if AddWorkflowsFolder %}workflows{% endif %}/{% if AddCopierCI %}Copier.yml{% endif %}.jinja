@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           token: {% raw %}${{ secrets.COPIER_PAT }}{% endraw %}
-      - uses: julia-actions/setup-julia@v2
+      - uses: julia-actions/setup-julia@v3
         with:
           version: "1"
       - name: Use Julia cache

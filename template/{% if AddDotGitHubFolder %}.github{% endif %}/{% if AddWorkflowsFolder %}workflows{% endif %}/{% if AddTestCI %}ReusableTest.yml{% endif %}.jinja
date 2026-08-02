@@ -14,7 +14,8 @@ on:
       arch:
         required: false
         type: string
-        default: x64
+        # "default" means the architecture of the runner executing the job
+        default: default
       allow_failure:
         required: false
         type: boolean
@@ -29,13 +30,13 @@ on:
 
 jobs:
   test:
-    name: Julia {% raw %}${{ inputs.version }}{% endraw %} - {% raw %}${{ inputs.os }}{% endraw %} - {% raw %}${{ inputs.arch }}{% endraw %} - {% raw %}${{ github.event_name }}{% endraw %}
+    name: "Julia {% raw %}${{ inputs.version }}{% endraw %} - {% raw %}${{ inputs.os }}{% endraw %} - arch: {% raw %}${{ inputs.arch }}{% endraw %} - {% raw %}${{ github.event_name }}{% endraw %}"
     runs-on: {% raw %}${{ inputs.os }}{% endraw %}
     continue-on-error: {% raw %}${{ inputs.allow_failure }}{% endraw %}
 
     steps:
       - uses: actions/checkout@v6
-      - uses: julia-actions/setup-julia@v2
+      - uses: julia-actions/setup-julia@v3
         with:
           version: {% raw %}${{ inputs.version }}{% endraw %}
           arch: {% raw %}${{ inputs.arch }}{% endraw %}

@@ -30,8 +30,6 @@ jobs:
           - "1"
         os:
           - ubuntu-latest
-        arch:
-          - x64
         allow_failure: [false]
         strategy_level:
           - "tiny"
@@ -42,7 +40,6 @@ jobs:
     with:
       julia_version: ${{ matrix.version }}
       os: ${{ matrix.os }}
-      arch: ${{ matrix.arch }}
       strategy_level: ${{ matrix.strategy_level }}
       enable_docs: true
       run_link_checker: true
@@ -56,8 +53,6 @@ jobs:
           - "1" # with the introduction of workspaces and sources, testitem does not interact well with LTS
         os:
           - ubuntu-latest
-        arch:
-          - x64
         testing_strategy:
           - "basic"
           - "testitem_cli"
@@ -67,7 +62,6 @@ jobs:
     with:
       julia_version: ${{ matrix.version }}
       os: ${{ matrix.os }}
-      arch: ${{ matrix.arch }}
       strategy_level: "moderate"
       testing_strategy: ${{ matrix.testing_strategy }}
       enable_docs: false
@@ -81,8 +75,6 @@ jobs:
           - "1" # with the introduction of workspaces and sources, testitem does not interact well with LTS
         os:
           - ubuntu-latest
-        arch:
-          - x64
         combination:
           - {strategy_level: "robust", testing_strategy: "basic"}
           - {strategy_level: "tiny", testing_strategy: "testitem_cli"}
@@ -91,7 +83,6 @@ jobs:
     with:
       julia_version: ${{ matrix.version }}
       os: ${{ matrix.os }}
-      arch: ${{ matrix.arch }}
       strategy_level: ${{ matrix.combination.strategy_level }}
       testing_strategy: ${{ matrix.combination.testing_strategy }}
       enable_docs: false

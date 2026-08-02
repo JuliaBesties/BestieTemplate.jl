@@ -25,7 +25,6 @@ jobs:
     with:
       os: ${{ matrix.os }}
       version: "1"
-      arch: x64
       allow_failure: false
       run_codecov: ${{ matrix.os == 'ubuntu-latest' }}
     secrets:
