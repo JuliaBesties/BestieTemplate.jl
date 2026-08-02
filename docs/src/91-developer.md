@@ -376,21 +376,78 @@ After that, you only need to wait and verify:
 !!! info "Suggestions are not here"
     This section is aimed at the developer working on a new question, if you have any new idea or think the template needs to be updated or fixed, please search our [issues](https://github.com/JuliaBesties/BestieTemplate.jl/issues) and if there isn't anything relevant, open a new issue.
 
+### [The strategy system](@id strategy_system)
+
+Before writing a question, you need to know how the strategy system decides whether it is asked and what it defaults to.
+It is defined in `copier/strategy.yml`:
+
+- **`StrategyLevel`** is the user's answer: `0` = Tiny, `1` = Light, `2` = Moderate, `3` = Robust.
+- **`DefaultFor{Light,Moderate,Robust,Advanced}`** are hidden (`when: false`) booleans that are `true` when `StrategyLevel` reaches that level. `DefaultForAdvanced` is always `false`; advanced questions are never enabled by a strategy, only by the user.
+- **`WhenFor{Light,Moderate,Robust,Advanced}`** are hidden booleans deciding whether the question is *shown*. A question that the strategy includes is only asked if the user answered `StrategyConfirmIncluded`; one that the strategy excludes is only asked if the user answered `StrategyReviewExcluded`.
+
+So a question is placed in a strategy level simply by picking the matching `WhenFor*`/`DefaultFor*` pair, and users who accept the strategy are never prompted.
+
 ### Creating a new question
 
-To create a new question, you have to open the file `copier.yml` in the root.
-Find an appropriate place to add the question. Comments help identify the optional sections in the file.
+Questions live in the modular files under `copier/`, which `copier.yml` pulls in with `!include`:
 
-Follow the other questions style and syntax. The gist of it is that you need:
+| File | Contents |
+| :-- | :-- |
+| `constants.yml` | Computed values, never shown (`when: false`) |
+| `essential.yml` | Required information, asked before the strategy choice |
+| `strategy.yml` | The strategy selection and the derived `DefaultFor*`/`WhenFor*` variables |
+| `code-quality.yml` | Formatting, linting, testing strategy |
+| `community.yml` | Docs, CHANGELOG, citation, contribution, `AGENTS.md` |
+| `ci.yml` | GitHub Actions workflows and the aggregate folder flags |
 
-- A `CamelCase` name.
-- `when: "{{ AnswerStrategy == 'ask' }}"` if the question is optional but should be automatically selected for "Recommended only".
-- `when: "{{ AnswerStrategy == 'ask' or AnswerStrategy == 'recommended-ask' }}"` if the question is extra.
-- A `type`.
-- A `help: Short description or title (Longer description and details)`.
-- A `default`, if the question is optional.
-  - To default to `true` if "Recommended" or `false` for "Minimum", use `{{ AnswerStrategy != 'minimum' }}`.
-- A `description`, which is not actually part of `copier`, but we use to further describe the question to users in the documentation (it gets rendered in [Questions](@ref)).
+`copier.yml` itself only contains the `!include` lines and settings such as `_skip_if_exists`, so a new question normally does **not** go there.
+
+Follow the other questions' style and syntax. The gist of it is that you need:
+
+```yaml
+AddMyFeature:
+  when: "{{ WhenForLight }}"        # See the strategy system above
+  type: bool                        # bool, str, or int
+  default: "{{ DefaultForLight }}"  # Matches the level used in `when`
+  help: Add my feature (Longer description shown in the interactive prompt)
+  description: |
+    What this feature does and why you would want it, in as much detail as needed.
+
+    Strategy: Light
+```
+
+- A **`PascalCase`** name. Use the `Add*` prefix for booleans that add files (`AddDocs`, `AddChangelog`), `Check*`/`Run*` for behaviors (`CheckExplicitImports`, `RunJuliaNightlyOnCI`), and no prefix for basic information (`PackageName`, `License`).
+- A **`when`**, using the `WhenFor*` variable of the [strategy level](@ref strategy_system) you are targeting. A question that only makes sense together with another one keys off its parent as well, e.g. `when: "{{ AddPrecommit and WhenForAdvanced }}"`.
+- A **`type`**.
+- A **`help`**, in the form `Short title (Longer description and details)`.
+- A **`default`**, using the `DefaultFor*` variable matching the `when`.
+- A **`description`**, which is not part of `copier` — we use it to describe the question to users in the documentation (it gets rendered in [Questions](@ref)).
+
+!!! warning "The `description` must end with a `Strategy:` line"
+    The [Questions](@ref) page parses the `copier/*.yml` files and looks for `Strategy: <Level>` inside every `description`.
+    A question outside `essential.yml` and `strategy.yml` without that line makes the documentation build fail.
+
+Optional fields, when they apply: `choices:` (a map of `"Display name": value`), `validator:` (a Jinja2 expression that returns an empty string when the answer is valid), and `placeholder:`.
+If you think your question needs one of these, look at the existing questions first — `TestingStrategy` and `License` for `choices`, `PackageName` and `JuliaIndentation` for `validator`, and `Authors` for `placeholder` — and follow the closest one.
+
+### Wiring a new question into the template
+
+Adding the question to `copier/` is only the first step. Depending on what the question does, you also need:
+
+- **The template files themselves**, gated on the new variable — see [Dependent sections in a file](@ref) and [Dependent files and directories](@ref) below.
+- **Aggregate folder flags** (in `copier/ci.yml`). The `.github` and `.github/workflows` directories are themselves conditional, on `AddDotGitHubFolder` and `AddWorkflowsFolder`. If your question creates a file inside one of them, add it to the corresponding default expression, otherwise the folder is not created and the file silently disappears. Only list flags that *create* a file there; flags that merely change the content of an existing workflow (such as `AddMacToCI`) do not belong in the expression.
+- **`_skip_if_exists`** (in `copier.yml`). If the generated file is meant to be edited by the user afterwards — `CHANGELOG.md`, `LICENSE`, `CITATION.cff`, `AGENTS.md` — list it here so that `update` does not overwrite their changes.
+- **Cross-file references**. Grep the template for related content that should now become conditional. For instance, `AddChangelog` also had to make the release section of the generated `91-developer.md.jinja` conditional.
+- **An `add_feature` entry**, if the question adds a self-contained file that existing packages should be able to opt into without a full update. See [Adding a new `add_feature(:feature)`](@ref).
+
+### Testing a new question
+
+- **Answer data** (`src/debug/Data.jl`). Add the value to the lowest strategy level where it becomes relevant; the levels merge upwards, so `light` inherits from `tiny` and so on.
+- **Random values** (`test/utils.jl`). Only needed for non-trivial types: add a `_random(::Val{:MyQuestion}, value)` method. Booleans and strings without `choices` are covered by the existing fallbacks.
+- **Question-level tests**, in a new `test/test-<feature>.jl`. At a minimum, check that the file is present when the question is enabled and absent when it is not, that the substituted content is correct, and that any conditional block you added to other templates appears and disappears as expected.
+- **The CHANGELOG**, with an entry under `## [Unreleased]`.
+
+An example of everything above in one place is the commit that added `AddAgentsMd` (#613): question in `copier/community.yml`, `AGENTS.md` in `_skip_if_exists`, a conditional template file, a `features.toml` entry for `add_feature(:agents)`, data in `src/debug/Data.jl`, and both `test/test-agents.jl` and `test/test-add-feature.jl`.
 
 ### Dependent sections in a file
 
