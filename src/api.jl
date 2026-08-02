@@ -26,7 +26,7 @@ function _copy(src_path, dst_path, data; kwargs...)
 
   We suggest reading the **full guide**, and possibly other documentation pages:
 
-  `https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-full-guide`
+  `https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-guides/10-full-guide`
 
   If something does not work as you would expect or you need clarifications,
   please open an issue or discussion.
@@ -144,10 +144,12 @@ function generate(
         "\$ chmod -R u+w $dst_path    # You might have permission issues when copying locally. This should fix it",
       )
     end
-    println("""\nCreate a repo on GitHub and push your code to it.
+    println(
+      """\nCreate a repo on GitHub and push your code to it.
 
-    Read the full guide: https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-full-guide
-    """)
+Read the full guide: https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-guides/10-full-guide
+""",
+    )
   end
 
   return nothing
@@ -250,26 +252,28 @@ function apply(
   package_name = data["PackageName"]
   bestie_version = get(data, "_commit", ":local version")
 
-  quiet || println("""BestieTemplate was applied to $package_name.jl! 🎉
+  quiet || println(
+    """BestieTemplate was applied to $package_name.jl! 🎉
 
-      Next steps:
+Next steps:
 
-      Review the modifications.
-      In particular README.md and docs/src/index.md tend to be heavily edited.
+Review the modifications.
+In particular README.md and docs/src/index.md tend to be heavily edited.
 
-      \$ exit() # Exit the Julia REPL
-      \$ git switch -c apply-bestie # If you haven't created a branch
-      \$ git add .
-      \$ pre-commit run -a # Try to fix possible pre-commit issues (failures are expected)
-      \$ pre-commit run -a # Again. Now failures should not happen
-      \$ git add .
-      \$ git commit -m "Apply BestieTemplate $bestie_version"
-      \$ pre-commit install
-      \$ git push -u origin apply-bestie
+\$ exit() # Exit the Julia REPL
+\$ git switch -c apply-bestie # If you haven't created a branch
+\$ git add .
+\$ pre-commit run -a # Try to fix possible pre-commit issues (failures are expected)
+\$ pre-commit run -a # Again. Now failures should not happen
+\$ git add .
+\$ git commit -m "Apply BestieTemplate $bestie_version"
+\$ pre-commit install
+\$ git push -u origin apply-bestie
 
-      Go to GitHub and create a Pull Request from apply-bestie to main.
-      Continue on the full guide: https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-full-guide
-      """)
+Go to GitHub and create a Pull Request from apply-bestie to main.
+Continue on the full guide: https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-guides/10-full-guide
+""",
+  )
 
   return nothing
 end
