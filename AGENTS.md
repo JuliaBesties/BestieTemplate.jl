@@ -95,9 +95,11 @@ AddMyFeature:
     Strategy: Light
 ```
 
-Optional fields when needed: `choices:` (map of `"Display name": value`, str type), `validator:` (Jinja2 returning empty string if valid), `placeholder:`.
+The `description` **must** end with a `Strategy: <Level>` line for every question outside `essential.yml`/`strategy.yml` — `docs/src/30-questions.md` parses the yml files and errors the docs build without it.
 
-Naming: **PascalCase**; `Add*` for boolean toggles (`AddDocs`, `AddPrecommit`); `Check*`/`Run*`/`Use*` for behaviors; no prefix for basic info (`PackageName`, `License`).
+Optional fields when needed: `choices:` (map of `"Display name": value`, str type — see `TestingStrategy`, `License`), `validator:` (Jinja2 returning empty string if valid — see `PackageName`, `JuliaIndentation`), `placeholder:` (see `Authors`). Copy the closest existing question rather than inventing a shape.
+
+Naming: **PascalCase**; `Add*` for boolean toggles (`AddDocs`, `AddPrecommit`); `Check*`/`Run*` for behaviors (`CheckExplicitImports`, `RunJuliaNightlyOnCI`); no prefix for basic info (`PackageName`, `License`).
 
 Dependent questions key their `when` off the parent: `when: "{{ AddMyFeature and WhenForModerate }}"`.
 
