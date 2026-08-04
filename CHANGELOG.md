@@ -13,6 +13,7 @@ BREAKING NOTICE
 
 ### Added
 
+- New feature `add_feature(:lint_action_explicit)`, which adds `.github/workflows/Lint.yml` to any package by taking the answers that say which tools the package uses (`AddPrecommit`, `AddLychee`) as explicit data, instead of requiring an existing `.copier-answers.yml` like `:lint_action`
 - New workflow `.github/workflows/PublishPython.yml`, publishing the `bestie-template` Python package to PyPI on `py-v*` tags via trusted publishing (no tokens)
 
 ### Changed

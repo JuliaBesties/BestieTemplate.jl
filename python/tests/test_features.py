@@ -19,6 +19,7 @@ class TestRegistry:
             "changelog",
             "dependabot",
             "lint_action",
+            "lint_action_explicit",
             "pre_commit",
             "pre_commit_with_config",
             "pre_commit_without_config",
