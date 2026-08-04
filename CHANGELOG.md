@@ -14,6 +14,7 @@ BREAKING NOTICE
 ### Added
 
 - New feature `add_feature(:lint_action_explicit)`, which adds `.github/workflows/Lint.yml` to any package by taking the answers that say which tools the package uses (`AddPrecommit`, `AddLychee`) as explicit data, instead of requiring an existing `.copier-answers.yml` like `:lint_action`
+- New optional `optional_files` field in `features.toml`, mapping a boolean answer to files the feature's output needs when it is true — `:lint_action_explicit` uses it for `.lychee.toml` and `.pre-commit-config.yaml`, which its jobs read. They are written only when missing, so an existing file is kept and two features can declare the same path
 - New workflow `.github/workflows/PublishPython.yml`, publishing the `bestie-template` Python package to PyPI on `py-v*` tags via trusted publishing (no tokens)
 
 ### Changed

@@ -31,13 +31,25 @@ class TestRegistry:
             if "alias_of" in spec:
                 assert set(spec) == {"alias_of"}, name
                 continue
-            assert set(spec) == {
+            assert set(spec) <= {
+                "description",
+                "forced_data",
+                "included_files",
+                "optional_files",
+                "required_fields",
+                "requires_answers",
+            }, name
+            assert set(spec) >= {
                 "description",
                 "forced_data",
                 "included_files",
                 "required_fields",
                 "requires_answers",
             }, name
+            for field, files in spec.get("optional_files", {}).items():
+                # Keyed on boolean fields only, and the caller must be able to set them
+                assert field in spec["required_fields"] or field in spec["forced_data"], name
+                assert files and all(isinstance(file, str) for file in files), name
             assert spec["description"] and spec["included_files"]
 
     def test_aliases_resolve(self, registry):
@@ -154,6 +166,43 @@ class TestAgainstTheRealTemplate:
         assert "FakePkg" in content and "Pkg.test()" in content
         assert not (tmp_path / ".copier-answers.yml").exists()
         assert result["applied"] == [{"name": "agents", "files": ["AGENTS.md"]}]
+
+    def test_optional_files_are_written_when_the_flag_is_on(self, tmp_path, template):
+        add_feature(
+            ["lint_action_explicit"],
+            tmp_path,
+            {"AddPrecommit": False, "AddLychee": True},
+            template=template,
+            ref="HEAD",
+        )
+        workflow = (tmp_path / ".github/workflows/Lint.yml").read_text()
+        assert "link-checker" in workflow
+        # The job runs lychee with --config '.lychee.toml', so the config must be there too
+        assert (tmp_path / ".lychee.toml").is_file()
+        assert not (tmp_path / ".pre-commit-config.yaml").exists()
+
+    def test_optional_files_are_skipped_for_a_false_string_flag(self, tmp_path, template):
+        # "false" arrives as a truthy string from -d; only copier coerces it, and only later
+        add_feature(
+            ["lint_action_explicit"],
+            tmp_path,
+            {"AddPrecommit": "true", "AddLychee": "false"},
+            template=template,
+            ref="HEAD",
+        )
+        assert not (tmp_path / ".lychee.toml").exists()
+        assert (tmp_path / ".pre-commit-config.yaml").is_file()
+
+    def test_an_existing_optional_file_is_never_overwritten(self, tmp_path, template):
+        (tmp_path / ".lychee.toml").write_text("# tuned by hand\n")
+        add_feature(
+            ["lint_action_explicit"],
+            tmp_path,
+            {"AddPrecommit": False, "AddLychee": True},
+            template=template,
+            ref="HEAD",
+        )
+        assert (tmp_path / ".lychee.toml").read_text() == "# tuned by hand\n"
 
     def test_only_the_features_files_are_written(self, tmp_path, template):
         add_feature(

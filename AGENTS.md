@@ -59,6 +59,7 @@ Each feature is defined by an entry in `features.toml` at the repo root (single 
 description = "Adds `path/to/output/file.ext` ..."  # user-facing; the add_feature docstring list is generated from it
 forced_data = { MyFlag = true }               # always applied, highest priority
 included_files = ["path/to/output/file.ext"]  # only these files are written by copier
+optional_files = { SomeFlag = ["config.toml"] }  # optional; written only when SomeFlag and missing
 required_fields = ["RequiredField"]           # must be resolvable or errors
 requires_answers = false                      # true = .copier-answers.yml must exist
 ```
@@ -68,6 +69,8 @@ Aliases are their own entry with a single key: `alias_of = "my_feature"`. Do not
 Data merge order (later wins): answers file → guessed from repo → explicit `data` arg → `forced_data`. Guessing (`src/guess.jl`) only covers facts readable off the package — `PackageName`, `PackageUUID`, `Authors`, `JuliaMinVersion`, `PackageOwner`, `JuliaIndentation` — so `required_fields` outside that set must come from the answers file or the caller. The Python port does not guess at all.
 
 `requires_answers = true` is for features whose `required_fields` fall outside what guessing covers, where a default would silently render a wrong file (`lint_action`: `AddPrecommit` and `AddLychee` say which tools the package uses, `Lint.yml` runs a job for each, and guessing doesn't cover them — the Python CLI never guesses at all). When that set of fields is small and closed, also add a `<feature>_explicit` entry that lists them in `required_fields` with `requires_answers = false`, so packages without `.copier-answers.yml` can use the feature by stating its intent. Skip the variant when the output depends on many answers. See the developer docs for the full rationale.
+
+`optional_files` maps a boolean field to files the feature's own output needs when that field is true (`lint_action_explicit`'s `link-checker` job reads `.lychee.toml`). They are written only when missing, so an existing file is kept and two features may declare the same path without conflict. Declare what your output references, not what you "own". Test the flags with `_is_true`, never directly: a CLI `-d Flag=false` arrives as the string `"false"`, which is truthy in both languages.
 
 Before writing tests, verify the entry matches the template: the `included_files` are gated on the `forced_data` flag (e.g. `{% if MyFlag %}filename{% endif %}.jinja`), and the `required_fields` really are required. Ask the user if anything is ambiguous.
 

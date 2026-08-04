@@ -318,6 +318,38 @@ end
   _test_errors_without_data(:lint_action_explicit)
 end
 
+@testitem "add_feature(:lint_action_explicit) writes the config files of the enabled tools" tags =
+  [:integration, :slow, :template_application, :file_io] setup = [Common, AddFeatureHelpers] begin
+  _with_tmp_dir() do _
+    _add_feature_local(:lint_action_explicit, Dict("AddPrecommit" => false, "AddLychee" => true))
+    # The link-checker job runs lychee with --config '.lychee.toml'
+    @test isfile(".lychee.toml")
+    @test !isfile(".pre-commit-config.yaml")
+  end
+end
+
+@testitem "add_feature(:lint_action_explicit) skips optional files for a \"false\" string answer" tags =
+  [:integration, :slow, :template_application, :file_io] setup = [Common, AddFeatureHelpers] begin
+  _with_tmp_dir() do _
+    # Strings are what the CLI passes; copier only coerces them at render time
+    _add_feature_local(
+      :lint_action_explicit,
+      Dict("AddPrecommit" => "true", "AddLychee" => "false"),
+    )
+    @test !isfile(".lychee.toml")
+    @test isfile(".pre-commit-config.yaml")
+  end
+end
+
+@testitem "add_feature(:lint_action_explicit) keeps an existing optional file" tags =
+  [:integration, :slow, :template_application, :file_io] setup = [Common, AddFeatureHelpers] begin
+  _with_tmp_dir() do _
+    write(".lychee.toml", "# tuned by hand\n")
+    _add_feature_local(:lint_action_explicit, Dict("AddPrecommit" => false, "AddLychee" => true))
+    @test read(".lychee.toml", String) == "# tuned by hand\n"
+  end
+end
+
 @testitem "add_feature(:dependabot) generates dependabot.yml" tags =
   [:integration, :slow, :template_application, :file_io, :python_integration] setup =
   [Common, AddFeatureHelpers] begin

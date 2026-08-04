@@ -24,9 +24,9 @@ Inline the full invocation in every command — do not rely on a shell alias or 
    bestie list-features --json
    ```
 
-   Each entry has `name`, `description`, `required_fields` (answers you must be able to supply), and `requires_answers` (needs an existing `.copier-answers.yml`). Feature names are exact (e.g. the testitem runner is `testitem_cli`, not `testitem`); if you pass a name that doesn't exist, the error lists every valid name.
+   Each entry has `name`, `description`, `required_fields` (answers you must be able to supply), `requires_answers` (needs an existing `.copier-answers.yml`), and optionally `optional_files` (extra config files written only if missing, keyed by the boolean answer that enables them). Feature names are exact (e.g. the testitem runner is `testitem_cli`, not `testitem`); if you pass a name that doesn't exist, the error lists every valid name.
 
-2. **Check the working tree before applying.** A feature overwrites the files it owns without warning, no conflict prompt and no backup — `testitem_cli` replaces an existing `test/runtests.jl` outright, discarding whatever was there. Git is the only recovery path, so run `git status` first:
+2. **Check the working tree before applying.** A feature overwrites its `included_files` without warning, no conflict prompt and no backup — `testitem_cli` replaces an existing `test/runtests.jl` outright, discarding whatever was there. `optional_files` are the opposite: written only if missing, so an existing one (e.g. a hand-tuned `.lychee.toml`) is left untouched. Git is the only recovery path for `included_files`, so run `git status` first:
 
    - Uncommitted changes to any of the feature's `included_files`: stop and tell the user those changes will be lost. Let them commit or stash before you continue.
    - A file the feature owns exists and is committed: say so and what will replace it, and get the user's go-ahead before applying.
@@ -38,7 +38,7 @@ Inline the full invocation in every command — do not rely on a shell alias or 
    bestie add-feature changelog,dependabot [PATH]
    ```
 
-4. **Verify** with `git status` / `git diff`: only the features' files should appear, plus `.copier-answers.yml` if the package already had one. Read the diff of every pre-existing file the feature touched — "Applied 1 feature(s)" is printed just the same whether the file was created or overwritten, so success output is not evidence that nothing was lost.
+4. **Verify** with `git status` / `git diff`: only the feature's `included_files` should appear as modified, any missing `optional_files` as newly added, plus `.copier-answers.yml` if the package already had one. Read the diff of every pre-existing file the feature touched — "Applied 1 feature(s)" is printed just the same whether the file was created or overwritten, so success output is not evidence that nothing was lost.
 
 A clean diff means the feature applied, not that the package is done: a feature may require follow-up changes to files it does not own (e.g. `testitem_cli` replaces the test runner, so existing tests must be migrated to `@testitem` blocks and a `test/Project.toml` must exist). Check the feature's `description` and the rendered files for such expectations, and tell the user about any follow-up work you find.
 

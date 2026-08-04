@@ -152,6 +152,16 @@ function _load_features(registry_path::AbstractString = BUNDLED_FEATURES_TOML)
 end
 
 """
+    _is_true(value)
+
+Whether an answer means boolean `true`. Values passed through the CLI arrive as the string
+`"false"`, which copier only coerces at render time, so these flags must never be tested
+directly for truthiness.
+"""
+_is_true(value) = value === true
+_is_true(value::AbstractString) = lowercase(strip(value)) == "true"
+
+"""
     _feature_spec(features, feature::Symbol)
 
 Look up `feature` in the registry loaded by [`_load_features`](@ref), resolving aliases.
@@ -295,8 +305,18 @@ function add_feature(
 
   # Only update .copier-answers.yml when it already exists;
   # don't create it for packages not managed by BestieTemplate.
+  # Files the feature's output needs when a flag is on, added only when missing so a config
+  # the user already tuned survives (see optional_files in features.toml).
+  written_files = copy(included_files)
+  for (field, files) in get(spec, "optional_files", Dict{String, Any}())
+    _is_true(get(merged_data, field, false)) || continue
+    for f in files
+      isfile(joinpath(dst_path, f)) || push!(written_files, f)
+    end
+  end
+
   excluded = ["**"]
-  for f in included_files
+  for f in written_files
     push!(excluded, "!$f")
   end
   if has_answers
