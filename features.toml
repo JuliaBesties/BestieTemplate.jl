@@ -8,7 +8,15 @@
 #   the only place that information reaches a user or an agent choosing the flags.
 # - forced_data: answers always applied, highest priority in the data merge order
 # - included_files: the only paths copier writes (everything else is excluded);
-#   must be gated in the template on the forced_data flag(s)
+#   must be gated in the template on the forced_data flag(s). Always overwritten.
+# - optional_files: optional; maps a boolean field to files that the feature's own output needs
+#   when that field is true (e.g. the `link-checker` job reads `.lychee.toml`). Each is written
+#   only if it does not already exist, so a file the user has tuned is never overwritten and two
+#   features may safely declare the same path — whichever runs first writes it. Declare a file
+#   here only if this feature's rendered output references it; do not consider which other
+#   feature "owns" it. Non-boolean fields are not supported. Keys must be fields the caller can
+#   set — a required_fields or forced_data entry — so the file follows from a stated intent
+#   rather than reappearing after a user deleted it on purpose.
 # - required_fields: answer keys that must be resolvable or the operation errors.
 #   Resolution order is guessed data (Julia only, see `_read_data_from_existing_path` in
 #   `src/guess.jl`) -> `.copier-answers.yml` -> the caller's `data`/`-d` flags. Guessing only
@@ -51,9 +59,10 @@ required_fields = []
 requires_answers = true
 
 [features.lint_action_explicit]
-description = "Adds the `.github/workflows/Lint.yml` GitHub Actions workflow to any package, taking as explicit data the answers that say which tools the package uses: `AddPrecommit` (pre-commit) and `AddLychee` (the Lychee link checker). The workflow runs one job per enabled tool, so at least one answer must be true or it renders with no jobs. An existing config file (`.pre-commit-config.yaml`, `.lychee.toml`) means the package already uses that tool and the answer is true; no config file means only that it does not use it yet, so ask before deciding"
+description = "Adds the `.github/workflows/Lint.yml` GitHub Actions workflow to any package, taking as explicit data the answers that say which tools the package uses: `AddPrecommit` (pre-commit) and `AddLychee` (the Lychee link checker). The workflow runs one job per enabled tool, so at least one answer must be true or it renders with no jobs. Each enabled tool's config file (`.pre-commit-config.yaml`, `.lychee.toml`) is created only if missing, so an existing one is kept as is. An existing config file means the package already uses that tool and the answer is true; no config file means only that it does not use it yet, so ask before deciding"
 forced_data = { AddLintCI = true }
 included_files = [".github/workflows/Lint.yml"]
+optional_files = { AddPrecommit = [".pre-commit-config.yaml"], AddLychee = [".lychee.toml"] }
 required_fields = ["AddPrecommit", "AddLychee"]
 requires_answers = false
 

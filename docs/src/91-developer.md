@@ -140,11 +140,23 @@ For questions with non-trivial types, add a `_random(::Val{:QuestionName}, value
 description = "Adds `path/to/output/file.ext` ..."  # user-facing; the add_feature docstring list is generated from it
 forced_data = { MyFlag = true }               # always applied, highest priority
 included_files = ["path/to/output/file.ext"]  # only these files are written by copier
+optional_files = { SomeFlag = ["config.toml"] }  # optional; written only if missing, see below
 required_fields = ["RequiredField"]           # must be resolvable or errors
 requires_answers = false                      # true = .copier-answers.yml must exist
 ```
 
 Aliases are entries with a single `alias_of = "other_feature"` key.
+
+#### Optional files
+
+`included_files` are always written. `optional_files` covers a different case: a file the feature's *own output* needs only when a boolean answer is true. `lint_action_explicit` is the example — its `link-checker` job runs lychee with `--config '.lychee.toml'`, so enabling the job without shipping that config produces a workflow that cannot run.
+
+Two rules make this safe:
+
+- **Written only if missing.** A `.lychee.toml` the user has tuned is never overwritten, and the feature stays additive.
+- **Declare what your output references, not what you "own".** Two features may list the same path; whichever runs first writes it, the other finds it there and does nothing. This is deliberate: it means adding a future `lychee` feature that also writes `.lychee.toml` does not break `lint_action_explicit`.
+
+Keys must be boolean fields the caller can set — `required_fields` or `forced_data` entries. Beware that a flag passed on the CLI arrives as the *string* `"false"`, which is truthy in both languages; copier only coerces it at render time. Test these with `_is_true` (`src/friendly.jl`, `python/src/bestie_template/__init__.py`), never directly.
 
 **Data merge order** (later wins): answers file → guessed from repo → explicit `data` arg → `forced_data`.
 
@@ -175,7 +187,7 @@ Add the `_explicit` variant when the dependency set is small, enumerable, and me
 **Checklist to add a new feature:**
 
 1. Add a `[features.my_feature]` entry in `features.toml`. If it needs `requires_answers = true`, decide whether an `_explicit` companion is warranted (see [the `_explicit` convention](@ref explicit_features)).
-2. Check that the entry matches the template: the `included_files` in `template/` should be gated on the `forced_data` flag (e.g. `{% if MyFlag %}filename{% endif %}.jinja`), and the `required_fields` should be ones the feature genuinely cannot resolve on its own.
+2. Check that the entry matches the template: the `included_files` in `template/` should be gated on the `forced_data` flag (e.g. `{% if MyFlag %}filename{% endif %}.jinja`), and the `required_fields` should be ones the feature genuinely cannot resolve on its own. Read the rendered output for files it references but does not write — those belong in `optional_files`.
 3. Add tests in `test/test-add-feature.jl` using the `AddFeatureHelpers` snippet helpers (defined in the same file):
    - `_test_happy_path`: feature generates expected file(s)
    - `_test_works_without_answers_by_guessing` (if `requires_answers = false`): works when data is guessable

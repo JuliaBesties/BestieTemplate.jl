@@ -112,6 +112,11 @@ def add_feature(
         for field in PLACEHOLDER_FIELDS:
             merged.setdefault(field, PLACEHOLDER_VALUE)
         included = list(spec["included_files"])
+        # Files the feature's output needs when a flag is on, added only when missing so a
+        # config the user already tuned survives (see optional_files in features.toml).
+        for field, files in spec.get("optional_files", {}).items():
+            if _is_true(merged.get(field)):
+                included += [file for file in files if not (dst / file).exists()]
         exclude = ["**", *(f"!{file}" for file in included)]
         if has_answers:
             exclude.append(f"!{ANSWERS_FILENAME}")
@@ -127,9 +132,10 @@ def add_feature(
             vcs_ref=ref,
         )
 
-        if not any((dst / file).exists() for file in included):
+        required_files = spec["included_files"]
+        if not any((dst / file).exists() for file in required_files):
             raise BestieError(
-                f"Feature {name!r} produced none of its files ({', '.join(included)}). The "
+                f"Feature {name!r} produced none of its files ({', '.join(required_files)}). The "
                 f"rendered template ref ({ref or 'the latest release'}) probably predates this "
                 "feature; pass a ref of a template version that includes it."
             )
@@ -140,6 +146,17 @@ def add_feature(
         applied.append({"name": name, "files": included})
 
     return {"dst": str(dst), "applied": applied, "answers_file_updated": has_answers}
+
+
+def _is_true(value: Any) -> bool:
+    """Whether an answer means boolean true.
+
+    Values reaching us from `-d FLAG=false` are the *string* `"false"`, which is truthy in
+    Python; copier only coerces them at render time. So never test these flags directly.
+    """
+    if isinstance(value, str):
+        return value.strip().lower() == "true"
+    return value is True
 
 
 def _resolve(registry: dict[str, dict[str, Any]], name: str) -> dict[str, Any]:
