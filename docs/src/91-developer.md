@@ -148,9 +148,33 @@ Aliases are entries with a single `alias_of = "other_feature"` key.
 
 **Data merge order** (later wins): answers file → guessed from repo → explicit `data` arg → `forced_data`.
 
+If the `required_fields` can be guessed (e.g., by `_read_data_from_existing_path` in `src/guess.jl`, or if they are present in a `.copier-answers.yml` file), then the experience is smooth.
+Otherwise, they need to be given explicitly, e.g., via the `data` argument in Julia, or `-d` flags in the Python CLI.
+
+#### [When a feature depends on user choices: the `_explicit` convention](@id explicit_features)
+
+`requires_answers = true` was introduced to deal with features that could not be guessed from a repo.
+Essentially, these are features that require more than the minimum information in an existing package.
+`lint_action` is one case: `AddPrecommit` and `AddLychee` record whether the package uses pre-commit and the Lychee link checker (`copier/code-quality.yml`), and `Lint.yml` runs a job for each tool that is enabled.
+These answers are not automatically guessed from the package - even if they could be in the future - and via the Python CLI they can't be guessed.
+If forcing the template defaults, these answers would give a wrong result. In this case, for example, the `Lint.yml` action would be created but it would be essentially empty, becoming useless.
+The flag prevents that by insisting the package already recorded its answers.
+
+That is the right guard, but it locks the feature to packages that already use the template. When the set of choices is small and closed, we should try to ship a second entry named `<feature>_explicit` that lists these answers in `required_fields` with `requires_answers = false`:
+
+```toml
+[features.lint_action_explicit]
+required_fields = ["AddPrecommit", "AddLychee"]
+requires_answers = false
+```
+
+Any package can then use it by stating its intent (`-d AddPrecommit=true -d AddLychee=false`), and the "cannot determine required fields" error names exactly what to pass. Packages that *do* have an answers file keep working, since the fields resolve from it.
+
+Add the `_explicit` variant when the dependency set is small, enumerable, and meaningful to a user. Keep `requires_answers = true` alone when the output depends on many answers, or on ones a user cannot reasonably be asked to supply — an explicit variant that needs ten flags is worse than no variant.
+
 **Checklist to add a new feature:**
 
-1. Add a `[features.my_feature]` entry in `features.toml`.
+1. Add a `[features.my_feature]` entry in `features.toml`. If it needs `requires_answers = true`, decide whether an `_explicit` companion is warranted (see [the `_explicit` convention](@ref explicit_features)).
 2. Check that the entry matches the template: the `included_files` in `template/` should be gated on the `forced_data` flag (e.g. `{% if MyFlag %}filename{% endif %}.jinja`), and the `required_fields` should be ones the feature genuinely cannot resolve on its own.
 3. Add tests in `test/test-add-feature.jl` using the `AddFeatureHelpers` snippet helpers (defined in the same file):
    - `_test_happy_path`: feature generates expected file(s)

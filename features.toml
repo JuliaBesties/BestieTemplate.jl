@@ -2,12 +2,22 @@
 # Julia package and future non-Julia interfaces (see docs/src/91-developer.md).
 #
 # Field semantics:
-# - description: one line, user-facing; the `add_feature` docstring list is generated from it
+# - description: one line, user-facing; the `add_feature` docstring list is generated from it.
+#   When a `required_fields` entry is not guessable (see below), say in the description how a
+#   caller can tell what the value should be — usually a file whose presence implies it. This is
+#   the only place that information reaches a user or an agent choosing the flags.
 # - forced_data: answers always applied, highest priority in the data merge order
 # - included_files: the only paths copier writes (everything else is excluded);
 #   must be gated in the template on the forced_data flag(s)
-# - required_fields: answer keys that must be resolvable or the operation errors
-# - requires_answers: true = `.copier-answers.yml` must exist in the destination
+# - required_fields: answer keys that must be resolvable or the operation errors.
+#   Resolution order is guessed data (Julia only, see `_read_data_from_existing_path` in
+#   `src/guess.jl`) -> `.copier-answers.yml` -> the caller's `data`/`-d` flags. Guessing only
+#   covers facts readable off the package: PackageName, PackageUUID, Authors, JuliaMinVersion,
+#   PackageOwner, JuliaIndentation. Anything else has to be stated by the caller.
+# - requires_answers: true = `.copier-answers.yml` must exist in the destination. Use this only
+#   when a `required_fields` entry falls outside what guessing covers (limited to the facts
+#   listed above; the Python CLI never guesses at all) and no sane default exists. See the
+#   `_explicit` convention in docs/src/91-developer.md before adding one.
 # - alias_of: this feature is an alias of another entry (no other fields allowed)
 
 schema_version = 1
@@ -34,11 +44,18 @@ required_fields = ["PackageName"]
 requires_answers = false
 
 [features.lint_action]
-description = "Adds the `.github/workflows/Lint.yml` GitHub Actions workflow"
+description = "Adds the `.github/workflows/Lint.yml` GitHub Actions workflow, reusing the package's recorded answers to decide which tools it runs (requires `.copier-answers.yml`)"
 forced_data = { AddLintCI = true }
 included_files = [".github/workflows/Lint.yml"]
 required_fields = []
 requires_answers = true
+
+[features.lint_action_explicit]
+description = "Adds the `.github/workflows/Lint.yml` GitHub Actions workflow to any package, taking as explicit data the answers that say which tools the package uses: `AddPrecommit` (pre-commit) and `AddLychee` (the Lychee link checker). The workflow runs one job per enabled tool, so at least one answer must be true or it renders with no jobs. An existing config file (`.pre-commit-config.yaml`, `.lychee.toml`) means the package already uses that tool and the answer is true; no config file means only that it does not use it yet, so ask before deciding"
+forced_data = { AddLintCI = true }
+included_files = [".github/workflows/Lint.yml"]
+required_fields = ["AddPrecommit", "AddLychee"]
+requires_answers = false
 
 [features.pre_commit]
 alias_of = "pre_commit_with_config"

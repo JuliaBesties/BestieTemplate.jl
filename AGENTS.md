@@ -65,7 +65,9 @@ requires_answers = false                      # true = .copier-answers.yml must 
 
 Aliases are their own entry with a single key: `alias_of = "my_feature"`. Do not edit the feature list in the `add_feature` docstring — it is generated from the TOML at load time (`_features_docstring` in `src/friendly.jl`).
 
-Data merge order (later wins): answers file → guessed from repo → explicit `data` arg → `forced_data`.
+Data merge order (later wins): answers file → guessed from repo → explicit `data` arg → `forced_data`. Guessing (`src/guess.jl`) only covers facts readable off the package — `PackageName`, `PackageUUID`, `Authors`, `JuliaMinVersion`, `PackageOwner`, `JuliaIndentation` — so `required_fields` outside that set must come from the answers file or the caller. The Python port does not guess at all.
+
+`requires_answers = true` is for features whose `required_fields` fall outside what guessing covers, where a default would silently render a wrong file (`lint_action`: `AddPrecommit` and `AddLychee` say which tools the package uses, `Lint.yml` runs a job for each, and guessing doesn't cover them — the Python CLI never guesses at all). When that set of fields is small and closed, also add a `<feature>_explicit` entry that lists them in `required_fields` with `requires_answers = false`, so packages without `.copier-answers.yml` can use the feature by stating its intent. Skip the variant when the output depends on many answers. See the developer docs for the full rationale.
 
 Before writing tests, verify the entry matches the template: the `included_files` are gated on the `forced_data` flag (e.g. `{% if MyFlag %}filename{% endif %}.jinja`), and the `required_fields` really are required. Ask the user if anything is ambiguous.
 

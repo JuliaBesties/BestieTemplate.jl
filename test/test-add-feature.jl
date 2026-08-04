@@ -279,6 +279,45 @@ end
   _test_errors_without_data(:lint_action)
 end
 
+@testitem "add_feature(:lint_action_explicit) generates Lint.yml from explicit tool answers" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [Common, AddFeatureHelpers] begin
+  _test_works_on_empty_folder(
+    :lint_action_explicit,
+    joinpath(".github", "workflows", "Lint.yml"),
+    data = Dict("AddPrecommit" => true, "AddLychee" => false),
+    # The `lint:` job's display name, which exists only when the job does
+    expected_content = "name: Linting",
+  )
+end
+
+@testitem "add_feature(:lint_action_explicit) the tool answers select the jobs" tags =
+  [:integration, :slow, :template_application, :file_io] setup = [Common, AddFeatureHelpers] begin
+  lint_yml = joinpath(".github", "workflows", "Lint.yml")
+  # The answers are user choices, never guessable, so each must reach the rendered workflow.
+  # Assert on each job's own key or display name, not on the tool names its steps mention.
+  _test_explicit_data_override(
+    :lint_action_explicit,
+    Dict("AddPrecommit" => false, "AddLychee" => true),
+    lint_yml,
+    "link-checker",
+    unexpected = "name: Linting",
+  )
+  _test_explicit_data_override(
+    :lint_action_explicit,
+    Dict("AddPrecommit" => true, "AddLychee" => false),
+    lint_yml,
+    "name: Linting",
+    unexpected = "link-checker",
+  )
+end
+
+@testitem "add_feature(:lint_action_explicit) errors without the tool answers" tags =
+  [:unit, :fast, :error_handling] setup = [Common, AddFeatureHelpers] begin
+  # Unlike :lint_action it needs no answers file, but the two flags have no guessable source
+  _test_errors_without_data(:lint_action_explicit)
+end
+
 @testitem "add_feature(:dependabot) generates dependabot.yml" tags =
   [:integration, :slow, :template_application, :file_io, :python_integration] setup =
   [Common, AddFeatureHelpers] begin
