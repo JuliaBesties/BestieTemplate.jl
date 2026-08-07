@@ -81,6 +81,7 @@ const strategies = let
       "AddMacToCI" => true,
       "AddPrecommit" => true,
       "AddPrecommitUpdateCI" => true, # actually part of advanced
+      "AddVSCodeRecommendations" => true, # actually part of advanced
       "AddWinToCI" => true,
       "CheckExplicitImports" => true, # actually part of advanced
       "CodeOfConductContact" => split(moderate["Authors"], ",")[1],

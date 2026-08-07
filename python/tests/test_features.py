@@ -24,6 +24,7 @@ class TestRegistry:
             "pre_commit_with_config",
             "pre_commit_without_config",
             "testitem_cli",
+            "vscode_recommendations",
         ]
 
     def test_every_entry_has_the_expected_keys(self, registry):

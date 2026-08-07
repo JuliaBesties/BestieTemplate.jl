@@ -461,6 +461,26 @@ end
   )
 end
 
+@testitem "add_feature(:vscode_recommendations) generates .vscode/extensions.json" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [Common, AddFeatureHelpers] begin
+  _test_happy_path(
+    :vscode_recommendations,
+    [joinpath(".vscode", "extensions.json")];
+    content_checks = Dict(joinpath(".vscode", "extensions.json") => ["julialang.language-julia"]),
+  )
+end
+
+@testitem "add_feature(:vscode_recommendations) works on an empty folder" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [Common, AddFeatureHelpers] begin
+  _test_works_on_empty_folder(
+    :vscode_recommendations,
+    joinpath(".vscode", "extensions.json");
+    expected_content = "julialang.language-julia",
+  )
+end
+
 @testitem "add_feature errors on unsupported feature symbol" tags = [:unit, :fast, :error_handling] setup =
   [Common, AddFeatureHelpers] begin
   _test_errors_without_data(:nonexistent_feature)
