@@ -96,3 +96,10 @@ forced_data = { TestingStrategy = "testitem_cli" }
 included_files = ["test/runtests.jl"]
 required_fields = []
 requires_answers = false
+
+[features.vscode_recommendations]
+description = "Adds `.vscode/extensions.json` recommending the Julia VS Code extension; an existing file is kept unchanged"
+forced_data = { AddVSCodeRecommendations = true }
+included_files = [".vscode/extensions.json"]
+required_fields = []
+requires_answers = false

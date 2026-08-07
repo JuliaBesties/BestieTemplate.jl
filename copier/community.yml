@@ -108,3 +108,13 @@ AddAgentsMd:
     The generated file is a minimal starting point that describes the package, how to run the tests, and a few basic conventions; you are expected to expand it as the project grows.
 
     Strategy: Advanced
+
+AddVSCodeRecommendations:
+  when: "{{ WhenForAdvanced }}"
+  type: bool
+  default: "{{ DefaultForAdvanced }}"
+  help: Add VSCode extension recommendations (Adds a .vscode/extensions.json file recommending the Julia extension)
+  description: |
+    Whether to add a `.vscode/extensions.json` file recommending the [Julia](https://marketplace.visualstudio.com/items?itemName=julialang.language-julia) VS Code extension for the project.
+
+    Strategy: Advanced
