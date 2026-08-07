@@ -24,6 +24,8 @@ Julia wrapper around the Python [Copier](https://copier.readthedocs.io) template
 
 **Python package (`python/`)** — `bestie-template`, a port of `add_feature`/`list_features` that needs no Julia (experimental; published to PyPI as `bestie-template`, see issue #617). It reads the same repo-root `features.toml`, so a new feature needs no Python code — only the name added to `test_feature_names` in `python/tests/test_features.py`, which pins the feature set as a drift guard.
 
+**Agent skill (`skills/bestie-features/SKILL.md`)** — teaches an AI coding agent the `bestie` CLI workflow (list/add features, resolve answers, protected files). It documents behavior, not the feature list, so it doesn't need updating for every new `features.toml` entry — only when the CLI's workflow, answer-resolution rules, or protected-files semantics change.
+
 - Conditional file/dir inclusion via the filename: `{% if Condition %}filename{% endif %}.jinja`
 - Variable substitution in content: `{{ VariableName }}`
 

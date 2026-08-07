@@ -213,6 +213,12 @@ Both implementations read the same repo-root `features.toml`, so a new feature s
 
 Linting and formatting come from the repository-wide pre-commit setup (`ruff`, `ruff-format`; configured in `python/pyproject.toml`), and `.github/workflows/TestPython.yml` runs the suite and builds the wheel on CI.
 
+### [The agent skill (`skills/bestie-features/SKILL.md`)](@id bestie_features_skill)
+
+`skills/bestie-features/SKILL.md` teaches an AI coding agent to drive the `bestie` CLI: discovering features, checking the working tree before applying, resolving `Add*`-style answers, and the protected-files/`optional_files` rules. It's referenced from the [full guide](@ref full_guide) and installable with `npx skills add JuliaBesties/BestieTemplate.jl`.
+
+It documents *behavior*, not the feature list, so it does not need a change for every new `features.toml` entry. Update it when the CLI's workflow changes: new/renamed subcommands or flags, a change to how answers are resolved or protected files are decided, or a new `_explicit`-style convention (see [the `_explicit` convention](@ref explicit_features)) worth teaching the agent.
+
 ### Testing local changes to the template
 
 We have created tools to help test and debug changes to the template.
