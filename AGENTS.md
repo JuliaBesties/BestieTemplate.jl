@@ -22,6 +22,8 @@ Julia wrapper around the Python [Copier](https://copier.readthedocs.io) template
 
 **Template (`template/`)** — Jinja2 files for generated packages.
 
+This repo also applies its own template to itself (see `.copier-answers.yml`), so files like `.github/workflows/*.yml` exist both as generated output here and as `template/.../*.yml.jinja` source. Before editing a generated file, check whether the fix belongs in the template (should apply to every package the template generates) or is specific to this repo's own infrastructure (e.g. dogfooding quirks, this repo's own release process). Edit the template source for the former; edit the generated file directly for the latter. If unsure which one applies, ask.
+
 **Python package (`python/`)** — `bestie-template`, a port of `add_feature`/`list_features` that needs no Julia (experimental; published to PyPI as `bestie-template`, see issue #617). It reads the same repo-root `features.toml`, so a new feature needs no Python code — only the name added to `test_feature_names` in `python/tests/test_features.py`, which pins the feature set as a drift guard.
 
 **Agent skill (`skills/bestie-features/SKILL.md`)** — teaches an AI coding agent the `bestie` CLI workflow (list/add features, resolve answers, protected files). It documents behavior, not the feature list, so it doesn't need updating for every new `features.toml` entry — only when the CLI's workflow, answer-resolution rules, or protected-files semantics change.
