@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+BREAKING NOTICE
+
+- The `testitem_cli` testing strategy option has changed slightly fixing a bug and removing an unnecessary temporary environment.
+
 ### Added
 
 - New workflow `.github/workflows/PublishPython.yml`, publishing the `bestie-template` Python package to PyPI on `py-v*` tags via trusted publishing (no tokens)
@@ -18,6 +22,11 @@ and this project adheres to [Semantic Versioning].
 - The documentation, the `bestie-features` skill and `python/README.md` now install `bestie-template` from PyPI instead of from the git repository
 - The README and the full guide now mention the `bestie-features` agent skill and how to install it with `npx skills add JuliaBesties/BestieTemplate.jl`
 - `python/pyproject.toml` now sets a one-week `exclude-newer` dependency cooldown
+- The `testitem_cli` test runner no longer builds a temporary environment to bring the package into scope. The `[sources]` section that `test/Project.toml` gained in 0.17.1 (#559) already does that, so `Pkg` is no longer a test dependency of that strategy (#640)
+
+### Fixed
+
+- The filter flags of the `testitem_cli` test runner now work when the tests are run through `Pkg.test`, which includes `test/runtests.jl` instead of executing it as a program. Filters passed as `test_args` were previously ignored, and so were misspelled flags, both without any warning. This affects `pkg> test` and `julia-actions/julia-runtest` as well (#640)
 
 ## [0.19.0] - 2026-08-02
 
