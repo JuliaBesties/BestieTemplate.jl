@@ -8,7 +8,7 @@ on:
       - "docs/**"
       - "src/**"
       - "*.toml"
-    tags: ["*"]
+    tags: ["v*"]
   pull_request:
     branches:
       - main
