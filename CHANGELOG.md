@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning].
 BREAKING NOTICE
 
 - The `testitem_cli` testing strategy option has changed slightly fixing a bug and removing an unnecessary temporary environment.
+- `add_feature(:pre_commit_with_config)` and `add_feature(:pre_commit_without_config)` have been removed. `add_feature(:pre_commit)` now adds only `.pre-commit-config.yaml`; add the shared formatter/linter configuration files independently with the new `add_feature(:formatter_linter_config)`.
+- `AddPrecommit` is now an independent question from `AddFormatterAndLinterConfigFiles`. If you previously answered `false` to `AddFormatterAndLinterConfigFiles`, you will be asked about `AddPrecommit` again on the next `update`.
 
 ### Added
 
@@ -30,6 +32,7 @@ BREAKING NOTICE
 ### Fixed
 
 - The filter flags of the `testitem_cli` test runner now work when the tests are run through `Pkg.test`, which includes `test/runtests.jl` instead of executing it as a program. Filters passed as `test_args` were previously ignored, and so were misspelled flags, both without any warning. This affects `pkg> test` and `julia-actions/julia-runtest` as well (#640)
+- The `AddPrecommit` question no longer depends on `AddFormatterAndLinterConfigFiles`. The two were entangled so that declining the config files also silently defaulted away pre-commit, which forced `add_feature(:pre_commit_without_config)` to record `AddFormatterAndLinterConfigFiles = true` just to keep pre-commit's own answer remembered — and a later plain `update` would then restore the config files the feature was meant to leave out (#625)
 
 ## [0.19.0] - 2026-08-02
 

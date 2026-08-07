@@ -78,6 +78,9 @@ Data merge order (later wins): answers file → guessed from repo → explicit `
 
 Before writing tests, verify the entry matches the template: the `included_files` are gated on the `forced_data` flag (e.g. `{% if MyFlag %}filename{% endif %}.jinja`), and the `required_fields` really are required. Ask the user if anything is ambiguous.
 
+Watch for `when`-clause entanglement before choosing what to force. Copier only persists a question's answer into `.copier-answers.yml` when that question's own `when` evaluates true for the run — a value in `forced_data` still renders correctly this once, but is silently dropped from the answers file if its `when` says no, and a plain `update` will later recompute it from a fallback default. It gets worse when one question's `when` names *another* question's flag: grep `copier/*.yml` for the flag's name, not just its own definition. Forcing that other flag just to keep your feature's `when` open can quietly break persistence for a flag you never meant to touch.
+This chain (`AddPrecommit`'s `when` used to include `AddFormatterAndLinterConfigFiles`) is what caused #625: `pre_commit_without_config` had to force the config-files flag `true` merely so `AddPrecommit` stayed persisted, which meant the config files it was supposed to exclude came back on the next `update`. Don't design a feature around forcing a combination the questionnaire's own `when` chain wouldn't produce on its own — if two questions must be selectable independently via `add_feature`, make their `when` clauses independent too (fix the template, don't route around it with `forced_data`).
+
 Both the `AddFeatureHelpers` snippet and the tests live in `test/test-add-feature.jl`. Which helpers apply depends on `requires_answers` and `required_fields`:
 
 - `_test_happy_path`: feature generates expected file(s)

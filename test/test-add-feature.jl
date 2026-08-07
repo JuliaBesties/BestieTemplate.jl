@@ -230,19 +230,15 @@ end
   )
 end
 
-@testitem "add_feature(:pre_commit) generates pre-commit config and linter files" tags =
+@testitem "add_feature(:pre_commit) generates only .pre-commit-config.yaml" tags =
   [:integration, :slow, :template_application, :file_io, :python_integration] setup =
   [Common, AddFeatureHelpers] begin
+  # AddPrecommit and AddFormatterAndLinterConfigFiles are independent questions (#625):
+  # adding pre-commit must not also pull in the formatter/linter config files.
   _test_happy_path(
     :pre_commit,
-    [
-      ".pre-commit-config.yaml",
-      ".JuliaFormatter.toml",
-      ".editorconfig",
-      ".yamlfmt.yml",
-      ".yamllint.yml",
-      ".markdownlint.json",
-    ],
+    [".pre-commit-config.yaml"];
+    unexpected_files = [".JuliaFormatter.toml"],
   )
 end
 
@@ -252,20 +248,26 @@ end
   _test_works_on_empty_folder(:pre_commit, ".pre-commit-config.yaml")
 end
 
-@testitem "add_feature(:pre_commit_without_config) generates only .pre-commit-config.yaml" tags =
+@testitem "add_feature(:formatter_linter_config) generates the formatter/linter config files" tags =
   [:integration, :slow, :template_application, :file_io, :python_integration] setup =
   [Common, AddFeatureHelpers] begin
   _test_happy_path(
-    :pre_commit_without_config,
-    [".pre-commit-config.yaml"];
-    unexpected_files = [".JuliaFormatter.toml"],
+    :formatter_linter_config,
+    [
+      ".JuliaFormatter.toml",
+      ".editorconfig",
+      ".yamlfmt.yml",
+      ".yamllint.yml",
+      ".markdownlint.json",
+    ];
+    unexpected_files = [".pre-commit-config.yaml"],
   )
 end
 
-@testitem "add_feature(:pre_commit_without_config) works on an empty folder" tags =
+@testitem "add_feature(:formatter_linter_config) works on an empty folder" tags =
   [:integration, :slow, :template_application, :file_io, :python_integration] setup =
   [Common, AddFeatureHelpers] begin
-  _test_works_on_empty_folder(:pre_commit_without_config, ".pre-commit-config.yaml")
+  _test_works_on_empty_folder(:formatter_linter_config, ".JuliaFormatter.toml")
 end
 
 @testitem "add_feature(:lint_action) generates Lint.yml workflow" tags =
@@ -512,6 +514,7 @@ end
 
   # The docstring generator must produce the real list, not the error fallback
   @test contains(BestieTemplate._features_docstring(), ":pre_commit")
+  @test contains(BestieTemplate._features_docstring(), ":formatter_linter_config")
 end
 
 @testitem "the features.toml loader rejects malformed registries" tags =

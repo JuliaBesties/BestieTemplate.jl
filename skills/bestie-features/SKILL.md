@@ -52,7 +52,7 @@ When asked what a package could use rather than for a named feature, start from 
 
 ## Protected files
 
-The template's `_skip_if_exists` list decides whether an existing file is preserved or replaced; it is not a per-feature property. Of the files the features own, only `AGENTS.md` and `CHANGELOG.md` are on that list — so `agents` and `changelog` never touch an existing file, while `dependabot`, `lint_action`, `pre_commit*` and `testitem_cli` overwrite theirs. `test/runtests.jl` is an explicit exception carved out of the list's blanket protection for `**/*.jl`, which is why the test runner is replaceable at all.
+The template's `_skip_if_exists` list decides whether an existing file is preserved or replaced; it is not a per-feature property. Of the files the features own, only `AGENTS.md` and `CHANGELOG.md` are on that list — so `agents` and `changelog` never touch an existing file, while `dependabot`, `lint_action`, `pre_commit`, `formatter_linter_config` and `testitem_cli` overwrite theirs. `test/runtests.jl` is an explicit exception carved out of the list's blanket protection for `**/*.jl`, which is why the test runner is replaceable at all.
 
 Both outcomes print the same "Applied N feature(s)" line, so read the diff rather than the output. Two consequences to pass on to the user:
 

@@ -18,11 +18,10 @@ class TestRegistry:
             "agents",
             "changelog",
             "dependabot",
+            "formatter_linter_config",
             "lint_action",
             "lint_action_explicit",
             "pre_commit",
-            "pre_commit_with_config",
-            "pre_commit_without_config",
             "testitem_cli",
             "vscode_recommendations",
         ]
@@ -53,9 +52,21 @@ class TestRegistry:
                 assert files and all(isinstance(file, str) for file in files), name
             assert spec["description"] and spec["included_files"]
 
-    def test_aliases_resolve(self, registry):
-        resolved = bestie_template._resolve(registry, "pre_commit")
-        assert resolved is registry["pre_commit_with_config"]
+    def test_aliases_resolve(self):
+        # No entry in the real registry is currently an alias (#625 removed the last
+        # one); exercise the generic resolution mechanism with a synthetic registry.
+        synthetic = {
+            "my_alias": {"alias_of": "real_feature"},
+            "real_feature": {
+                "description": "d",
+                "forced_data": {},
+                "included_files": ["f"],
+                "required_fields": [],
+                "requires_answers": False,
+            },
+        }
+        resolved = bestie_template._resolve(synthetic, "my_alias")
+        assert resolved is synthetic["real_feature"]
 
     def test_unknown_feature_lists_the_supported_ones(self, registry):
         with pytest.raises(BestieError, match=r"Unknown feature 'nope'.*agents"):
@@ -70,7 +81,6 @@ class TestRegistry:
     def test_list_features_is_sorted_and_json_ready(self, registry):
         features = list_features(registry)
         assert [feature["name"] for feature in features] == sorted(registry)
-        assert {"name": "pre_commit", "alias_of": "pre_commit_with_config"} in features
 
 
 def test_license_matches_the_repo(repo_root):
@@ -86,7 +96,7 @@ class TestAddFeature:
         (call,) = copier_calls
         assert call["exclude"][0] == "**"
         assert set(call["exclude"][1:]) == {
-            f"!{file}" for file in registry["pre_commit_with_config"]["included_files"]
+            f"!{file}" for file in registry["pre_commit"]["included_files"]
         }
 
     def test_data_merge_order_and_placeholders(self, tmp_path, registry, copier_calls):
@@ -207,7 +217,7 @@ class TestAgainstTheRealTemplate:
 
     def test_only_the_features_files_are_written(self, tmp_path, template):
         add_feature(
-            ["agents", "pre_commit"],
+            ["agents", "pre_commit", "formatter_linter_config"],
             tmp_path,
             {"PackageName": "FakePkg"},
             template=template,
