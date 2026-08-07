@@ -469,6 +469,9 @@ AddMyFeature:
     The [Questions](@ref) page parses the `copier/*.yml` files and looks for `Strategy: <Level>` inside every `description`.
     A question outside `essential.yml` and `strategy.yml` without that line makes the documentation build fail.
 
+!!! warning "Don't chain `when` clauses across questions"
+    If question B's `when` depends on question A's flag, forcing A just to keep B's `when` open also persists A's forced value into `.copier-answers.yml` — even if that's not the value you wanted remembered for A. That's what caused #625: forcing `AddFormatterAndLinterConfigFiles = true` so `AddPrecommit` would persist also persisted the config-files flag as `true`, bringing back files a feature meant to exclude. Keep `when` clauses independent whenever two questions must be selectable separately through `add_feature`.
+
 Optional fields, when they apply: `choices:` (a map of `"Display name": value`), `validator:` (a Jinja2 expression that returns an empty string when the answer is valid), and `placeholder:`.
 If you think your question needs one of these, look at the existing questions first — `TestingStrategy` and `License` for `choices`, `PackageName` and `JuliaIndentation` for `validator`, and `Authors` for `placeholder` — and follow the closest one.
 

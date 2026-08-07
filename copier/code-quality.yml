@@ -18,7 +18,7 @@ AddFormatterAndLinterConfigFiles:
     Strategy: Light
 
 AddPrecommit:
-  when: "{{ AddFormatterAndLinterConfigFiles and WhenForModerate }}"
+  when: "{{ WhenForModerate }}"
   type: bool
   default: "{{ DefaultForModerate }}"
   help: Pre-commit (Whether to add pre-commit.org. It runs before every commit fixing your formatting and preventing bad practices)

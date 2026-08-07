@@ -67,26 +67,22 @@ required_fields = ["AddPrecommit", "AddLychee"]
 requires_answers = false
 
 [features.pre_commit]
-alias_of = "pre_commit_with_config"
+description = "Adds `.pre-commit-config.yaml`. Combine with `:formatter_linter_config` to also add the shared formatter/linter configuration files; pre-commit's hooks fall back to each tool's own defaults without them"
+forced_data = { AddPrecommit = true }
+included_files = [".pre-commit-config.yaml"]
+required_fields = []
+requires_answers = false
 
-[features.pre_commit_with_config]
-description = "Adds `.pre-commit-config.yaml` and the formatter/linter configuration files"
-forced_data = { AddPrecommit = true, AddFormatterAndLinterConfigFiles = true }
+[features.formatter_linter_config]
+description = "Adds the formatter/linter configuration files (`.JuliaFormatter.toml`, `.editorconfig`, `.yamlfmt.yml`, `.yamllint.yml`, `.markdownlint.json`); picked up by editors directly and by pre-commit's hooks if `:pre_commit` is also added"
+forced_data = { AddFormatterAndLinterConfigFiles = true }
 included_files = [
-  ".pre-commit-config.yaml",
   ".JuliaFormatter.toml",
   ".editorconfig",
   ".yamlfmt.yml",
   ".yamllint.yml",
   ".markdownlint.json",
 ]
-required_fields = []
-requires_answers = false
-
-[features.pre_commit_without_config]
-description = "Adds only `.pre-commit-config.yaml`, without the formatter/linter configuration files"
-forced_data = { AddPrecommit = true, AddFormatterAndLinterConfigFiles = true }
-included_files = [".pre-commit-config.yaml"]
 required_fields = []
 requires_answers = false
 

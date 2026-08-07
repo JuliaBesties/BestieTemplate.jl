@@ -79,11 +79,21 @@ class TestAddFeature:
 
 
 class TestListFeatures:
-    def test_lists_descriptions_and_aliases(self):
+    def test_lists_descriptions_and_aliases(self, monkeypatch):
+        # No entry in the real registry is currently an alias (#625 removed the last
+        # one); exercise the CLI's rendering of both shapes directly.
+        monkeypatch.setattr(
+            bestie_template.cli,
+            "list_features",
+            lambda: [
+                {"name": "agents", "description": "Adds AGENTS.md"},
+                {"name": "pre_commit_alias", "alias_of": "pre_commit"},
+            ],
+        )
         result = runner.invoke(app, ["list-features"])
         assert result.exit_code == 0
-        assert "agents" in result.stdout
-        assert "alias of pre_commit_with_config" in result.stdout
+        assert "Adds AGENTS.md" in result.stdout
+        assert "alias of pre_commit" in result.stdout
 
     def test_json_lists_every_entry(self, registry):
         result = runner.invoke(app, ["list-features", "--json"])
