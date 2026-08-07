@@ -1,8 +1,5 @@
 [deps]
 {{ PackageName }} = "{{ PackageUUID }}"
-{% if TestingStrategy == 'testitem_cli' -%}
-Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
-{% endif -%}
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 {% if TestingStrategy == 'testitem_cli' or TestingStrategy == 'testitem_basic' -%}
 TestItems = "1c621080-faea-4a02-84b6-bbd5e436b8fe"

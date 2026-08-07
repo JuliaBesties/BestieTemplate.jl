@@ -6,7 +6,7 @@
   # Expected dependency matrix based on template changes
   expected_deps = Dict(
     "basic" => Set(["Test", "TOML"]),
-    "testitem_cli" => Set(["Pkg", "Test", "TestItems", "TestItemRunner", "TOML"]),
+    "testitem_cli" => Set(["Test", "TestItems", "TestItemRunner", "TOML"]),
     "testitem_basic" => Set(["Test", "TestItems", "TestItemRunner", "TOML"]),
     "basic_auto_discover" => Set(["Test", "TOML"]),
   )
@@ -103,6 +103,17 @@ end
   @test contains(runtests_content, "TAGS_DATA")
   @test contains(runtests_content, "parse_arguments")
   @test contains(runtests_content, "_print_help")
+
+  # `Pkg.test` includes the runner instead of executing it, so the branch taken when
+  # `PROGRAM_FILE` does not match must still go through `main`. Otherwise `ARGS` is never
+  # parsed and `test_args` filters are silently ignored (issue #640).
+  @test contains(runtests_content, "main(; verbose_default = true)")
+  @test !contains(runtests_content, "@run_package_tests verbose = true")
+
+  # The package is put in scope by the `[sources]` section of test/Project.toml, so the
+  # runner must not build a temporary environment of its own (issue #640).
+  @test !contains(runtests_content, "mktempdir")
+  @test !contains(runtests_content, "Pkg.develop")
 
   # Should not have additional test files (CLI handles everything)
   @test has_test_file

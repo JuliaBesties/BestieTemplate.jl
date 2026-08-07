@@ -125,6 +125,23 @@ jobs:
           julia --project=test -e 'using Pkg; Pkg.instantiate()'
           julia --project=test test/runtests.jl --verbose
 
+      - name: Check that test_args reach the TestItem CLI
+        if: ${{ inputs.testing_strategy == 'testitem_cli' }}
+        run: |
+          set -o pipefail
+          cd tmp/Guldasta.jl
+          # An unknown flag must be rejected. `Pkg.test` includes runtests.jl instead of
+          # executing it, and the runner used to skip argument parsing on that path, so
+          # correct and misspelled flags alike were ignored.
+          if julia --project=. --eval 'using Pkg; Pkg.test(; test_args = ["--not-a-flag"])'; then
+            echo "::error::the generated test runner ignored its test_args"
+            exit 1
+          fi
+          # A real filter must run a strict subset of the test items.
+          julia --project=. --eval 'using Pkg; Pkg.test(; test_args = ["--tags", "validation"])' 2>&1 | tee filtered.log
+          grep -q "Input validation test" filtered.log
+          ! grep -q "Performance test" filtered.log
+
         # TODO: 'lts' is assumed to be 1.10. After lts is updated, there
         # shouldn't be any need to branch below, and we can use only the second
         # version.
