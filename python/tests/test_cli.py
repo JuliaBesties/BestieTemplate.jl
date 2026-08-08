@@ -42,7 +42,11 @@ class TestAddFeature:
         features, dst, data, kwargs = fake_add_feature[0]
         assert features == ["agents", "testitem_cli"]
         assert (dst, data) == ("pkg", {"PackageName": "Pkg"})
-        assert kwargs == {"ref": None, "template": bestie_template.TEMPLATE_URL}
+        assert kwargs == {
+            "ref": None,
+            "template": bestie_template.TEMPLATE_URL,
+            "preserve_template_version": True,
+        }
         assert "Applied 2 feature(s) to pkg" in result.stdout
         assert "none was created" in result.stdout
 
@@ -53,7 +57,15 @@ class TestAddFeature:
 
     def test_ref_and_template_are_forwarded(self, fake_add_feature):
         runner.invoke(app, ["add-feature", "agents", "--ref", "main", "--template", "/local/path"])
-        assert fake_add_feature[0][3] == {"ref": "main", "template": "/local/path"}
+        assert fake_add_feature[0][3] == {
+            "ref": "main",
+            "template": "/local/path",
+            "preserve_template_version": True,
+        }
+
+    def test_the_template_version_can_be_left_to_copier(self, fake_add_feature):
+        runner.invoke(app, ["add-feature", "agents", "--no-preserve-template-version"])
+        assert fake_add_feature[0][3]["preserve_template_version"] is False
 
     def test_trailing_comma_is_a_usage_error(self, fake_add_feature):
         """`bestie add-feature agents, changelog` must not treat `changelog` as the path."""

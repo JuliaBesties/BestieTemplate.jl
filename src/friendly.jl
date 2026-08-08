@@ -234,6 +234,14 @@ Reads `.copier-answers.yml` (if present) and guesses data from the package,
 then applies only the files relevant to `feature`. If `.copier-answers.yml`
 exists, it is updated; otherwise no answers file is created.
 
+The answers file records the new answers, but keeps the `_commit` and `_src_path`
+that were already there. Those say which template version the project was last
+*fully* reconciled with, and a feature applies only a subset of the template, so
+letting them advance would make the next [`update`](@ref) skip every version in
+between without saying so. The project ends up holding one file newer than its
+`_commit`, which copier's 3-way update treats like any locally modified template
+file. Pass `preserve_template_version = false` for the old behaviour.
+
 ## Supported features
 
 Features are defined in the `features.toml` registry shipped with the template
@@ -251,6 +259,10 @@ $(_features_docstring())
 ## Keyword arguments
 
 $TEMPLATE_KWARGS_DOCS
+- `preserve_template_version::Bool`: Whether to keep the `_commit` and `_src_path` recorded in
+  an existing `.copier-answers.yml`, instead of letting copier advance them to the template
+  version this call rendered from. Default: `true`. No effect when the destination has no
+  answers file, since none is created.
 - Additional keyword arguments are passed to `Copier.copy`.
 """
 function add_feature(
@@ -260,6 +272,7 @@ function add_feature(
   template_source::Symbol = :online,
   local_template_path = pkgdir(BestieTemplate),
   use_latest::Bool = false,
+  preserve_template_version::Bool = true,
   kwargs...,
 )
   registry_root = template_source == :local ? local_template_path : pkgdir(BestieTemplate)
@@ -326,16 +339,30 @@ function add_feature(
   template_path, _, extra_args =
     _resolve_template(; template_source, local_template_path, use_latest)
 
+  # Copier stamps the version and source it rendered from into the answers file. A feature
+  # writes a deliberate subset of the template, so it must not claim the project caught up
+  # with that version (#626); the restore also runs on failure, to never leave the file
+  # asserting a reconciliation that did not happen.
+  saved_bookkeeping = if preserve_template_version && has_answers
+    _copier_bookkeeping(answers_path)
+  else
+    Dict{String, String}()
+  end
+
   copier_defaults = Dict{Symbol, Any}(:defaults => true, :overwrite => true, :quiet => true)
-  Copier.copy(
-    template_path,
-    abspath(dst_path),
-    merged_data;
-    merge(copier_defaults, extra_args, Dict{Symbol, Any}(kwargs))...,
-    # pylist required: PythonCall auto-converts simple types (Bool, String)
-    # but NOT Julia Vector{String} when passed as kwargs to Python functions.
-    exclude = pylist(excluded),
-  )
+  try
+    Copier.copy(
+      template_path,
+      abspath(dst_path),
+      merged_data;
+      merge(copier_defaults, extra_args, Dict{Symbol, Any}(kwargs))...,
+      # pylist required: PythonCall auto-converts simple types (Bool, String)
+      # but NOT Julia Vector{String} when passed as kwargs to Python functions.
+      exclude = pylist(excluded),
+    )
+  finally
+    _restore_copier_bookkeeping(answers_path, saved_bookkeeping)
+  end
 
   return nothing
 end

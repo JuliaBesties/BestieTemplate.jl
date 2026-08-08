@@ -32,3 +32,42 @@ function _load_copier_answers(path::AbstractString)
   )
   return YAML.load_file(path, float_as_string)
 end
+
+"""
+The `.copier-answers.yml` keys recording which template version and source a project was
+last reconciled with. Copier rewrites both on every run, which `add_feature` undoes: it
+applies a subset of the template on purpose, so it must not claim the project caught up
+with the version it rendered from (#626).
+"""
+const COPIER_BOOKKEEPING_FIELDS = ("_commit", "_src_path")
+
+"""
+    _copier_bookkeeping(path)
+
+The `COPIER_BOOKKEEPING_FIELDS` lines of the answers file at `path`, verbatim and keyed by
+field. Kept as text, not parsed values, so restoring cannot reformat them (see
+[`_load_copier_answers`](@ref) for how `_commit` can look like a float).
+"""
+function _copier_bookkeeping(path::AbstractString)
+  isfile(path) || return Dict{String, String}()
+  return Dict(
+    field => line for line in readlines(path) for
+    field in COPIER_BOOKKEEPING_FIELDS if startswith(line, "$field:")
+  )
+end
+
+"""
+    _restore_copier_bookkeeping(path, saved)
+
+Put the bookkeeping lines of the answers file at `path` back to `saved`, as returned by
+[`_copier_bookkeeping`](@ref) before copier rewrote the file.
+"""
+function _restore_copier_bookkeeping(path::AbstractString, saved::AbstractDict)
+  (isempty(saved) || !isfile(path)) && return nothing
+  content = read(path, String)
+  for (field, line) in saved
+    content = replace(content, Regex("^$field:.*\$", "m") => _ -> line)
+  end
+  write(path, content)
+  return nothing
+end

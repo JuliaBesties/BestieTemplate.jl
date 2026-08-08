@@ -61,6 +61,14 @@ def add_feature_command(
         str | None, typer.Option(help="Git ref of the template (default: its latest release).")
     ] = None,
     template: Annotated[str, typer.Option(help="Template URL or local path.")] = TEMPLATE_URL,
+    preserve_template_version: Annotated[
+        bool,
+        typer.Option(
+            "--preserve-template-version/--no-preserve-template-version",
+            help="Keep the _commit and _src_path already in .copier-answers.yml, so a later "
+            "update does not skip the versions in between.",
+        ),
+    ] = True,
     as_json: JsonOption = False,
 ) -> None:
     """Apply one or more template features to an existing package."""
@@ -82,7 +90,14 @@ def add_feature_command(
         values[key] = value
 
     try:
-        result = add_feature(names, path, values, ref=ref, template=template)
+        result = add_feature(
+            names,
+            path,
+            values,
+            ref=ref,
+            template=template,
+            preserve_template_version=preserve_template_version,
+        )
     except BestieError as exc:
         raise _fail(exc, as_json) from exc
 

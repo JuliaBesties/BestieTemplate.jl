@@ -268,6 +268,10 @@ julia> BestieTemplate.add_feature(:changelog, ".")
 
 See the [`BestieTemplate.add_feature`](@ref) docstring for the available features.
 
+The feature's files come from the newest version of the template, but your `.copier-answers.yml` keeps the template version it already recorded, since only part of the template was applied.
+Your package therefore ends up with one file newer than the rest of it.
+Run `BestieTemplate.update` when you want to catch up with everything else.
+
 The same operation is available without Julia, through the experimental [`bestie-template`](https://pypi.org/p/bestie-template) Python package, so it also works from a plain shell or from an AI coding agent.
 With [uv](https://docs.astral.sh/uv/) installed, no install step is needed:
 

@@ -40,6 +40,8 @@ Inline the full invocation in every command — do not rely on a shell alias or 
 
 4. **Verify** with `git status` / `git diff`: only the feature's `included_files` should appear as modified, any missing `optional_files` as newly added, plus `.copier-answers.yml` if the package already had one. Read the diff of every pre-existing file the feature touched — "Applied 1 feature(s)" is printed just the same whether the file was created or overwritten, so success output is not evidence that nothing was lost.
 
+   In that `.copier-answers.yml` diff, expect the feature's answers to change and `_commit` / `_src_path` to stay put. Those record the template version the package was last *fully* updated to, and a feature applies only a slice, so they deliberately do not move. The package is then holding one file newer than the version it records — that is the intended state, and a later template update may report a conflict on that file, which is normal. Do not "fix" the mismatch by editing `_commit`.
+
 A clean diff means the feature applied, not that the package is done: a feature may require follow-up changes to files it does not own (e.g. `testitem_cli` replaces the test runner, so existing tests must be migrated to `@testitem` blocks and a `test/Project.toml` must exist). Check the feature's `description` and the rendered files for such expectations, and tell the user about any follow-up work you find.
 
 ## Recommending features
@@ -69,7 +71,7 @@ Both outcomes print the same "Applied N feature(s)" line, so read the diff rathe
 
   Never pass a default for these. The CLI does no inference of its own — it resolves fields from the answers file and `-d` only — so an unasked question becomes a silently wrong file.
 - Features with `requires_answers: true` refuse to run without `.copier-answers.yml` — no `-d` flag substitutes for it, because the feature's own entry doesn't list those fields in `required_fields`. `lint_action` renders `Lint.yml` from `AddPrecommit` and `AddLychee`, which record whether the package uses pre-commit and the Lychee link checker, and guessing doesn't cover them. Falling back to template defaults would produce a workflow that checks the wrong things — or nothing — while still reporting success, so the feature refuses instead. Check `list-features --json` for a `<feature>_explicit` variant first (e.g. `lint_action_explicit` takes the same answers as `-d` flags); only if none exists should you suggest `BestieTemplate.apply` (Julia) to apply the full template.
-- The answers file is updated when present and never created.
+- The answers file is updated when present and never created. Its `_commit` and `_src_path` are left as they were; `--no-preserve-template-version` opts out of that, and you should not pass it unless the user asks for it by name.
 
 ## Machine-readable mode
 

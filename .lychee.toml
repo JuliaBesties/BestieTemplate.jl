@@ -5,12 +5,14 @@ exclude = [
   "^https://github.com/.*/compare/v.*HEAD$",
   "^https://blog.esciencecenter.nl", # certificate error, hopefully fixed soon
   "^https://asciinema.org/*",
+  "^https://new/?$",
+  "^https://old/?$",
 ]
 
 exclude_path = [
   "docs/build",
   "docs/make.jl",
-  "test/conda-env"
+  "test/conda-env",
 ]
 
 max_retries = 5

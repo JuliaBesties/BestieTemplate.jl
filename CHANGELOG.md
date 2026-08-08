@@ -31,6 +31,7 @@ BREAKING NOTICE
 
 ### Fixed
 
+- `add_feature` no longer advances the `_commit` and `_src_path` recorded in `.copier-answers.yml`. Copier stamps both with the template version it rendered from, but a feature writes a deliberate subset of the template, so a package that had not run `update` in a while was left claiming it was fully reconciled with the newest version — and the next `update` then skipped every version in between without saying so. The answers themselves are still recorded, and the newest version of the feature's files is still what gets applied. Pass `preserve_template_version = false` (`--no-preserve-template-version` in the CLI) for the previous behaviour (#626)
 - The filter flags of the `testitem_cli` test runner now work when the tests are run through `Pkg.test`, which includes `test/runtests.jl` instead of executing it as a program. Filters passed as `test_args` were previously ignored, and so were misspelled flags, both without any warning. This affects `pkg> test` and `julia-actions/julia-runtest` as well (#640)
 - The `AddPrecommit` question no longer depends on `AddFormatterAndLinterConfigFiles`. The two were entangled so that declining the config files also silently defaulted away pre-commit, which forced `add_feature(:pre_commit_without_config)` to record `AddFormatterAndLinterConfigFiles = true` just to keep pre-commit's own answer remembered — and a later plain `update` would then restore the config files the feature was meant to leave out (#625)
 

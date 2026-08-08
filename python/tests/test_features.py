@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 import bestie_template
-from bestie_template import BestieError, add_feature, list_features
+from bestie_template import TEMPLATE_URL, BestieError, add_feature, list_features
 
 
 class TestRegistry:
@@ -113,6 +113,44 @@ class TestAddFeature:
         assert call["data"]["Authors"] == "UNUSED"  # unresolved placeholder field
         assert call["vcs_ref"] == "HEAD"
         assert "!.copier-answers.yml" in call["exclude"]  # updated, since it exists
+
+    @pytest.fixture
+    def rewrites_the_answers_file(self, tmp_path, monkeypatch):
+        """Stub copier doing what it really does: rewrite the answers file wholesale.
+
+        Returns the answers path, seeded with a project two versions behind.
+        """
+        answers = tmp_path / ".copier-answers.yml"
+        answers.write_text("PackageName: Pkg\n_commit: v0.15.0\n_src_path: https://old\n")
+
+        def rewrite(**kwargs):
+            (tmp_path / "AGENTS.md").touch()  # the feature's file, which add_feature checks for
+            answers.write_text(
+                "AddAgentsMd: true\nPackageName: Pkg\n_commit: v0.19.0\n_src_path: https://new\n"
+            )
+
+        monkeypatch.setattr(bestie_template, "_run_copy", rewrite)
+        return answers
+
+    def test_the_recorded_template_version_is_kept(
+        self, tmp_path, registry, rewrites_the_answers_file
+    ):
+        """A feature applies a subset of the template, so it must not claim a full update."""
+        add_feature(["agents"], tmp_path, registry=registry)
+
+        text = rewrites_the_answers_file.read_text()
+        assert "_commit: v0.15.0" in text  # bookkeeping restored
+        assert "_src_path: https://old" in text
+        assert "AddAgentsMd: true" in text  # the new answer is still recorded
+
+    def test_the_template_version_can_be_advanced_on_request(
+        self, tmp_path, registry, rewrites_the_answers_file
+    ):
+        add_feature(["agents"], tmp_path, registry=registry, preserve_template_version=False)
+
+        text = rewrites_the_answers_file.read_text()
+        assert "_commit: v0.19.0" in text
+        assert "_src_path: https://new" in text
 
     def test_answers_file_is_never_created(self, tmp_path, registry, copier_calls):
         result = add_feature(["agents"], tmp_path, {"PackageName": "Pkg"}, registry=registry)
@@ -244,6 +282,21 @@ class TestAgainstTheRealTemplate:
         assert "ExplicitName" in content and "FromAnswers" not in content
         assert result["answers_file_updated"]
         assert "ExplicitName" in (tmp_path / ".copier-answers.yml").read_text()
+
+    def test_the_recorded_template_version_survives_a_real_run(self, tmp_path, template):
+        """#626, against real copier: adding one file must not claim a full reconciliation."""
+        answers = tmp_path / ".copier-answers.yml"
+        answers.write_text(
+            f"PackageName: FakePkg\n_commit: v0.18.6\n_src_path: {TEMPLATE_URL}\n",
+            encoding="utf-8",
+        )
+        add_feature(["agents"], tmp_path, template=template, ref="HEAD")
+
+        text = answers.read_text(encoding="utf-8")
+        assert (tmp_path / "AGENTS.md").is_file()
+        assert "_commit: v0.18.6" in text
+        # `template` here is the local checkout, which copier would otherwise record
+        assert f"_src_path: {TEMPLATE_URL}" in text
 
     def test_a_ref_predating_the_feature_errors(self, tmp_path, template):
         # v0.18.6 has no AGENTS.md: the run writes nothing, which must surface
