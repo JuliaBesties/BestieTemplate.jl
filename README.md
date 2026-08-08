@@ -77,6 +77,8 @@ uvx --from bestie-template bestie list-features
 uvx --from bestie-template bestie add-feature changelog,dependabot path/to/MyPackage.jl
 ```
 
+See the [quick guide](https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-guides/05-quick-guide/#Adding-features-directly-via-bestie-CLI) for more details, and its [`add_feature`](https://JuliaBesties.github.io/BestieTemplate.jl/stable/10-guides/05-quick-guide/#Adding-a-single-feature-with-add_feature) counterpart for the Julia version.
+
 For AI coding agents, the same workflow is packaged as the [`bestie-features` skill](skills/bestie-features/SKILL.md), which is installable with
 
 ```sh
