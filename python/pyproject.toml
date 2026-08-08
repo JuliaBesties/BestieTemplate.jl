@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "bestie-template"
-version = "0.1.1"
+version = "0.2.0"
 description = "Python interface to the BestieTemplate copier template: add template features to Julia packages without Julia"
 readme = "README.md"
 requires-python = ">=3.11"

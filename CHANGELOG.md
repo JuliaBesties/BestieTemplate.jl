@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.20.0] - 2026-08-08
+
 BREAKING NOTICE
 
 - The `testitem_cli` testing strategy option has changed slightly fixing a bug and removing an unnecessary temporary environment.
@@ -22,7 +24,7 @@ BREAKING NOTICE
 
 ### Changed
 
-- The Python package `bestie-template` is now at version `0.1.1`. Its version is independent of the Julia package's, since the two are released on different cadences
+- New Python package `bestie-template` releases: `0.1.1` and `0.2.0`. Its version is independent of the Julia package's, since the two are released on different cadences
 - `bestie-template` installs a `bestie-template` command as an alias of `bestie`, so `uvx bestie-template ...` works without `--from`
 - The documentation, the `bestie-features` skill and `python/README.md` now install `bestie-template` from PyPI instead of from the git repository
 - The README and the full guide now mention the `bestie-features` agent skill and how to install it with `npx skills add JuliaBesties/BestieTemplate.jl`
@@ -661,7 +663,8 @@ Breaking notice:
 
 <!-- Versions -->
 
-[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.19.0...HEAD
+[unreleased]: https://github.com/JuliaBesties/BestieTemplate.jl/compare/v0.20.0...HEAD
+[0.20.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.20.0
 [0.19.0]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.19.0
 [0.18.6]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.6
 [0.18.5]: https://github.com/JuliaBesties/BestieTemplate.jl/releases/tag/v0.18.5
