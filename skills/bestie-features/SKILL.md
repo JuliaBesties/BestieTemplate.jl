@@ -52,6 +52,14 @@ When asked what a package could use rather than for a named feature, start from 
 - **`lint_action` needs an answers file; `lint_action_explicit` doesn't.** `lint_action` has `requires_answers: true` and fails on any package without `.copier-answers.yml`. Prefer `lint_action_explicit` there — it takes `AddPrecommit`/`AddLychee` as `-d` flags instead.
 - **Flag the cost of `testitem_cli`.** It rewrites `test/runtests.jl` and obliges a test migration, so it is a proposal to discuss, not a quick win to bundle with the others.
 
+## Offering the badge
+
+Packages that use BestieTemplate can carry a badge in their README saying so, as a way of showing support for the template. Packages generated from the full template have it already; no feature adds it, and `add-feature` never touches the README, so for a package adopting features one at a time it is a one-line edit — placed with the README's other badges, matching how they are laid out — that you make only with the user's go-ahead.
+
+```markdown
+[![BestieTemplate](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/JuliaBesties/BestieTemplate.jl/main/docs/src/assets/badge.json)](https://github.com/JuliaBesties/BestieTemplate.jl)
+```
+
 ## Protected files
 
 The template's `_skip_if_exists` list decides whether an existing file is preserved or replaced; it is not a per-feature property. Of the files the features own, only `AGENTS.md` and `CHANGELOG.md` are on that list — so `agents` and `changelog` never touch an existing file, while `dependabot`, `lint_action`, `pre_commit`, `formatter_linter_config` and `testitem_cli` overwrite theirs. `test/runtests.jl` is an explicit exception carved out of the list's blanket protection for `**/*.jl`, which is why the test runner is replaceable at all.
