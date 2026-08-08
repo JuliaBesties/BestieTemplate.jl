@@ -580,6 +580,93 @@ end
   end
 end
 
+@testitem "the copier bookkeeping helpers only touch _commit and _src_path" tags =
+  [:unit, :fast, :file_io] begin
+  using BestieTemplate
+
+  mktempdir() do dir
+    path = joinpath(dir, ".copier-answers.yml")
+    write(
+      path,
+      """
+      PackageName: Pkg
+      TestingStrategy: basic
+      _commit: v0.15.0
+      _src_path: https://old
+      """,
+    )
+    saved = BestieTemplate._copier_bookkeeping(path)
+    @test saved == Dict("_commit" => "_commit: v0.15.0", "_src_path" => "_src_path: https://old")
+
+    # What copier does on every run: rewrite the whole file, bookkeeping included
+    write(
+      path,
+      """
+      AddAgentsMd: true
+      PackageName: Pkg
+      TestingStrategy: testitem_cli
+      _commit: v0.19.0
+      _src_path: https://new
+      """,
+    )
+    BestieTemplate._restore_copier_bookkeeping(path, saved)
+
+    restored = read(path, String)
+    @test contains(restored, "_commit: v0.15.0")
+    @test contains(restored, "_src_path: https://old")
+    # Everything else stays exactly as copier wrote it, new answers included
+    @test contains(restored, "AddAgentsMd: true")
+    @test contains(restored, "TestingStrategy: testitem_cli")
+
+    # Saved as text, so a `_commit` that YAML would read as a float survives verbatim
+    write(path, "_commit: 64e3774\n")
+    float_like = BestieTemplate._copier_bookkeeping(path)
+    write(path, "_commit: v0.19.0\n")
+    BestieTemplate._restore_copier_bookkeeping(path, float_like)
+    @test read(path, String) == "_commit: 64e3774\n"
+  end
+end
+
+@testitem "add_feature keeps the recorded template version" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [Common, AddFeatureHelpers] begin
+  # #626: a feature writes a deliberate subset of the template, so advancing `_commit` would
+  # make the next `update` skip every version in between without saying so.
+  _with_tmp_dir() do _
+    _generate_pkg()
+    url = "https://github.com/JuliaBesties/BestieTemplate.jl"
+    answers = read(".copier-answers.yml", String)
+    answers = replace(answers, r"_commit: .*" => "_commit: v0.15.0")
+    answers = replace(answers, r"_src_path: .*" => "_src_path: $url")
+    write(".copier-answers.yml", answers)
+
+    _add_feature_local(:testitem_cli)
+
+    updated = read(".copier-answers.yml", String)
+    @test contains(updated, "_commit: v0.15.0")
+    # `template_source = :local` would otherwise point the project at a local directory
+    @test contains(updated, "_src_path: $url")
+    # The answer the feature sets is still recorded, so a later update keeps managing the file
+    _validate_copier_answers(Dict("TestingStrategy" => "testitem_cli"))
+  end
+end
+
+@testitem "add_feature can advance the recorded template version on request" tags =
+  [:integration, :slow, :template_application, :file_io, :python_integration] setup =
+  [Common, AddFeatureHelpers] begin
+  _with_tmp_dir() do _
+    _generate_pkg()
+    write(
+      ".copier-answers.yml",
+      replace(read(".copier-answers.yml", String), r"_commit: .*" => "_commit: v0.15.0"),
+    )
+
+    _add_feature_local(:testitem_cli; preserve_template_version = false)
+
+    @test !contains(read(".copier-answers.yml", String), "_commit: v0.15.0")
+  end
+end
+
 @testitem "add_feature handles .copier-answers.yml with a float-like _commit" tags =
   [:integration, :slow, :error_handling, :file_io] setup = [Common, AddFeatureHelpers] begin
   # Regression for the float-like `_commit` quirk handled by `_load_copier_answers`

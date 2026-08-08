@@ -158,6 +158,14 @@ Two rules make this safe:
 
 Keys must be boolean fields the caller can set — `required_fields` or `forced_data` entries. Beware that a flag passed on the CLI arrives as the *string* `"false"`, which is truthy in both languages; copier only coerces it at render time. Test these with `_is_true` (`src/friendly.jl`, `python/src/bestie_template/__init__.py`), never directly.
 
+#### The recorded template version
+
+Copier stamps `_commit` and `_src_path` into `.copier-answers.yml` on every run, recording the template version and source it rendered from. `add_feature` puts both back to what they were (`_copier_bookkeeping` / `_restore_copier_bookkeeping` in `src/utils.jl`, mirrored in the Python package).
+
+`_commit` means "the version this project was *fully* reconciled with", and a feature applies a subset of the template on purpose. Letting it advance told the next `update` that everything up to the newest version had already been applied, so it diffed from there and dropped every version in between — silently, which is the part that made it a bug rather than a trade-off (#626). The project instead keeps one file newer than its `_commit`, which copier's 3-way update handles like any locally modified template file: possibly a conflict, never a silent skip.
+
+Both implementations expose `preserve_template_version` (default `true`) to opt out.
+
 **Data merge order** (later wins): answers file → guessed from repo → explicit `data` arg → `forced_data`.
 
 If the `required_fields` can be guessed (e.g., by `_read_data_from_existing_path` in `src/guess.jl`, or if they are present in a `.copier-answers.yml` file), then the experience is smooth.

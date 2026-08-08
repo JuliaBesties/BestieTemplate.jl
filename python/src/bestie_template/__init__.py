@@ -8,6 +8,7 @@ copier with everything but the feature's files excluded.
 from __future__ import annotations
 
 import errno
+import re
 import shutil
 import tomllib
 from pathlib import Path, PurePath
@@ -26,6 +27,12 @@ SCHEMA_VERSION = 1
 # them; filled with a placeholder when unresolved (mirrors the Julia side).
 PLACEHOLDER_FIELDS = ("PackageName", "PackageOwner", "Authors")
 PLACEHOLDER_VALUE = "UNUSED"
+
+# The answers-file keys recording which template version and source a project was last
+# reconciled with. Copier rewrites both on every run, which add_feature undoes: it applies
+# a subset of the template on purpose, so it must not claim the project caught up with the
+# version it rendered from. Mirrors COPIER_BOOKKEEPING_FIELDS in src/utils.jl.
+BOOKKEEPING_FIELDS = ("_commit", "_src_path")
 
 
 class BestieError(Exception):
@@ -70,12 +77,19 @@ def add_feature(
     ref: str | None = None,
     template: str = TEMPLATE_URL,
     registry: dict[str, dict[str, Any]] | None = None,
+    preserve_template_version: bool = True,
 ) -> dict[str, Any]:
     """Apply `features` (in order) to the package at `dst`.
 
     Data is merged as (later wins): the answers file -> `data` -> the feature's
     `forced_data`. `.copier-answers.yml` is updated when it already exists, and
     is never created.
+
+    The updated answers file keeps the `_commit` and `_src_path` it already had.
+    Those record the template version the project was last *fully* reconciled with,
+    and a feature applies only a subset of the template, so letting copier advance
+    them would make the next update silently skip every version in between. Pass
+    `preserve_template_version=False` for copier's default behaviour.
     """
     registry = load_registry() if registry is None else registry
     dst = Path(dst)
@@ -121,16 +135,24 @@ def add_feature(
         if has_answers:
             exclude.append(f"!{ANSWERS_FILENAME}")
 
-        _run_copy(
-            src_path=template,
-            dst_path=str(dst),
-            data=merged,
-            exclude=exclude,
-            overwrite=True,
-            defaults=True,
-            quiet=True,
-            vcs_ref=ref,
-        )
+        # Copier stamps the version and source it rendered from into the answers file; a
+        # feature writes a deliberate subset of the template, so it must not claim the
+        # project caught up with that version. Restored on failure too, to never leave the
+        # file asserting a reconciliation that did not happen.
+        saved = _bookkeeping(answers_path) if preserve_template_version else {}
+        try:
+            _run_copy(
+                src_path=template,
+                dst_path=str(dst),
+                data=merged,
+                exclude=exclude,
+                overwrite=True,
+                defaults=True,
+                quiet=True,
+                vcs_ref=ref,
+            )
+        finally:
+            _restore_bookkeeping(answers_path, saved)
 
         required_files = spec["included_files"]
         if not any((dst / file).exists() for file in required_files):
@@ -172,6 +194,36 @@ def _resolve(registry: dict[str, dict[str, Any]], name: str) -> dict[str, Any]:
     if alias not in registry or "alias_of" in registry[alias]:
         raise BestieError(f"{REGISTRY_FILENAME} is malformed: bad alias {name!r} -> {alias!r}")
     return registry[alias]
+
+
+def _bookkeeping(path: Path) -> dict[str, str]:
+    """The BOOKKEEPING_FIELDS lines of an answers file, verbatim and keyed by field.
+
+    Kept as text rather than parsed values so restoring cannot reformat them: a `_commit`
+    like `64e3774` is a string that YAML would otherwise read back as a float.
+    """
+    if not path.is_file():
+        return {}
+    return {
+        field: line
+        for line in path.read_text(encoding="utf-8").splitlines()
+        for field in BOOKKEEPING_FIELDS
+        if line.startswith(f"{field}:")
+    }
+
+
+def _restore_bookkeeping(path: Path, saved: dict[str, str]) -> None:
+    """Put the lines `_bookkeeping` saved back after copier rewrote them."""
+    if not saved or not path.is_file():
+        return
+    text = path.read_text(encoding="utf-8")
+    for field, line in saved.items():
+        # Pass a function, not a string: re.sub expands escapes in a string replacement,
+        # so a Windows `_src_path` like C:\newdir would gain a real newline. The
+        # `line=line` default only keeps the linter quiet about closing over a loop
+        # variable — re.sub calls it before the loop advances, so it changes nothing.
+        text = re.sub(rf"^{field}:.*$", lambda _, line=line: line, text, flags=re.MULTILINE)
+    path.write_text(text, encoding="utf-8")
 
 
 def _load_answers(path: Path) -> dict[str, Any]:
