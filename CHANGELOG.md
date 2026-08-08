@@ -26,6 +26,7 @@ BREAKING NOTICE
 - `bestie-template` installs a `bestie-template` command as an alias of `bestie`, so `uvx bestie-template ...` works without `--from`
 - The documentation, the `bestie-features` skill and `python/README.md` now install `bestie-template` from PyPI instead of from the git repository
 - The README and the full guide now mention the `bestie-features` agent skill and how to install it with `npx skills add JuliaBesties/BestieTemplate.jl`
+- The `bestie-features` skill now describes the BestieTemplate README badge, so it can offer it when adding features to a package that was not generated from the template
 - `python/pyproject.toml` now sets a one-week `exclude-newer` dependency cooldown
 - The `testitem_cli` test runner no longer builds a temporary environment to bring the package into scope. The `[sources]` section that `test/Project.toml` gained in 0.17.1 (#559) already does that, so `Pkg` is no longer a test dependency of that strategy (#640)
 
