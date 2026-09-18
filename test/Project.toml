@@ -15,7 +15,7 @@ BestieTemplate = { path = ".." }
 [compat]
 JuliaFormatter = "2"
 Logging = "1"
-Pkg = "1"
+Pkg = "1, < 0.0.1"
 TOML = "1"
 Test = "1"
 TestItemRunner = "1"
